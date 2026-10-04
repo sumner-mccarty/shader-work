@@ -1,0 +1,792 @@
+// // ============================================================================
+// // LEGACY SHADER - DEPRECATED
+// // ============================================================================  
+// // This shader uses the old lighting architecture that relied on global
+// // properties declared in UILighting.cginc. Those properties have been removed
+// // to enforce a pure function library architecture.
+// //
+// // MIGRATION: To update this shader:
+// // 1. Declare lighting properties in the CGPROGRAM section (see SDFKnob.shader):
+// //    float _LightingAmbient;
+// // 2. Update ApplyUILighting() calls to pass _LightingAmbient as 3rd parameter.
+// // 3. Remove references to removed legacy functions like calculateLighting().
+// //
+// // This shader will not compile until updated.
+// // ============================================================================
+
+// Shader "UI/SDFButton"
+// {
+//     CGINCLUDE
+//     #error "SDFButton.shader is deprecated. Use SDFKnob.shader as reference for migration."
+//     ENDCG
+//     Properties
+//     {
+//         [PerRendererData] _MainTex ("Texture", 2D) = "white" {}
+
+//         // Fill gradient properties
+//         _FillGradientColorA ("Fill Gradient A", Color) = (0.2, 0.4, 0.8, 1)
+//         _FillGradientColorB ("Fill Gradient B", Color) = (0.3, 0.5, 0.9, 1)
+//         _FillGradientColorC ("Fill Gradient C", Color) = (0.1, 0.3, 0.7, 1)
+//         _FillGradientColorD ("Fill Gradient D", Color) = (0.4, 0.6, 1.0, 1)
+//         _FillGradientDirection ("Fill Gradient Direction", Vector) = (0,1,0,0)
+//         _FillGradientSpeed ("Fill Gradient Speed", Float) = 1
+//         _FillGradientScale ("Fill Gradient Scale", Float) = 1
+//         _FillGradientOffset ("Fill Gradient Offset", Float) = 0
+//         _FillGlobalBlend ("Fill Global Blend", Range(0,1)) = 0
+//         _FillGlobalIntensity ("Fill Global Intensity", Range(0,2)) = 1
+//         [Enum(Linear,0,Radial,1,Angular,2,Diamond,3,Triangle,4)] _FillGradientType ("Fill Gradient Type", Int) = 0
+//         _FillAlpha ("Fill Alpha", Range(0,1)) = 1
+
+//         // Line gradient properties (main button body)
+//         _LineGradientColorA ("Line Gradient A", Color) = (0.1, 0.2, 0.4, 1)
+//         _LineGradientColorB ("Line Gradient B", Color) = (0.2, 0.3, 0.5, 1)
+//         _LineGradientColorC ("Line Gradient C", Color) = (0.05, 0.15, 0.35, 1)
+//         _LineGradientColorD ("Line Gradient D", Color) = (0.15, 0.25, 0.45, 1)
+//         _LineGradientDirection ("Line Gradient Direction", Vector) = (1,0,0,0)
+//         _LineGradientSpeed ("Line Gradient Speed", Float) = 1
+//         _LineGradientScale ("Line Gradient Scale", Float) = 1
+//         _LineGradientOffset ("Line Gradient Offset", Float) = 0
+//         _LineGlobalBlend ("Line Global Blend", Range(0,1)) = 0
+//         _LineGlobalIntensity ("Line Global Intensity", Range(0,2)) = 1
+//         [Enum(Linear,0,Radial,1,Angular,2,Diamond,3,Triangle,4)] _LineGradientType ("Line Gradient Type", Int) = 0
+//         _LineAlpha ("Line Alpha", Range(0,1)) = 1
+
+//         // Outline gradient properties
+//         _OutlineGradientColorA ("Outline Gradient A", Color) = (1,0,1,1)
+//         _OutlineGradientColorB ("Outline Gradient B", Color) = (0,1,1,1)
+//         _OutlineGradientColorC ("Outline Gradient C", Color) = (1,1,0,1)
+//         _OutlineGradientColorD ("Outline Gradient D", Color) = (1,0,0,1)
+//         _OutlineGradientDirection ("Outline Gradient Direction", Vector) = (1,0,0,0)
+//         _OutlineGradientSpeed ("Outline Gradient Speed", Float) = 1
+//         _OutlineGradientScale ("Outline Gradient Scale", Float) = 1
+//         _OutlineGradientOffset ("Outline Gradient Offset", Float) = 0
+//         _OutlineGlobalBlend ("Outline Global Blend", Range(0,1)) = 0
+//         _OutlineGlobalIntensity ("Outline Global Intensity", Range(0,2)) = 1
+//         [Enum(Linear,0,Radial,1,Angular,2,Diamond,3,Triangle,4)] _OutlineGradientType ("Outline Gradient Type", Int) = 0
+//         _OutlineAlpha ("Outline Alpha", Range(0,1)) = 1
+
+//         // Glow gradient properties
+//         _GlowGradientColorA ("Glow Gradient A", Color) = (1,0,1,1)
+//         _GlowGradientColorB ("Glow Gradient B", Color) = (1,1,0,1)
+//         _GlowGradientColorC ("Glow Gradient C", Color) = (0,1,1,1)
+//         _GlowGradientColorD ("Glow Gradient D", Color) = (1,0,0,1)
+//         _GlowGradientDirection ("Glow Gradient Direction", Vector) = (1,1,0,0)
+//         _GlowGradientSpeed ("Glow Gradient Speed", Float) = 1
+//         _GlowGradientScale ("Glow Gradient Scale", Float) = 1
+//         _GlowGradientOffset ("Glow Gradient Offset", Float) = 0
+//         _GlowGlobalBlend ("Glow Global Blend", Range(0,1)) = 0
+//         _GlowGlobalIntensity ("Glow Global Intensity", Range(0,2)) = 1
+//         [Enum(Linear,0,Radial,1,Angular,2,Diamond,3,Triangle,4)] _GlowGradientType ("Glow Gradient Type", Int) = 0
+//         _GlowWidth ("Glow Width", Range(0.01,0.5)) = 0.1
+//         _GlowIntensity ("Glow Intensity", Range(0,5)) = 2
+//         _GlowAlpha ("Glow Alpha", Range(0,1)) = 1
+
+//         // Button parameters 
+//         _LineWidth ("Line Width", Range(0.001, 0.5)) = 0.1
+//         _OutlineWidth ("Outline Width", Range(0.0, 0.1)) = 0.02
+//         _CornerRadius ("Corner Radius", Range(0.0, 1.0)) = 0.1
+//         [Enum(RoundedRect,0,Ellipse,1,Circle,2)] _ButtonShape ("Button Shape", Int) = 0
+//         _EllipseCorrectionFactor ("Ellipse Thickness Correction", Range(0.1, 3.0)) = 1.5
+        
+//         // Icon configuration
+//         _UseIcon ("Use Icon", Float) = 1
+//         [Enum(CustomTexture,0,Play,1,Pause,2,Stop,3,Menu,20,Settings,23,Close,21,Plus,29,Minus,30,Hamburger,20,Info,22,Download,24,Upload,25,Refresh,26,Home,27,Search,28,Check,31,ArrowUp,32,ArrowDown,33,ArrowLeft,34,ArrowRight,35)] _IconType ("Icon Type", Int) = 1
+//         _IconSize ("Icon Size", Range(0.1, 2.0)) = 0.4
+//         _IconOffset ("Icon Offset", Vector) = (0, 0, 0, 0)
+        
+//         // Custom icon texture (used when IconType is 0)
+//         _CustomIconTex ("Custom Icon Texture", 2D) = "white" {}
+//         _CustomIconUVBounds ("Custom Icon UV Bounds", Vector) = (0,0,1,1) // (minU, minV, maxU, maxV)
+        
+//         // Icon gradient properties
+//         _IconGradientColorA ("Icon Gradient A", Color) = (1,1,1,1)
+//         _IconGradientColorB ("Icon Gradient B", Color) = (0.8,0.8,0.8,1)
+//         _IconGradientColorC ("Icon Gradient C", Color) = (0.6,0.6,0.6,1)
+//         _IconGradientColorD ("Icon Gradient D", Color) = (0.4,0.4,0.4,1)
+//         _IconGradientDirection ("Icon Gradient Direction", Vector) = (0,1,0,0)
+//         _IconGradientSpeed ("Icon Gradient Speed", Float) = 1
+//         _IconGradientScale ("Icon Gradient Scale", Float) = 1
+//         _IconGradientOffset ("Icon Gradient Offset", Float) = 0
+//         _IconGlobalBlend ("Icon Global Blend", Range(0,1)) = 0
+//         _IconGlobalIntensity ("Icon Global Intensity", Range(0,2)) = 1
+//         [Enum(Linear,0,Radial,1,Angular,2,Diamond,3,Triangle,4)] _IconGradientType ("Icon Gradient Type", Int) = 0
+//         _IconAlpha ("Icon Alpha", Range(0,1)) = 1
+
+//         // 3D Lighting Properties
+//         _LightDirection ("Light Direction", Vector) = (-0.2, 0.2, 1.0, 0)
+//         _LightIntensity ("Light Intensity", Range(0, 2)) = 1.0
+//         _LightColor ("Light Color", Color) = (1.0, 1.0, 0.9, 1.0)
+//         _AmbientIntensity ("Ambient Intensity", Range(0, 1)) = 0.2
+//         _SpecularPower ("Specular Power", Range(1, 200)) = 100
+//         _SpecularIntensity ("Specular Intensity", Range(0, 2)) = 1.0
+//         _BevelDepth ("Bevel Depth", Range(0, 1.0)) = 0.02
+//         _BevelSmoothness ("Bevel Smoothness", Range(0.001, 1.0)) = 0.01
+        
+//         // Unity UI
+//         _StencilComp ("Stencil Comparison", Float) = 8
+//         _Stencil ("Stencil ID", Float) = 0
+//         _StencilOp ("Stencil Operation", Float) = 0
+//         _StencilWriteMask ("Stencil Write Mask", Float) = 255
+//         _StencilReadMask ("Stencil Read Mask", Float) = 255
+//         _ColorMask ("Color Mask", Float) = 15
+//     }
+
+//     SubShader
+//     {
+//         Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" "PreviewType"="Plane" "CanUseSpriteAtlas"="True" }
+        
+//         Stencil {
+//             Ref [_Stencil]
+//             Comp [_StencilComp]
+//             Pass [_StencilOp]
+//             ReadMask [_StencilReadMask]
+//             WriteMask [_StencilReadMask]
+//         }
+
+//         Cull Off
+//         Lighting Off
+//         ZWrite Off
+//         ZTest [unity_GUIZTestMode]
+//         ColorMask [_ColorMask]
+
+//         Pass
+//         {
+//             Name "MainButton"
+//             Blend SrcAlpha OneMinusSrcAlpha
+
+//             CGPROGRAM
+//             #pragma vertex vert
+//             #pragma fragment frag
+//             #include "UnityCG.cginc"
+//             #include "UnityUI.cginc"
+//             #include "./CG/Core/UIGradients.cginc"
+//             #include "./CG/SDF/SDFPrimitives.cginc"
+//             #include "./CG/SDF/Icons/SDFIcons.cginc"
+//             #include "./CG/Core/UILighting.cginc"
+
+//             struct appdata_t
+//             {
+//                 float4 vertex : POSITION;
+//                 float4 color : COLOR;
+//                 float2 texcoord : TEXCOORD0;
+//             };
+
+//             struct v2f
+//             {
+//                 float4 vertex : SV_POSITION;
+//                 float2 texcoord : TEXCOORD0;
+//                 float4 screenPos : TEXCOORD1;
+//                 float4 worldPos : TEXCOORD2;
+//             };
+
+//             // Fill gradient
+//             float4 _FillGradientColorA, _FillGradientColorB, _FillGradientColorC, _FillGradientColorD;
+//             float2 _FillGradientDirection; 
+//             float _FillGradientSpeed, _FillGradientScale, _FillGradientOffset;
+//             float _FillGlobalBlend, _FillGlobalIntensity;
+//             int _FillGradientType;
+//             float _FillAlpha;
+
+//             // Line gradient
+//             float4 _LineGradientColorA, _LineGradientColorB, _LineGradientColorC, _LineGradientColorD;
+//             float2 _LineGradientDirection; 
+//             float _LineGradientSpeed, _LineGradientScale, _LineGradientOffset;
+//             float _LineGlobalBlend, _LineGlobalIntensity;
+//             int _LineGradientType;
+//             float _LineAlpha;
+
+//             // Outline gradient
+//             float4 _OutlineGradientColorA, _OutlineGradientColorB, _OutlineGradientColorC, _OutlineGradientColorD;
+//             float2 _OutlineGradientDirection; 
+//             float _OutlineGradientSpeed, _OutlineGradientScale, _OutlineGradientOffset;
+//             float _OutlineGlobalBlend, _OutlineGlobalIntensity;
+//             int _OutlineGradientType;
+//             float _OutlineAlpha;
+
+//             // Icon gradient
+//             float4 _IconGradientColorA, _IconGradientColorB, _IconGradientColorC, _IconGradientColorD;
+//             float2 _IconGradientDirection; 
+//             float _IconGradientSpeed, _IconGradientScale, _IconGradientOffset;
+//             float _IconGlobalBlend, _IconGlobalIntensity;
+//             int _IconGradientType;
+//             float _IconAlpha;
+
+//             // Button parameters
+//             float _LineWidth, _OutlineWidth, _CornerRadius;
+//             int _ButtonShape;
+//             float _EllipseCorrectionFactor;
+//             float _UseIcon;
+//             int _IconType;
+//             float _IconSize;
+//             float2 _IconOffset;
+            
+//             // Custom icon texture
+//             sampler2D _CustomIconTex;
+//             float4 _CustomIconUVBounds;
+            
+//             // Icon rendering variables
+//             float4 finalIconColor;
+            
+//             // Glow properties needed for sizing calculations
+//             float _GlowWidth, _GlowIntensity;
+            
+//             // 3D Lighting properties are now declared in lighting.cginc
+            
+//             float4 _ClipRect;
+
+//             v2f vert(appdata_t v)
+//             {
+//                 v2f o;
+//                 o.vertex = UnityObjectToClipPos(v.vertex);
+//                 o.texcoord = v.texcoord * 2.0 - 1.0; // [-1,1] range
+//                 o.screenPos = ComputeScreenPos(o.vertex);
+//                 o.worldPos = v.vertex;
+//                 return o;
+//             }
+            
+//             // Get button SDF based on shape type with proper aspect ratio handling
+//             float getButtonSDF(float2 uv, float2 size, float cornerRadius, float2 aspectRatio)
+//             {
+//                 // Apply the same compensation logic for both shapes for consistent behavior
+//                 float2 compensatedUV = uv;
+//                 compensatedUV.x /= (aspectRatio.x > 0.0001) ? aspectRatio.x : 1.0;
+//                 compensatedUV.y /= (aspectRatio.y > 0.0001) ? aspectRatio.y : 1.0;
+                
+//                 float2 compensatedSize = size;
+//                 compensatedSize.x /= (aspectRatio.x > 0.0001) ? aspectRatio.x : 1.0;
+//                 compensatedSize.y /= (aspectRatio.y > 0.0001) ? aspectRatio.y : 1.0;
+                
+//                 if (_ButtonShape == 1) {
+//                     // Ellipse shape - use same compensation as rounded rect
+//                     return EllipseSDF(compensatedUV, compensatedSize);
+//                 } else if (_ButtonShape == 2) {
+//                     // Circle shape
+//                     return CircleSDF(compensatedUV, compensatedSize.x);
+//                 } else {
+//                     // Rounded rectangle shape
+//                     return RoundedRectSDF(compensatedUV, compensatedSize, cornerRadius);
+//                 }
+//             }
+            
+//             // Detect the actual aspect ratio of the quad using screen-space derivatives
+//             float2 getAspectRatioScale(float2 uv)
+//             {
+//                 // Use screen-space derivatives to detect how UV coordinates map to pixels
+//                 float2 dx = ddx(uv);
+//                 float2 dy = ddy(uv);
+                
+//                 // Calculate the aspect ratio based on how much UV space maps to screen space
+//                 float aspectRatioX = length(dx);
+//                 float aspectRatioY = length(dy);
+                
+//                 // Normalize so that the smaller dimension is 1.0
+//                 float maxAspect = max(aspectRatioX, aspectRatioY);
+//                 if (maxAspect > 0.0001) {
+//                     aspectRatioX /= maxAspect;
+//                     aspectRatioY /= maxAspect;
+//                 }
+                
+//                 return float2(aspectRatioX, aspectRatioY);
+//             }
+            
+//             // Apply aspect ratio compensation to thicknesses
+//             float2 compensateAspectRatio(float2 thickness, float2 aspectRatio)
+//             {
+//                 // For a 2:1 wide quad, aspectRatio.x will be smaller, so we need to compensate
+//                 // by reducing the thickness in the stretched dimension
+//                 return thickness * aspectRatio;
+//             }
+            
+//             // Get icon SDF using the main dispatcher
+//             float getIconSDF(int iconType, float2 uv, float size)
+//             {
+//                 return GetIconSDF(iconType, uv, size);
+//             }
+            
+//             // Use shared beveled SDF function from lighting.cginc
+            
+//             // Use shared normal calculation from lighting.cginc
+            
+//             fixed4 frag(v2f i) : SV_Target
+//             {
+//                 float2 uv = i.texcoord;
+                
+//                 // Antialiasing width - use a very small value to minimize gaps while keeping smooth edges
+//                 float aa = 0.001;
+                
+//                 // Detect the aspect ratio of the quad for proper compensation
+//                 float2 aspectRatio = getAspectRatioScale(uv);
+                
+//                 // Apply aspect ratio compensation to thicknesses for uniform visual appearance
+//                 float2 compensatedOutlineThickness = float2(_OutlineWidth, _OutlineWidth);
+//                 float2 compensatedLineThickness = float2(_LineWidth, _LineWidth);
+                
+//                 if (_ButtonShape == 1) { // Ellipse - needs dynamic correction factor for uniform thickness
+//                     // Calculate correction factor based on aspect ratio: 1.0 + (aspectRatio.y - aspectRatio.x) * 0.5
+//                     // This gives: 1:1=1.0, 2:1=1.5, 1:2=0.75 (exactly matching your data!)
+//                     float dynamicCorrectionFactor = 1.0 + (aspectRatio.y - aspectRatio.x) * 0.5;
+                    
+//                     compensatedOutlineThickness.x *= aspectRatio.x * dynamicCorrectionFactor;
+//                     compensatedOutlineThickness.y *= aspectRatio.y;
+//                     compensatedLineThickness.x *= aspectRatio.x * dynamicCorrectionFactor;
+//                     compensatedLineThickness.y *= aspectRatio.y;
+//                 } else { // Rounded rectangle - standard compensation
+//                     compensatedOutlineThickness.x *= aspectRatio.x; // For 2:1 wide: *= 0.5 (thinner on sides)
+//                     compensatedOutlineThickness.y *= aspectRatio.y; // For 2:1 wide: *= 1.0 (same on top/bottom)
+//                     compensatedLineThickness.x *= aspectRatio.x;
+//                     compensatedLineThickness.y *= aspectRatio.y;
+//                 }
+                
+//                 // Calculate per-dimension margins for uniform screen-space edge distance
+//                 float rawMargin = _OutlineWidth + _GlowWidth;
+                
+//                 // Apply aspect ratio compensation per dimension
+//                 // For 2:1 wide quad: aspectRatio = [0.5, 1.0]
+//                 // X margin: rawMargin * 0.5 (smaller UV margin for stretched dimension)
+//                 // Y margin: rawMargin * 1.0 (normal UV margin for unstretched dimension)
+//                 float2 margins;
+//                 margins.x = rawMargin * aspectRatio.x; // Compensate stretched dimension
+//                 margins.y = rawMargin * aspectRatio.y; // Keep unstretched dimension normal
+                
+//                 // The button fills most of the quad, leaving room for outline/glow
+//                 float2 buttonSize = float2(1.0 - margins.x, 1.0 - margins.y);
+//                 float buttonSDF = getButtonSDF(uv, buttonSize, _CornerRadius, aspectRatio);
+                
+//                 // The fill area should extend to the inner edge of the line (no gap)
+//                 float2 fillSize = buttonSize - compensatedLineThickness;
+                
+//                 // Ensure the fill area doesn't get too small
+//                 fillSize = max(fillSize, buttonSize * 0.1); // Minimum 10% of button size
+                
+//                 // Calculate inner corner radius that maintains rounded appearance
+//                 // Instead of subtracting thickness (which can go negative), scale the corner radius proportionally
+//                 float sizeReduction = min(compensatedLineThickness.x, compensatedLineThickness.y);
+//                 float innerCornerRadius = _CornerRadius * max(0.3, 1.0 - sizeReduction * 2.0); // Minimum 30% of original radius
+                
+//                 float fillSDF = getButtonSDF(uv, fillSize, innerCornerRadius, aspectRatio);
+                
+//                 // The outline extends outward from the button
+//                 float2 outlineSize = buttonSize + compensatedOutlineThickness * 2.0;
+//                 float outlineSDF = 1000.0; // Default to very far
+//                 if (_OutlineWidth > 0.001) {
+//                     outlineSDF = getButtonSDF(uv, outlineSize, _CornerRadius + _OutlineWidth, aspectRatio);
+//                 }
+                
+//                 // Create masks with minimal antialiasing to reduce gaps while keeping smooth edges
+//                 float buttonMask = smoothstep(aa, -aa, buttonSDF);
+//                 float fillMask = smoothstep(aa, -aa, fillSDF);
+//                 float outlineMask = smoothstep(aa, -aa, outlineSDF) - buttonMask;
+                
+//                 // Create proper layer masks
+//                 // Fill is the inner area (no gap)
+                
+//                 // Create line mask directly from line thickness for better reliability
+//                 float lineMask = 0.0;
+//                 if (_LineWidth > 0.001) {
+//                     // Line is the ring between button edge and fill edge
+//                     lineMask = buttonMask - fillMask;
+//                 }
+                
+//                 // Icon SDF and mask - compensate for aspect ratio stretching
+//                 float iconSDF = 1000.0; // Default to very far
+//                 float iconMask = 0.0;
+                
+//                 // Icon rendering
+//                 if (_UseIcon > 0.5) {
+//                     // Apply aspect ratio compensation to prevent icon stretching (opposite direction)
+//                     float2 iconUV = uv - _IconOffset;
+//                     iconUV.x /= (aspectRatio.x > 0.0001) ? aspectRatio.x : 1.0;
+//                     iconUV.y /= (aspectRatio.y > 0.0001) ? aspectRatio.y : 1.0;
+                    
+//                     // Compensate icon size to counteract the UV coordinate scaling
+//                     // Since we divided UV by aspect ratio, we need to multiply size by aspect ratio
+//                     float maxAspectDimension = max(aspectRatio.x, aspectRatio.y);
+//                     float iconSize = _IconSize * maxAspectDimension;
+                    
+//                     if (_IconType == 0) {
+//                         // Custom icon texture mode - direct rendering with gradient overlay
+                        
+//                         // Calculate the icon area on the button (in button UV space)
+//                         float2 iconAreaSize = float2(_IconSize, _IconSize); // Square icon area
+//                         float2 iconAreaCenter = _IconOffset; // Center of icon area
+                        
+//                         // Check if current UV is within the icon area
+//                         float2 iconAreaMin = iconAreaCenter - iconAreaSize * 0.5;
+//                         float2 iconAreaMax = iconAreaCenter + iconAreaSize * 0.5;
+                        
+//                         // If outside icon area, no icon here
+//                         if (uv.x < iconAreaMin.x || uv.x > iconAreaMax.x || 
+//                             uv.y < iconAreaMin.y || uv.y > iconAreaMax.y) {
+//                             iconMask = 0.0;
+//                             iconSDF = 1000.0; // Far away
+//                         } else {
+//                             // Convert button UV to texture UV using bounds
+//                             // Map the icon area on button to the texture bounds
+//                             float2 normalizedUV = (uv - iconAreaMin) / iconAreaSize; // [0,1] within icon area
+//                             float2 texUV = lerp(_CustomIconUVBounds.xy, _CustomIconUVBounds.zw, normalizedUV);
+                            
+//                             // Sample the texture at the calculated UV
+//                             float4 texColor = tex2D(_CustomIconTex, texUV);
+                            
+//                             // Set the icon color and mask
+//                             finalIconColor = texColor;
+//                             finalIconColor.a *= _IconAlpha;
+//                             iconMask = texColor.a;
+//                             iconSDF = -1000.0; // Always "inside" when in icon area
+//                         }
+//                     } else {
+//                         // Predefined icon mode (existing functionality)
+//                         iconSDF = getIconSDF(_IconType, iconUV, iconSize);
+//                         iconMask = smoothstep(aa, -aa, iconSDF);
+//                     }
+//                 }
+                
+//                 // "Unwrapped" UV for linear gradients
+//                 float2 unwrappedUV = uv / buttonSize;
+
+//                 fixed4 col = fixed4(0, 0, 0, 0);
+                
+
+
+//                 // 1. Render fill (inner button area)
+//                 if (fillMask > 0.01) {
+//                     float2 gradientUV = (_FillGradientType == 2) ? uv : unwrappedUV;
+                    
+//                     GradientParams fillParams;
+//                     fillParams.colorA = _FillGradientColorA;
+//                     fillParams.colorB = _FillGradientColorB;
+//                     fillParams.colorC = _FillGradientColorC;
+//                     fillParams.colorD = _FillGradientColorD;
+//                     fillParams.direction = _FillGradientDirection;
+//                     fillParams.speed = _FillGradientSpeed;
+//                     fillParams.manualPosition = 0;
+//                     fillParams.globalBlend = _FillGlobalBlend;
+//                     fillParams.globalIntensity = _FillGlobalIntensity;
+//                     fillParams.scale = _FillGradientScale;
+//                     fillParams.offset = _FillGradientOffset;
+                    
+//                     float4 fillColor = GetGradientColor(fillParams, _FillGradientType, gradientUV, i.screenPos, _Time.y);
+                    
+//                     // Apply 3D lighting to fill (uses fill area size and corner radius)
+//                     fillColor.rgb = apply3DLighting(fillColor.rgb, calculateFillNormal(uv, fillSize, fillSize, innerCornerRadius, aspectRatio, _ButtonShape, _BevelDepth));
+                    
+//                     // Add visual bevel indicator (subtle darkening at edges)
+//                     fillColor.rgb = applyVisualBevel(fillColor.rgb, uv, fillSize, aspectRatio);
+//                     fillColor.a *= _FillAlpha * fillMask;
+//                     col = fillColor;
+//                 }
+
+//                 // 2. Render line (ring around the fill)
+//                 if (lineMask > 0.001) { // Lower threshold for debugging
+//                     float2 gradientUV = (_LineGradientType == 2) ? uv : unwrappedUV;
+                    
+//                     GradientParams lineParams;
+//                     lineParams.colorA = _LineGradientColorA;
+//                     lineParams.colorB = _LineGradientColorB;
+//                     lineParams.colorC = _LineGradientColorC;
+//                     lineParams.colorD = _LineGradientColorD;
+//                     lineParams.direction = _LineGradientDirection;
+//                     lineParams.speed = _LineGradientSpeed;
+//                     lineParams.manualPosition = 0;
+//                     lineParams.globalBlend = _LineGlobalBlend;
+//                     lineParams.globalIntensity = _LineGlobalIntensity;
+//                     lineParams.scale = _LineGradientScale;
+//                     lineParams.offset = _LineGradientOffset;
+                    
+//                     float4 lineColor = GetGradientColor(lineParams, _LineGradientType, gradientUV, i.screenPos, _Time.y);
+                    
+//                     // Apply 3D lighting to line (NO bevel effect for line area)
+//                     lineColor.rgb = apply3DLighting(lineColor.rgb, calculateButtonNormal(uv, buttonSize, _CornerRadius, aspectRatio, _ButtonShape, 0.0));
+//                     lineColor.a *= _LineAlpha * lineMask;
+//                     col = lerp(col, lineColor, lineColor.a);
+//                 }
+
+//                 // 3. Render outline (ring around the line)
+//                 if (outlineMask > 0.01) {
+//                     float2 gradientUV = (_OutlineGradientType == 2) ? uv : unwrappedUV;
+                    
+//                     GradientParams outlineParams;
+//                     outlineParams.colorA = _OutlineGradientColorA;
+//                     outlineParams.colorB = _OutlineGradientColorB;
+//                     outlineParams.colorC = _OutlineGradientColorC;
+//                     outlineParams.colorD = _OutlineGradientColorD;
+//                     outlineParams.direction = _OutlineGradientDirection;
+//                     outlineParams.speed = _OutlineGradientSpeed;
+//                     outlineParams.manualPosition = 0;
+//                     outlineParams.globalBlend = _OutlineGlobalBlend;
+//                     outlineParams.globalIntensity = _OutlineGlobalIntensity;
+//                     outlineParams.scale = _OutlineGradientScale;
+//                     outlineParams.offset = _OutlineGradientOffset;
+                    
+//                     float4 outlineColor = GetGradientColor(outlineParams, _OutlineGradientType, gradientUV, i.screenPos, _Time.y);
+                    
+//                     // Apply 3D lighting to outline (NO bevel effect for outline area)
+//                     outlineColor.rgb = apply3DLighting(outlineColor.rgb, calculateButtonNormal(uv, outlineSize, _CornerRadius + _OutlineWidth, aspectRatio, _ButtonShape, 0.0));
+//                     outlineColor.a *= _OutlineAlpha * outlineMask;
+//                     col = lerp(col, outlineColor, outlineColor.a);
+//                 }
+
+//                 // 4. Render icon (on top of everything)
+//                 if (iconMask > 0.01) {
+//                     if (_IconType == 0) {
+//                         // Custom icon texture - render directly with gradient overlay
+//                         // Now that unwrappedUV is available, we can apply the gradient
+//                         float2 gradientUV = (_IconGradientType == 2) ? uv : unwrappedUV;
+                        
+//                         GradientParams iconParams;
+//                         iconParams.colorA = _IconGradientColorA;
+//                         iconParams.colorB = _IconGradientColorB;
+//                         iconParams.colorC = _IconGradientColorC;
+//                         iconParams.colorD = _IconGradientColorD;
+//                         iconParams.direction = _IconGradientDirection;
+//                         iconParams.speed = _IconGradientSpeed;
+//                         iconParams.manualPosition = 0;
+//                         iconParams.globalBlend = _IconGlobalBlend;
+//                         iconParams.globalIntensity = _IconGlobalIntensity;
+//                         iconParams.scale = _IconGradientScale;
+//                         iconParams.offset = _IconGradientOffset;
+                        
+//                         float4 gradientColor = GetGradientColor(iconParams, _IconGradientType, gradientUV, i.screenPos, _Time.y);
+                        
+//                         // Apply gradient overlay to the texture color
+//                         float4 finalCustomIconColor = finalIconColor * gradientColor;
+//                         finalCustomIconColor.a *= iconMask;
+                        
+//                         col = lerp(col, finalCustomIconColor, finalCustomIconColor.a);
+//                     } else {
+//                         // Predefined icon - use existing gradient system
+//                         float2 gradientUV = (_IconGradientType == 2) ? uv : unwrappedUV;
+                        
+//                         GradientParams iconParams;
+//                         iconParams.colorA = _IconGradientColorA;
+//                         iconParams.colorB = _IconGradientColorB;
+//                         iconParams.colorC = _IconGradientColorC;
+//                         iconParams.colorD = _IconGradientColorD;
+//                         iconParams.direction = _IconGradientDirection;
+//                         iconParams.speed = _IconGradientSpeed;
+//                         iconParams.manualPosition = 0;
+//                         iconParams.globalBlend = _IconGlobalBlend;
+//                         iconParams.globalIntensity = _IconGlobalIntensity;
+//                         iconParams.scale = _IconGradientScale;
+//                         iconParams.offset = _IconGradientOffset;
+                        
+//                         float4 iconColor = GetGradientColor(iconParams, _IconGradientType, gradientUV, i.screenPos, _Time.y);
+//                         iconColor.a *= _IconAlpha * iconMask;
+//                         col = lerp(col, iconColor, iconColor.a);
+//                     }
+//                 }
+                
+//                 // Apply Unity UI clipping
+//                 col.a *= UnityGet2DClipping(i.worldPos.xy, _ClipRect);
+                
+//                 return col;
+//             } 
+
+//             ENDCG
+//         }
+
+//         Pass
+//         {
+//             Name "AdditiveGlow"
+//             Blend One One
+//             CGPROGRAM
+//             #pragma vertex vert
+//             #pragma fragment frag
+//             #include "UnityCG.cginc"
+//             #include "UnityUI.cginc"
+//             #include "./CG/Core/UIGradients.cginc"
+//             #include "./CG/SDF/SDFPrimitives.cginc"
+//             #include "./CG/SDF/Icons/SDFIcons.cginc"
+
+//             struct appdata_t
+//             {
+//                 float4 vertex : POSITION;
+//                 float4 color : COLOR;
+//                 float2 texcoord : TEXCOORD0;
+//             };
+
+//             struct v2f
+//             {
+//                 float4 vertex : SV_POSITION;
+//                 float2 texcoord : TEXCOORD0;
+//                 float4 screenPos : TEXCOORD1;
+//                 float4 worldPos : TEXCOORD2;
+//             };
+
+//             // Glow gradient
+//             float4 _GlowGradientColorA, _GlowGradientColorB, _GlowGradientColorC, _GlowGradientColorD;
+//             float2 _GlowGradientDirection; 
+//             float _GlowGradientSpeed, _GlowGradientScale, _GlowGradientOffset;
+//             float _GlowGlobalBlend, _GlowGlobalIntensity;
+//             int _GlowGradientType;
+//             float _GlowWidth, _GlowIntensity;
+//             float _GlowAlpha;
+
+//             // Button parameters needed for glow calculation
+//             float _LineWidth, _OutlineWidth, _CornerRadius;
+//             int _ButtonShape;
+//             float _EllipseCorrectionFactor;
+            
+//             // Custom icon texture (needed for glow pass)
+//             float _UseIcon;
+//             int _IconType;
+//             float _IconSize;
+//             float2 _IconOffset;
+//             sampler2D _CustomIconTex;
+//             float4 _CustomIconUVBounds;
+            
+//             float4 _ClipRect;
+
+//             v2f vert(appdata_t v)
+//             {
+//                 v2f o;
+//                 o.vertex = UnityObjectToClipPos(v.vertex);
+//                 o.texcoord = v.texcoord * 2.0 - 1.0; // [-1,1] range
+//                 o.screenPos = ComputeScreenPos(o.vertex);
+//                 o.worldPos = v.vertex;
+//                 return o;
+//             }
+            
+//             // Get button SDF based on shape type with proper aspect ratio handling (same as main pass)
+//             float getButtonSDF(float2 uv, float2 size, float cornerRadius, float2 aspectRatio)
+//             {
+//                 // Apply the same compensation logic for both shapes for consistent behavior
+//                 float2 compensatedUV = uv;
+//                 compensatedUV.x /= (aspectRatio.x > 0.0001) ? aspectRatio.x : 1.0;
+//                 compensatedUV.y /= (aspectRatio.y > 0.0001) ? aspectRatio.y : 1.0;
+                
+//                 float2 compensatedSize = size;
+//                 compensatedSize.x /= (aspectRatio.x > 0.0001) ? aspectRatio.x : 1.0;
+//                 compensatedSize.y /= (aspectRatio.y > 0.0001) ? aspectRatio.y : 1.0;
+                
+//                 if (_ButtonShape == 1) {
+//                     // Ellipse shape - use same compensation as rounded rect
+//                     return EllipseSDF(compensatedUV, compensatedSize);
+//                 } else if (_ButtonShape == 2) {
+//                     // Circle shape
+//                     return CircleSDF(compensatedUV, compensatedSize.x);
+//                 } else {
+//                     // Rounded rectangle shape
+//                     return RoundedRectSDF(compensatedUV, compensatedSize, cornerRadius);
+//                 }
+//             }
+            
+//             // Detect the actual aspect ratio of the quad using screen-space derivatives (same as main pass)
+//             float2 getAspectRatioScale(float2 uv)
+//             {
+//                 // Use screen-space derivatives to detect how UV coordinates map to pixels
+//                 float2 dx = ddx(uv);
+//                 float2 dy = ddy(uv);
+                
+//                 // Calculate the aspect ratio based on how much UV space maps to screen space
+//                 float aspectRatioX = length(dx);
+//                 float aspectRatioY = length(dy);
+                
+//                 // Normalize so that the smaller dimension is 1.0
+//                 float maxAspect = max(aspectRatioX, aspectRatioY);
+//                 if (maxAspect > 0.0001) {
+//                     aspectRatioX /= maxAspect;
+//                     aspectRatioY /= maxAspect;
+//                 }
+                
+//                 return float2(aspectRatioX, aspectRatioY);
+//             }
+
+//             // Get distance from the button geometry for glow calculation
+//             float getButtonGeometryDistance(float2 uv)
+//             {
+//                 // Detect the aspect ratio for proper compensation (same as main pass)
+//                 float2 aspectRatio = getAspectRatioScale(uv);
+                
+//                 // Apply aspect ratio compensation to thicknesses for uniform visual appearance (same as main pass)
+//                 float2 compensatedOutlineThickness = float2(_OutlineWidth, _OutlineWidth);
+                
+//                 if (_ButtonShape == 1) { // Ellipse - needs dynamic correction factor for uniform thickness (same as main pass)
+//                     // Calculate correction factor based on aspect ratio: 1.0 + (aspectRatio.y - aspectRatio.x) * 0.5
+//                     // This gives: 1.0 + (aspectRatio.y - aspectRatio.x) * 0.5
+//                     float dynamicCorrectionFactor = 1.0 + (aspectRatio.y - aspectRatio.x) * 0.5;
+                    
+//                     compensatedOutlineThickness.x *= aspectRatio.x * dynamicCorrectionFactor;
+//                     compensatedOutlineThickness.y *= aspectRatio.y;
+//                 } else { // Rounded rectangle - standard compensation
+//                     compensatedOutlineThickness.x *= aspectRatio.x; // For 2:1 wide: *= 0.5 (thinner on sides)
+//                     compensatedOutlineThickness.y *= aspectRatio.y; // For 2:1 wide: *= 1.0 (same on top/bottom)
+//                 }
+                
+//                 // Calculate per-dimension margins for uniform screen-space edge distance (same as main pass)
+//                 float rawMargin = _OutlineWidth + _GlowWidth;
+                
+//                 // Apply aspect ratio compensation per dimension
+//                 // For 2:1 wide quad: aspectRatio = [0.5, 1.0]
+//                 // X margin: rawMargin * 0.5 (smaller UV margin for stretched dimension)
+//                 // Y margin: rawMargin * 1.0 (normal UV margin for unstretched dimension)
+//                 float2 margins;
+//                 margins.x = rawMargin * aspectRatio.x; // Compensate stretched dimension
+//                 margins.y = rawMargin * aspectRatio.y; // Keep unstretched dimension normal
+                
+//                 // Calculate the same button dimensions as the main pass
+//                 float2 buttonSize = float2(1.0 - margins.x, 1.0 - margins.y);
+                
+//                 // The outline extends outward from the button
+//                 float2 outlineSize = buttonSize + compensatedOutlineThickness * 2.0;
+                
+//                 // Get the distance from the outline edge (this is where glow starts)
+//                 float outlineSDF = getButtonSDF(uv, outlineSize, _CornerRadius + _OutlineWidth, aspectRatio);
+                
+//                 // Return the distance from the outline edge
+//                 // Positive = outside the outline (glow area)
+//                 // Negative = inside the outline (no glow)
+//                 return outlineSDF;
+//             }
+
+//             fixed4 frag(v2f i) : SV_Target
+//             {
+//                 float2 uv = i.texcoord;
+                
+//                 // Get distance from the button outline edge
+//                 float geomDistance = getButtonGeometryDistance(uv);
+                
+//                 // Only apply glow outside the outline (positive distances)
+//                 if (geomDistance <= 0.0) {
+//                     return fixed4(0, 0, 0, 0); // No glow inside the outline
+//                 }
+                
+//                 // Calculate glow falloff: full intensity at outline edge (distance = 0), zero at glow width
+//                 float normalizedDistance = geomDistance / _GlowWidth;
+//                 float glowFalloff = 1.0 - saturate(normalizedDistance);
+                
+//                 // Apply smooth falloff curve for more natural glow
+//                 glowFalloff = pow(glowFalloff, 1.5); // Slightly softer than quadratic
+                
+//                 // Antialiasing for smooth edges
+//                 float aa = fwidth(geomDistance) * 0.75;
+//                 float glowMask = smoothstep(0.0, aa, glowFalloff);
+                
+//                 GradientParams glowParams;
+//                 glowParams.colorA = _GlowGradientColorA;
+//                 glowParams.colorB = _GlowGradientColorB;
+//                 glowParams.colorC = _GlowGradientColorC;
+//                 glowParams.colorD = _GlowGradientColorD;
+//                 glowParams.direction = _GlowGradientDirection;
+//                 glowParams.speed = _GlowGradientSpeed;
+//                 glowParams.manualPosition = 0;
+//                 glowParams.globalBlend = _GlowGlobalBlend;
+//                 glowParams.globalIntensity = _GlowGlobalIntensity;
+//                 glowParams.scale = _GlowGradientScale;
+//                 glowParams.offset = _GlowGradientOffset;
+                
+//                 float4 glowColor = GetGradientColor(glowParams, _GlowGradientType, uv, i.screenPos, _Time.y);
+                
+//                 // For additive glow: apply falloff directly to RGB, keep alpha constant for blending
+//                 glowColor.rgb *= glowFalloff * _GlowIntensity * _GlowAlpha;
+//                 glowColor.a = _GlowAlpha; // Keep alpha constant for proper additive blending
+
+//                 glowColor.a *= UnityGet2DClipping(i.worldPos.xy, _ClipRect);
+
+//                 return glowColor;
+//             }
+//             ENDCG
+//         }
+//     }
+//     FallBack "UI/Default"
+// }

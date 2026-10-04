@@ -1,0 +1,546 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SDFKnob
+  m_Shader: {fileID: 4800000, guid: 77f31a16e9f9f264599907a1e2eaa3f0, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AngleRange: 220
+    - _AngleStart: 0
+    - _BorderEnabled: 0
+    - _BorderGlobalBlend: 0
+    - _BorderGlobalIntensity: 1
+    - _BorderGradientOffset: 0
+    - _BorderGradientScale: 1
+    - _BorderGradientSpeed: 1
+    - _BorderGradientType: 0
+    - _BorderIntensity: 1
+    - _BorderRenderAlpha: 0.107
+    - _BorderRenderEmissive: 0.273
+    - _BorderSoftness: 0.021
+    - _BorderWidth: 0.0039
+    - _ColorMask: 15
+    - _EdgeEnabled: 1
+    - _EdgeGlobalBlend: 0
+    - _EdgeGlobalIntensity: 1
+    - _EdgeGradientOffset: 0
+    - _EdgeGradientScale: 1
+    - _EdgeGradientSpeed: 1
+    - _EdgeGradientType: 0
+    - _EdgeIntensity: 1
+    - _EdgeRenderAlpha: 1
+    - _EdgeRenderEmissive: 0
+    - _EdgeSoftness: 0.206
+    - _EdgeWidth: 0.045
+    - _FillBevelDepth: 0.2
+    - _FillBevelDistance: 0.1
+    - _FillBevelEnabled: 0
+    - _FillBevelGradientEnabled: 0
+    - _FillBevelGradientOffset: 0
+    - _FillBevelGradientScale: 1
+    - _FillBevelGradientSpeed: 1
+    - _FillBevelGradientType: 1
+    - _FillBevelPatternContrast: 1.5
+    - _FillBevelPatternEnabled: 0
+    - _FillBevelPatternIntensity: 0.3
+    - _FillBevelPatternRoughnessEffect: 0.3
+    - _FillBevelPatternScale: 20
+    - _FillBevelPatternSpecularEffect: 1
+    - _FillBevelPatternType: 1
+    - _FillBevelSmoothness: 0.02
+    - _FillEnabled: 1
+    - _FillFaceSmoothness: 0
+    - _FillGlobalBlend: 0
+    - _FillGlobalIntensity: 1
+    - _FillGradientOffset: 0
+    - _FillGradientScale: 1
+    - _FillGradientSpeed: 1
+    - _FillGradientType: 0
+    - _FillPatternContrast: 1.5
+    - _FillPatternIntensity: 0.3
+    - _FillPatternModAmount: 20
+    - _FillPatternModEnabled: 0
+    - _FillPatternModFrequency: 1
+    - _FillPatternOffset: 0
+    - _FillPatternRotateEnabled: 0
+    - _FillPatternRoughnessEffect: 0.3
+    - _FillPatternScale: 20
+    - _FillPatternSpecularEffect: 1
+    - _FillPatternType: 1
+    - _FillRenderAlpha: 1
+    - _FillRenderEmissive: 0
+    - _FillRimBevelDepth: 0.1
+    - _FillRimBevelEnabled: 0
+    - _FillRimBevelSmoothness: 0.01
+    - _FillRimBevelWidth: 0.02
+    - _KnobBevelDepth: 0.1
+    - _KnobBevelDistance: 0.1
+    - _KnobBevelEnabled: 0
+    - _KnobBevelGradientEnabled: 0
+    - _KnobBevelGradientOffset: 0
+    - _KnobBevelGradientScale: 1
+    - _KnobBevelGradientSpeed: 1
+    - _KnobBevelGradientType: 1
+    - _KnobBevelPatternContrast: 1.5
+    - _KnobBevelPatternEnabled: 0
+    - _KnobBevelPatternIntensity: 0.3
+    - _KnobBevelPatternRoughnessEffect: 0.3
+    - _KnobBevelPatternScale: 20
+    - _KnobBevelPatternSpecularEffect: 1
+    - _KnobBevelPatternType: 1
+    - _KnobBevelShadowBlur: 0.02
+    - _KnobBevelShadowBlurFactor: 2
+    - _KnobBevelShadowEnabled: 0
+    - _KnobBevelShadowIntensity: 0.3
+    - _KnobBevelSmoothness: 0.02
+    - _KnobEnabled: 1
+    - _KnobFaceSmoothness: 0
+    - _KnobGlobalBlend: 0
+    - _KnobGlobalIntensity: 1
+    - _KnobGradientOffset: 0
+    - _KnobGradientScale: 1
+    - _KnobGradientSpeed: 1
+    - _KnobGradientType: 0
+    - _KnobPatternContrast: 1.5
+    - _KnobPatternIntensity: 0.3
+    - _KnobPatternModAmount: 20
+    - _KnobPatternModEnabled: 0
+    - _KnobPatternModFrequency: 1
+    - _KnobPatternOffset: 0
+    - _KnobPatternRotateEnabled: 1
+    - _KnobPatternRoughnessEffect: 0.47
+    - _KnobPatternScale: 72.6
+    - _KnobPatternSpecularEffect: 1
+    - _KnobPatternType: 2
+    - _KnobRenderAlpha: 1
+    - _KnobRenderEmissive: 0
+    - _KnobRimBevelDepth: -0.2
+    - _KnobRimBevelEnabled: 0
+    - _KnobRimBevelSmoothness: 0.01
+    - _KnobRimBevelWidth: 0.034
+    - _KnobShadow1Blur: 0.01
+    - _KnobShadow1BlurFactor: 2
+    - _KnobShadow1Distance: 0.02
+    - _KnobShadow1Enabled: 0
+    - _KnobShadow1Intensity: 1.2
+    - _KnobShadow2Blur: 0.02
+    - _KnobShadow2BlurFactor: 2
+    - _KnobShadow2Distance: 0.03
+    - _KnobShadow2Enabled: 0
+    - _KnobShadow2Intensity: 0.8
+    - _KnobShadow3Blur: 0.03
+    - _KnobShadow3BlurFactor: 2
+    - _KnobShadow3Distance: 0.04
+    - _KnobShadow3Enabled: 0
+    - _KnobShadow3Intensity: 0.6
+    - _KnobShapeScale: 6
+    - _KnobShapeType: 0
+    - _KnobSize: 0.8
+    - _LightingAmbient: 1
+    - _LightingLight1Enabled: 0
+    - _LightingLight1Intensity: 1
+    - _LightingLight1Specular: 2
+    - _LightingLight1SpecularPower: 100
+    - _LightingLight2Enabled: 0
+    - _LightingLight2Intensity: 0.5
+    - _LightingLight2Specular: 0.5
+    - _LightingLight2SpecularPower: 50
+    - _LightingLight3Enabled: 0
+    - _LightingLight3Intensity: 0.3
+    - _LightingLight3Specular: 0.3
+    - _LightingLight3SpecularPower: 30
+    - _LightingShadow1Blur: 0.02
+    - _LightingShadow1BlurFactor: 2
+    - _LightingShadow1Distance: 0.1
+    - _LightingShadow1Enabled: 0
+    - _LightingShadow1Intensity: 1
+    - _LightingShadow2Blur: 0.03
+    - _LightingShadow2BlurFactor: 2
+    - _LightingShadow2Distance: 0.12
+    - _LightingShadow2Enabled: 0
+    - _LightingShadow2Intensity: 0.8
+    - _LightingShadow3Blur: 0.04
+    - _LightingShadow3BlurFactor: 2
+    - _LightingShadow3Distance: 0.15
+    - _LightingShadow3Enabled: 0
+    - _LightingShadow3Intensity: 0.6
+    - _LineBevelDepth: 0.05
+    - _LineBevelDistance: 0.1
+    - _LineBevelEnabled: 0
+    - _LineBevelGradientEnabled: 0
+    - _LineBevelGradientOffset: 0
+    - _LineBevelGradientScale: 1
+    - _LineBevelGradientSpeed: 1
+    - _LineBevelGradientType: 1
+    - _LineBevelPatternContrast: 1.5
+    - _LineBevelPatternEnabled: 0
+    - _LineBevelPatternIntensity: 0.3
+    - _LineBevelPatternRoughnessEffect: 0.3
+    - _LineBevelPatternScale: 20
+    - _LineBevelPatternSpecularEffect: 1
+    - _LineBevelPatternType: 1
+    - _LineBevelSmoothness: 0.02
+    - _LineEnabled: 1
+    - _LineFaceSmoothness: 0
+    - _LineGlobalBlend: 0
+    - _LineGlobalIntensity: 1
+    - _LineGradientOffset: 0
+    - _LineGradientScale: 1
+    - _LineGradientSpeed: 1
+    - _LineGradientType: 0
+    - _LinePatternContrast: 1.5
+    - _LinePatternIntensity: 0.3
+    - _LinePatternModAmount: 20
+    - _LinePatternModEnabled: 0
+    - _LinePatternModFrequency: 1
+    - _LinePatternOffset: 0
+    - _LinePatternRotateEnabled: 0
+    - _LinePatternRoughnessEffect: 0.3
+    - _LinePatternScale: 20
+    - _LinePatternSpecularEffect: 1
+    - _LinePatternType: 1
+    - _LineRadius: 0.3
+    - _LineRenderAlpha: 1
+    - _LineRenderEmissive: 0
+    - _LineRimBevelDepth: 0.1
+    - _LineRimBevelEnabled: 0
+    - _LineRimBevelSmoothness: 0.01
+    - _LineRimBevelWidth: 0.02
+    - _LineRoundedEnabled: 1
+    - _LineSublineFilledBevelDepth: 0.03
+    - _LineSublineFilledBevelDistance: 0.1
+    - _LineSublineFilledBevelEnabled: 0
+    - _LineSublineFilledBevelGradientEnabled: 0
+    - _LineSublineFilledBevelGradientOffset: 0
+    - _LineSublineFilledBevelGradientScale: 1
+    - _LineSublineFilledBevelGradientSpeed: 1
+    - _LineSublineFilledBevelGradientType: 1
+    - _LineSublineFilledBevelPatternContrast: 1.5
+    - _LineSublineFilledBevelPatternEnabled: 0
+    - _LineSublineFilledBevelPatternIntensity: 0.3
+    - _LineSublineFilledBevelPatternRoughnessEffect: 0.3
+    - _LineSublineFilledBevelPatternScale: 20
+    - _LineSublineFilledBevelPatternSpecularEffect: 1
+    - _LineSublineFilledBevelPatternType: 1
+    - _LineSublineFilledBevelSmoothness: 0.02
+    - _LineSublineFilledEnabled: 1
+    - _LineSublineFilledFaceSmoothness: 0
+    - _LineSublineFilledGlobalBlend: 0
+    - _LineSublineFilledGlobalIntensity: 1
+    - _LineSublineFilledGradientOffset: 0
+    - _LineSublineFilledGradientScale: 1
+    - _LineSublineFilledGradientSpeed: 1
+    - _LineSublineFilledGradientType: 0
+    - _LineSublineFilledPatternContrast: 1.5
+    - _LineSublineFilledPatternIntensity: 0.3
+    - _LineSublineFilledPatternModAmount: 20
+    - _LineSublineFilledPatternModEnabled: 0
+    - _LineSublineFilledPatternModFrequency: 1
+    - _LineSublineFilledPatternOffset: 0
+    - _LineSublineFilledPatternRotateEnabled: 0
+    - _LineSublineFilledPatternRoughnessEffect: 0.3
+    - _LineSublineFilledPatternScale: 20
+    - _LineSublineFilledPatternSpecularEffect: 0.5
+    - _LineSublineFilledPatternType: 0
+    - _LineSublineFilledRenderAlpha: 1
+    - _LineSublineFilledRenderEmissive: 0
+    - _LineSublineFilledRimBevelDepth: 0.1
+    - _LineSublineFilledRimBevelEnabled: 0
+    - _LineSublineFilledRimBevelSmoothness: 0.01
+    - _LineSublineFilledRimBevelWidth: 0.02
+    - _LineSublineGlowEnabled: 0
+    - _LineSublineGlowIntensity: 1
+    - _LineSublineGlowRenderAlpha: 1
+    - _LineSublineGlowRenderEmissive: 0
+    - _LineSublineGlowSoftness: 0.05
+    - _LineSublineGlowWidth: 0.02
+    - _LineSublineThickness: 0.5
+    - _LineSublineUnfilledBevelDepth: 0.02
+    - _LineSublineUnfilledBevelDistance: 0.1
+    - _LineSublineUnfilledBevelEnabled: 0
+    - _LineSublineUnfilledBevelGradientEnabled: 0
+    - _LineSublineUnfilledBevelGradientOffset: 0
+    - _LineSublineUnfilledBevelGradientScale: 1
+    - _LineSublineUnfilledBevelGradientSpeed: 1
+    - _LineSublineUnfilledBevelGradientType: 1
+    - _LineSublineUnfilledBevelPatternContrast: 1.5
+    - _LineSublineUnfilledBevelPatternEnabled: 0
+    - _LineSublineUnfilledBevelPatternIntensity: 0.3
+    - _LineSublineUnfilledBevelPatternRoughnessEffect: 0.3
+    - _LineSublineUnfilledBevelPatternScale: 20
+    - _LineSublineUnfilledBevelPatternSpecularEffect: 1
+    - _LineSublineUnfilledBevelPatternType: 1
+    - _LineSublineUnfilledBevelSmoothness: 0.02
+    - _LineSublineUnfilledEnabled: 1
+    - _LineSublineUnfilledFaceSmoothness: 0
+    - _LineSublineUnfilledGlobalBlend: 0
+    - _LineSublineUnfilledGlobalIntensity: 1
+    - _LineSublineUnfilledGradientOffset: 0
+    - _LineSublineUnfilledGradientScale: 1
+    - _LineSublineUnfilledGradientSpeed: 1
+    - _LineSublineUnfilledGradientType: 0
+    - _LineSublineUnfilledPatternContrast: 1.5
+    - _LineSublineUnfilledPatternIntensity: 0.3
+    - _LineSublineUnfilledPatternModAmount: 20
+    - _LineSublineUnfilledPatternModEnabled: 0
+    - _LineSublineUnfilledPatternModFrequency: 1
+    - _LineSublineUnfilledPatternOffset: 0
+    - _LineSublineUnfilledPatternRotateEnabled: 0
+    - _LineSublineUnfilledPatternRoughnessEffect: 0.3
+    - _LineSublineUnfilledPatternScale: 20
+    - _LineSublineUnfilledPatternSpecularEffect: 0.5
+    - _LineSublineUnfilledPatternType: 0
+    - _LineSublineUnfilledRenderAlpha: 0.584
+    - _LineSublineUnfilledRenderEmissive: 0
+    - _LineSublineUnfilledRimBevelDepth: 0.1
+    - _LineSublineUnfilledRimBevelEnabled: 0
+    - _LineSublineUnfilledRimBevelSmoothness: 0.01
+    - _LineSublineUnfilledRimBevelWidth: 0.02
+    - _LineWidth: 0.1
+    - _NubBevelDepth: 0.02
+    - _NubBevelDistance: 0.02
+    - _NubBevelEnabled: 0
+    - _NubBevelGradientEnabled: 0
+    - _NubBevelGradientOffset: 0
+    - _NubBevelGradientScale: 1
+    - _NubBevelGradientSpeed: 1
+    - _NubBevelGradientType: 1
+    - _NubBevelPatternContrast: 1.5
+    - _NubBevelPatternEnabled: 0
+    - _NubBevelPatternIntensity: 0.3
+    - _NubBevelPatternRoughnessEffect: 0.3
+    - _NubBevelPatternScale: 20
+    - _NubBevelPatternSpecularEffect: 1
+    - _NubBevelPatternType: 1
+    - _NubBevelSmoothness: 0.5
+    - _NubDistance: 0.086
+    - _NubEnabled: 1
+    - _NubFaceSmoothness: 0
+    - _NubGlobalBlend: 0
+    - _NubGlobalIntensity: 1
+    - _NubGradientOffset: 0
+    - _NubGradientScale: 1
+    - _NubGradientSpeed: 1
+    - _NubGradientType: 0
+    - _NubPatternContrast: 1
+    - _NubPatternIntensity: 1
+    - _NubPatternModAmount: 20
+    - _NubPatternModEnabled: 0
+    - _NubPatternModFrequency: 1
+    - _NubPatternOffset: 0
+    - _NubPatternRotateEnabled: 1
+    - _NubPatternRoughnessEffect: 0.5
+    - _NubPatternScale: 1
+    - _NubPatternSpecularEffect: 0.5
+    - _NubPatternType: 0
+    - _NubRenderAlpha: 1
+    - _NubRenderEmissive: 0
+    - _NubRimBevelDepth: 0.1
+    - _NubRimBevelEnabled: 0
+    - _NubRimBevelSmoothness: 0.01
+    - _NubRimBevelWidth: 0.02
+    - _NubRounding: 0.01
+    - _NubShapeType: 1.37
+    - _NubSizeHeight: 0.07
+    - _NubSizeWidth: 0.29
+    - _OuterMarksAngleRange: 220
+    - _OuterMarksAngleStart: 0
+    - _OuterMarksArcGapSize: 0.02
+    - _OuterMarksArcThickness: 0.08
+    - _OuterMarksCount: 11
+    - _OuterMarksEnabled: 1
+    - _OuterMarksLength: 0.051
+    - _OuterMarksMajorEnabled: 1
+    - _OuterMarksMajorInterval: 5
+    - _OuterMarksMajorLengthMultiplier: 1.75
+    - _OuterMarksMajorThicknessMultiplier: 1.72
+    - _OuterMarksRadius: 1.382
+    - _OuterMarksRenderAlpha: 1
+    - _OuterMarksRenderEmissive: 0
+    - _OuterMarksRounding: 1
+    - _OuterMarksThickness: 0.0328
+    - _OuterMarksType: 0
+    - _OuterRing1AngleRange: 360
+    - _OuterRing1AngleStart: 0
+    - _OuterRing1Enabled: 0
+    - _OuterRing1Radius: 1.1
+    - _OuterRing1RenderAlpha: 1
+    - _OuterRing1RenderEmissive: 0
+    - _OuterRing1Style: 0
+    - _OuterRing1Thickness: 0.02
+    - _OuterRing2AngleRange: 360
+    - _OuterRing2AngleStart: 0
+    - _OuterRing2Enabled: 0
+    - _OuterRing2Radius: 1.15
+    - _OuterRing2RenderAlpha: 1
+    - _OuterRing2RenderEmissive: 0
+    - _OuterRing2Style: 0
+    - _OuterRing2Thickness: 0.02
+    - _OuterRing3AngleRange: 360
+    - _OuterRing3AngleStart: 0
+    - _OuterRing3Enabled: 0
+    - _OuterRing3Radius: 1.2
+    - _OuterRing3RenderAlpha: 1
+    - _OuterRing3RenderEmissive: 0
+    - _OuterRing3Style: 0
+    - _OuterRing3Thickness: 0.02
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _TextAlignment: 1
+    - _TextAngleRange: 330
+    - _TextAngleStart: 0
+    - _TextCount: 12
+    - _TextEnabled: 0
+    - _TextFollowAngle: 0
+    - _TextForceUpright: 1
+    - _TextId0: 0
+    - _TextId1: 1
+    - _TextId10: 10
+    - _TextId11: 11
+    - _TextId12: 12
+    - _TextId13: 13
+    - _TextId14: 14
+    - _TextId15: 15
+    - _TextId2: 2
+    - _TextId3: 3
+    - _TextId4: 4
+    - _TextId5: 5
+    - _TextId6: 6
+    - _TextId7: 7
+    - _TextId8: 8
+    - _TextId9: 9
+    - _TextRadius: 180
+    - _TextRotateWithKnob: 0
+    - _TextSize: 16
+    - _Value: 0.5866663
+    m_Colors:
+    - _BorderColor: {r: 0.975069, g: 0.99215686, b: 0.007843125, a: 1}
+    - _BorderGradientColorA: {r: 1, g: 0, b: 0, a: 1}
+    - _BorderGradientColorB: {r: 0, g: 1, b: 0, a: 1}
+    - _BorderGradientColorC: {r: 0, g: 0, b: 1, a: 1}
+    - _BorderGradientColorD: {r: 1, g: 1, b: 0, a: 1}
+    - _BorderGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _EdgeColor: {r: 0, g: 0, b: 0, a: 0.8}
+    - _EdgeGradientColorA: {r: 1, g: 0, b: 0, a: 1}
+    - _EdgeGradientColorB: {r: 0, g: 1, b: 0, a: 1}
+    - _EdgeGradientColorC: {r: 0, g: 0, b: 1, a: 1}
+    - _EdgeGradientColorD: {r: 1, g: 1, b: 0, a: 1}
+    - _EdgeGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _FillBevelGradientColorA: {r: 1, g: 1, b: 1, a: 1}
+    - _FillBevelGradientColorB: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _FillBevelGradientColorC: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+    - _FillBevelGradientColorD: {r: 0.1, g: 0.1, b: 0.1, a: 1}
+    - _FillBevelGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _FillColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FillGradientColorA: {r: 1, g: 0, b: 0, a: 1}
+    - _FillGradientColorB: {r: 0, g: 1, b: 0, a: 1}
+    - _FillGradientColorC: {r: 0, g: 0, b: 1, a: 1}
+    - _FillGradientColorD: {r: 1, g: 1, b: 0, a: 1}
+    - _FillGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _KnobBevelGradientColorA: {r: 1, g: 1, b: 1, a: 1}
+    - _KnobBevelGradientColorB: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _KnobBevelGradientColorC: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+    - _KnobBevelGradientColorD: {r: 0.1, g: 0.1, b: 0.1, a: 1}
+    - _KnobBevelGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _KnobBevelShadowColor: {r: 0, g: 0, b: 0, a: 0.2}
+    - _KnobColor: {r: 0.29559743, g: 0.27421772, b: 0.27421772, a: 1}
+    - _KnobGradientColorA: {r: 1, g: 0, b: 0, a: 1}
+    - _KnobGradientColorB: {r: 0, g: 1, b: 0, a: 1}
+    - _KnobGradientColorC: {r: 0, g: 0, b: 1, a: 1}
+    - _KnobGradientColorD: {r: 1, g: 1, b: 0, a: 1}
+    - _KnobGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _KnobShadow1Color: {r: 0, g: 0, b: 0, a: 0.6}
+    - _KnobShadow2Color: {r: 0, g: 0, b: 0, a: 0.4}
+    - _KnobShadow3Color: {r: 0, g: 0, b: 0, a: 0.3}
+    - _LightingLight1Color: {r: 1, g: 1, b: 0.9, a: 1}
+    - _LightingLight1Direction: {r: -0.2, g: 0.2, b: 1, a: 0}
+    - _LightingLight2Color: {r: 0.9, g: 0.9, b: 1, a: 1}
+    - _LightingLight2Direction: {r: 0.2, g: -0.2, b: 1, a: 0}
+    - _LightingLight3Color: {r: 1, g: 1, b: 1, a: 1}
+    - _LightingLight3Direction: {r: 0, g: 0, b: 1, a: 0}
+    - _LightingShadow1Color: {r: 0, g: 0, b: 0, a: 0.5}
+    - _LightingShadow2Color: {r: 0, g: 0, b: 0, a: 0.3}
+    - _LightingShadow3Color: {r: 0, g: 0, b: 0, a: 0.2}
+    - _LineBevelGradientColorA: {r: 1, g: 1, b: 1, a: 1}
+    - _LineBevelGradientColorB: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _LineBevelGradientColorC: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+    - _LineBevelGradientColorD: {r: 0.1, g: 0.1, b: 0.1, a: 1}
+    - _LineBevelGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _LineColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+    - _LineGradientColorA: {r: 1, g: 0, b: 0, a: 1}
+    - _LineGradientColorB: {r: 0, g: 1, b: 0, a: 1}
+    - _LineGradientColorC: {r: 0, g: 0, b: 1, a: 1}
+    - _LineGradientColorD: {r: 1, g: 1, b: 0, a: 1}
+    - _LineGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _LineSublineFilledBevelGradientColorA: {r: 1, g: 1, b: 1, a: 1}
+    - _LineSublineFilledBevelGradientColorB: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _LineSublineFilledBevelGradientColorC: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+    - _LineSublineFilledBevelGradientColorD: {r: 0.1, g: 0.1, b: 0.1, a: 1}
+    - _LineSublineFilledBevelGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _LineSublineFilledColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+    - _LineSublineFilledGradientColorA: {r: 1, g: 0, b: 0, a: 1}
+    - _LineSublineFilledGradientColorB: {r: 0, g: 1, b: 0, a: 1}
+    - _LineSublineFilledGradientColorC: {r: 0, g: 0, b: 1, a: 1}
+    - _LineSublineFilledGradientColorD: {r: 1, g: 1, b: 0, a: 1}
+    - _LineSublineFilledGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _LineSublineGlowColor: {r: 0.3, g: 0.6, b: 1, a: 0.5}
+    - _LineSublineUnfilledBevelGradientColorA: {r: 1, g: 1, b: 1, a: 1}
+    - _LineSublineUnfilledBevelGradientColorB: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _LineSublineUnfilledBevelGradientColorC: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+    - _LineSublineUnfilledBevelGradientColorD: {r: 0.1, g: 0.1, b: 0.1, a: 1}
+    - _LineSublineUnfilledBevelGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _LineSublineUnfilledColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+    - _LineSublineUnfilledGradientColorA: {r: 1, g: 0, b: 0, a: 1}
+    - _LineSublineUnfilledGradientColorB: {r: 0, g: 1, b: 0, a: 1}
+    - _LineSublineUnfilledGradientColorC: {r: 0, g: 0, b: 1, a: 1}
+    - _LineSublineUnfilledGradientColorD: {r: 1, g: 1, b: 0, a: 1}
+    - _LineSublineUnfilledGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _NubBevelGradientColorA: {r: 1, g: 1, b: 1, a: 1}
+    - _NubBevelGradientColorB: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _NubBevelGradientColorC: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+    - _NubBevelGradientColorD: {r: 0.1, g: 0.1, b: 0.1, a: 1}
+    - _NubBevelGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _NubColor: {r: 0.27633882, g: 1, b: 0, a: 1}
+    - _NubGradientColorA: {r: 1, g: 0, b: 0, a: 1}
+    - _NubGradientColorB: {r: 0, g: 1, b: 0, a: 1}
+    - _NubGradientColorC: {r: 0, g: 0, b: 1, a: 1}
+    - _NubGradientColorD: {r: 1, g: 1, b: 0, a: 1}
+    - _NubGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _OuterMarksColorFilled: {r: 0.53291464, g: 0.9685534, b: 0.14924231, a: 1}
+    - _OuterMarksColorUnfilled: {r: 0.31446534, g: 0.02669984, b: 0.02669984, a: 1}
+    - _OuterMarksMajorColorFilled: {r: 0.6592084, g: 1, b: 0, a: 1}
+    - _OuterMarksMajorColorUnfilled: {r: 0.31446534, g: 0.0088999085, b: 0.0088999085,
+        a: 1}
+    - _OuterRing1Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - _OuterRing2Color: {r: 0.4, g: 0.4, b: 0.4, a: 0.5}
+    - _OuterRing3Color: {r: 0.3, g: 0.3, b: 0.3, a: 0.5}
+    - _TextColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

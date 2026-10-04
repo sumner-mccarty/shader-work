@@ -1,0 +1,224 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Knob
+  m_Shader: {fileID: 4800000, guid: fb4afc251aaa14a49a27448c333ce7f7, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AngleRange: 304.8
+    - _BumpScale: 1
+    - _ColorMask: 15
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _EndCapRadius: 0.033
+    - _FillAlpha: 0.649
+    - _FillAmount: 1
+    - _FillGlobalBlend: 0
+    - _FillGlobalIntensity: 0.99
+    - _FillGradientOffset: 1.58
+    - _FillGradientScale: 1
+    - _FillGradientSpeed: 0
+    - _FillGradientType: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _GlowAlpha: 0.361
+    - _GlowDistance: 0.201
+    - _GlowGlobalBlend: 0
+    - _GlowGlobalIntensity: 1
+    - _GlowGradientOffset: 0
+    - _GlowGradientScale: 1
+    - _GlowGradientSpeed: 1
+    - _GlowGradientType: 2
+    - _GlowIntensity: 2.34
+    - _KnobValue: 1
+    - _LeftGlobalBlend: 0
+    - _LeftGlobalIntensity: 1
+    - _LeftGradientSpeed: 1
+    - _LineWidth: 0.214
+    - _LocalOverride: 0
+    - _Metallic: 0
+    - _Mode: 0
+    - _NubAlpha: 1
+    - _NubGlobalBlend: 0
+    - _NubGlobalIntensity: 1
+    - _NubGradientOffset: 0.57
+    - _NubGradientScale: 3.63
+    - _NubGradientSpeed: 0
+    - _NubGradientType: 0
+    - _NubHeight: 0.21
+    - _NubOutlineAlpha: 1
+    - _NubOutlineGlobalBlend: 0
+    - _NubOutlineGlobalIntensity: 1
+    - _NubOutlineGradientOffset: 0
+    - _NubOutlineGradientScale: 0.12
+    - _NubOutlineGradientSpeed: 1
+    - _NubOutlineGradientType: 0
+    - _NubRadiusOffset: 0.27
+    - _NubWidth: 0.04
+    - _OcclusionStrength: 1
+    - _OutlineWidth: 0.0315
+    - _Parallax: 0.02
+    - _Radius: 0.5
+    - _RightGlobalBlend: 0
+    - _RightGlobalIntensity: 1
+    - _RightGradientSpeed: 1
+    - _RingAlpha: 1
+    - _RingGlobalBlend: 0
+    - _RingGlobalIntensity: 1
+    - _RingGradientOffset: 0
+    - _RingGradientScale: 1
+    - _RingGradientSpeed: 1
+    - _RingGradientType: 0
+    - _RingOutlineAlpha: 1
+    - _RingOutlineGlobalBlend: 0
+    - _RingOutlineGlobalIntensity: 1
+    - _RingOutlineGradientOffset: 0
+    - _RingOutlineGradientScale: 1
+    - _RingOutlineGradientSpeed: 0
+    - _RingOutlineGradientType: 2
+    - _RingRadius: 0.613
+    - _SeparatorCapRadius: 0.049
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _StartAngle: 0
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UVSec: 0
+    - _UseEndCaps: 1
+    - _Value: 0.687
+    - _ValueFilledAlpha: 1
+    - _ValueFilledGlobalBlend: 0
+    - _ValueFilledGlobalIntensity: 1
+    - _ValueFilledGradientOffset: 0
+    - _ValueFilledGradientScale: 1
+    - _ValueFilledGradientSpeed: 0
+    - _ValueFilledGradientType: 2
+    - _ValueUnfilledAlpha: 1
+    - _ValueUnfilledGlobalBlend: 0
+    - _ValueUnfilledGlobalIntensity: 1
+    - _ValueUnfilledGradientOffset: 0
+    - _ValueUnfilledGradientScale: 1
+    - _ValueUnfilledGradientSpeed: 0
+    - _ValueUnfilledGradientType: 2
+    - _ZWrite: 1
+    m_Colors:
+    - _BackgroundColor: {r: 0.99574816, g: 1, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FillGradientColorA: {r: 1, g: 0, b: 0, a: 1}
+    - _FillGradientColorB: {r: 0.22778821, g: 1, b: 0, a: 1}
+    - _FillGradientColorC: {r: 0.9644501, g: 1, b: 0, a: 1}
+    - _FillGradientColorD: {r: 1, g: 0.52004856, b: 0, a: 1}
+    - _FillGradientDirection: {r: 1.14, g: -0.82, b: 0, a: 0}
+    - _GlowGradientColorA: {r: 1, g: 0.24521886, b: 0, a: 1}
+    - _GlowGradientColorB: {r: 0, g: 0.35334516, b: 1, a: 1}
+    - _GlowGradientColorC: {r: 1, g: 0.91389036, b: 0.11635202, a: 1}
+    - _GlowGradientColorD: {r: 0, g: 1, b: 0.75956154, a: 1}
+    - _GlowGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _LeftColor: {r: 0, g: 1, b: 0.1590128, a: 1}
+    - _LeftGradientColorA: {r: 0.6862745, g: 0.3155673, b: 0, a: 1}
+    - _LeftGradientColorB: {r: 0.027450992, g: 0.6039216, b: 0.32678193, a: 1}
+    - _LeftGradientDirection: {r: 1, g: 1, b: 0, a: 0}
+    - _LineColor: {r: 0.9685534, g: 0, b: 0, a: 1}
+    - _NubColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
+    - _NubGradientColorA: {r: 0, g: 1, b: 0, a: 1}
+    - _NubGradientColorB: {r: 1, g: 0.96691644, b: 0, a: 1}
+    - _NubGradientColorC: {r: 0, g: 0.9448445, b: 1, a: 1}
+    - _NubGradientColorD: {r: 1, g: 0.525708, b: 0, a: 1}
+    - _NubGradientDirection: {r: 0, g: 1, b: 0, a: 0}
+    - _NubOutlineGradientColorA: {r: 1, g: 0.8941177, b: 0, a: 1}
+    - _NubOutlineGradientColorB: {r: 1, g: 0.09898217, b: 0, a: 1}
+    - _NubOutlineGradientColorC: {r: 0.18353963, g: 1, b: 0, a: 1}
+    - _NubOutlineGradientColorD: {r: 0, g: 0.041439056, b: 1, a: 1}
+    - _NubOutlineGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _RightColor: {r: 1, g: 0, b: 0.082118034, a: 1}
+    - _RightGradientColorA: {r: 1, g: 1, b: 1, a: 1}
+    - _RightGradientColorB: {r: 0, g: 0, b: 0, a: 1}
+    - _RightGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _RingGradientColorA: {r: 0.98742133, g: 0.06520693, b: 0.07896747, a: 1}
+    - _RingGradientColorB: {r: 0.04104042, g: 0, b: 1, a: 1}
+    - _RingGradientColorC: {r: 0, g: 0, b: 1, a: 1}
+    - _RingGradientColorD: {r: 1, g: 0, b: 1, a: 1}
+    - _RingGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _RingOutlineGradientColorA: {r: 1, g: 0.8941177, b: 0, a: 1}
+    - _RingOutlineGradientColorB: {r: 1, g: 0.8941177, b: 0, a: 1}
+    - _RingOutlineGradientColorC: {r: 1, g: 0.8941177, b: 0, a: 1}
+    - _RingOutlineGradientColorD: {r: 1, g: 0.8941177, b: 0, a: 1}
+    - _RingOutlineGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _ValueFilledGradientColorA: {r: 0.9530982, g: 1, b: 0, a: 1}
+    - _ValueFilledGradientColorB: {r: 0.1266169, g: 0.98742133, b: 0, a: 1}
+    - _ValueFilledGradientColorC: {r: 0, g: 0.9764706, b: 0.8945992, a: 1}
+    - _ValueFilledGradientColorD: {r: 0.9622642, g: 0.015129842, b: 0.015129842, a: 1}
+    - _ValueFilledGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _ValueUnfilledGradientColorA: {r: 0.59472287, g: 0.6226415, b: 0.029369803,
+        a: 1}
+    - _ValueUnfilledGradientColorB: {r: 0.09412541, g: 0.57861626, b: 0.02365402,
+        a: 1}
+    - _ValueUnfilledGradientColorC: {r: 0.0193623, g: 0.5597484, b: 0.51417375, a: 1}
+    - _ValueUnfilledGradientColorD: {r: 0.55345905, g: 0.019144746, b: 0.019144746,
+        a: 1}
+    - _ValueUnfilledGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

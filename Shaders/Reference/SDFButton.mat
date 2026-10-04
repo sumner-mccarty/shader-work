@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SDFButton
+  m_Shader: {fileID: 4800000, guid: 5649acc88df7efb4593052a43fb4b241, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _ENABLEASPECTRATIOSCALING_ON
+  - _MAINTAINTHICKNESSRATIO_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ButtonShape: 0
+    - _ColorMask: 15
+    - _CornerRadius: 0.1
+    - _EllipseCorrectionFactor: 1.5
+    - _FillAlpha: 1
+    - _FillGlobalBlend: 0
+    - _FillGlobalIntensity: 1
+    - _FillGradientOffset: 0
+    - _FillGradientScale: 1
+    - _FillGradientSpeed: 1
+    - _FillGradientType: 0
+    - _GlowAlpha: 1
+    - _GlowGlobalBlend: 0
+    - _GlowGlobalIntensity: 1
+    - _GlowGradientOffset: 0
+    - _GlowGradientScale: 1
+    - _GlowGradientSpeed: 1
+    - _GlowGradientType: 0
+    - _GlowIntensity: 2
+    - _GlowWidth: 0.1
+    - _IconAlpha: 1
+    - _IconGlobalBlend: 0
+    - _IconGlobalIntensity: 1
+    - _IconGradientOffset: 0
+    - _IconGradientScale: 1
+    - _IconGradientSpeed: 1
+    - _IconGradientType: 0
+    - _IconSize: 0.5
+    - _IconType: 0
+    - _LineAlpha: 1
+    - _LineGlobalBlend: 0
+    - _LineGlobalIntensity: 1
+    - _LineGradientOffset: 0
+    - _LineGradientScale: 1
+    - _LineGradientSpeed: 1
+    - _LineGradientType: 0
+    - _LineWidth: 0.1
+    - _OutlineAlpha: 1
+    - _OutlineGlobalBlend: 0
+    - _OutlineGlobalIntensity: 1
+    - _OutlineGradientOffset: 0
+    - _OutlineGradientScale: 1
+    - _OutlineGradientSpeed: 1
+    - _OutlineGradientType: 0
+    - _OutlineWidth: 0.02
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseIcon: 0
+    m_Colors:
+    - _FillGradientColorA: {r: 0, g: 1, b: 0, a: 1}
+    - _FillGradientColorB: {r: 1, g: 1, b: 0, a: 1}
+    - _FillGradientColorC: {r: 0, g: 0, b: 1, a: 1}
+    - _FillGradientColorD: {r: 1, g: 0, b: 1, a: 1}
+    - _FillGradientDirection: {r: 0, g: 1, b: 0, a: 0}
+    - _GlowGradientColorA: {r: 1, g: 0, b: 1, a: 1}
+    - _GlowGradientColorB: {r: 1, g: 1, b: 0, a: 1}
+    - _GlowGradientColorC: {r: 0, g: 1, b: 1, a: 1}
+    - _GlowGradientColorD: {r: 1, g: 0, b: 0, a: 1}
+    - _GlowGradientDirection: {r: 1, g: 1, b: 0, a: 0}
+    - _IconGradientColorA: {r: 1, g: 1, b: 1, a: 1}
+    - _IconGradientColorB: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+    - _IconGradientColorC: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+    - _IconGradientColorD: {r: 0.4, g: 0.4, b: 0.4, a: 1}
+    - _IconGradientDirection: {r: 0, g: 1, b: 0, a: 0}
+    - _IconOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _LineGradientColorA: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - _LineGradientColorB: {r: 0.4, g: 0.4, b: 0.4, a: 1}
+    - _LineGradientColorC: {r: 0.1, g: 0.1, b: 0.1, a: 1}
+    - _LineGradientColorD: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+    - _LineGradientDirection: {r: 0, g: 1, b: 0, a: 0}
+    - _OutlineGradientColorA: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _OutlineGradientColorB: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+    - _OutlineGradientColorC: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+    - _OutlineGradientColorD: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+    - _OutlineGradientDirection: {r: 0, g: 1, b: 0, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

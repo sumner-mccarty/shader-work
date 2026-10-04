@@ -1,0 +1,1056 @@
+// // ============================================================================
+// // LEGACY SHADER - DEPRECATED
+// // ============================================================================
+// // This shader uses the old lighting architecture that relied on global
+// // properties declared in UILighting.cginc. Those properties have been removed
+// // to enforce a pure function library architecture.
+// //
+// // MIGRATION: Use SDFKnob.shader instead, which follows the new pattern.
+// //
+// // This shader will not compile. To temporarily re-enable it, you must:
+// // 1. Declare the required properties in the CGPROGRAM section:
+// //    float3 _LightDirection; float _LightIntensity; float4 _LightColor;
+// //    float _LightingAmbient; float _SpecularPower; float _SpecularIntensity;
+// //    float _BevelDepth; float _BevelSmoothness;
+// // 2. Update calls to calculateLighting() and apply3DLighting() to pass these
+// //    as explicit parameters (see ApplyUILighting() for the modern pattern).
+// // ============================================================================
+
+// Shader "UI/Knob"
+// {
+//     CGINCLUDE
+//     #error "Knob.shader is deprecated. Use SDFKnob.shader instead."
+//     ENDCG
+//     Properties
+//     {
+//         [PerRendererData] _MainTex ("Texture", 2D) = "white" {}
+
+//         // Common Fill gradient properties
+//         _FillGradientColorA ("Fill Gradient A", Color) = (0,1,0,1)
+//         _FillGradientColorB ("Fill Gradient B", Color) = (1,1,0,1)
+//         _FillGradientColorC ("Fill Gradient C", Color) = (0,0,1,1)
+//         _FillGradientColorD ("Fill Gradient D", Color) = (1,0,1,1)
+//         _FillGradientDirection ("Fill Gradient Direction", Vector) = (0,1,0,0)
+//         _FillGradientSpeed ("Fill Gradient Speed", Float) = 1
+//         _FillGradientScale ("Fill Gradient Scale", Float) = 1
+//         _FillGradientOffset ("Fill Gradient Offset", Float) = 0
+//         _FillGlobalBlend ("Fill Global Blend", Range(0,1)) = 0
+//         _FillGlobalIntensity ("Fill Global Intensity", Range(0,2)) = 1
+//         [Enum(Linear,0,Radial,1,Angular,2,Diamond,3,Triangle,4)] _FillGradientType ("Fill Gradient Type", Int) = 0
+//         _FillAlpha ("Fill Alpha", Range(0,1)) = 1
+
+//         // Common Outline gradient properties
+//         _OutlineGradientColorA ("Outline Gradient A", Color) = (0.5,0.5,0.5,1)
+//         _OutlineGradientColorB ("Outline Gradient B", Color) = (0.7,0.7,0.7,1)
+//         _OutlineGradientColorC ("Outline Gradient C", Color) = (0.3,0.3,0.3,1)
+//         _OutlineGradientColorD ("Outline Gradient D", Color) = (0.6,0.6,0.6,1)
+//         _OutlineGradientDirection ("Outline Gradient Direction", Vector) = (0,1,0,0)
+//         _OutlineGradientSpeed ("Outline Gradient Speed", Float) = 1
+//         _OutlineGradientScale ("Outline Gradient Scale", Float) = 1
+//         _OutlineGradientOffset ("Outline Gradient Offset", Float) = 0
+//         _OutlineGlobalBlend ("Outline Global Blend", Range(0,1)) = 0
+//         _OutlineGlobalIntensity ("Outline Global Intensity", Range(0,2)) = 1
+//         [Enum(Linear,0,Radial,1,Angular,2,Diamond,3,Triangle,4)] _OutlineGradientType ("Outline Gradient Type", Int) = 0
+//         _OutlineAlpha ("Outline Alpha", Range(0,1)) = 1
+
+//         // Common Glow gradient properties
+//         _GlowGradientColorA ("Glow Gradient A", Color) = (1,0,1,1)
+//         _GlowGradientColorB ("Glow Gradient B", Color) = (1,1,0,1)
+//         _GlowGradientColorC ("Glow Gradient C", Color) = (0,1,1,1)
+//         _GlowGradientColorD ("Glow Gradient D", Color) = (1,0,0,1)
+//         _GlowGradientDirection ("Glow Gradient Direction", Vector) = (1,1,0,0)
+//         _GlowGradientSpeed ("Glow Gradient Speed", Float) = 1
+//         _GlowGradientScale ("Glow Gradient Scale", Float) = 1
+//         _GlowGradientOffset ("Glow Gradient Offset", Float) = 0
+//         _GlowGlobalBlend ("Glow Global Blend", Range(0,1)) = 0
+//         _GlowGlobalIntensity ("Glow Global Intensity", Range(0,2)) = 1
+//         [Enum(Linear,0,Radial,1,Angular,2,Diamond,3,Triangle,4)] _GlowGradientType ("Glow Gradient Type", Int) = 0
+//         _GlowWidth ("Glow Width", Range(0.01,0.5)) = 0.1
+//         _GlowIntensity ("Glow Intensity", Range(0,5)) = 2
+//         _GlowAlpha ("Glow Alpha", Range(0,1)) = 1
+
+//         // Line gradient properties (backing line behind value areas)
+//         _LineGradientColorA ("Line Gradient A", Color) = (0.5,0.5,0.5,1)
+//         _LineGradientColorB ("Line Gradient B", Color) = (0.6,0.6,0.6,1)
+//         _LineGradientColorC ("Line Gradient C", Color) = (0.4,0.4,0.4,1)
+//         _LineGradientColorD ("Line Gradient D", Color) = (0.55,0.55,0.55,1)
+//         _LineGradientDirection ("Line Gradient Direction", Vector) = (0,1,0,0)
+//         _LineGradientSpeed ("Line Gradient Speed", Float) = 1
+//         _LineGradientScale ("Line Gradient Scale", Float) = 1
+//         _LineGradientOffset ("Line Gradient Offset", Float) = 0
+//         _LineGlobalBlend ("Line Global Blend", Range(0,1)) = 0
+//         _LineGlobalIntensity ("Line Global Intensity", Range(0,2)) = 1
+//         [Enum(Linear,0,Radial,1,Angular,2,Diamond,3,Triangle,4)] _LineGradientType ("Line Gradient Type", Int) = 0
+//         _LineAlpha ("Line Alpha", Range(0,1)) = 1
+
+//         // Value filled gradient properties
+//         _ValueFilledGradientColorA ("Value Filled Gradient A", Color) = (1,0,0,1)
+//         _ValueFilledGradientColorB ("Value Filled Gradient B", Color) = (1,0.5,0,1)
+//         _ValueFilledGradientColorC ("Value Filled Gradient C", Color) = (1,1,0,1)
+//         _ValueFilledGradientColorD ("Value Filled Gradient D", Color) = (0,1,0,1)
+//         _ValueFilledGradientDirection ("Value Filled Gradient Direction", Vector) = (1,0,0,0)
+//         _ValueFilledGradientSpeed ("Value Filled Gradient Speed", Float) = 1
+//         _ValueFilledGradientScale ("Value Filled Gradient Scale", Float) = 1
+//         _ValueFilledGradientOffset ("Value Filled Gradient Offset", Float) = 0
+//         _ValueFilledGlobalBlend ("Value Filled Global Blend", Range(0,1)) = 0
+//         _ValueFilledGlobalIntensity ("Value Filled Global Intensity", Range(0,2)) = 1
+//         [Enum(Linear,0,Radial,1,Angular,2,Diamond,3,Triangle,4)] _ValueFilledGradientType ("Value Filled Gradient Type", Int) = 0
+//         _ValueFilledAlpha ("Value Filled Alpha", Range(0,1)) = 1
+
+//         // Value unfilled gradient properties
+//         _ValueUnfilledGradientColorA ("Value Unfilled Gradient A", Color) = (0,0,1,1)
+//         _ValueUnfilledGradientColorB ("Value Unfilled Gradient B", Color) = (0,1,1,1)
+//         _ValueUnfilledGradientColorC ("Value Unfilled Gradient C", Color) = (0.5,0.5,1,1)
+//         _ValueUnfilledGradientColorD ("Value Unfilled Gradient D", Color) = (0,0,0.5,1)
+//         _ValueUnfilledGradientDirection ("Value Unfilled Gradient Direction", Vector) = (1,0,0,0)
+//         _ValueUnfilledGradientSpeed ("Value Unfilled Gradient Speed", Float) = 1
+//         _ValueUnfilledGradientScale ("Value Unfilled Gradient Scale", Float) = 1
+//         _ValueUnfilledGradientOffset ("Value Unfilled Gradient Offset", Float) = 0
+//         _ValueUnfilledGlobalBlend ("Value Unfilled Global Blend", Range(0,1)) = 0
+//         _ValueUnfilledGlobalIntensity ("Value Unfilled Global Intensity", Range(0,2)) = 1
+//         [Enum(Linear,0,Radial,1,Angular,2,Diamond,3,Triangle,4)] _ValueUnfilledGradientType ("Value Unfilled Gradient Type", Int) = 0
+//         _ValueUnfilledAlpha ("Value Unfilled Alpha", Range(0,1)) = 1
+
+//         // Nub gradient properties
+//         _NubGradientColorA ("Nub Gradient A", Color) = (1,1,1,1)
+//         _NubGradientColorB ("Nub Gradient B", Color) = (0.8,0.8,0.8,1)
+//         _NubGradientColorC ("Nub Gradient C", Color) = (0.6,0.6,0.6,1)
+//         _NubGradientColorD ("Nub Gradient D", Color) = (0.4,0.4,0.4,1)
+//         _NubGradientDirection ("Nub Gradient Direction", Vector) = (0,1,0,0)
+//         _NubGradientSpeed ("Nub Gradient Speed", Float) = 1
+//         _NubGradientScale ("Nub Gradient Scale", Float) = 1
+//         _NubGradientOffset ("Nub Gradient Offset", Float) = 0
+//         _NubGlobalBlend ("Nub Global Blend", Range(0,1)) = 0
+//         _NubGlobalIntensity ("Nub Global Intensity", Range(0,2)) = 1
+//         [Enum(Linear,0,Radial,1,Angular,2,Diamond,3,Triangle,4)] _NubGradientType ("Nub Gradient Type", Int) = 0
+//         _NubAlpha ("Nub Alpha", Range(0,1)) = 1
+
+//         // Common Outline gradient properties (border around the line)
+//         _OutlineGradientColorA ("Outline Gradient A", Color) = (0.5,0.5,0.5,1)
+//         _OutlineGradientColorB ("Outline Gradient B", Color) = (0.7,0.7,0.7,1)
+//         _OutlineGradientColorC ("Outline Gradient C", Color) = (0.3,0.3,0.3,1)
+//         _OutlineGradientColorD ("Outline Gradient D", Color) = (0.6,0.6,0.6,1)
+//         _OutlineGradientDirection ("Outline Gradient Direction", Vector) = (0,1,0,0)
+//         _OutlineGradientSpeed ("Outline Gradient Speed", Float) = 1
+//         _OutlineGradientScale ("Outline Gradient Scale", Float) = 1
+//         _OutlineGradientOffset ("Outline Gradient Offset", Float) = 0
+//         _OutlineGlobalBlend ("Outline Global Blend", Range(0,1)) = 0
+//         _OutlineGlobalIntensity ("Outline Global Intensity", Range(0,2)) = 1
+//         [Enum(Linear,0,Radial,1,Angular,2,Diamond,3,Triangle,4)] _OutlineGradientType ("Outline Gradient Type", Int) = 0
+//         _OutlineAlpha ("Outline Alpha", Range(0,1)) = 1
+
+//         // Nub outline gradient properties
+//         _NubOutlineGradientColorA ("Nub Outline Gradient A", Color) = (1,0,1,1)
+//         _NubOutlineGradientColorB ("Nub Outline Gradient B", Color) = (0,1,1,1)
+//         _NubOutlineGradientColorC ("Nub Outline Gradient C", Color) = (1,1,0,1)
+//         _NubOutlineGradientColorD ("Nub Outline Gradient D", Color) = (1,0,0,1)
+//         _NubOutlineGradientDirection ("Nub Outline Gradient Direction", Vector) = (1,0,0,0)
+//         _NubOutlineGradientSpeed ("Nub Outline Gradient Speed", Float) = 1
+//         _NubOutlineGradientScale ("Nub Outline Gradient Scale", Float) = 1
+//         _NubOutlineGradientOffset ("Nub Outline Gradient Offset", Float) = 0
+//         _NubOutlineGlobalBlend ("Nub Outline Global Blend", Range(0,1)) = 0
+//         _NubOutlineGlobalIntensity ("Nub Outline Global Intensity", Range(0,2)) = 1
+//         [Enum(Linear,0,Radial,1,Angular,2,Diamond,3,Triangle,4)] _NubOutlineGradientType ("Nub Outline Type", Int) = 0
+//         _NubOutlineAlpha ("Nub Outline Alpha", Range(0,1)) = 1
+
+
+
+//         // Common component properties
+//         _LineWidth ("Line Width", Range(0.001, 0.5)) = 0.1
+//         _OutlineWidth ("Outline Width", Range(0.001, 0.5)) = 0.02
+        
+//         // Knob-specific parameters
+//         _Value ("Value", Range(0,1)) = 0.5
+//         _LineRadius ("Line Radius", Range(0.1, 1.0)) = 0.8
+//         _ValueWidth ("Value Width", Range(0.001, 0.5)) = 0.075
+//         _NubRadiusOffset ("Nub Radius Offset", Range(-0.5, 0.5)) = 0
+//         _NubWidth ("Nub Width", Range(0.001, 1.0)) = 0.05
+//         _NubHeight ("Nub Height", Range(0.001, 1.0)) = 0.25
+        
+//         // Angle configuration
+//         _StartAngle ("Start Angle (Degrees)", Float) = 180
+//         _AngleRange ("Angle Range (Degrees)", Float) = 360
+//         _EndCapRadius ("End Cap Radius", Range(0.001, 0.5)) = 0.02
+//         _SeparatorCapRadius ("Separator Cap Radius", Range(0.001, 0.5)) = 0.02
+//         _UseEndCaps ("Use End Caps", Float) = 0
+
+//         // 3D Lighting Properties
+//         _LightDirection ("Light Direction", Vector) = (-0.2, 0.2, 1.0, 0)
+//         _LightIntensity ("Light Intensity", Range(0, 2)) = 1.0
+//         _LightColor ("Light Color", Color) = (1.0, 1.0, 0.9, 1.0)
+//         _AmbientIntensity ("Ambient Intensity", Range(0, 1)) = 0.2
+//         _SpecularPower ("Specular Power", Range(1, 200)) = 100
+//         _SpecularIntensity ("Specular Intensity", Range(0, 2)) = 1.0
+//         _BevelDepth ("Bevel Depth", Range(0, 0.1)) = 0.02
+//         _BevelSmoothness ("Bevel Smoothness", Range(0.001, 0.1)) = 0.01
+        
+//         // Unity UI
+//         _StencilComp ("Stencil Comparison", Float) = 8
+//         _Stencil ("Stencil ID", Float) = 0
+//         _StencilOp ("Stencil Operation", Float) = 0
+//         _StencilWriteMask ("Stencil Write Mask", Float) = 255
+//         _StencilReadMask ("Stencil Read Mask", Float) = 255
+//         _ColorMask ("Color Mask", Float) = 15
+//     }
+
+//     SubShader
+//     {
+//         Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" "PreviewType"="Plane" "CanUseSpriteAtlas"="True" }
+        
+//         Stencil {
+//             Ref [_Stencil]
+//             Comp [_StencilComp]
+//             Pass [_StencilOp]
+//             ReadMask [_StencilReadMask]
+//             WriteMask [_StencilWriteMask]
+//         }
+
+//         Cull Off
+//         Lighting Off
+//         ZWrite Off
+//         ZTest [unity_GUIZTestMode]
+//         ColorMask [_ColorMask]
+
+//         Pass
+//         {
+//             Name "MainKnob"
+//             Blend SrcAlpha OneMinusSrcAlpha
+
+//             CGPROGRAM
+//             #pragma vertex vert
+//             #pragma fragment frag
+//             #include "UnityCG.cginc"
+//             #include "UnityUI.cginc"
+//             #include "./CG/Core/Constants.cginc"
+//             #include "./CG/Core/UIGradients.cginc"
+//             #include "./CG/SDF/SDFPrimitives.cginc"
+//             #include "./CG/SDF/SDFOperations.cginc"
+//             #include "./CG/Core/UILighting.cginc"
+
+//             struct appdata_t
+//             {
+//                 float4 vertex : POSITION;
+//                 float4 color : COLOR;
+//                 float2 texcoord : TEXCOORD0;
+//             };
+
+//             struct v2f
+//             {
+//                 float4 vertex : SV_POSITION;
+//                 float2 texcoord : TEXCOORD0;
+//                 float4 screenPos : TEXCOORD1;
+//                 float4 worldPos : TEXCOORD2;
+//             };
+
+//             // Common Fill gradient
+//             float4 _FillGradientColorA, _FillGradientColorB, _FillGradientColorC, _FillGradientColorD;
+//             float2 _FillGradientDirection; 
+//             float _FillGradientSpeed, _FillGradientScale, _FillGradientOffset;
+//             float _FillGlobalBlend, _FillGlobalIntensity;
+//             int _FillGradientType;
+//             float _FillAlpha;
+            
+//             // Common Outline gradient
+//             float4 _OutlineGradientColorA, _OutlineGradientColorB, _OutlineGradientColorC, _OutlineGradientColorD;
+//             float2 _OutlineGradientDirection; 
+//             float _OutlineGradientSpeed, _OutlineGradientScale, _OutlineGradientOffset;
+//             float _OutlineGlobalBlend, _OutlineGlobalIntensity;
+//             int _OutlineGradientType;
+//             float _OutlineAlpha;
+
+//             // Line gradient (backing line behind value areas)
+//             float4 _LineGradientColorA, _LineGradientColorB, _LineGradientColorC, _LineGradientColorD;
+//             float2 _LineGradientDirection; 
+//             float _LineGradientSpeed, _LineGradientScale, _LineGradientOffset;
+//             float _LineGlobalBlend, _LineGlobalIntensity;
+//             int _LineGradientType;
+//             float _LineAlpha;
+
+//             // Value filled gradient
+//             float4 _ValueFilledGradientColorA, _ValueFilledGradientColorB, _ValueFilledGradientColorC, _ValueFilledGradientColorD;
+//             float2 _ValueFilledGradientDirection; 
+//             float _ValueFilledGradientSpeed, _ValueFilledGradientScale, _ValueFilledGradientOffset;
+//             float _ValueFilledGlobalBlend, _ValueFilledGlobalIntensity;
+//             int _ValueFilledGradientType;
+//             float _ValueFilledAlpha;
+
+//             // Value unfilled gradient
+//             float4 _ValueUnfilledGradientColorA, _ValueUnfilledGradientColorB, _ValueUnfilledGradientColorC, _ValueUnfilledGradientColorD;
+//             float2 _ValueUnfilledGradientDirection; 
+//             float _ValueUnfilledGradientSpeed, _ValueUnfilledGradientScale, _ValueUnfilledGradientOffset;
+//             float _ValueUnfilledGlobalBlend, _ValueUnfilledGlobalIntensity;
+//             int _ValueUnfilledGradientType;
+//             float _ValueUnfilledAlpha;
+
+//             // Nub gradient
+//             float4 _NubGradientColorA, _NubGradientColorB, _NubGradientColorC, _NubGradientColorD;
+//             float2 _NubGradientDirection; 
+//             float _NubGradientSpeed, _NubGradientScale, _NubGradientOffset;
+//             float _NubGlobalBlend, _NubGlobalIntensity;
+//             int _NubGradientType;
+//             float _NubAlpha;
+
+
+
+//             // Nub outline gradient
+//             float4 _NubOutlineGradientColorA, _NubOutlineGradientColorB, _NubOutlineGradientColorC, _NubOutlineGradientColorD;
+//             float2 _NubOutlineGradientDirection; 
+//             float _NubOutlineGradientSpeed, _NubOutlineGradientScale, _NubOutlineGradientOffset;
+//             float _NubOutlineGlobalBlend, _NubOutlineGlobalIntensity;
+//             int _NubOutlineGradientType;
+//             float _NubOutlineAlpha;
+
+//             // Common Glow gradient
+//             float4 _GlowGradientColorA, _GlowGradientColorB, _GlowGradientColorC, _GlowGradientColorD;
+//             float2 _GlowGradientDirection; 
+//             float _GlowGradientSpeed, _GlowGradientScale, _GlowGradientOffset;
+//             float _GlowGlobalBlend, _GlowGlobalIntensity;
+//             int _GlowGradientType;
+//             float _GlowWidth, _GlowIntensity;
+//             float _GlowAlpha;
+
+//             // 3D Lighting properties are now declared in lighting.cginc
+
+//             // Common component properties
+//             float _LineWidth;
+//             float _OutlineWidth;
+            
+//             // Knob-specific parameters
+//             float _Value;
+//             float _LineRadius;
+//             float _ValueWidth;
+//             float _NubRadiusOffset;
+//             float _NubWidth;
+//             float _NubHeight;
+            
+//             // Angle configuration
+//             float _StartAngle;
+//             float _AngleRange;
+//             float _EndCapRadius;
+//             float _SeparatorCapRadius;
+//             float _UseEndCaps;
+            
+//             float4 _ClipRect;
+
+//             // Use shared normal calculation functions from lighting.cginc
+
+//             v2f vert(appdata_t v)
+//             {
+//                 v2f o;
+//                 o.vertex = UnityObjectToClipPos(v.vertex);
+//                 o.texcoord = v.texcoord * 2.0 - 1.0; // [-1,1] range
+//                 o.screenPos = ComputeScreenPos(o.vertex);
+//                 o.worldPos = v.vertex;
+//                 return o;
+//             }
+
+//             float2 rotate(float2 pt, float angle)
+//             {
+//                 float s = sin(angle);
+//                 float c = cos(angle);
+//                 return float2(pt.x * c - pt.y * s, pt.x * s + pt.y * c);
+//             }
+
+//             // Convert mathematical angle (0° at +X, counterclockwise) to UI angle (0° at -X, clockwise)
+//             float mathAngleToUIAngle(float mathAngle)
+//             {
+//                 return -mathAngle + UNITY_PI; // Flip and offset by π to put 0° at left side
+//             }
+
+//             // Fixed angular calculation for proper angle handling
+//             float getAngularMask(float2 uv, float value, float aa)
+//             {
+//                 float angle = atan2(uv.y, uv.x); // Mathematical angle: -π to π, 0° at right (+X)
+//                 angle = mathAngleToUIAngle(angle); // Convert to UI angle: 0° at left (-X), clockwise positive
+                
+//                 // Convert start angle from degrees to radians and make it UI angle
+//                 float startAngleRad = _StartAngle * DEG2RAD;
+//                 float angleRangeRad = _AngleRange * DEG2RAD;
+                
+//                 // Calculate relative angle from start (clockwise positive)
+//                 float relativeAngle = angle - startAngleRad;
+                
+//                 // Normalize to [0, 2π]
+//                 while (relativeAngle < 0.0) relativeAngle += 2.0 * UNITY_PI;
+//                 while (relativeAngle >= 2.0 * UNITY_PI) relativeAngle -= 2.0 * UNITY_PI;
+                
+//                 // Check if we're within the valid angle range
+//                 float rangeCheck = step(relativeAngle, angleRangeRad);
+                
+//                 // Calculate value-based masking within the valid range
+//                 float valueAngle = value * angleRangeRad;
+                
+//                 // For filled area: 0 (filled) when relativeAngle <= valueAngle, 1 (unfilled) when > valueAngle
+//                 float valueMask = smoothstep(valueAngle - aa, valueAngle + aa, relativeAngle);
+                
+//                 return rangeCheck * valueMask;
+//             }
+
+//             // Get the three oval end cap masks
+//             void getEndCapMasks(float2 uv, float lineInner, float lineOuter, float aa, 
+//                                out float startCapMask, out float endCapMask, out float separatorCapMask)
+//             {
+//                 startCapMask = 0.0;
+//                 endCapMask = 0.0;
+//                 separatorCapMask = 0.0;
+                
+//                 if (_UseEndCaps < 0.5) return;
+                
+//                 float lineCenter = (lineInner + lineOuter) * 0.5;
+//                 float lineWidth = lineOuter - lineInner;
+//                 float startAngleRad = _StartAngle * DEG2RAD;
+//                 float angleRangeRad = _AngleRange * DEG2RAD;
+                
+//                 // Start cap - oval oriented perpendicular to the line at start position
+//                 float2 startDir = float2(-cos(startAngleRad), sin(startAngleRad)); // Direction vector
+//                 float2 startCapCenter = startDir * lineCenter;
+//                 float2 startCapLocal = rotate(uv - startCapCenter, startAngleRad - UNITY_PI * 0.5); // Rotate to align with line end
+//                 float startCapDist = EllipseSDF(startCapLocal, float2(_EndCapRadius, lineWidth * 0.5));
+//                 startCapMask = smoothstep(aa, -aa, startCapDist);
+                
+//                 // End cap - oval oriented perpendicular to the line at end position
+//                 float endAngle = startAngleRad + angleRangeRad;
+//                 float2 endDir = float2(-cos(endAngle), sin(endAngle));
+//                 float2 endCapCenter = endDir * lineCenter;
+//                 float2 endCapLocal = rotate(uv - endCapCenter, endAngle - UNITY_PI * 0.5); // Rotate to align with line end
+//                 float endCapDist = EllipseSDF(endCapLocal, float2(_EndCapRadius, lineWidth * 0.5));
+//                 endCapMask = smoothstep(aa, -aa, endCapDist);
+                
+//                 // Separator cap - oval oriented perpendicular to the line at value position
+//                 // FIXED: Always render separator cap regardless of value
+//                 float separatorAngle = startAngleRad + (_Value * angleRangeRad);
+//                 float2 separatorDir = float2(-cos(separatorAngle), sin(separatorAngle));
+//                 float2 separatorCapCenter = separatorDir * lineCenter;
+//                 float2 separatorCapLocal = rotate(uv - separatorCapCenter, separatorAngle - UNITY_PI * 0.5); // Rotate to align with line end
+//                 float separatorCapDist = EllipseSDF(separatorCapLocal, float2(_SeparatorCapRadius, lineWidth * 0.5));
+//                 separatorCapMask = smoothstep(aa, -aa, separatorCapDist);
+//             }
+
+//             // Generates a representative UV to sample any gradient at a normalized point 't'.
+//             // This allows us to get the color at 0%, value%, or 100% of a gradient.
+//             float2 getUvForSamplingAtT(float t, int gradientType, float2 direction)
+//             {
+//                 // We create a "fake" UV coordinate. When this UV is fed into the standard
+//                 // GetGradientColor function, it will produce the color for the normalized value 't'.
+//                 // This works because each gradient type uses UVs in a predictable way.
+
+//                 if (gradientType == 2) // Angular
+//                 {
+//                     // For an angular gradient, color is based on the angle of the UV.
+//                     // We map t=[0,1] to a full UI angle and create a vector at that angle.
+//                     float ui_angle = t * 2.0 * UNITY_PI;
+//                     float math_angle = UNITY_PI - ui_angle; // Convert UI angle to math angle for cos/sin
+//                     return float2(cos(math_angle), sin(math_angle));
+//                 }
+//                 else if (gradientType == 1) // Radial
+//                 {
+//                     // For a radial gradient, color is based on distance from the center.
+//                     // We map t=[0,1] to a distance of [0, 0.5] in a [-0.5, 0.5] space.
+//                     return float2(t * 0.5, 0.0);
+//                 }
+//                 else // Linear, Diamond, etc.
+//                 {
+//                     // For a linear gradient, color is based on dot(uv, direction).
+//                     // We map t=[0,1] to the standard [-0.5, 0.5] UV space along the direction.
+//                     return normalize(direction) * (t - 0.5);
+//                 }
+//             }
+
+//             // Remaps a fragment's UV for an angular gradient to stretch it across the visible angle range.
+//             float2 remapUvForAngularRange(float2 uv, float startAngleRad, float angleRangeRad)
+//             {
+//                 if (abs(angleRangeRad - (2.0 * UNITY_PI)) < 0.01)
+//                     return uv; // No remapping needed for a full circle.
+
+//                 float angle = mathAngleToUIAngle(atan2(uv.y, uv.x));
+//                 float relativeAngle = angle - startAngleRad;
+//                 while (relativeAngle < 0.0) relativeAngle += 2.0 * UNITY_PI;
+
+//                 // Normalize the pixel's angle within the visible range to a [0,1] value
+//                 float normalizedAngle = saturate(relativeAngle / angleRangeRad);
+
+//                 // Map this normalized value back to a full circle to sample the gradient texture correctly
+//                 float new_ui_angle = normalizedAngle * 2.0 * UNITY_PI;
+//                 float new_math_angle = UNITY_PI - new_ui_angle;
+
+//                 // Reconstruct the UV with the new angle, preserving original distance
+//                 return float2(cos(new_math_angle), sin(new_math_angle)) * length(uv);
+//             }
+
+//             // Get distance from the knob geometry for glow calculation
+//             float getKnobGeometryDistance(float2 uv)
+//             {
+//                 float dist = length(uv);
+                
+//                 // Define line bounds
+//                 float lineOuter = _LineRadius + _OutlineWidth;
+//                 float lineInner = _LineRadius - _LineWidth;
+                
+//                 // Angle calculations
+//                 float startAngleRad = _StartAngle * DEG2RAD;
+//                 float angleRangeRad = _AngleRange * DEG2RAD;
+                
+//                 // Check if we're in the angle range
+//                 float angle = mathAngleToUIAngle(atan2(uv.y, uv.x));
+//                 float relativeAngle = angle - startAngleRad;
+//                 while (relativeAngle < 0.0) relativeAngle += 2.0 * UNITY_PI;
+//                 bool inAngleRange = relativeAngle <= angleRangeRad;
+                
+//                 // Distance from line
+//                 float lineDistance = min(abs(dist - lineOuter), abs(dist - lineInner));
+                
+//                 // Nub geometry
+//                 float lineCenter = lineInner + (_LineWidth * 0.5);
+//                 float nubAngle = startAngleRad + (_Value * angleRangeRad);
+//                 float2 nubDir = float2(-cos(nubAngle), sin(nubAngle));
+//                 float nubRadius = lineCenter + _NubRadiusOffset;
+//                 float2 nubCenter = nubDir * nubRadius;
+//                 float2 localNubUV = rotate(uv - nubCenter, nubAngle + UNITY_PI * 0.5);
+//                 float nubDistance = RoundedRectSDF(localNubUV, float2(_NubWidth, _NubHeight) * 0.5 + _OutlineWidth, 0.02);
+                
+//                 // Return minimum distance to any visible geometry
+//                 float geomDistance = dist; // Default to center distance
+                
+//                 if (inAngleRange) {
+//                     geomDistance = min(geomDistance, lineDistance);
+//                 }
+                
+//                 geomDistance = min(geomDistance, abs(nubDistance));
+                
+//                 return geomDistance;
+//             }
+            
+//             fixed4 frag(v2f i) : SV_Target
+//             {
+//                 float2 uv = i.texcoord;
+//                 float dist = length(uv);
+                
+//                 // Antialiasing width
+//                 float aa = fwidth(dist) * 0.75;
+                
+//                 // Define line bounds (backing line)
+//                 float lineOuter = _LineRadius;
+//                 float lineInner = lineOuter - _LineWidth;
+                
+//                 // Define outline bounds (outside line)
+//                 float outlineOuter = lineOuter + _OutlineWidth;
+                
+//                 // Angle calculations
+//                 float startAngleRad = _StartAngle * DEG2RAD;
+//                 float angleRangeRad = _AngleRange * DEG2RAD;
+
+//                 // Nub logic
+//                 float lineCenter = lineInner + (_LineWidth * 0.5);
+//                 float nubAngle = startAngleRad + (_Value * angleRangeRad);
+//                 float2 nubDir = float2(-cos(nubAngle), sin(nubAngle));
+//                 float nubRadius = lineCenter + _NubRadiusOffset;
+//                 float2 nubCenter = nubDir * nubRadius;
+//                 float2 localNubUV = rotate(uv - nubCenter, nubAngle + UNITY_PI * 0.5); // Nub-local coordinates
+                
+//                 // Nub masks
+//                 float nubDist = RoundedRectSDF(localNubUV, float2(_NubWidth, _NubHeight) * 0.5, 0.02);
+//                 float nubMask = smoothstep(aa, -aa, nubDist);
+//                 float nubOutlineDist = RoundedRectSDF(localNubUV, float2(_NubWidth, _NubHeight) * 0.5 + _OutlineWidth, 0.02);
+//                 float nubOutlineMask = smoothstep(aa, -aa, nubOutlineDist) * (1.0 - nubMask);
+                
+//                 // Line and Fill masks
+//                 float lineMask = SmoothRing(dist, lineInner, lineOuter, aa);
+//                 float lineOutlineMask = SmoothRing(dist, lineOuter, outlineOuter, aa);
+//                 float fillMask = SmoothCircle(dist, lineInner, aa);
+                
+//                 // Angular masking
+//                 float angleAA = fwidth(atan2(uv.y, uv.x)) * 0.75;
+//                 float valueMask = getAngularMask(uv, _Value, angleAA);
+                
+//                 // Apply angle range check
+//                 float angle = mathAngleToUIAngle(atan2(uv.y, uv.x));
+//                 float relativeAngle = angle - startAngleRad;
+//                 while (relativeAngle < 0.0) relativeAngle += 2.0 * UNITY_PI;
+//                 float rangeCheck = step(relativeAngle, angleRangeRad);
+//                 lineMask *= rangeCheck;
+//                 lineOutlineMask *= rangeCheck;
+                
+//                 // End Cap masks
+//                 float startCapMask, endCapMask, separatorCapMask;
+//                 getEndCapMasks(uv, lineInner, lineOuter, aa, startCapMask, endCapMask, separatorCapMask);
+                
+//                 // "Unwrapped" UV for linear gradients on the line
+//                 float2 unwrappedUV = float2(saturate(relativeAngle / angleRangeRad) - 0.5, 
+//                                             saturate((dist - lineInner) / _LineWidth) - 0.5);
+
+//                 fixed4 col = fixed4(0, 0, 0, 0);
+
+//                 // 1. Render fill - FIXED: Now uses proper gradient system
+//                 if (fillMask > 0.01) {
+//                     GradientParams fillParams;
+//                     fillParams.colorA = _FillGradientColorA;
+//                     fillParams.colorB = _FillGradientColorB;
+//                     fillParams.colorC = _FillGradientColorC;
+//                     fillParams.colorD = _FillGradientColorD;
+//                     fillParams.direction = _FillGradientDirection;
+//                     fillParams.speed = _FillGradientSpeed;
+//                     fillParams.manualPosition = 0;
+//                     fillParams.globalBlend = _FillGlobalBlend;
+//                     fillParams.globalIntensity = _FillGlobalIntensity;
+//                     fillParams.scale = _FillGradientScale;
+//                     fillParams.offset = _FillGradientOffset;
+                    
+//                     float4 fillColor = GetGradientColor(fillParams, _FillGradientType, uv, i.screenPos, _Time.y);
+                    
+//                     // Apply 3D lighting to fill (subtle effect)
+//                     fillColor.rgb = apply3DLighting(fillColor.rgb, calculateKnobNormal(uv, dist, 0.0, lineInner, _BevelDepth));
+//                     fillColor.a *= _FillAlpha * fillMask;
+//                     col = fillColor;
+//                 }
+
+//                 // 2. Render backing line (behind value areas)
+//                 if (lineMask > 0.01) {
+//                     float2 gradientUV = (_LineGradientType == 2) ? remapUvForAngularRange(uv, startAngleRad, angleRangeRad) : unwrappedUV;
+                    
+//                     GradientParams lineParams;
+//                     lineParams.colorA = _LineGradientColorA;
+//                     lineParams.colorB = _LineGradientColorB;
+//                     lineParams.colorC = _LineGradientColorC;
+//                     lineParams.colorD = _LineGradientColorD;
+//                     lineParams.direction = _LineGradientDirection;
+//                     lineParams.speed = _LineGradientSpeed;
+//                     lineParams.manualPosition = 0;
+//                     lineParams.globalBlend = _LineGlobalBlend;
+//                     lineParams.globalIntensity = _LineGlobalIntensity;
+//                     lineParams.scale = _LineGradientScale;
+//                     lineParams.offset = _LineGradientOffset;
+                    
+//                     float4 lineColor = GetGradientColor(lineParams, _LineGradientType, gradientUV, i.screenPos, _Time.y);
+                    
+//                     // Apply 3D lighting to line (subtle effect)
+//                     lineColor.rgb = apply3DLighting(lineColor.rgb, calculateKnobNormal(uv, dist, lineInner, lineOuter, _BevelDepth));
+//                     lineColor.a *= _LineAlpha * lineMask;
+//                     col = lerp(col, lineColor, lineColor.a);
+//                 }
+
+//                 // 3. Render outline (border around the line)
+//                 if (lineOutlineMask > 0.01) {
+//                     float2 gradientUV = (_OutlineGradientType == 2) ? remapUvForAngularRange(uv, startAngleRad, angleRangeRad) : unwrappedUV;
+                    
+//                     GradientParams outlineParams;
+//                     outlineParams.colorA = _OutlineGradientColorA;
+//                     outlineParams.colorB = _OutlineGradientColorB;
+//                     outlineParams.colorC = _OutlineGradientColorC;
+//                     outlineParams.colorD = _OutlineGradientColorD;
+//                     outlineParams.direction = _OutlineGradientDirection;
+//                     outlineParams.speed = _OutlineGradientSpeed;
+//                     outlineParams.manualPosition = 0;
+//                     outlineParams.globalBlend = _OutlineGlobalBlend;
+//                     outlineParams.globalIntensity = _OutlineGlobalIntensity;
+//                     outlineParams.scale = _OutlineGradientScale;
+//                     outlineParams.offset = _OutlineGradientOffset;
+                    
+//                     float4 outlineColor = GetGradientColor(outlineParams, _OutlineGradientType, gradientUV, i.screenPos, _Time.y);
+                    
+//                     // Apply 3D lighting to outline (subtle effect)
+//                     outlineColor.rgb = apply3DLighting(outlineColor.rgb, calculateKnobNormal(uv, dist, lineOuter, outlineOuter, _BevelDepth));
+//                     outlineColor.a *= _OutlineAlpha * lineOutlineMask;
+//                     col = lerp(col, outlineColor, outlineColor.a);
+//                 }
+
+//                 // 3. Render end caps (bottom layer - underneath ring segments)
+//                 if (startCapMask > 0.01) {
+//                     // Create proper gradient UVs for the start cap - use the same gradient system as the ring
+//                     float2 startCapGradientUV;
+//                     if (_ValueFilledGradientType == 2) { // Angular
+//                         // For angular, use the same remapping as the ring but centered on the start position
+//                         startCapGradientUV = remapUvForAngularRange(uv, startAngleRad, angleRangeRad);
+//                     } else if (_ValueFilledGradientType == 1) { // Radial
+//                         // For radial, use the actual UV position relative to the cap center
+//                         float2 startDir = float2(-cos(startAngleRad), sin(startAngleRad));
+//                         float2 startCapCenter = startDir * lineCenter;
+//                         float2 capLocalUV = uv - startCapCenter;
+//                         startCapGradientUV = capLocalUV / (_EndCapRadius * 2.0); // Normalize to cap size
+//                     } else { // Linear, Diamond, etc.
+//                         // For linear, use the actual UV position relative to the cap center
+//                         float2 startDir = float2(-cos(startAngleRad), sin(startAngleRad));
+//                         float2 startCapCenter = startDir * lineCenter;
+//                         float2 capLocalUV = uv - startCapCenter;
+//                         startCapGradientUV = capLocalUV / (_EndCapRadius * 2.0); // Normalize to cap size
+//                     }
+                    
+//                     GradientParams startCapParams;
+//                     startCapParams.colorA = _ValueFilledGradientColorA;
+//                     startCapParams.colorB = _ValueFilledGradientColorB;
+//                     startCapParams.colorC = _ValueFilledGradientColorC;
+//                     startCapParams.colorD = _ValueFilledGradientColorD;
+//                     startCapParams.direction = _ValueFilledGradientDirection;
+//                     startCapParams.speed = _ValueFilledGradientSpeed;
+//                     startCapParams.manualPosition = 0;
+//                     startCapParams.globalBlend = _ValueFilledGlobalBlend;
+//                     startCapParams.globalIntensity = _ValueFilledGlobalIntensity;
+//                     startCapParams.scale = _ValueFilledGradientScale;
+//                     startCapParams.offset = _ValueFilledGradientOffset;
+                    
+//                     float4 startCapColor = GetGradientColor(startCapParams, _ValueFilledGradientType, startCapGradientUV, i.screenPos, _Time.y);
+//                     startCapColor.a *= _ValueFilledAlpha * startCapMask;
+//                     col = lerp(col, startCapColor, startCapColor.a);
+//                 }
+//                 if (endCapMask > 0.01) {
+//                     // Create proper gradient UVs for the end cap - use the same gradient system as the ring
+//                     float2 endCapGradientUV;
+//                     if (_ValueUnfilledGradientType == 2) { // Angular
+//                         // For angular, use the same remapping as the ring but centered on the end position
+//                         endCapGradientUV = remapUvForAngularRange(uv, startAngleRad, angleRangeRad);
+//                     } else if (_ValueUnfilledGradientType == 1) { // Radial
+//                         // For radial, use the actual UV position relative to the cap center
+//                         float endAngle = startAngleRad + angleRangeRad;
+//                         float2 endDir = float2(-cos(endAngle), sin(endAngle));
+//                         float2 endCapCenter = endDir * lineCenter;
+//                         float2 capLocalUV = uv - endCapCenter;
+//                         endCapGradientUV = capLocalUV / (_EndCapRadius * 2.0); // Normalize to cap size
+//                     } else { // Linear, Diamond, etc.
+//                         // For linear, use the actual UV position relative to the cap center
+//                         float endAngle = startAngleRad + angleRangeRad;
+//                         float2 endDir = float2(-cos(endAngle), sin(endAngle));
+//                         float2 endCapCenter = endDir * lineCenter;
+//                         float2 capLocalUV = uv - endCapCenter;
+//                         endCapGradientUV = capLocalUV / (_EndCapRadius * 2.0); // Normalize to cap size
+//                     }
+                    
+//                     GradientParams endCapParams;
+//                     endCapParams.colorA = _ValueUnfilledGradientColorA;
+//                     endCapParams.colorB = _ValueUnfilledGradientColorB;
+//                     endCapParams.colorC = _ValueUnfilledGradientColorC;
+//                     endCapParams.colorD = _ValueUnfilledGradientColorD;
+//                     endCapParams.direction = _ValueUnfilledGradientDirection;
+//                     endCapParams.speed = _ValueUnfilledGradientSpeed;
+//                     endCapParams.manualPosition = 0;
+//                     endCapParams.globalBlend = _ValueUnfilledGlobalBlend;
+//                     endCapParams.globalIntensity = _ValueUnfilledGlobalIntensity;
+//                     endCapParams.scale = _ValueUnfilledGradientScale;
+//                     endCapParams.offset = _ValueUnfilledGradientOffset;
+                    
+//                     float4 endCapColor = GetGradientColor(endCapParams, _ValueUnfilledGradientType, endCapGradientUV, i.screenPos, _Time.y);
+//                     endCapColor.a *= _ValueUnfilledAlpha * endCapMask;
+//                     col = lerp(col, endCapColor, endCapColor.a);
+//                 }
+
+//                 // 4. Render value areas (filled and unfilled) - thinner than backing line
+//                 // Calculate value area bounds (centered on the backing line)
+//                 float valueOuter = lineOuter - (_LineWidth - _ValueWidth) * 0.5;
+//                 float valueInner = lineInner + (_LineWidth - _ValueWidth) * 0.5;
+                
+//                 // Create value area masks
+//                 float valueAreaMask = SmoothRing(dist, valueInner, valueOuter, aa);
+//                 valueAreaMask *= rangeCheck; // Apply angle range check
+                
+//                 if (valueAreaMask > 0.01) {
+//                     float4 valueColor;
+//                     if (valueMask < 0.5) { // Filled area
+//                         float2 gradientUV = (_ValueFilledGradientType == 2) ? remapUvForAngularRange(uv, startAngleRad, angleRangeRad) : unwrappedUV;
+                        
+//                         GradientParams valueFilledParams;
+//                         valueFilledParams.colorA = _ValueFilledGradientColorA;
+//                         valueFilledParams.colorB = _ValueFilledGradientColorB;
+//                         valueFilledParams.colorC = _ValueFilledGradientColorC;
+//                         valueFilledParams.colorD = _ValueFilledGradientColorD;
+//                         valueFilledParams.direction = _ValueFilledGradientDirection;
+//                         valueFilledParams.speed = _ValueFilledGradientSpeed;
+//                         valueFilledParams.manualPosition = 0;
+//                         valueFilledParams.globalBlend = _ValueFilledGlobalBlend;
+//                         valueFilledParams.globalIntensity = _ValueFilledGlobalIntensity;
+//                         valueFilledParams.scale = _ValueFilledGradientScale;
+//                         valueFilledParams.offset = _ValueFilledGradientOffset;
+                        
+//                         valueColor = GetGradientColor(valueFilledParams, _ValueFilledGradientType, gradientUV, i.screenPos, _Time.y);
+//                         valueColor.a *= _ValueFilledAlpha;
+//                     } else { // Unfilled area
+//                         float2 gradientUV = (_ValueUnfilledGradientType == 2) ? remapUvForAngularRange(uv, startAngleRad, angleRangeRad) : unwrappedUV;
+                        
+//                         GradientParams valueUnfilledParams;
+//                         valueUnfilledParams.colorA = _ValueUnfilledGradientColorA;
+//                         valueUnfilledParams.colorB = _ValueUnfilledGradientColorB;
+//                         valueUnfilledParams.colorC = _ValueUnfilledGradientColorC;
+//                         valueUnfilledParams.colorD = _ValueUnfilledGradientColorD;
+//                         valueUnfilledParams.direction = _ValueUnfilledGradientDirection;
+//                         valueUnfilledParams.speed = _ValueUnfilledGradientSpeed;
+//                         valueUnfilledParams.manualPosition = 0;
+//                         valueUnfilledParams.globalBlend = _ValueUnfilledGlobalBlend;
+//                         valueUnfilledParams.globalIntensity = _ValueUnfilledGlobalIntensity;
+//                         valueUnfilledParams.scale = _ValueUnfilledGradientScale;
+//                         valueUnfilledParams.offset = _ValueUnfilledGradientOffset;
+                        
+//                         valueColor = GetGradientColor(valueUnfilledParams, _ValueUnfilledGradientType, gradientUV, i.screenPos, _Time.y);
+//                         valueColor.a *= _ValueUnfilledAlpha;
+//                     }
+//                     valueColor.a *= valueAreaMask;
+//                     col = lerp(col, valueColor, valueColor.a);
+//                 }
+
+//                 // 4. Render separator cap (top layer - above ring segments)
+//                 if (separatorCapMask > 0.01) {
+//                     // Create proper gradient UVs for the separator cap - use the same gradient system as the ring
+//                     float2 separatorCapGradientUV;
+//                     if (_ValueFilledGradientType == 2) { // Angular
+//                         // For angular, use the same remapping as the ring but centered on the current value position
+//                         separatorCapGradientUV = remapUvForAngularRange(uv, startAngleRad, angleRangeRad);
+//                     } else if (_ValueFilledGradientType == 1) { // Radial
+//                         // For radial, use the actual UV position relative to the cap center
+//                         float separatorAngle = startAngleRad + (_Value * angleRangeRad);
+//                         float2 separatorDir = float2(-cos(separatorAngle), sin(separatorAngle));
+//                         float2 separatorCapCenter = separatorDir * lineCenter;
+//                         float2 capLocalUV = uv - separatorCapCenter;
+//                         separatorCapGradientUV = capLocalUV / (_SeparatorCapRadius * 2.0); // Normalize to cap size
+//                     } else { // Linear, Diamond, etc.
+//                         // For linear, use the actual UV position relative to the cap center
+//                         float separatorAngle = startAngleRad + (_Value * angleRangeRad);
+//                         float2 separatorDir = float2(-cos(separatorAngle), sin(separatorAngle));
+//                         float2 separatorCapCenter = separatorDir * lineCenter;
+//                         float2 capLocalUV = uv - separatorCapCenter;
+//                         separatorCapGradientUV = capLocalUV / (_SeparatorCapRadius * 2.0); // Normalize to cap size
+//                     }
+                    
+//                     GradientParams separatorCapParams;
+//                     separatorCapParams.colorA = _ValueFilledGradientColorA;
+//                     separatorCapParams.colorB = _ValueFilledGradientColorB;
+//                     separatorCapParams.colorC = _ValueFilledGradientColorC;
+//                     separatorCapParams.colorD = _ValueFilledGradientColorD;
+//                     separatorCapParams.direction = _ValueFilledGradientDirection;
+//                     separatorCapParams.speed = _ValueFilledGradientSpeed;
+//                     separatorCapParams.manualPosition = 0;
+//                     separatorCapParams.globalBlend = _ValueFilledGlobalBlend;
+//                     separatorCapParams.globalIntensity = _ValueFilledGlobalIntensity;
+//                     separatorCapParams.scale = _ValueFilledGradientScale;
+//                     separatorCapParams.offset = _ValueFilledGradientOffset;
+                    
+//                     float4 separatorCapColor = GetGradientColor(separatorCapParams, _ValueFilledGradientType, separatorCapGradientUV, i.screenPos, _Time.y);
+//                     separatorCapColor.a *= _ValueFilledAlpha * separatorCapMask;
+//                     col = lerp(col, separatorCapColor, separatorCapColor.a);
+//                 }
+
+//                 // 5. Render nub and its outline
+//                 float2 nubSpaceUV = localNubUV / float2(_NubWidth, _NubHeight); // Normalized for linear/radial
+//                 if (nubOutlineMask > 0.01) {
+//                     float2 gradientUV = (_NubOutlineGradientType == 2) ? uv : nubSpaceUV;
+                    
+//                     GradientParams nubOutlineParams;
+//                     nubOutlineParams.colorA = _NubOutlineGradientColorA;
+//                     nubOutlineParams.colorB = _NubOutlineGradientColorB;
+//                     nubOutlineParams.colorC = _NubOutlineGradientColorC;
+//                     nubOutlineParams.colorD = _NubOutlineGradientColorD;
+//                     nubOutlineParams.direction = _NubOutlineGradientDirection;
+//                     nubOutlineParams.speed = _NubOutlineGradientSpeed;
+//                     nubOutlineParams.manualPosition = 0;
+//                     nubOutlineParams.globalBlend = _NubOutlineGlobalBlend;
+//                     nubOutlineParams.globalIntensity = _NubOutlineGlobalIntensity;
+//                     nubOutlineParams.scale = _NubOutlineGradientScale;
+//                     nubOutlineParams.offset = _NubOutlineGradientOffset;
+                    
+//                     float4 nubOutlineColor = GetGradientColor(nubOutlineParams, _NubOutlineGradientType, gradientUV, i.screenPos, _Time.y);
+//                     nubOutlineColor.a *= _NubOutlineAlpha * nubOutlineMask;
+//                     col = lerp(col, nubOutlineColor, nubOutlineColor.a);
+//                 }
+//                 if (nubMask > 0.01) {
+//                     float2 gradientUV = (_NubGradientType == 2) ? uv : nubSpaceUV;
+                    
+//                     GradientParams nubParams;
+//                     nubParams.colorA = _NubGradientColorA;
+//                     nubParams.colorB = _NubGradientColorB;
+//                     nubParams.colorC = _NubGradientColorC;
+//                     nubParams.colorD = _NubGradientColorD;
+//                     nubParams.direction = _NubGradientDirection;
+//                     nubParams.speed = _NubGradientSpeed;
+//                     nubParams.manualPosition = 0;
+//                     nubParams.globalBlend = _NubGlobalBlend;
+//                     nubParams.globalIntensity = _NubGlobalIntensity;
+//                     nubParams.scale = _NubGradientScale;
+//                     nubParams.offset = _NubGradientOffset;
+                    
+//                     float4 nubColor = GetGradientColor(nubParams, _NubGradientType, gradientUV, i.screenPos, _Time.y);
+                    
+//                     // Apply 3D lighting to nub (subtle effect)
+//                     nubColor.rgb = apply3DLighting(nubColor.rgb, calculateNubNormal(localNubUV, float2(_NubWidth, _NubHeight), _BevelDepth));
+//                     nubColor.a *= _NubAlpha * nubMask;
+//                     col = lerp(col, nubColor, nubColor.a);
+//                 }
+                
+//                 // Apply Unity UI clipping
+//                 col.a *= UnityGet2DClipping(i.worldPos.xy, _ClipRect);
+                
+//                 return col;
+//             } 
+
+//             ENDCG
+//         }
+
+//         Pass
+//         {
+//             Name "AdditiveGlow"
+//             Blend One One
+//             CGPROGRAM
+//             #pragma vertex vert
+//             #pragma fragment frag
+//             #include "UnityCG.cginc"
+//             #include "UnityUI.cginc"
+//             #include "./CG/Core/Constants.cginc"
+//             #include "./CG/Core/UIGradients.cginc"
+//             #include "./CG/SDF/SDFPrimitives.cginc"
+//             #include "./CG/SDF/SDFOperations.cginc"
+
+//             struct appdata_t
+//             {
+//                 float4 vertex : POSITION;
+//                 float4 color : COLOR;
+//                 float2 texcoord : TEXCOORD0;
+//             };
+
+//             struct v2f
+//             {
+//                 float4 vertex : SV_POSITION;
+//                 float2 texcoord : TEXCOORD0;
+//                 float4 screenPos : TEXCOORD1;
+//                 float4 worldPos : TEXCOORD2;
+//             };
+
+//             // Common Glow gradient
+//             float4 _GlowGradientColorA, _GlowGradientColorB, _GlowGradientColorC, _GlowGradientColorD;
+//             float2 _GlowGradientDirection; 
+//             float _GlowGradientSpeed, _GlowGradientScale, _GlowGradientOffset;
+//             float _GlowGlobalBlend, _GlowGlobalIntensity;
+//             int _GlowGradientType;
+//             float _GlowWidth, _GlowIntensity;
+//             float _GlowAlpha;
+
+//             // Common component properties
+//             float _LineWidth;
+//             float _OutlineWidth;
+            
+//             // Knob parameters needed for glow calculation
+//             float _Value;
+//             float _LineRadius;
+//             float _ValueWidth;
+//             float _NubRadiusOffset;
+//             float _NubWidth;
+//             float _NubHeight;
+//             float _StartAngle;
+//             float _AngleRange;
+            
+//             float4 _ClipRect;
+
+//             v2f vert(appdata_t v)
+//             {
+//                 v2f o;
+//                 o.vertex = UnityObjectToClipPos(v.vertex);
+//                 o.texcoord = v.texcoord * 2.0 - 1.0; // [-1,1] range
+//                 o.screenPos = ComputeScreenPos(o.vertex);
+//                 o.worldPos = v.vertex;
+//                 return o;
+//             }
+
+//             float2 rotate(float2 pt, float angle)
+//             {
+//                 float s = sin(angle);
+//                 float c = cos(angle);
+//                 return float2(pt.x * c - pt.y * s, pt.x * s + pt.y * c);
+//             }
+
+//             // Convert mathematical angle to UI angle
+//             float mathAngleToUIAngle(float mathAngle)
+//             {
+//                 return -mathAngle + UNITY_PI;
+//             }
+
+//             // FIXED: Get distance from the knob geometry for proper glow calculation
+//             float getKnobGeometryDistance(float2 uv)
+//             {
+//                 float dist = length(uv);
+                
+//                 // Define line bounds with outline
+//                 float lineOuter = _LineRadius + _OutlineWidth;
+//                 float lineInner = _LineRadius - _LineWidth;
+                
+//                 // Angle calculations
+//                 float startAngleRad = _StartAngle * DEG2RAD;
+//                 float angleRangeRad = _AngleRange * DEG2RAD;
+                
+//                 // Check if we're in the angle range
+//                 float angle = mathAngleToUIAngle(atan2(uv.y, uv.x));
+//                 float relativeAngle = angle - startAngleRad;
+//                 while (relativeAngle < 0.0) relativeAngle += 2.0 * UNITY_PI;
+//                 bool inAngleRange = relativeAngle <= angleRangeRad;
+                
+//                 // If not in angle range, return large distance (no glow)
+//                 if (!inAngleRange) {
+//                     return 1000.0;
+//                 }
+                
+//                 // Check if we're inside the line (including fill area)
+//                 if (dist <= lineOuter) {
+//                     return -0.001; // Inside the shape, no glow
+//                 }
+                
+//                 // Check if we're in the nub area - if so, return negative to exclude glow
+//                 float lineCenter = lineInner + (_LineWidth * 0.5);
+//                 float nubAngle = startAngleRad + (_Value * angleRangeRad);
+//                 float2 nubDir = float2(-cos(nubAngle), sin(nubAngle));
+//                 float nubRadius = lineCenter + _NubRadiusOffset;
+//                 float2 nubCenter = nubDir * nubRadius;
+//                 float2 localNubUV = rotate(uv - nubCenter, nubAngle + UNITY_PI * 0.5);
+//                 float nubDistance = RoundedRectSDF(localNubUV, float2(_NubWidth, _NubHeight) * 0.5 + _OutlineWidth, 0.02);
+                
+//                 // If we're in the nub area, exclude glow
+//                 if (nubDistance <= 0.0) {
+//                     return -0.001; // Inside nub, no glow
+//                 }
+                
+//                 // We're outside the line and outside the nub, calculate distance from the outer edge
+//                 return dist - lineOuter;
+//             }
+
+//             fixed4 frag(v2f i) : SV_Target
+//             {
+//                 float2 uv = i.texcoord;
+                
+//                 // FIXED: Use distance from actual knob geometry instead of center
+//                 float geomDistance = getKnobGeometryDistance(uv);
+                
+//                 // Only apply glow outside the shape (positive distances)
+//                 if (geomDistance <= 0.0) {
+//                     return fixed4(0, 0, 0, 0); // No glow inside the shape
+//                 }
+                
+//                 // Calculate glow falloff: full intensity at edge (distance = 0), zero at glow width
+//                 float normalizedDistance = geomDistance / _GlowWidth;
+//                 float glowFalloff = 1.0 - saturate(normalizedDistance);
+                
+//                 // Apply smooth falloff curve for more natural glow
+//                 glowFalloff = pow(glowFalloff, 1.5); // Slightly softer than quadratic
+                
+//                 // Antialiasing for smooth edges
+//                 float aa = fwidth(geomDistance) * 0.75;
+//                 float glowMask = smoothstep(0.0, aa, glowFalloff);
+                
+//                 GradientParams glowParams;
+//                 glowParams.colorA = _GlowGradientColorA;
+//                 glowParams.colorB = _GlowGradientColorB;
+//                 glowParams.colorC = _GlowGradientColorC;
+//                 glowParams.colorD = _GlowGradientColorD;
+//                 glowParams.direction = _GlowGradientDirection;
+//                 glowParams.speed = _GlowGradientSpeed;
+//                 glowParams.manualPosition = 0;
+//                 glowParams.globalBlend = _GlowGlobalBlend;
+//                 glowParams.globalIntensity = _GlowGlobalIntensity;
+//                 glowParams.scale = _GlowGradientScale;
+//                 glowParams.offset = _GlowGradientOffset;
+                
+//                 float4 glowColor = GetGradientColor(glowParams, _GlowGradientType, uv, i.screenPos, _Time.y);
+                
+//                 // For additive glow: apply falloff directly to RGB, keep alpha constant for blending
+//                 glowColor.rgb *= glowFalloff * _GlowIntensity * _GlowAlpha;
+//                 glowColor.a = _GlowAlpha; // Keep alpha constant for proper additive blending
+
+//                 glowColor.a *= UnityGet2DClipping(i.worldPos.xy, _ClipRect);
+
+//                 return glowColor;
+//             }
+//             ENDCG
+//         }
+//     }
+//     FallBack "UI/Default"
+// }

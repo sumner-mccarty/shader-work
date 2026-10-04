@@ -1,0 +1,132 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Slider
+  m_Shader: {fileID: 4800000, guid: 10e0a5b930c5b7e46a7e57b6419f42c3, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _GlowAlpha: 1
+    - _GlowGlobalBlend: 0
+    - _GlowGlobalIntensity: 1
+    - _GlowGradientOffset: 0
+    - _GlowGradientScale: 1
+    - _GlowGradientSpeed: 1
+    - _GlowGradientType: 0
+    - _GlowIntensity: 2
+    - _GlowWidth: 0.1
+    - _LineAlpha: 1
+    - _LineGlobalBlend: 0
+    - _LineGlobalIntensity: 1
+    - _LineGradientOffset: 0
+    - _LineGradientScale: 1
+    - _LineGradientSpeed: 1
+    - _LineGradientType: 0
+    - _NubAlpha: 1
+    - _NubGlobalBlend: 0
+    - _NubGlobalIntensity: 1
+    - _NubGradientOffset: 0
+    - _NubGradientScale: 1
+    - _NubGradientSpeed: 1
+    - _NubGradientType: 0
+    - _NubHeight: 1
+    - _NubOutlineAlpha: 1
+    - _NubOutlineGlobalBlend: 0
+    - _NubOutlineGlobalIntensity: 1
+    - _NubOutlineGradientOffset: 0
+    - _NubOutlineGradientScale: 1
+    - _NubOutlineGradientSpeed: 1
+    - _NubOutlineGradientType: 0
+    - _NubWidth: 0.369
+    - _OutlineAlpha: 1
+    - _OutlineGlobalBlend: 0
+    - _OutlineGlobalIntensity: 1
+    - _OutlineGradientOffset: 0
+    - _OutlineGradientScale: 1
+    - _OutlineGradientSpeed: 1
+    - _OutlineGradientType: 0
+    - _OutlineWidth: 0.054
+    - _RoundedRadius: 0.117
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _Value: 0.202
+    - _ValueFilledAlpha: 1
+    - _ValueFilledGlobalBlend: 0
+    - _ValueFilledGlobalIntensity: 1
+    - _ValueFilledGradientOffset: 0
+    - _ValueFilledGradientScale: 1
+    - _ValueFilledGradientSpeed: 1
+    - _ValueFilledGradientType: 0
+    - _ValueUnfilledAlpha: 1
+    - _ValueUnfilledGlobalBlend: 0
+    - _ValueUnfilledGlobalIntensity: 1
+    - _ValueUnfilledGradientOffset: 0
+    - _ValueUnfilledGradientScale: 1
+    - _ValueUnfilledGradientSpeed: 1
+    - _ValueUnfilledGradientType: 0
+    - _ValueWidthFactor: 1
+    m_Colors:
+    - _GlowGradientColorA: {r: 1, g: 0, b: 1, a: 1}
+    - _GlowGradientColorB: {r: 1, g: 1, b: 0, a: 1}
+    - _GlowGradientColorC: {r: 0, g: 1, b: 1, a: 1}
+    - _GlowGradientColorD: {r: 1, g: 0, b: 0, a: 1}
+    - _GlowGradientDirection: {r: 1, g: 1, b: 0, a: 0}
+    - _LineGradientColorA: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+    - _LineGradientColorB: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _LineGradientColorC: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - _LineGradientColorD: {r: 0.4, g: 0.4, b: 0.4, a: 1}
+    - _LineGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _NubGradientColorA: {r: 1, g: 1, b: 1, a: 1}
+    - _NubGradientColorB: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+    - _NubGradientColorC: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+    - _NubGradientColorD: {r: 0.4, g: 0.4, b: 0.4, a: 1}
+    - _NubGradientDirection: {r: 0, g: 1, b: 0, a: 0}
+    - _NubOutlineGradientColorA: {r: 1, g: 0, b: 1, a: 1}
+    - _NubOutlineGradientColorB: {r: 0, g: 1, b: 1, a: 1}
+    - _NubOutlineGradientColorC: {r: 1, g: 1, b: 0, a: 1}
+    - _NubOutlineGradientColorD: {r: 1, g: 0, b: 0, a: 1}
+    - _NubOutlineGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _OutlineGradientColorA: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _OutlineGradientColorB: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+    - _OutlineGradientColorC: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+    - _OutlineGradientColorD: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+    - _OutlineGradientDirection: {r: 0, g: 1, b: 0, a: 0}
+    - _ValueFilledGradientColorA: {r: 1, g: 0, b: 0, a: 1}
+    - _ValueFilledGradientColorB: {r: 1, g: 0.5, b: 0, a: 1}
+    - _ValueFilledGradientColorC: {r: 1, g: 1, b: 0, a: 1}
+    - _ValueFilledGradientColorD: {r: 0, g: 1, b: 0, a: 1}
+    - _ValueFilledGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _ValueUnfilledGradientColorA: {r: 0, g: 0, b: 1, a: 1}
+    - _ValueUnfilledGradientColorB: {r: 0, g: 1, b: 1, a: 1}
+    - _ValueUnfilledGradientColorC: {r: 0.5, g: 0.5, b: 1, a: 1}
+    - _ValueUnfilledGradientColorD: {r: 0, g: 0, b: 0.5, a: 1}
+    - _ValueUnfilledGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

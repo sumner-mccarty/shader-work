@@ -1,0 +1,157 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DrumPad
+  m_Shader: {fileID: 4800000, guid: 51db47dd11d9d4247bf1473acf2356b1, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _FILLUSEGRADIENT_ON
+  - _GLOWUSEGRADIENT_ON
+  - _OUTLINEUSEGRADIENT_ON
+  - _USEGLOBALTEST_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BumpScale: 1
+    - _ColorMask: 15
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _FillAmount: 0.89
+    - _FillGlobalBlend: 0
+    - _FillGlobalIntensity: 0.4
+    - _FillGradientSpeed: 0
+    - _FillOverride: 0
+    - _FillUseGlobal: 0
+    - _FillUseGradient: 1
+    - _GlobalGradientTime: 0
+    - _GlobalIntensity: 1
+    - _GlobalPulseFreq: 2
+    - _GlobalPulseIntensity: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _GlowDistance: 0.367
+    - _GlowGlobalBlend: 1
+    - _GlowGlobalIntensity: 1
+    - _GlowGradientSpeed: 1
+    - _GlowIntensity: 0.26
+    - _GlowRadius: 0.243
+    - _GlowUseGlobal: 0
+    - _GlowUseGradient: 1
+    - _KnobValue: 0.5
+    - _LocalOverride: 0
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _OutlineGlobalBlend: 1
+    - _OutlineGlobalIntensity: 1
+    - _OutlineGradientSpeed: 1
+    - _OutlineOverride: 0
+    - _OutlineUseGlobal: 0
+    - _OutlineUseGradient: 1
+    - _OutlineWidth: 0.01
+    - _Parallax: 0.02
+    - _RoundedRadius: 0.122
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _TestAnimationSpeed: 1
+    - _UVSec: 0
+    - _UseGlobalTest: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FillColor: {r: 0.12873507, g: 1, b: 0, a: 1}
+    - _FillColorA: {r: 1, g: 1, b: 1, a: 1}
+    - _FillColorB: {r: 1, g: 1, b: 1, a: 1}
+    - _FillGradientColorA: {r: 0.9949657, g: 1, b: 0, a: 1}
+    - _FillGradientColorB: {r: 0.93710685, g: 0.7445562, b: 0.055990476, a: 1}
+    - _FillGradientDirection: {r: 1, g: 1, b: 0, a: 0}
+    - _GlobalGradientColorA: {r: 1, g: 0, b: 0, a: 1}
+    - _GlobalGradientColorB: {r: 0, g: 1, b: 0, a: 1}
+    - _GlobalGradientColorC: {r: 0, g: 0, b: 1, a: 1}
+    - _GlobalGradientColorD: {r: 1, g: 1, b: 0, a: 1}
+    - _GlobalGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _GlobalWaveParams: {r: 1, g: 1, b: 0.1, a: 1}
+    - _GlowColor: {r: 0.12941177, g: 1, b: 0, a: 1}
+    - _GlowColorA: {r: 1, g: 1, b: 1, a: 1}
+    - _GlowColorB: {r: 1, g: 1, b: 1, a: 1}
+    - _GlowGradientColorA: {r: 1, g: 0, b: 1, a: 1}
+    - _GlowGradientColorB: {r: 1, g: 1, b: 0, a: 1}
+    - _GlowGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _LeftColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+    - _LocalColorA: {r: 1, g: 0, b: 1, a: 1}
+    - _LocalColorB: {r: 0, g: 1, b: 1, a: 1}
+    - _NubColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OutlineColor: {r: 0.12941177, g: 1, b: 0, a: 1}
+    - _OutlineColorA: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineColorB: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineGradientColorA: {r: 1, g: 0, b: 1, a: 1}
+    - _OutlineGradientColorB: {r: 0, g: 1, b: 1, a: 1}
+    - _OutlineGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _RightColor: {r: 1, g: 0, b: 1, a: 1}
+    - _TestGradientColorA: {r: 1, g: 0, b: 0, a: 1}
+    - _TestGradientColorB: {r: 0, g: 0, b: 1, a: 1}
+    - _TestGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

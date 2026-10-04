@@ -1,0 +1,217 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SDFKnob 1
+  m_Shader: {fileID: 4800000, guid: 77f31a16e9f9f264599907a1e2eaa3f0, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: _FillPatternContrast
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AmbientIntensity: 0.221
+    - _AngleRange: 270
+    - _BumpScale: 1
+    - _ColorMask: 15
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _EndRadius: 0.184
+    - _FillAlpha: 1
+    - _FillBevelDepth: 0.321
+    - _FillBevelDistance: 0.022
+    - _FillBevelSmoothness: 0.022
+    - _FillGlobalBlend: 0
+    - _FillGlobalIntensity: 1
+    - _FillGradientOffset: 0
+    - _FillGradientScale: 1
+    - _FillGradientSpeed: 1
+    - _FillGradientType: 0
+    - _FillPatternContrast: 0.73
+    - _FillPatternIntensity: 0.47
+    - _FillPatternRotateWithValue: 1
+    - _FillPatternRoughnessEffect: 0.002
+    - _FillPatternScale: 30
+    - _FillPatternSpecularEffect: 1.87
+    - _FillPatternType: 3
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Light1Enabled: 1
+    - _Light1Intensity: 0.157
+    - _Light1Specular: 0.794
+    - _Light1SpecularPower: 85
+    - _Light2Enabled: 1
+    - _Light2Intensity: 0.253
+    - _Light2Specular: 0.794
+    - _Light2SpecularPower: 85
+    - _Light3Enabled: 1
+    - _Light3Intensity: 0.246
+    - _Light3Specular: 0.8
+    - _Light3SpecularPower: 85
+    - _LineAlpha: 1
+    - _LineBevelDepth: 0.2
+    - _LineBevelDistance: 0.031
+    - _LineBevelSmoothness: 0.031
+    - _LineGlobalBlend: 0
+    - _LineGlobalIntensity: 1
+    - _LineGradientOffset: 0
+    - _LineGradientScale: 1
+    - _LineGradientSpeed: 1
+    - _LineGradientType: 0
+    - _LineInnerBevelDepth: 0.2
+    - _LineInnerBevelDistance: 0.02
+    - _LineInnerBevelSmoothness: 0.0304
+    - _LineOuterBevelDepth: 0.1928
+    - _LineOuterBevelDistance: 0.103
+    - _LineOuterBevelSmoothness: 0.021
+    - _LinePatternContrast: 1.7
+    - _LinePatternIntensity: 0.196
+    - _LinePatternRotateWithValue: 0
+    - _LinePatternRoughnessEffect: 0.572
+    - _LinePatternScale: 50.8
+    - _LinePatternSpecularEffect: 1.194
+    - _LinePatternType: 0
+    - _LineRadius: 0.525
+    - _LineWidth: 0.107
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _RoundedEnds: 1
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _StartAngle: 0
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UVSec: 0
+    - _Value: 0.537
+    - _ValueFilledAlpha: 1
+    - _ValueFilledBevelDepth: 0.1822
+    - _ValueFilledBevelDistance: 0.026
+    - _ValueFilledBevelSmoothness: 0.0465
+    - _ValueFilledEnabled: 1
+    - _ValueFilledGlobalBlend: 0
+    - _ValueFilledGlobalIntensity: 1
+    - _ValueFilledGradientOffset: 0
+    - _ValueFilledGradientScale: 1
+    - _ValueFilledGradientSpeed: 1
+    - _ValueFilledGradientType: 0
+    - _ValueFilledPatternContrast: 1.5
+    - _ValueFilledPatternIntensity: 0.3
+    - _ValueFilledPatternRotateWithValue: 0
+    - _ValueFilledPatternRoughnessEffect: 0.3
+    - _ValueFilledPatternScale: 20
+    - _ValueFilledPatternSpecularEffect: 0.5
+    - _ValueFilledPatternType: 0
+    - _ValueThickness: 0.863
+    - _ValueUnfilledAlpha: 1
+    - _ValueUnfilledBevelDepth: 0.1634
+    - _ValueUnfilledBevelDistance: 0.011
+    - _ValueUnfilledBevelSmoothness: 0.02
+    - _ValueUnfilledEnabled: 1
+    - _ValueUnfilledGlobalBlend: 0
+    - _ValueUnfilledGlobalIntensity: 1
+    - _ValueUnfilledGradientOffset: 0
+    - _ValueUnfilledGradientScale: 1
+    - _ValueUnfilledGradientSpeed: 1
+    - _ValueUnfilledGradientType: 0
+    - _ValueUnfilledPatternContrast: 1.5
+    - _ValueUnfilledPatternIntensity: 0.3
+    - _ValueUnfilledPatternRotateWithValue: 0
+    - _ValueUnfilledPatternRoughnessEffect: 0.3
+    - _ValueUnfilledPatternScale: 20
+    - _ValueUnfilledPatternSpecularEffect: 0.5
+    - _ValueUnfilledPatternType: 0
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FillColor: {r: 0.23270428, g: 0.23270428, b: 0.23270428, a: 1}
+    - _FillGradientColorA: {r: 1, g: 0, b: 0, a: 1}
+    - _FillGradientColorB: {r: 0, g: 1, b: 0, a: 1}
+    - _FillGradientColorC: {r: 0, g: 0, b: 1, a: 1}
+    - _FillGradientColorD: {r: 1, g: 1, b: 0, a: 1}
+    - _FillGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _Light1Color: {r: 1, g: 0.99500644, b: 0.94654083, a: 1}
+    - _Light1Direction: {r: 0.2, g: -0.53, b: 1, a: 0}
+    - _Light2Color: {r: 0, g: 0.9420934, b: 1, a: 1}
+    - _Light2Direction: {r: 0.32, g: 0.53, b: 1, a: 0}
+    - _Light3Color: {r: 1, g: 0, b: 0.8888173, a: 1}
+    - _Light3Direction: {r: -0.32, g: 0.53, b: 1, a: 0}
+    - _LineColor: {r: 0.4528302, g: 0.4198971, b: 0, a: 1}
+    - _LineGradientColorA: {r: 1, g: 0, b: 0, a: 1}
+    - _LineGradientColorB: {r: 0, g: 1, b: 0, a: 1}
+    - _LineGradientColorC: {r: 0, g: 0, b: 1, a: 1}
+    - _LineGradientColorD: {r: 1, g: 1, b: 0, a: 1}
+    - _LineGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _ValueFilledColor: {r: 0, g: 0.94117653, b: 1, a: 1}
+    - _ValueFilledGradientColorA: {r: 1, g: 0, b: 0, a: 1}
+    - _ValueFilledGradientColorB: {r: 0, g: 1, b: 0, a: 1}
+    - _ValueFilledGradientColorC: {r: 0, g: 0, b: 1, a: 1}
+    - _ValueFilledGradientColorD: {r: 1, g: 1, b: 0, a: 1}
+    - _ValueFilledGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _ValueUnfilledColor: {r: 1, g: 0, b: 0.89019614, a: 1}
+    - _ValueUnfilledGradientColorA: {r: 1, g: 0, b: 0, a: 1}
+    - _ValueUnfilledGradientColorB: {r: 0, g: 1, b: 0, a: 1}
+    - _ValueUnfilledGradientColorC: {r: 0, g: 0, b: 1, a: 1}
+    - _ValueUnfilledGradientColorD: {r: 1, g: 1, b: 0, a: 1}
+    - _ValueUnfilledGradientDirection: {r: 1, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
