@@ -20,7 +20,7 @@ CONTROLS = dict(                     # the hardware — identical in both modes
     MARK="#1B140E", MARK_DIM="#4F4538", DIS_MARK="#8A857B", ON_MARK="#2A1805",
     ACCENT=AMBER, SOLO="#E8B64A", LAMP="#F7E4B0", LAMP_OFF="#7A6A48", HOT="#D8452E",
     CAP="#B4B9BF", SKIRT="#8C9197", NUB=AMBER, HANDLE="#B4B9BF",
-    VALUE="#F0AA3C", VALUE_EM=0.25, TRACK="#120B06", ARC_OFF="#2A1B10",
+    VALUE="#F0AA3C", VALUE_EM=0.55, TRACK="#120B06", ARC_OFF="#2A1B10",
     SCROLL="#4A3A2A", SCROLL_HI="#C9A24A", PAD_BODY="#3A2C20", PAD_TINT=0.6,
 )
 # brushed brass: long anisotropic streaks (Metal, p1 0.5, p2 0 = longest) at a visible 2 px grain and a real

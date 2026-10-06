@@ -2129,8 +2129,11 @@ def parts_sheet(look, mode, out):
     for by, bh in bands:
         sc.canvas.px[max(0, by):by + bh] = sc.canvas.np.array(rgbf(sc.P["GAP"]), "float32")
     rowsc = _track_rows(look.modes[mode]["track"], look.track_themes)
-    ink_c, dim_c = ink(look, mode, sc.P)
+    face_ink, face_dim = ink(look, mode, sc.P)
+    band_ink, band_dim = ink(look, mode, sc.P, "backplane")       # the Plates/Screens bands sit on the GAP
     for label, c, x, yy in placed:
+        banded = label.startswith(("Plates", "Screens"))
+        ink_c, dim_c = (band_ink, band_dim) if banded else (face_ink, face_dim)
         if c is None:
             sc.canvas.text(x, yy, label, ink_c, 12, True)
             continue

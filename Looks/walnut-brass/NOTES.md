@@ -47,3 +47,30 @@ hardware (plain aluminium, amber, no stitching).
 
 ## Gate
 `check` 0 errors · `lookcheck.py WalnutBrass` 46 skins, 0 errors, 0 warnings · `tests/test_basics.py` passed. Not verified: Play Mode in the real app (no Unity here).
+
+## Round 4 — Play Mode feedback (real app) and quality pass
+Findings from Unity Play Mode: (1) module names / captions printed on the brass faceplate were nearly
+invisible; (2) the big brass plates read as flat mustard, not brushed brass.
+
+**(1) Print.** Cause: the app's text roles (`ui.text`/`ui.textDim`, and the chrome/track roles derived from the
+key MARK) were cream or key-dark, not the plate print. The rack sheet could not show it (it printed captions in
+`ink.faceplate`), so I added `python Tools/looks/walnut_brass.py printcheck` (WCAG contrast of every app print
+role on the plate it lands on) and measured the *rendered* plate pixels under each rack-sheet caption.
+Dark mode print on brass is now an engraved brown: `ink.faceplate` / `ui.text` #2B1D0C, `ink.faceplateDim` /
+`ui.textDim` #46311A (slightly darker than the suggested #5A4326, because the brass foot under "FADER" measured
+2.2:1 with #5A4326). Walnut plates, header and track lanes take cream via explicit `ink.inset/backplane/socket/
+reviewBar`, `chrome.*` and `tracks.*`. Measured on the final sheet (plate pixel vs ink):
+MASTER 5.1, PRESSED 4.8, FADER 3.5, PADS 5.1 (dim ink); every `printcheck` pair >= 3:1 in both modes.
+**(2) Brass.** Metal grain 2.2 px @ 0.24 (p1 0.5, p2 0 = longest streaks), spec 0.9 / rough 0.2, a
+bright-top / dark-foot ramp (0.2, 0.45) and plate ambient 1.1 (0.62 rendered the plate (108,92,48), which is dark
+olive, not brass; it now renders ~(190,160,85) with a visible horizontal brush at 1:1 and 3x). Walnut grain
+0.55 @ contrast 1.05. The champagne plate in light mode had inherited the brass grain by a deep merge — it now
+has its own fine Metal grain.
+**Control separation.** A bright plate pulled the aluminium controls toward it (Button ΔL 2, hero −52). Control
+ambient 0.8 → 1.2 on keys and caps restores it: Knob +143, KnobSmall +150, Button +64, ToggleBtn +110 (dark);
+Knob +78, Button +26 (light). KnobHero's *mean* step stays ~0 because the hero sits on brass and carries a dark
+value track; it separates by its dark arc and bright cap, not by mean luminance (accepted). Slider fill
+VALUE_EM 0.25 → 0.55 so the amber fill reads on the bright brass.
+Clip 0.0% on every plate in both modes (the Face clipped 0.65-28% at plate ambient 1.15-1.3, so 1.1 is the ceiling).
+Sheet fix (kit): the parts sheet's Plates/Screens bands now print their captions in the backplane ink (they
+were dark-on-dark).
