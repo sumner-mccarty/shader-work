@@ -19,9 +19,9 @@ CONTROLS = dict(                     # the hardware — identical in both modes
     BODY=GREEN, BODY_HI="#2A8458", BODY_LO="#154D31", DIS_BODY="#3E4A42",
     MARK="#FFF3DC", MARK_DIM="#B9C8A8", DIS_MARK="#76806F", ON_MARK="#FFF8EC",
     ACCENT=RED, SOLO=GOLD, LAMP="#FFC15A", LAMP_OFF="#80683C", HOT="#FF5A4A",
-    CAP=GREEN, SKIRT=RED, NUB=WHITE, HANDLE=GOLD,
+    CAP=GREEN, SKIRT=RED, NUB=GOLD, HANDLE=GOLD,
     VALUE="#FFD27A", VALUE_EM=0.3, TRACK="#2A0A10", ARC_OFF="#3A1219",
-    SCROLL="#8C6A28", SCROLL_HI=GOLD, PAD_BODY="#2E5A40", PAD_TINT=0.6,
+    SCROLL="#8C6A28", SCROLL_HI=GOLD, PAD_BODY="#5A4A48", PAD_TINT=0.65,
 )
 STRIPE = lambda layer, typ, direction, scale: {            # noqa: E731  red/white, hard-ish bands
     f"{layer}GradientEnabled": 1, f"{layer}GradientType": typ, f"{layer}GradientDirection": direction,
@@ -37,7 +37,7 @@ LOOK = Look(
     displays="neo",
     shape={
         "key": dict(corner=0.5, round=0.5),
-        "dial": dict(skirt="Circle", cap_r=0.5, bevel=0.3, depth=0.55, smooth=0.7, dome=0.5, nub=0.07,
+        "dial": dict(skirt="Circle", cap_r=0.6, bevel=0.2, depth=0.55, smooth=0.7, dome=0.5, nub=0.085,
                      nub_dist=0.3, arc_px=3.0,
                      set=STRIPE("_KnobBevel", 2, (1.0, 0.0, 0.0, 0.0), 5.0)),
         "KnobHero": dict(ticks=11, arc_px=4.0),
