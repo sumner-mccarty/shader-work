@@ -1,0 +1,711 @@
+{
+    "controlType": "UISlider",
+    "shaderName": "UI/SDFSliderRM",
+    "states": [
+        {
+            "stateId": "LiquidGlassDarkSlider-normal",
+            "stateName": "Normal",
+            "description": "Default resting state",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [
+                "default"
+            ],
+            "parameters": [
+                {
+                    "name": "_BgBevelEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgBevelPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgBevelPatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgBevelGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgRimEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgPatternRotateEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgPatternModEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgPatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_TrackValueBevelEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_TrackBevelEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_TrackPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_TrackGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_TrackValueFilledPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_TrackValueFilledGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_TrackValueUnfilledPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_TrackValueUnfilledGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_TrackValueNegativePatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_TrackValueNegativeGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleBevelEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleBevelPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleBevelPatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleBevelGradientEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleRimEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandlePatternEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandlePatternRotateEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandlePatternModEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandlePatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleGradientEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleFaceShapeEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleFacePatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleFaceGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ScaleMarkEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ScaleMarkGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_EdgeEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_EdgeGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BorderGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingShadow1Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingShadow2Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingShadow3Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleShadow1Enabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleShadow2Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleShadow3Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingUnlit",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingAmbient",
+                    "type": "Range",
+                    "value": "0.75"
+                },
+                {
+                    "name": "_ReceiveSceneShadows",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ViewTilt",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_ViewCamEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_Value",
+                    "type": "Range",
+                    "value": "0.5"
+                },
+                {
+                    "name": "_TrackValueZeroPoint",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleLipHeight",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgColor",
+                    "type": "Color",
+                    "value": "0.180392,0.415686,0.439216,1"
+                },
+                {
+                    "name": "_BgShapeType",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgShapeParam1",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_BgPadding",
+                    "type": "Range",
+                    "value": "0.13"
+                },
+                {
+                    "name": "_TrackEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_TrackColor",
+                    "type": "Color",
+                    "value": "0.0313725,0.164706,0.184314,1"
+                },
+                {
+                    "name": "_TrackWidth",
+                    "type": "Range",
+                    "value": "0.16"
+                },
+                {
+                    "name": "_TrackValueFilledEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_TrackValueFilledColor",
+                    "type": "Color",
+                    "value": "0.623529,1,0.956863,1"
+                },
+                {
+                    "name": "_TrackValueFilledRenderEmissive",
+                    "type": "Range",
+                    "value": "0.35"
+                },
+                {
+                    "name": "_TrackValueUnfilledEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleColor",
+                    "type": "Color",
+                    "value": "0.603922,0.843137,0.858824,1"
+                },
+                {
+                    "name": "_HandleGradientType",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleGradientDirection",
+                    "type": "Vector4",
+                    "value": "0,-1,0,0"
+                },
+                {
+                    "name": "_HandleGradientScale",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleGradientOffset",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleGradientSpeed",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleGradientColorA",
+                    "type": "Color",
+                    "value": "0.345098,0.533333,0.54902,1"
+                },
+                {
+                    "name": "_HandleGradientColorB",
+                    "type": "Color",
+                    "value": "0.47451,0.686275,0.701961,1"
+                },
+                {
+                    "name": "_HandleGradientColorC",
+                    "type": "Color",
+                    "value": "0.682353,0.87451,0.886275,1"
+                },
+                {
+                    "name": "_HandleGradientColorD",
+                    "type": "Color",
+                    "value": "0.901961,0.960784,0.964706,1"
+                },
+                {
+                    "name": "_HandleGradientColorUsed",
+                    "type": "Range",
+                    "value": "4"
+                },
+                {
+                    "name": "_HandleShapeType",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleShapeParam1",
+                    "type": "Range",
+                    "value": "0.6"
+                },
+                {
+                    "name": "_HandleWidth",
+                    "type": "Range",
+                    "value": "0.28"
+                },
+                {
+                    "name": "_HandleHeight",
+                    "type": "Range",
+                    "value": "0.9"
+                },
+                {
+                    "name": "_HandlePadding",
+                    "type": "Range",
+                    "value": "0.5"
+                },
+                {
+                    "name": "_HandleBevelDistance",
+                    "type": "Range",
+                    "value": "0.24"
+                },
+                {
+                    "name": "_HandleBevelDepth",
+                    "type": "Range",
+                    "value": "0.5"
+                },
+                {
+                    "name": "_HandleBevelSmoothness",
+                    "type": "Range",
+                    "value": "0.9"
+                },
+                {
+                    "name": "_HandleFaceSmoothness",
+                    "type": "Range",
+                    "value": "0.6"
+                },
+                {
+                    "name": "_HandlePatternType",
+                    "type": "Float",
+                    "value": "10"
+                },
+                {
+                    "name": "_HandlePatternScale",
+                    "type": "Range",
+                    "value": "26.67"
+                },
+                {
+                    "name": "_HandlePatternIntensity",
+                    "type": "Range",
+                    "value": "0.06"
+                },
+                {
+                    "name": "_HandlePatternContrast",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandlePatternSpecularEffect",
+                    "type": "Range",
+                    "value": "0.6"
+                },
+                {
+                    "name": "_HandlePatternRoughnessEffect",
+                    "type": "Range",
+                    "value": "0.45"
+                },
+                {
+                    "name": "_HandlePatternParam1",
+                    "type": "Range",
+                    "value": "0.5"
+                },
+                {
+                    "name": "_HandlePatternParam2",
+                    "type": "Range",
+                    "value": "0.5"
+                },
+                {
+                    "name": "_HandlePatternParam3",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleBevelGradientType",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleBevelGradientDirection",
+                    "type": "Vector4",
+                    "value": "0,-1,0,0"
+                },
+                {
+                    "name": "_HandleBevelGradientScale",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleBevelGradientOffset",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleBevelGradientSpeed",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleBevelGradientColorA",
+                    "type": "Color",
+                    "value": "0.980392,0.992157,0.992157,1"
+                },
+                {
+                    "name": "_HandleBevelGradientColorB",
+                    "type": "Color",
+                    "value": "0.901961,0.960784,0.964706,1"
+                },
+                {
+                    "name": "_HandleBevelGradientColorC",
+                    "type": "Color",
+                    "value": "0.721569,0.890196,0.901961,1"
+                },
+                {
+                    "name": "_HandleBevelGradientColorD",
+                    "type": "Color",
+                    "value": "0.603922,0.843137,0.858824,1"
+                },
+                {
+                    "name": "_HandleBevelGradientColorUsed",
+                    "type": "Range",
+                    "value": "4"
+                },
+                {
+                    "name": "_HandleRenderAlpha",
+                    "type": "Range",
+                    "value": "0.88"
+                },
+                {
+                    "name": "_HandleShadow1Color",
+                    "type": "Color",
+                    "value": "0,0.0862745,0.101961,0.54902"
+                },
+                {
+                    "name": "_HandleShadow1Blur",
+                    "type": "Range",
+                    "value": "2.2"
+                },
+                {
+                    "name": "_HandleShadow1Cast",
+                    "type": "Range",
+                    "value": "0.18"
+                },
+                {
+                    "name": "_HandleShadow1Intensity",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleShadow1Distance",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_BorderEnabled",
+                    "type": "Float",
+                    "value": "0"
+                }
+            ]
+        },
+        {
+            "stateId": "LiquidGlassDarkSlider-hover",
+            "stateName": "Hover",
+            "description": "Hover",
+            "baseStateName": "Normal",
+            "priority": 1,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_HandleColor",
+                    "type": "Color",
+                    "value": "0.627451,0.85098,0.866667,1"
+                },
+                {
+                    "name": "_HandleGradientColorA",
+                    "type": "Color",
+                    "value": "0.356863,0.533333,0.54902,1"
+                },
+                {
+                    "name": "_HandleGradientColorB",
+                    "type": "Color",
+                    "value": "0.494118,0.694118,0.709804,1"
+                },
+                {
+                    "name": "_HandleGradientColorC",
+                    "type": "Color",
+                    "value": "0.701961,0.882353,0.894118,1"
+                },
+                {
+                    "name": "_HandleGradientColorD",
+                    "type": "Color",
+                    "value": "0.905882,0.964706,0.964706,1"
+                },
+                {
+                    "name": "_HandleGradientColorUsed",
+                    "type": "Range",
+                    "value": "4"
+                }
+            ]
+        },
+        {
+            "stateId": "LiquidGlassDarkSlider-pressed",
+            "stateName": "Pressed",
+            "description": "Pressed",
+            "baseStateName": "Hover",
+            "priority": 2,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_HandleColor",
+                    "type": "Color",
+                    "value": "0.545098,0.760784,0.772549,1"
+                },
+                {
+                    "name": "_HandleGradientColorA",
+                    "type": "Color",
+                    "value": "0.313725,0.490196,0.501961,1"
+                },
+                {
+                    "name": "_HandleGradientColorB",
+                    "type": "Color",
+                    "value": "0.431373,0.627451,0.639216,1"
+                },
+                {
+                    "name": "_HandleGradientColorC",
+                    "type": "Color",
+                    "value": "0.635294,0.807843,0.819608,1"
+                },
+                {
+                    "name": "_HandleGradientColorD",
+                    "type": "Color",
+                    "value": "0.886275,0.941176,0.941176,1"
+                },
+                {
+                    "name": "_HandleGradientColorUsed",
+                    "type": "Range",
+                    "value": "4"
+                }
+            ]
+        },
+        {
+            "stateId": "LiquidGlassDarkSlider-disabled",
+            "stateName": "Disabled",
+            "description": "Disabled",
+            "baseStateName": "Normal",
+            "priority": 4,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_HandleColor",
+                    "type": "Color",
+                    "value": "0.231373,0.384314,0.4,1"
+                },
+                {
+                    "name": "_HandleGradientColorA",
+                    "type": "Color",
+                    "value": "0.156863,0.301961,0.317647,1"
+                },
+                {
+                    "name": "_HandleGradientColorB",
+                    "type": "Color",
+                    "value": "0.196078,0.345098,0.360784,1"
+                },
+                {
+                    "name": "_HandleGradientColorC",
+                    "type": "Color",
+                    "value": "0.384314,0.505882,0.521569,1"
+                },
+                {
+                    "name": "_HandleGradientColorD",
+                    "type": "Color",
+                    "value": "0.807843,0.847059,0.85098,1"
+                },
+                {
+                    "name": "_HandleGradientColorUsed",
+                    "type": "Range",
+                    "value": "4"
+                },
+                {
+                    "name": "_TrackValueFilledColor",
+                    "type": "Color",
+                    "value": "0.309804,0.486275,0.501961,1"
+                },
+                {
+                    "name": "_TrackValueFilledRenderEmissive",
+                    "type": "Range",
+                    "value": "0"
+                }
+            ]
+        }
+    ],
+    "bounds": {
+        "type": 0,
+        "width": 0.96875,
+        "height": 0.875,
+        "radiusNorm": 1.0,
+        "paddingParam": "_BgPadding"
+    },
+    "author": "DrumSumDrum"
+}
