@@ -222,11 +222,25 @@ def alpha(hexcol, a):
 # An UNSET guard inherits the source MATERIAL's value, not the shader default — so "no bevel / no
 # pattern / no shadow" has to be said, not assumed.
 FX = re.compile(r'^_\w*(Bevel|Pattern|Gradient|Rim|Shadow\d|Glow|Screws|InnerFrame|OuterMarks|OuterRing\d|'
-                r'FaceShape|ScaleMark|Edge)\w*Enabled$')
-RM_ONLY_OK = re.compile(r"^_(\w+LipHeight|\w+MaxCast|\w+BevelEnabled)$")   # RM-only names a lit skin may set
+                r'FaceShape|ScaleMark|Edge|Matcap|Glass)\w*Enabled$')
+RM_ONLY_OK = re.compile(r"^_(\w+LipHeight|\w+MaxCast|\w+BevelEnabled|\w+(Matcap|Glass)\w*)$")   # RM-only names a lit skin may set
 PATTERNS = {n: i for i, n in enumerate(
     "Plastic Metal RadialBrushed CarbonFiber Leather BrushedCross Satin Concrete Fabric Paper Frosted "
     "DiamondPlate Knurled HexGrid Perforated WoodGrain Marble Ceramic Circuit NoiseOrganic".split())}
+PATTERN_TEXTURE = 20            # Materials v2: an image from Resources/UiMaterials/MaterialTex
+
+
+def _matlib():
+    """Materials v2 layer names (Resources/UiMaterials/catalog.json, written by Tools/gen_materials.py)."""
+    f = ROOT / "Assets" / "Resources" / "UiMaterials" / "catalog.json"
+    if not f.exists():
+        return {}, {}
+    cat = json.loads(f.read_text(encoding="utf-8"))
+    return ({t["name"]: t["layer"] for t in cat["textures"]},
+            {m["name"]: (m["layer"], {"metal": 0, "coat": 1, "tint": 2}[m["mode"]]) for m in cat["matcaps"]})
+
+
+TEXTURES, MATCAPS = _matlib()
 KNOB_SHAPES = {n: i for i, n in enumerate(
     "Circle GripNubs Polygon DShaft Star Squircle Fluted Cross ChickenHead Arrow Gear Skirted OvalPointer "
     "MushroomCap DaviesIndicator ColletKnob RingPointer BlobStar CapScrew TaperDisc FaderCap FaderCapWide".split())}
@@ -244,6 +258,25 @@ def guards(family, rm):
 #
 # Each class is a full part vocabulary: parts(L, P) yields (slot, base, states, extra) for all 23
 # SLOTS. P is the mode's palette, L the look (L.S(slot) = its resolved shape language).
+
+def slot_body(P):
+    """Per-slot key colours: palette "BODY.<Slot>" (e.g. "BODY.Chip", "BODY.Solo") beats BODY, with its
+    hover/pressed derived from it unless "BODY_HI.<Slot>"/"BODY_LO.<Slot>" say otherwise."""
+    def body(slot):
+        return P.get(f"BODY.{slot}", P["BODY"])
+
+    def hi(slot):
+        if f"BODY_HI.{slot}" in P:
+            return P[f"BODY_HI.{slot}"]
+        return mix(body(slot), "#FFFFFF", 0.1) if f"BODY.{slot}" in P else P["BODY_HI"]
+
+    def lo(slot):
+        if f"BODY_LO.{slot}" in P:
+            return P[f"BODY_LO.{slot}"]
+        lo_ = P.get("BODY_LO", P.get("PRESS", P["BODY"]))
+        return mix(body(slot), "#000000", 0.18) if f"BODY.{slot}" in P else lo_
+    return body, hi, lo
+
 
 class Unlit:
     """FLAT (2026-09-13) — the look a phone can afford. Non-RM shaders + _LightingUnlit, so the rig,
@@ -338,7 +371,10 @@ class Unlit:
                                "Disabled": {"_ButtonRenderAlpha": 0.4}})
         # Pads wear their row's colour (padColor tints _ButtonColor), flat, like a clip slot.
         yield self.key(L, P, "Pad", fill=P["PAD_BODY"],
-                       states={"Hover": {"_ButtonRenderEmissive": 0.08}, "Pressed": {"_ButtonRenderEmissive": 0.22},
+                       # PAD_HOVER_EM / PAD_PRESS_EM: a pad must answer the pointer (0.08 read as no change
+                       # on every look of batch 2026-10-06); Flat pins its shipped 0.08/0.22 in its spec
+                       states={"Hover": {"_ButtonRenderEmissive": P.get("PAD_HOVER_EM", 0.16)},
+                               "Pressed": {"_ButtonRenderEmissive": P.get("PAD_PRESS_EM", 0.4)},
                                "Disabled": {"_ButtonRenderAlpha": 0.45},
                                "Latched": {"_BorderEnabled": 1, "_BorderColor": P["PAD_LATCH"],
                                            "_BorderWidth": 0.05, "_ButtonRenderEmissive": 0.1}},
@@ -519,12 +555,14 @@ class Neon(Unlit):
         return {
             "_BorderEnabled": 1, "_BorderColor": stops(st or P["TUBE_REST"])[0],
             "_BorderWidth": width * P["LINE"], "_BorderSoftness": 0.0, "_BorderInset": 0.0, "_BorderFalloff": 0.0,
-            "_BorderIntensity": 1.0, "_BorderRenderAlpha": 1.0, "_BorderRenderEmissive": 1.0,
+            # TUBE_EM / HALO_EM (palette, default 1.0): how hot the core and the bloom burn — a dim bar
+            # sign wants ~0.6, a blown-out cockpit 1.0 (batch 2026-10-06 needed it per look)
+            "_BorderIntensity": 1.0, "_BorderRenderAlpha": 1.0, "_BorderRenderEmissive": P.get("TUBE_EM", 1.0),
             **grad("_Border", st or P["TUBE_REST"], TUBE_DIR),
             "_EdgeEnabled": 1, "_EdgeColor": stops(halo_stops or P["HALO"])[0],
             "_EdgeWidth": halo_w * P["BLOOM"], "_EdgeSoftness": 0.5, "_EdgeFalloff": 1.0, "_EdgeInset": 0.0,
             "_EdgeIntensity": P["HALO_REST"] if halo is None else halo,
-            "_EdgeRenderAlpha": 0.0, "_EdgeRenderEmissive": 1.0,
+            "_EdgeRenderAlpha": 0.0, "_EdgeRenderEmissive": P.get("HALO_EM", 1.0),
             **grad("_Edge", halo_stops or P["HALO"], TUBE_DIR),
         }
 
@@ -801,72 +839,102 @@ class Neon(Unlit):
 
 MATERIALS = {
     # ── metals: strong ramp (fake reflection), tinted highlight, tight spec, dome ──
-    "gold.polished": dict(base="#A97B22", lo="#1C0E00", hi="#FFEDB0", ramp=(-0.75, -0.25, 0.3, 0.75),
+    "gold.polished": dict(matcap=("polished", 0.85), base="#A97B22", lo="#1C0E00", hi="#FFEDB0", ramp=(-0.75, -0.25, 0.3, 0.75),
                           edge=(0.85, 0.5, -0.35, -0.7), pattern=("RadialBrushed", 3.0, 0.05, 1.0, 0.45, 0.2, 0.0),
                           linear=("Metal", 1.0, 0.06, 1.0, 0.5, 0.0, 0.0), plate_ramp=(0.3, 0.3),
                           spec=0.5, rough=0.05, dome=0.45, bevel=(0.14, 0.55, 0.5), amb=0.6, plate_amb=0.38),
-    "gold.brushed": dict(base="#9E7A2E", lo="#1C0F00", hi="#F4DE9C", ramp=(-0.6, -0.15, 0.25, 0.6),
+    "gold.brushed": dict(matcap=("brushed", 0.8), base="#9E7A2E", lo="#1C0F00", hi="#F4DE9C", ramp=(-0.6, -0.15, 0.25, 0.6),
                          edge=(0.7, 0.4, -0.3, -0.6), pattern=("Metal", 1.0, 0.16, 1.0, 0.5, 0.0, 0.0),
                          spec=0.4, rough=0.3, dome=0.25, bevel=(0.12, 0.5, 0.5), plate_ramp=(0.25, 0.3), amb=0.6, plate_amb=0.4),
-    "gold.rose": dict(base="#A86E5C", lo="#220A05", hi="#FFE0D2", ramp=(-0.7, -0.2, 0.3, 0.72),
+    "gold.rose": dict(matcap=("polished", 0.85), base="#A86E5C", lo="#220A05", hi="#FFE0D2", ramp=(-0.7, -0.2, 0.3, 0.72),
                       edge=(0.8, 0.45, -0.35, -0.65), pattern=("RadialBrushed", 3.0, 0.05, 1.0, 0.45, 0.2, 0.0),
                       linear=("Metal", 1.0, 0.06, 1.0, 0.5, 0.0, 0.0), plate_ramp=(0.3, 0.3),
                       spec=0.5, rough=0.08, dome=0.45, bevel=(0.14, 0.55, 0.5), amb=0.6, plate_amb=0.38),
-    "chrome": dict(base="#7E868F", lo="#0A0C0F", hi="#FFFFFF", ramp=(-0.85, -0.4, 0.55, 0.15),
+    "chrome": dict(matcap=("chrome", 0.95), base="#7E868F", lo="#0A0C0F", hi="#FFFFFF", ramp=(-0.85, -0.4, 0.55, 0.15),
                    edge=(0.9, 0.55, -0.5, -0.85), pattern=("Metal", 1.0, 0.03, 1.0, 0.5, 0.0, 0.0),
                    spec=0.45, rough=0.02, dome=0.5, bevel=(0.14, 0.55, 0.45), plate_ramp=(0.35, 0.35), amb=0.55, plate_amb=0.45),
-    "aluminium.brushed": dict(base="#8C9197", lo="#2A2D31", hi="#F4F6F8", ramp=(-0.35, -0.05, 0.15, 0.4),
+    "aluminium.brushed": dict(matcap=("brushed", 0.55), base="#8C9197", lo="#2A2D31", hi="#F4F6F8", ramp=(-0.35, -0.05, 0.15, 0.4),
                               edge=(0.6, 0.3, -0.2, -0.45), pattern=("Metal", 1.0, 0.12, 1.0, 0.5, 0.0, 0.0),
                               spec=0.4, rough=0.35, dome=0.15, bevel=(0.12, 0.5, 0.5), plate_ramp=(0.15, 0.25), amb=0.38, plate_amb=0.36),
-    "brass": dict(base="#9C7F34", lo="#1E1603", hi="#F0DFA0", ramp=(-0.6, -0.15, 0.25, 0.55),
+    "brass": dict(matcap=("satin", 0.75), base="#9C7F34", lo="#1E1603", hi="#F0DFA0", ramp=(-0.6, -0.15, 0.25, 0.55),
                   edge=(0.7, 0.4, -0.3, -0.55), pattern=("Metal", 1.4, 0.1, 1.0, 0.5, 0.0, 0.0),
                   spec=0.45, rough=0.25, dome=0.3, bevel=(0.13, 0.5, 0.5), plate_ramp=(0.25, 0.3), amb=0.6, plate_amb=0.4),
-    "copper": dict(base="#A05A38", lo="#220902", hi="#FFC6A0", ramp=(-0.65, -0.15, 0.28, 0.6),
+    "copper": dict(matcap=("polished", 0.75), base="#A05A38", lo="#220902", hi="#FFC6A0", ramp=(-0.65, -0.15, 0.28, 0.6),
                    edge=(0.7, 0.4, -0.3, -0.6), pattern=("Metal", 1.4, 0.1, 1.0, 0.5, 0.0, 0.0),
                    spec=0.5, rough=0.2, dome=0.35, bevel=(0.13, 0.5, 0.5), plate_ramp=(0.25, 0.3), amb=0.62, plate_amb=0.42),
     # ── finishes: colourable (tint), gentle ramp, the spec decides gloss vs matte. Dark ones carry a
     #    bright EDGE band: the chamfer is what separates a black key from a black plate ──
-    "lacquer.black": dict(base="#17181C", lo="#000000", hi="#9AA0AC", ramp=(-0.3, 0.0, 0.1, 0.25),
+    "lacquer.black": dict(matcap=("gloss_coat", 0.9), base="#17181C", lo="#000000", hi="#9AA0AC", ramp=(-0.3, 0.0, 0.1, 0.25),
                           edge=(0.95, 0.65, 0.2, -0.15), pattern=("Plastic", 6.0, 0.025, 1.0, 0.7, 0.0, 0.1),
                           spec=0.9, rough=0.05, dome=0.3, bevel=(0.16, 0.6, 0.45), amb=0.9, plate_amb=0.8),
-    "enamel": dict(base="#2F5E8E", lo="#000000", hi="#FFFFFF", ramp=(-0.3, -0.05, 0.08, 0.2),
+    "enamel": dict(matcap=("satin_coat", 0.6), base="#2F5E8E", lo="#000000", hi="#FFFFFF", ramp=(-0.3, -0.05, 0.08, 0.2),
                    edge=(0.45, 0.25, -0.05, -0.25), pattern=("Plastic", 8.0, 0.05, 1.0, 0.7, 0.0, 0.15),
                    spec=0.35, rough=0.4, dome=0.22, bevel=(0.12, 0.5, 0.5), amb=0.7, plate_amb=0.55),
-    "plastic.gloss": dict(base="#C33A2E", lo="#000000", hi="#FFFFFF", ramp=(-0.3, -0.05, 0.1, 0.25),
+    "plastic.gloss": dict(matcap=("gloss_coat", 0.7), base="#C33A2E", lo="#000000", hi="#FFFFFF", ramp=(-0.3, -0.05, 0.1, 0.25),
                           edge=(0.45, 0.25, -0.05, -0.25), pattern=("Plastic", 8.0, 0.03, 1.0, 0.6, 0.0, 0.0),
                           spec=0.7, rough=0.12, dome=0.35, bevel=(0.14, 0.5, 0.5), amb=0.68, plate_amb=0.42),
-    "rubber.matte": dict(base="#2E3034", lo="#000000", hi="#A3A9B1", ramp=(-0.15, 0.0, 0.05, 0.12),
+    "rubber.matte": dict(matcap=("rubber", 0.45), base="#2E3034", lo="#000000", hi="#A3A9B1", ramp=(-0.15, 0.0, 0.05, 0.12),
                          edge=(0.7, 0.45, 0.1, -0.1), pattern=("Plastic", 2.0, 0.08, 1.0, 1.0, 0.0, 0.0),
                          spec=0.0, rough=0.95, dome=0.12, bevel=(0.18, 0.45, 0.8), amb=0.85, plate_amb=0.75),
     # ── organics / minerals: the pattern carries the colour (tint = PatternColor through lo/hi) ──
-    "wood.oiled": dict(base="#7A4A27", lo="#1E0C02", hi="#D9A06A", ramp=(-0.25, -0.05, 0.08, 0.18),
+    "wood.oiled": dict(texture=("wood_grain", 110, 0.9, 1.0, 0.0, 0.0), matcap=("satin_coat", 0.35), base="#7A4A27", lo="#1E0C02", hi="#D9A06A", ramp=(-0.25, -0.05, 0.08, 0.18),
                        edge=(0.4, 0.2, -0.1, -0.3), pattern=("WoodGrain", 40.0, 0.5, 1.0, 0.5, 0.5, 0.5),
-                       tint=(3, 1, (-0.5, -0.2, 0.15, 0.35)),
                        spec=0.3, rough=0.45, dome=0.1, bevel=(0.12, 0.45, 0.5), amb=0.62, plate_amb=0.55),
-    "leather.tooled": dict(base="#8A5532", lo="#1C0A02", hi="#E8B488", ramp=(-0.3, -0.05, 0.08, 0.15),
+    "leather.tooled": dict(texture=("leather_pebble", 56, 0.4, 1.0, 0.0, 0.0), matcap=("satin_coat", 0.25), base="#8A5532", lo="#1C0A02", hi="#E8B488", ramp=(-0.3, -0.05, 0.08, 0.15),
                            edge=(0.35, 0.15, -0.15, -0.35), pattern=("Leather", 3.0, 0.3, 1.0, 0.5, 0.5, 0.0),
                            spec=0.2, rough=0.7, dome=0.15, bevel=(0.16, 0.45, 0.7), amb=0.62, plate_amb=0.52),
-    "marble": dict(base="#D2CDC4", lo="#4A4844", hi="#FFFFFF", ramp=(-0.12, 0.0, 0.04, 0.08),
+    "marble": dict(texture=("marble", 240, 0.95, 1.0, 0.0, 0.0), matcap=("gloss_coat", 0.5), base="#D2CDC4", lo="#4A4844", hi="#FFFFFF", ramp=(-0.12, 0.0, 0.04, 0.08),
                    edge=(0.4, 0.2, -0.05, -0.15), pattern=("Marble", 60.0, 0.3, 1.0, 0.5, 0.5, 0.5),
-                   tint=(1, 3, (-0.04, -0.12, -0.25, -0.42)),
                    spec=0.3, rough=0.15, dome=0.15, bevel=(0.12, 0.5, 0.5), amb=0.28, plate_amb=0.3),
-    "ceramic": dict(base="#D6D0C3", lo="#5A5246", hi="#FFFFFF", ramp=(-0.15, 0.0, 0.05, 0.12),
+    "ceramic": dict(matcap=("gloss_coat", 0.55), base="#D6D0C3", lo="#5A5246", hi="#FFFFFF", ramp=(-0.15, 0.0, 0.05, 0.12),
                     edge=(0.45, 0.25, -0.05, -0.2), pattern=("Ceramic", 8.0, 0.08, 1.0, 0.5, 0.5, 0.0),
                     spec=0.3, rough=0.12, dome=0.22, bevel=(0.14, 0.5, 0.6), amb=0.28, plate_amb=0.28),
-    "glass.frosted": dict(base="#A9D6D9", lo="#16383C", hi="#FFFFFF", ramp=(-0.35, -0.08, 0.2, 0.5),
+    "glass.frosted": dict(glass=dict(strength=0.88, blur=4.0, refract=0.05, tint="#D8F2F4FF", rim=0.55), matcap=("glass_rim", 0.8), base="#A9D6D9", lo="#16383C", hi="#FFFFFF", ramp=(-0.35, -0.08, 0.2, 0.5),
                           edge=(0.9, 0.6, 0.1, -0.2), pattern=("Frosted", 1.5, 0.12, 1.0, 0.5, 0.5, 0.0),
-                          spec=0.6, rough=0.45, dome=0.35, bevel=(0.2, 0.45, 0.8), amb=0.6, plate_amb=0.45,
-                          alpha=0.82),
-    "fabric.velvet": dict(base="#6B1E2D", lo="#120206", hi="#E07A8E", ramp=(-0.35, -0.25, -0.05, 0.25),
+                          spec=0.6, rough=0.45, dome=0.35, bevel=(0.2, 0.45, 0.8), amb=0.45, plate_amb=0.32),
+    "fabric.velvet": dict(texture=("velvet", 160, 0.45, 1.0, 0.0, 0.0), base="#6B1E2D", lo="#120206", hi="#E07A8E", ramp=(-0.35, -0.25, -0.05, 0.25),
                           ramp_type="radial", edge=(0.6, 0.4, 0.0, -0.25),
                           pattern=("Fabric", 1.5, 0.22, 1.0, 0.5, 0.5, 0.0),
                           spec=0.0, rough=1.0, dome=0.05, bevel=(0.2, 0.4, 0.9), amb=0.75, plate_amb=0.65),
-    "carbon": dict(base="#1E2024", lo="#000000", hi="#9CA2AA", ramp=(-0.2, 0.0, 0.1, 0.25),
+    "carbon": dict(matcap=("gloss_coat", 0.6), base="#1E2024", lo="#000000", hi="#9CA2AA", ramp=(-0.2, 0.0, 0.1, 0.25),
                    edge=(0.95, 0.6, 0.15, -0.15), pattern=("CarbonFiber", 4.0, 0.35, 1.0, 0.5, 0.5, 0.0),
                    spec=0.6, rough=0.2, dome=0.25, bevel=(0.16, 0.55, 0.5), amb=0.9, plate_amb=0.8),
-    "concrete": dict(base="#8A8883", lo="#2A2926", hi="#D6D3CC", ramp=(-0.12, 0.0, 0.04, 0.08),
+    "concrete": dict(texture=("plaster", 140, 0.4, 1.0, 0.0, 0.0), base="#8A8883", lo="#2A2926", hi="#D6D3CC", ramp=(-0.12, 0.0, 0.04, 0.08),
                      edge=(0.2, 0.08, -0.05, -0.15), pattern=("Concrete", 2.0, 0.28, 1.0, 0.5, 0.5, 0.0),
                      spec=0.05, rough=0.9, dome=0.08, bevel=(0.14, 0.4, 0.7), amb=0.55, plate_amb=0.45),
+    # ── Materials v2 additions (2026-10-06): real textures + matcaps (Resources/UiMaterials) ──
+    "pearl": dict(matcap=("pearl", 0.55), base="#D4CEC4", lo="#5E5850", hi="#FFFFFF", ramp=(-0.15, 0.0, 0.05, 0.12),
+                  edge=(0.4, 0.2, -0.05, -0.15), pattern=None, spec=0.4, rough=0.1, dome=0.45,
+                  bevel=(0.14, 0.5, 0.5), amb=0.42, plate_amb=0.3),
+    "metal.hammered": dict(texture=("hammered", 48, 0.5, 1.0, 0.0, 0.0), matcap=("polished", 0.8),
+                           base="#9A9DA3", lo="#1A1C20", hi="#FFFFFF", ramp=(-0.5, -0.1, 0.2, 0.5),
+                           edge=(0.7, 0.4, -0.3, -0.6), pattern=None, spec=0.5, rough=0.6, dome=0.3,
+                           bevel=(0.13, 0.5, 0.5), amb=0.6, plate_amb=0.42),
+    "denim": dict(texture=("denim", 40, 0.45, 1.0, 0.0, 0.0), base="#33507A", lo="#0E1A2C", hi="#9DB4D4",
+                  ramp=(-0.2, -0.05, 0.05, 0.12), edge=(0.35, 0.15, -0.1, -0.3), pattern=None,
+                  spec=0.05, rough=0.9, dome=0.08, bevel=(0.16, 0.45, 0.8), amb=0.7, plate_amb=0.6),
+    "linen": dict(texture=("linen", 48, 0.35, 1.0, 0.0, 0.0), base="#CFC4AE", lo="#5A5040", hi="#FFFFFF",
+                  ramp=(-0.1, 0.0, 0.03, 0.08), edge=(0.25, 0.1, -0.05, -0.15), pattern=None,
+                  spec=0.05, rough=0.9, dome=0.06, bevel=(0.14, 0.45, 0.8), amb=0.3, plate_amb=0.3),
+    "terrazzo": dict(texture=("terrazzo", 200, 0.5, 1.0, 0.0, 0.0), matcap=("gloss_coat", 0.45), base="#D8D2C8",
+                     lo="#4A4640", hi="#FFFFFF", ramp=(-0.1, 0.0, 0.03, 0.08), edge=(0.35, 0.15, -0.05, -0.15),
+                     pattern=None, spec=0.3, rough=0.2, dome=0.12, bevel=(0.12, 0.5, 0.5), amb=0.3, plate_amb=0.3),
+    "paper": dict(texture=("paper", 160, 0.3, 1.0, 0.0, 0.0), base="#EDE6D6", lo="#6A6250", hi="#FFFFFF",
+                  ramp=(-0.08, 0.0, 0.02, 0.05), edge=(0.2, 0.08, -0.04, -0.1), pattern=None,
+                  spec=0.0, rough=0.9, dome=0.04, bevel=(0.12, 0.4, 0.8), amb=0.28, plate_amb=0.28),
+    "ice.frost": dict(texture=("frost", 160, 0.45, 1.0, 0.0, 0.0), matcap=("glass_rim", 0.6), base="#CFE6F2",
+                      lo="#2C4A5A", hi="#FFFFFF", ramp=(-0.25, -0.05, 0.12, 0.3), edge=(0.8, 0.5, 0.05, -0.2),
+                      pattern=None, spec=0.6, rough=0.3, dome=0.3, bevel=(0.18, 0.5, 0.6), amb=0.45, plate_amb=0.38),
+    "glitter": dict(texture=("glitter", 64, 0.9, 1.0, 0.0, 0.0), matcap=("gloss_coat", 0.7), base="#8A2B5C",
+                    lo="#1E0412", hi="#FFC2E0", ramp=(-0.35, -0.05, 0.12, 0.3), edge=(0.7, 0.45, -0.1, -0.4),
+                    pattern=None, spec=1.0, rough=0.1, dome=0.35, bevel=(0.14, 0.5, 0.5), amb=0.7, plate_amb=0.55),
+    "paint.crackle": dict(texture=("crackle", 140, 0.5, 1.0, 0.0, 0.0), base="#6F8F80", lo="#1A2620", hi="#E0EEE6",
+                          ramp=(-0.12, 0.0, 0.04, 0.1), edge=(0.3, 0.12, -0.05, -0.2), pattern=None,
+                          spec=0.15, rough=0.7, dome=0.1, bevel=(0.14, 0.45, 0.6), amb=0.55, plate_amb=0.5),
+    "glass.clear": dict(glass=dict(strength=0.94, blur=1.5, refract=0.07, tint="#F4FAFFFF", rim=0.8),
+                        matcap=("glass_rim", 0.9), base="#BFD6E6", lo="#203040", hi="#FFFFFF",
+                        ramp=(-0.2, -0.05, 0.1, 0.3), edge=(0.9, 0.6, 0.1, -0.2), pattern=None,
+                        spec=0.8, rough=0.05, dome=0.5, bevel=(0.22, 0.5, 0.8), amb=0.45, plate_amb=0.32),
 }
 # ⚠ RM CONTROLS RUN THEIR GRADIENT UV UPSIDE DOWN. On screen (slrender's app orientation, measured
 # 2026-10-06 with a red A / blue D ramp), SDFButtonRM, SDFKnobRM and SDFSliderRM put stop A at the TOP
@@ -944,7 +1012,7 @@ class Lit(Unlit):
         "dial": dict(silhouette="cap", arc_outer=0.86, arc_px=3.0, rounded=True, skirt="Circle", skirt_count=6,
                      skirt_depth=0.15, cap_r=0.62, bevel=0.2, depth=0.35, smooth=1.0, dome=0.35,
                      nub=0.075, nub_dist=0.62, ticks=0),
-        "Knob": dict(px=56), "KnobHero": dict(px=112, ticks=11, arc_px=4.0), "KnobSmall": dict(px=48, arc_px=2.6),
+        "Knob": dict(px=56), "KnobHero": dict(px=112, ticks=11, arc_px=4.0), "KnobSmall": dict(px=32, arc_px=2.4),
         "fader": dict(track_w=0.16, handle="cap", handle_w=0.28, handle_h=0.9, bevel=0.12, depth=0.5, dome=0.3,
                       corner=0.6, smooth=0.5),
         "Fader": dict(track_w=0.4, handle_w=0.3, handle_h=0.9, bevel=0.0, dome=0.0),
@@ -1027,15 +1095,26 @@ class Lit(Unlit):
     def mpattern(layer, m, px, lock=None, base=None):
         """A preset's pattern at a real size: scale = px / grain (cycles across the widget's UV), or
         pixel-locked (`lock` px per tile) for plates that resize."""
-        if not m.get("pattern"):
-            return {f"{layer}PatternEnabled": 0}
-        name, grain, inten, contrast, p1, p2, p3 = m["pattern"]
         span = lock or px
-        d = {f"{layer}PatternEnabled": 1, f"{layer}PatternType": PATTERNS[name],
-             f"{layer}PatternScale": round(span / grain, 2), f"{layer}PatternIntensity": inten,
-             f"{layer}PatternContrast": contrast, f"{layer}PatternSpecularEffect": m.get("spec", 0.3),
-             f"{layer}PatternRoughnessEffect": m.get("rough", 0.5),
-             f"{layer}PatternParam1": p1, f"{layer}PatternParam2": p2, f"{layer}PatternParam3": p3}
+        if m.get("texture") and TEXTURES:
+            # Materials v2: a real tileable image (Resources/UiMaterials/MaterialTex, layer by name).
+            # (name, tile_px, intensity, contrast, blur, stretch): one tile spans tile_px pixels.
+            tname, tile_px, inten, contrast, blur, stretch = m["texture"]
+            d = {f"{layer}PatternEnabled": 1, f"{layer}PatternType": PATTERN_TEXTURE,
+                 f"{layer}PatternScale": round(span / tile_px, 3), f"{layer}PatternIntensity": inten,
+                 f"{layer}PatternContrast": contrast, f"{layer}PatternSpecularEffect": m.get("spec", 0.3),
+                 f"{layer}PatternRoughnessEffect": m.get("rough", 0.5),
+                 f"{layer}PatternParam1": TEXTURES[tname], f"{layer}PatternParam2": blur,
+                 f"{layer}PatternParam3": stretch}
+        elif not m.get("pattern"):
+            return {f"{layer}PatternEnabled": 0}
+        else:
+            name, grain, inten, contrast, p1, p2, p3 = m["pattern"]
+            d = {f"{layer}PatternEnabled": 1, f"{layer}PatternType": PATTERNS[name],
+                 f"{layer}PatternScale": round(span / grain, 2), f"{layer}PatternIntensity": inten,
+                 f"{layer}PatternContrast": contrast, f"{layer}PatternSpecularEffect": m.get("spec", 0.3),
+                 f"{layer}PatternRoughnessEffect": m.get("rough", 0.5),
+                 f"{layer}PatternParam1": p1, f"{layer}PatternParam2": p2, f"{layer}PatternParam3": p3}
         if lock:
             d[f"{layer}PatternPx"] = lock
         if m.get("tint"):
@@ -1084,8 +1163,31 @@ class Lit(Unlit):
             d.update(grad(f"{layer}Bevel", edge_of(m, c), RM_UP))
         if m.get("alpha", 1.0) < 1.0:
             d[f"{layer}RenderAlpha"] = m["alpha"]
-        if m.get("reflect") and f"{layer}ReflectIntensity" in props(stem(family, True)):
-            d[f"{layer}ReflectIntensity"] = m["reflect"]        # Phase 3: live once the shader has it
+        d.update(self.v2(layer, m, family))
+        return d
+
+    @staticmethod
+    def v2(layer, m, family):
+        """Materials v2 (CG/Core/UIMaterials.cginc) for a preset surface: `matcap` = (name, strength) —
+        a lit-sphere reflection, mode from the catalog (metal tints by the part colour, coat adds a clear
+        coat, tint multiplies a sheen); `glass` = {strength, blur, refract, tint, rim} — the part shows
+        the look's backdrop (mode "backdrop") refracted through it. Only the Knob/Button/Handle/Panel
+        bodies have these properties; elsewhere the fields are ignored."""
+        d = {}
+        if not m:
+            return d
+        have = props(stem(family, True))
+        mc = m.get("matcap")
+        if mc and MATCAPS and f"{layer}MatcapEnabled" in have:
+            name, strength = mc[0], mc[1]
+            lay, mode = MATCAPS[name]
+            d.update({f"{layer}MatcapEnabled": 1, f"{layer}MatcapLayer": lay, f"{layer}MatcapMode": mode,
+                      f"{layer}MatcapStrength": strength})
+        gl = m.get("glass")
+        if gl and f"{layer}GlassEnabled" in have:
+            d.update({f"{layer}GlassEnabled": 1, f"{layer}GlassStrength": gl.get("strength", 0.85),
+                      f"{layer}GlassBlur": gl.get("blur", 3.0), f"{layer}GlassRefract": gl.get("refract", 0.04),
+                      f"{layer}GlassTint": gl.get("tint", "#FFFFFFFF"), f"{layer}GlassRim": gl.get("rim", 0.5)})
         return d
 
     def amb_for(self, P, m, token="AMB"):
@@ -1146,6 +1248,7 @@ class Lit(Unlit):
         mk = self.preset(P, "key")
         ma = self.preset(P, "accent")
         col = lambda c, m=mk: self.recolour("_Button", m, c)        # noqa: E731
+        body, hi, lo = slot_body(P)
 
         def sunk(slot, **kw):
             S = L.S(slot)
@@ -1156,8 +1259,8 @@ class Lit(Unlit):
                **self.dim_edge("_Button", mk, P["BODY"], P["FACE"])}
 
         def std(slot):
-            return {"Hover": col(P["BODY_HI"]), "Pressed": sunk(slot, **col(P["BODY_LO"])), "Disabled": dict(dis)}
-        yield self.key(L, P, "Button", fill=P["BODY"], states=std("Button"))
+            return {"Hover": col(hi(slot)), "Pressed": sunk(slot, **col(lo(slot))), "Disabled": dict(dis)}
+        yield self.key(L, P, "Button", fill=body("Button"), states=std("Button"))
         yield self.key(L, P, "Accent", fill=P["ACCENT"], mark=P["ON_MARK"], surface="accent",
                        amb=P["AMB_ACCENT"] if "AMB_ACCENT" in P["_GIVEN"] or not ma else None,
                        states={"Hover": col(P["ACCENT_HI"], ma),
@@ -1167,15 +1270,15 @@ class Lit(Unlit):
         # A latch: ON is pressed IN, filled with its meaning, and the mark glows — shape AND colour.
         for slot, on in (("ToggleBtn", "ACCENT"), ("Solo", "SOLO"), ("Lamp", "LAMP")):
             mark = P["LAMP_OFF"] if slot == "Lamp" else P["MARK_DIM"]
-            yield self.key(L, P, slot, fill=P["BODY"], mark=mark,
-                           states=dict(std(slot), Hover={**col(P["BODY_HI"]), "_IconColor": P["MARK"]},
+            yield self.key(L, P, slot, fill=body(slot), mark=mark,
+                           states=dict(std(slot), Hover={**col(hi(slot)), "_IconColor": P["MARK"]},
                                        Active=sunk(slot, **col(P[on]), _IconColor=P["ON_MARK"],
                                                    _ButtonRenderEmissive=0.25, _IconRenderEmissive=0.6)))
-        yield self.key(L, P, "Close", fill=P["BODY"], mark=P["MARK_DIM"],
-                       states={"Hover": {**col(P["BODY_HI"]), "_IconColor": P["HOT"]},
-                               "Pressed": sunk("Close", **col(P["BODY_LO"]), _IconColor=P["HOT"]),
+        yield self.key(L, P, "Close", fill=body("Close"), mark=P["MARK_DIM"],
+                       states={"Hover": {**col(hi("Close")), "_IconColor": P["HOT"]},
+                               "Pressed": sunk("Close", **col(lo("Close")), _IconColor=P["HOT"]),
                                "Disabled": dict(dis)})
-        yield self.key(L, P, "Chip", fill=P["BODY"], states=std("Chip"))
+        yield self.key(L, P, "Chip", fill=body("Chip"), states=std("Chip"))
         yield self.key(L, P, "Dot", fill=P["SCROLL"],
                        states={"Hover": col(P["SCROLL_HI"]),
                                "Pressed": sunk("Dot", **col(P["ACCENT"])), "Disabled": dict(dis)})
@@ -1186,8 +1289,10 @@ class Lit(Unlit):
         # The pad's colour is BOUND (padColor), so its layer never carries a ramp.
         slot, base, states, extra = self.key(
             L, P, "Pad", fill=P["PAD_BODY"], surface="pad",
-            states={"Hover": {"_ButtonRenderEmissive": 0.06},
-                    "Pressed": sunk("Pad", _ButtonRenderEmissive=0.35),
+            # (batch 2026-10-06: hover at 0.06 was invisible on every look — a pad must answer the
+            # pointer: brighter body + a lifted face; pressed sinks and glows)
+            states={"Hover": {"_ButtonRenderEmissive": P.get("PAD_HOVER_EM", 0.18), "_ButtonFaceSmoothness": 0.3},
+                    "Pressed": sunk("Pad", _ButtonRenderEmissive=P.get("PAD_PRESS_EM", 0.45)),
                     "Disabled": {"_ButtonRenderAlpha": 0.45, "_ButtonShadow1Intensity": 0.4},
                     "Latched": {"_ButtonRenderEmissive": 0.25, "_ButtonBevelDepth": -0.05}},
             extra={"padColor": {"targets": [{"param": "_ButtonColor", "amount": P["PAD_TINT"]}]}})
@@ -1232,6 +1337,7 @@ class Lit(Unlit):
                else self.pattern(L, P, "_KnobBevel", "skirt", slot)),
             "_KnobNubEnabled": 1, "_KnobNubShapeType": 0, "_KnobNubColor": P["NUB"], "_KnobNubSize": S["nub"],
             "_KnobNubDistance": S["nub_dist"],
+            **self.v2("_Knob", mc, "Knob"),
         })
         if S.get("stitch"):
             # a dashed ring of thread round the cap (24 fixed dashes): leather-stitched concho collar
@@ -1327,7 +1433,7 @@ class Lit(Unlit):
         amb = P["AMB_PLATE"] if ("AMB_PLATE" in P["_GIVEN"] or not m) else m.get("plate_amb", P["AMB_PLATE"])
         base = self.common("Panel", P, amb)
         if m:
-            pm = dict(m, pattern=m.get("linear", m.get("pattern")))
+            pm = dict(m, pattern=m.get("linear", m.get("pattern")), texture=m.get("plate_texture", m.get("texture")))
             pat = self.mpattern("_Panel", pm, 0, lock=m.get("lock", S["lock"]), base=c)
         elif slot not in ("Well", "ScrollTrack"):
             pat = self.pattern(L, P, "_Panel", "plate", slot)
@@ -1343,7 +1449,13 @@ class Lit(Unlit):
             **grad("_Panel", (lo, hi), (0.0, 1.0)),
             **pat,
             "_BorderEnabled": 0, "_EdgeEnabled": 0,
+            **self.v2("_Panel", dict(m, matcap=m.get("plate_matcap")) if m else None, "Panel"),
         })
+        if m and m.get("glass") and "_PanelBevelEnabled" in base:
+            # glass plates need a curved edge for the refraction and rim to catch: a soft rounded
+            # bevel band (the medial-axis limit still applies: distance <= 0.14)
+            base.update({"_PanelBevelEnabled": 1, "_PanelBevelDistance": 0.12, "_PanelBevelDepth": 0.35,
+                         "_PanelBevelSmoothness": 0.9})
         if S["recess"]:
             # a recessed dish reads as a dish only if its wall catches light — a RIM, low depth
             base.update({"_PanelRimEnabled": 1, "_PanelRimDepth": S["recess"], "_PanelRimWidth": S["rim_w"],
@@ -1569,6 +1681,17 @@ class Look:
             # `shape.<group|slot>["set"]`: raw shader properties a spec adds to a part (validated by skin()
             # against the shader's own Properties) — for a motif the kit has no vocabulary for, e.g. stripes
             base = dict(base, **self.S(slot).get("set", {}))
+            # per-MODE raw properties: modes[mode]["set"][slot or group] (a light mode's own stripes...)
+            mset = self.modes[mode].get("set", {})
+            base.update(mset.get(SLOTS[slot][2], {}))
+            base.update(mset.get(slot, {}))
+            # per-STATE raw deltas: shape/modes ["states"][slot or group][state] — e.g. an unlit key whose
+            # gradient must change on hover (a gradient beats the colour write the kit's states make)
+            for src in (self.shape.get("states", {}), self.modes[mode].get("states", {})):
+                for key in (SLOTS[slot][2], slot):
+                    for st, delta in src.get(key, {}).items():
+                        states = dict(states)
+                        states[st] = dict(states.get(st, {}), **delta)
             doc, probs = skin(name, fam, base, states, bounds=BOUNDS[bkey], flat_shader=not self.kit.rm,
                               extra=extra, write=False, quiet=True)
             doc["author"] = self.author
@@ -1585,6 +1708,9 @@ class Look:
         chrome, groups = derive_app(P, pale_keys, pale)
         over = self.modes[mode].get("app", {})
         chrome = merge(chrome, over.get("chrome"))
+        if self.modes[mode].get("backdrop"):
+            # a wallpaper look: the gaps between docked panels and the camera clear must let it through
+            groups = merge(groups, {"surface": {"gap": "#00000000", "backdrop": "#00000000"}})
         groups = merge(groups, {k: v for k, v in over.items() if k not in ("chrome", "hot")})
         return chrome, groups
 
@@ -1651,6 +1777,7 @@ class Look:
             fam, roles = roster(P["prefix"])
             doc["modes"][mode] = {
                 "trackTheme": m["track"], "blurb": m["blurb"], "lights": self.lights_ref(mode),
+                **({"backdrop": m["backdrop"]} if m.get("backdrop") else {}),
                 "colors": colors, "chrome": chrome, "palettes": groups, "displays": self.display_block(mode),
                 "families": fam, "roles": roles,
                 "swaps": {k: P["prefix"] + v for k, v in SWAP_PART.items()},
@@ -1886,6 +2013,23 @@ class Scene:
         self.cells, self.meta = [], []
         self.canvas = Canvas(w, h, self.P["GAP"])
         self.lit = look.cls == "lit"
+        self.backdrop = look.modes[mode].get("backdrop")
+        if self.backdrop:
+            from PIL import Image as _I
+            import numpy as _np
+            src = ROOT / RES_REL / (self.backdrop + ".png")
+            im = _I.open(src).convert("RGB")
+            iw, ih = im.size
+            sc = max(w / iw, h / ih)
+            im = im.resize((int(iw * sc + 0.5), int(ih * sc + 0.5)), _I.LANCZOS)
+            ox, oy = (im.width - w) // 2, (im.height - h) // 2
+            im = im.crop((ox, oy, ox + w, oy + h))
+            self.wall = im
+            px = self.canvas.px
+            px[..., :3] = _np.asarray(im, dtype=_np.float32)[..., :3] / 255.0
+            self.wall_path = str((ROOT / ".skinsheet" / f"wall-{look.style}-{mode}.png").resolve())
+            (ROOT / ".skinsheet").mkdir(exist_ok=True)
+            im.save(self.wall_path)
 
     def add(self, part, x, y, w, h, state=None, value=None, sets=None):
         cid = f"lk-{self.P['prefix']}-{self.tag}-{len(self.cells)}"
@@ -1895,6 +2039,12 @@ class Scene:
              "pos": [(x + w / 2) / self.w, 1.0 - (y + h / 2) / self.h]}
         if self.lit and not plate and SLOTS[part][0] != "Toggle":
             c["shadow"] = 2
+        if self.backdrop:
+            # the slice of wallpaper under this cell (glass samples it); not drawn under the cell —
+            # the canvas already holds the wallpaper
+            c["backdrop"] = self.wall_path
+            c["backdropRect"] = [x / self.w, y / self.h, (x + w) / self.w, (y + h) / self.h]
+            c["backdropUnder"] = False
         if state:
             c["state"] = state
         s = dict(sets or {})

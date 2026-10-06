@@ -27,7 +27,7 @@ LOOK = Look(
     modes={
         "dark": dict(
             track="Nebula", blurb="Charcoal and one orange. Unlit, sharp and cheap to draw - the phone look.",
-            palette=dict(
+            palette=dict(PAD_HOVER_EM=0.08, PAD_PRESS_EM=0.22, 
                 # plates, darkest to lightest: the gaps between docked panels are the darkest thing on screen
                 GAP="#141414", BACK="#1B1B1B", WELL="#171717", INSET="#222222", SOCKET="#202020", FACE="#2A2A2A",
                 BODY="#3E3E3E", BODY_HI="#494949", PRESS="#2E2E2E", BORDER=None,
@@ -53,7 +53,7 @@ LOOK = Look(
         ),
         "light": dict(
             track="Rosewater", blurb="Studio grey in daylight. Unlit, sharp and cheap to draw.",
-            palette=dict(
+            palette=dict(PAD_HOVER_EM=0.08, PAD_PRESS_EM=0.22, 
                 GAP="#A8A8A8", BACK="#B9B9B9", WELL="#E9E9E9", INSET="#C4C4C4", SOCKET="#C8C8C8", FACE="#D0D0D0",
                 # a pale key DARKENS under the pointer; disabled sinks toward the plate instead
                 BODY="#BDBDBD", BODY_HI="#B2B2B2", PRESS="#A9A9A9", BORDER=None,

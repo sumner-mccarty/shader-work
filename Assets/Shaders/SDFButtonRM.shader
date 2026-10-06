@@ -415,6 +415,17 @@ Shader "UI/SDFButtonRM"
         _Position ("UI Position", Vector) = (0, 0, 0, 0)
 
         // Unity UI standard properties
+        // Materials v2 (CG/Core/UIMaterials.cginc): matcap reflection + backdrop glass on the Button body.
+        _ButtonMatcapEnabled ("Button Matcap Enabled", Float) = 0
+        _ButtonMatcapLayer ("Button Matcap Layer (UiMaterials/catalog.json)", Float) = 0
+        _ButtonMatcapStrength ("Button Matcap Strength", Range(0, 1)) = 1
+        _ButtonMatcapMode ("Button Matcap Mode (0 metal, 1 coat, 2 tint)", Float) = 0
+        _ButtonGlassEnabled ("Button Glass Enabled", Float) = 0
+        _ButtonGlassStrength ("Button Glass Strength", Range(0, 1)) = 0.85
+        _ButtonGlassRefract ("Button Glass Refraction", Range(0, 0.2)) = 0.03
+        _ButtonGlassBlur ("Button Glass Blur (mip)", Range(0, 8)) = 3
+        _ButtonGlassTint ("Button Glass Tint", Color) = (1, 1, 1, 1)
+        _ButtonGlassRim ("Button Glass Rim", Range(0, 2)) = 0.6
         _StencilComp ("Stencil Comparison", Float) = 8
         _Stencil ("Stencil ID", Float) = 0
         _StencilOp ("Stencil Operation", Float) = 0
@@ -469,6 +480,8 @@ Shader "UI/SDFButtonRM"
             #include "CG/Core/UIComponents.cginc"
             #include "CG/Core/UIPatterns.cginc"
             #include "CG/Core/UILighting.cginc"
+            #include "CG/Core/UIMaterials.cginc"
+            UI_MATERIAL_V2_UNIFORMS(Button)
             #include "CG/Core/UIViewCamera.cginc"
             #include "CG/Core/UIRenderer.cginc"
             #include "CG/Core/UIGradients.cginc"
@@ -1269,6 +1282,7 @@ Shader "UI/SDFButtonRM"
                             float3 litColor = ApplyUILighting(lightNormal, surfaceColor,
                                                              _LightingAmbient, specularMod, normalOffset,
                                                              light1, light2, light3);
+                            UI_MATERIAL_V2(litColor, surfaceColor, lightNormal, Button, -1.0)
 
                             // Composite into layer stack
                             // Skip face surface if _ButtonFaceEnabled is off (ring/outline mode)
@@ -1287,6 +1301,7 @@ Shader "UI/SDFButtonRM"
 
             fixed4 frag(v2f IN) : SV_Target
             {
+                UI_SET_SCREEN_UV(IN.screenPos)
                 float2 uv = IN.texcoord;
                 // Shadow quad: remap uv into the widget's own uv space (quad is
                 // _ShadowUvExpand× the widget, centered) so all SDF math is unchanged and

@@ -145,11 +145,13 @@ Pick briefs from `Looks/BACKLOG.md` (Wave 1 first). One look per session. Paste,
 ### Prompt L — one look
 ```
 Make the look "<slug>" from Looks/BACKLOG.md.
-Follow CLAUDE.md's Look workflow exactly: read the skin skill, Looks/README.md and the lookkit
-docstring first; build Tools/looks/<module>.py on the look kit; dark AND light; every role/family/
-swap rostered; your own prefix; your own rig if lit.
-Iterate on rack composites for at least 3 rounds; each round write a critique against the
-Looks/README.md rubric in Looks/<slug>/NOTES.md and fix the worst issue first. Push the theme's
+Follow CLAUDE.md's Look workflow exactly: read the skin skill, Looks/README.md (incl. "Materials v2"),
+Looks/CHECKLIST.md, Looks/TASTE.md and the lookkit docstring first; build Tools/looks/<module>.py on the
+look kit; dark AND light; every role/family/swap rostered; your own prefix; your own rig if lit.
+Use the Materials v2 presets (real textures, matcaps, glass + backdrop) wherever the brief names a
+material — procedural-only surfaces are what made the last looks "okay, not stellar".
+Iterate on rack composites for at least 3 rounds; each round score Looks/CHECKLIST.md in
+Looks/<slug>/NOTES.md (render knob.small at 30x30 as well) and fix the lowest items first. Push the theme's
 signature until it reads in one second at 25% zoom, then check it against every other look's rack
 for distinctness.
 Gate: python Tools/lookcheck.py <Style> with 0 errors, python Tools/looks/<module>.py printcheck with 0 pairs under 3:1, python tests/test_basics.py.
@@ -185,13 +187,15 @@ from me. I will only review the final PR.
    `python -m slrender watch --bus .skinsheet-<slug> &`, touch only files with its own prefix and its
    own Looks/<slug>/ folder, do NOT commit or push, and reply with: file list, lookcheck output,
    the four sheet paths, and its own rubric critique.
-4. Judge: for each finished look, start a fresh critic subagent (model: opus) that sees ONLY the brief,
-   the rubric, the look's four sheets, and a contact sheet of every other look's rack-dark.png
-   (`python -m slrender contact "Looks/*/sheets/rack-dark.png"`). It returns a 1-10 score per rubric
-   item, PASS or REVISE, and the 3 most important concrete fixes. On REVISE, give those fixes to the
+4. Judge: for each finished look, start a critic subagent (model: opus) that sees ONLY the brief,
+   Looks/CHECKLIST.md, Looks/TASTE.md, the look's four sheets, a 30x30 knob.small render, and a contact
+   sheet of every other look's rack-dark.png (`python -m slrender contact "Looks/*/sheets/rack-dark.png"`)
+   — and, from round 2, ITS OWN PREVIOUS VERDICT. It scores exactly the CHECKLIST items in the
+   CHECKLIST's verdict format (new observations go under "notes", never into the score — the goalposts
+   do not move). PASS = every item >= 7 and identity >= 8. On REVISE, give the "fix first" list to the
    builder (continue the same subagent if you can, otherwise a new builder working on the existing
-   files) — at most 2 revision rounds. Still failing after 2: set look.json status "rejected", keep
-   the critic's notes in NOTES.md, and do not count it.
+   files) — at most 3 revision rounds. Still failing after 3: set look.json status "rejected", keep
+   the verdicts in NOTES.md, and do not count it.
 5. Ship: for each accepted look set status "candidate" and commit it alone ("look: <Title>").
    Re-run `python Tools/lookcheck.py <Style>` and `python Tools/looks/<module>.py printcheck` (0 under 3:1) for every accepted look and `python tests/test_basics.py`.
    Push and open ONE PR "looks: batch <date> — <n> looks". For each look the description has: title,
@@ -209,8 +213,35 @@ ones you keep `approved` (the follow-up session can do that for you) and import 
 night at 2am") can run Prompt B with a batch of 3 — a new batch PR waits for you each morning.
 Check that routines draw from the same credits, and keep the batch small so one bad night is cheap.
 
-**Cost:** a 6-look batch ≈ $25–40 (builders ~$4 each, revisions, ~$0.50 per critic pass, foreman).
-Do one batch, look at the quality and the real cost, then decide on the next.
+**Cost:** measured: batch 1 (4 looks) ≈ $7; batch 2 (5 attempted, 0 accepted) burned its budget on a
+critic that moved the goalposts — fixed by the checklist above. Expect ~$2–4 per accepted look.
+
+### Prompt P — polish an existing look with Materials v2 (Sonnet 5.5, one look per session)
+```
+Polish the look "<slug>" (Tools/looks/<module>.py) with Materials v2 — read Looks/README.md
+"Materials v2", Looks/CHECKLIST.md and Looks/TASTE.md first, then render the CURRENT racks as round 0.
+Goal: material conviction. Use the presets' real textures and matcaps (wood that is wood, metal with a
+moving reflection, fabric with weave), keep the look's identity and palette, keep light mode a chassis
+change. Score CHECKLIST.md each round in NOTES.md (3+ rounds), knob.small at 30x30 included.
+Gate: lookcheck 0 errors, printcheck 0 under 3:1, test_basics. Write the files, regenerate the sheets,
+keep look.json status "candidate" (it needs re-approval), open a PR "polish: <Title> (Materials v2)"
+embedding before/after racks for both modes.
+```
+
+### Prompt G — the glass look (Sonnet 5.5; the Liquid Glass brief, done properly)
+```
+Rebuild the "liquid-glass" look (Tools/looks/liquid_glass.py, branch main) on Materials v2 glass —
+the modern translucent-glass UI style: mostly see-through parts that show the wallpaper behind them,
+blurred and bent at curved edges, bright fresnel rims, clear-coat highlights. Read Looks/README.md
+"Materials v2", Looks/CHECKLIST.md (item 11) and Looks/TASTE.md first.
+- modes[*]["backdrop"]: a colourful wallpaper (Backdrops/Aurora or DeepWater for dark, Sunset or a new
+  pale one for light — new wallpapers go in Tools/gen_materials.py, say so in the PR if you need one).
+- plates: preset glass.frosted (bodies opaque; the glass term is the transparency), soft rounded edge;
+  keys/knobs/handles: glass.clear with a glass_rim matcap; one strong accent for ON.
+- Judge it over the wallpaper on the rack sheet (the sheet draws it); 3+ rounds against CHECKLIST.md.
+Rename the look away from the trademark-like "Liquid Glass" (e.g. "Clearwater"). Gate as Prompt P.
+Open a PR "look: <Title> (glass)" embedding both racks; mark old PR #4 as superseded in its description.
+```
 
 ---------------------------------------------------------------------------------------------------
 ## Phase 3 — Shader features for true gold / chrome / glass (Opus 5.5)

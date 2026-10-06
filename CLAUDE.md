@@ -44,6 +44,9 @@ github.com, objects.githubusercontent.com, pypi.org and the Ubuntu archive.
 * **Parallel workers in one checkout** (e.g. builder subagents): each must use its OWN bus —
   `export SKINSHEET_BUS=.skinsheet-<slug>` and `python -m slrender watch --bus .skinsheet-<slug> &` —
   or they overwrite each other's job.json and PNGs.
+* **Materials v2** (real textures, matcaps, glass over a wallpaper) is bound automatically from
+  `Assets/Resources/UiMaterials` and `Backdrops` — see Looks/README.md. Set `PYTHONIOENCODING=utf-8`
+  on Windows (the kit prints Unicode).
 * Everything renders in the app's **screen** orientation by default. Do not "fix" bevel direction
   to match the skill's warnings about the Unity SkinSheet — slrender already shows what players see.
 * LOOK at results: build ONE contact sheet per round (`python -m slrender contact "<pngs>" -o sheet.png`

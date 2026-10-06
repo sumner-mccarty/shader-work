@@ -80,7 +80,7 @@ if __name__ == "__main__":
 | `cls` | `unlit` (Flat's rules: non-RM, `_LightingUnlit 1`, value steps), `neon` (Tron's: unlit light tubes — core/bloom/sheen), `lit` (UI/*RM under the look's rig; the Realistic/Neo/RackFaceplate vocabulary). Each class documents its palette tokens (`TOKENS`) and shape defaults (`SHAPE`) in lookkit.py. |
 | `palette` | Per-mode tokens the class reads (`FACE`, `BODY`, `ACCENT`, `VALUE`, …). A missing required token is an error; optional ones are derived (`PALETTE_DEFAULTS`). App-print tiers `INK` / `INK_DIM` / `PRINT_DIM` default to `MARK` / `MARK_DIM`. Neon keeps mode-dependent weights (`LINE`, `BLOOM`, `GRID`, plate px) in the palette. |
 | `shape` | Form language, resolved **class group < spec group < class slot < spec slot**. Groups: `key` (corner, round, bevel, depth, dome, icon…), `dial` (`silhouette` needle/capped/cap, px, arc_px, skirt = a KnobShapeType name, cap_r, dome, nub…), `fader`, `switch`, `plate` (radius_px, pad_px, recess…). Slots: `Button Accent ToggleBtn Solo Lamp Close Chip Dot ScrollHandle Pad Knob KnobHero KnobSmall Slider Fader Pill Face Inset Socket Well Back Bezel ScrollTrack`. `pad` is the footprint — leave it. |
-| `material` | Lit only. Per surface (`key`, `accent`, `cap`, `skirt`, `handle`, `plate`, `pad`, or a slot name) name a **preset** from the material library — `"gold.polished"`, `{"preset": "enamel", "tint": "#1F7A52"}`, `{"preset": "lacquer.black", "edge": "gold.polished", "amb": 0.8}` — which brings the colour ramp (fake reflection), edge band, px-derived pattern, spec/roughness, dome, bevel and ambient. Presets: gold.polished, gold.brushed, gold.rose, chrome, aluminium.brushed, brass, copper, lacquer.black, enamel, plastic.gloss, rubber.matte, wood.oiled, leather.tooled, marble, ceramic, glass.frosted, fabric.velvet, carbon, concrete — see `Looks/_materials/` (swatches + tuning notes + known limits). A plain dict without `preset` is the legacy pattern-only form (`pattern`, `scale`, `px`, `intensity`, …). A mode may re-tune its materials with `modes[mode]["material"]`. |
+| `material` | Lit only. Per surface (`key`, `accent`, `cap`, `skirt`, `handle`, `plate`, `pad`, or a slot name) name a **preset** from the material library — `"gold.polished"`, `{"preset": "enamel", "tint": "#1F7A52"}`, `{"preset": "lacquer.black", "edge": "gold.polished", "amb": 0.8}` — which brings the colour ramp (fake reflection), edge band, px-derived pattern, spec/roughness, dome, bevel and ambient. Presets: gold.polished, gold.brushed, gold.rose, chrome, aluminium.brushed, brass, copper, metal.hammered, lacquer.black, enamel, plastic.gloss, rubber.matte, pearl, wood.oiled, leather.tooled, denim, linen, fabric.velvet, marble, terrazzo, ceramic, paper, concrete, paint.crackle, ice.frost, glitter, carbon, glass.frosted, glass.clear — see `Looks/_materials/` (swatches + tuning notes + known limits). A plain dict without `preset` is the legacy pattern-only form (`pattern`, `scale`, `px`, `intensity`, …). A mode may re-tune its materials with `modes[mode]["material"]`. |
 | `app` | Overrides on the DERIVED app palettes (`chrome`, `ui`, `surface`, `ink`, `display`, `key`, `pad`, `review`, `tracks`). Derivation already covers the pale-look pieces (`ink.key` only on pale keys; `review.slot/slotFill`, `tracks.noteSeparator` on pale lanes). `None` deletes a key. |
 | `rig` | Lit only: lamps per mode → `Themes/<Style>{Dark,Light}.theme.json`. Unlit/neon always get `Themes/<Style>.theme.json` with every lamp off. |
 | `waive` | The only way past a rule. The reason prints on every `check`, so the exception gets reviewed. |
@@ -111,6 +111,38 @@ control's luminance step off its plate (dark controls must separate from dark pl
 The proof that the kit is complete: `python Tools/looks/flat.py diff` and `tron.py diff` reproduce
 every shipped FlatDark*/FlatLight*/TronDark*/TronLight* part and both rigs byte-for-byte; the two
 recipes are JSON-identical (only the generated banner comment and one hand-formatted line differ).
+
+## Materials v2 (2026-10-06) — real textures, matcaps, glass
+
+The engine now has three things procedural noise and Blinn-Phong could not do. Presets use them
+already (see the swatches); a spec reaches them through the preset fields:
+
+| Preset field | What it does | Where it works |
+|---|---|---|
+| `texture=("wood_grain", tile_px, intensity, contrast, blur, stretch)` | a real tileable image (Resources/UiMaterials/MaterialTex — wood_grain, wood_burl, leather_pebble, leather_smooth, velvet, linen, denim, marble, terrazzo, brushed_fine, hammered, plaster, paper, frost, glitter, crackle) as pattern type 20; one tile spans `tile_px` pixels; every pattern control still applies (colour ramp, bump, px-lock) | every patterned layer |
+| `matcap=("chrome", strength)` | a lit-sphere reflection (Matcaps — chrome, polished, satin, brushed → METAL, tinted by the part colour; gloss_coat, satin_coat, glass_rim → COAT, added on top; pearl, ceramic, rubber → TINT) | knob body, key body, slider handle (lit); plates only via `plate_matcap` (a matcap on a flat plate is just a tint) |
+| `glass=dict(strength, blur, refract, tint, rim)` | the part shows the look's WALLPAPER through it — blurred, refracted at its curved edge, tinted, with a fresnel rim. Author the body opaque (alpha 1): the glass IS the transparency | knob, key, handle, plate |
+
+Mode-level: `modes[mode]["backdrop"] = "Backdrops/Aurora"` (Aurora, DeepWater, Bokeh, Sunset — or add
+one to Tools/gen_materials.py) draws a wallpaper behind the whole UI and makes the panel gaps and camera
+clear transparent so it shows. Glass without a backdrop renders its opaque fallback. Sheets draw the
+wallpaper behind the rack and give every cell its own slice, so what you see is what the app shows.
+
+**Spec additions (batch 2026-10-06 kit gaps):**
+* per-slot key colours: palette `"BODY.<Slot>"` (e.g. `"BODY.Chip"`, `"BODY.Solo"`) beats `BODY`;
+  `"BODY_HI.<Slot>"` / `"BODY_LO.<Slot>"` override the derived hover/pressed.
+* per-mode raw properties: `modes[mode]["set"] = {"<slot or group>": {"_Prop": v}}` (the shape-level
+  `set` applies to both modes).
+* per-state raw deltas: `shape["states"]` or `modes[mode]["states"] = {"<slot or group>": {"Hover": {...}}}`
+  — e.g. an unlit key whose GRADIENT must change on hover (a gradient beats the kit's colour writes).
+* neon glow strength: palette `TUBE_EM` / `HALO_EM` (default 1.0).
+* pads answer the pointer by default: palette `PAD_HOVER_EM` / `PAD_PRESS_EM` (unlit 0.16 / 0.4, lit
+  0.18 / 0.45). Pad row colours come from the mode's TRACK THEME (`track`, or ship your own with
+  `track_themes`) — that is how a look controls pad hues.
+* lit `KnobSmall` is now tuned at 32 px — its real size in the app's ENV-7 row.
+
+Before you add a texture or matcap a look needs, check `Looks/_materials/swatches.png`; new ones are
+added in `Tools/gen_materials.py` (in the Unity repo) and come back with the next sync.
 
 ## The gate (a PR is not ready until all pass)
 

@@ -243,6 +243,17 @@ class SkinRenderer:
         self.resources = resources
         self.r = renderer or Renderer(shader_roots)
         self._docs = {}
+        self._backdrops = {}
+        # Materials v2: the app binds these globals at startup (UiMaterialLibrary.cs) — so do we.
+        self.material_textures = {}
+        self.material_globals = {}
+        lib = Path(resources) / "UiMaterials" if resources else None
+        if lib and (lib / "MaterialTex.png").exists() and (lib / "Matcaps.png").exists():
+            self.material_textures = {
+                "_UIMaterialTexArray": TextureSpec(data=str(lib / "MaterialTex.png"), grid=(4, 4), wrap="repeat", mipmaps=True),
+                "_UIMatcapArray": TextureSpec(data=str(lib / "Matcaps.png"), grid=(4, 4), wrap="clamp", mipmaps=True),
+            }
+            self.material_globals = {"_UIMaterialLibBound": 1.0}
 
     def states_path(self, name: str) -> Path:
         p = Path(name)
@@ -313,9 +324,27 @@ class SkinRenderer:
         ss = min(4, max(1, int(float(cell.get("ss", 1)))))
         bg = parse_color(cell.get("bg") or "#00000000")
         textures = {"_UIShadowBuffer": TextureSpec(color=(255, 255, 255, 255))}
+        textures.update(self.material_textures)
+        globals_.update(self.material_globals)
+        # Backdrop (glass): the look's wallpaper. `backdropRect` [x0, y0, x1, y1] (0..1, y DOWN, of
+        # the wallpaper) is the part of the screen this cell occupies — a rack sheet passes each
+        # cell's rect so every glass part sees the slice of wallpaper actually behind it.
+        bg_full = None
+        if cell.get("backdrop"):
+            crop = self._backdrop(cell["backdrop"], cell.get("backdropRect") or [0, 0, 1, 1])
+            textures["_UIBackdropTex"] = TextureSpec(data=crop, wrap="clamp", mipmaps=True)
+            globals_["_UIBackdropBound"] = 1.0
+            globals_.setdefault("_UIBackdropUV", (1.0, 1.0, 0.0, 0.0))
+            bg_full = crop if cell.get("backdropUnder", True) else None
         keywords = cell.get("keywords") or ()
         time = float(cell.get("time", 0.0))
         orient = cell.get("orientation") or self.orientation
+
+        def bgimg(W, H):
+            if bg_full is None:
+                return None
+            from PIL import Image as _I
+            return np.asarray(_I.fromarray(bg_full).resize((W, H), _I.BILINEAR))
 
         expand = float(cell.get("shadow", 0) or 0)
         if expand > 1.001 and "_ShadowPassMode" not in sh.properties:
@@ -336,7 +365,8 @@ class SkinRenderer:
         if expand > 1.001:
             bw, bh = int(round(w * ss * expand)), int(round(h * ss * expand))
             back = self.r.render(sh, {**props, "_ShadowPassMode": 1.0, "_ShadowUvExpand": expand}, (bw, bh),
-                                 globals_, keywords, textures=textures, bg=bg, time=time, orientation=orient)
+                                 globals_, keywords, textures=textures, bg=bg, time=time, orientation=orient,
+                                 bg_image=bgimg(bw, bh))
             front = self.r.render(sh, {**props, "_ShadowPassMode": 0.0, "_ShadowUvExpand": 1.0}, (w * ss, h * ss),
                                   globals_, keywords, textures=textures, bg=(0, 0, 0, 0), time=time,
                                   orientation=orient)
@@ -350,7 +380,24 @@ class SkinRenderer:
             region[:] = f + region * (1.0 - f[..., 3:4])
             return (np.clip(out, 0, 1) * 255.0 + 0.5).astype(np.uint8)
         return self.r.render(sh, props, (w * ss, h * ss), globals_, keywords, textures=textures, bg=bg, time=time,
-                             orientation=orient)
+                             orientation=orient, bg_image=bgimg(w * ss, h * ss))
+
+    def _backdrop(self, path, rect):
+        """Wallpaper crop (HxWx4 uint8, row 0 = top) for a cell's screen rect."""
+        from PIL import Image as _I
+        p = Path(path)
+        if not p.exists() and self.resources:
+            p = Path(self.resources) / path
+            if not p.exists():
+                p = Path(self.resources) / (str(path) + ".png")
+        key = (str(p), tuple(rect))
+        if key not in self._backdrops:
+            im = _I.open(p).convert("RGBA")
+            W, H = im.size
+            x0, y0, x1, y1 = rect
+            im = im.crop((int(x0 * W), int(y0 * H), max(int(x1 * W), int(x0 * W) + 1), max(int(y1 * H), int(y0 * H) + 1)))
+            self._backdrops[key] = np.asarray(im)
+        return self._backdrops[key]
 
     def run_job(self, job: dict, out_dir=None) -> dict:
         """Run a SkinSheet job dict; write <id>.png files; return a done.json-style payload."""

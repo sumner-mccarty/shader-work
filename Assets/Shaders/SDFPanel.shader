@@ -424,6 +424,17 @@ Shader "UI/SDFPanel"
         _ReceiveSceneShadows ("Receive Scene Shadows", Float) = 1
 
         // Unity UI standard properties
+        // Materials v2 (CG/Core/UIMaterials.cginc): matcap reflection + backdrop glass on the Panel body.
+        _PanelMatcapEnabled ("Panel Matcap Enabled", Float) = 0
+        _PanelMatcapLayer ("Panel Matcap Layer (UiMaterials/catalog.json)", Float) = 0
+        _PanelMatcapStrength ("Panel Matcap Strength", Range(0, 1)) = 1
+        _PanelMatcapMode ("Panel Matcap Mode (0 metal, 1 coat, 2 tint)", Float) = 0
+        _PanelGlassEnabled ("Panel Glass Enabled", Float) = 0
+        _PanelGlassStrength ("Panel Glass Strength", Range(0, 1)) = 0.85
+        _PanelGlassRefract ("Panel Glass Refraction", Range(0, 0.2)) = 0.03
+        _PanelGlassBlur ("Panel Glass Blur (mip)", Range(0, 8)) = 3
+        _PanelGlassTint ("Panel Glass Tint", Color) = (1, 1, 1, 1)
+        _PanelGlassRim ("Panel Glass Rim", Range(0, 2)) = 0.6
         _StencilComp ("Stencil Comparison", Float) = 8
         _Stencil ("Stencil ID", Float) = 0
         _StencilOp ("Stencil Operation", Float) = 0
@@ -473,6 +484,8 @@ Shader "UI/SDFPanel"
             #include "CG/Core/UIComponents.cginc"
             #include "CG/Core/UIPatterns.cginc"
             #include "CG/Core/UILighting.cginc"
+            #include "CG/Core/UIMaterials.cginc"
+            UI_MATERIAL_V2_UNIFORMS(Panel)
             #include "CG/Core/UIRenderer.cginc"
             #include "CG/Core/UIGradients.cginc"
             #include "CG/SDF/SDFPanelUniforms.cginc"
@@ -532,6 +545,7 @@ Shader "UI/SDFPanel"
 
             fixed4 frag(v2f IN) : SV_Target
             {
+                UI_SET_SCREEN_UV(IN.screenPos)
                 float2 uv     = IN.texcoord;
                 float2 center = float2(0.5, 0.5);
 
@@ -847,6 +861,7 @@ Shader "UI/SDFPanel"
 
                         float3 litColor = ApplyUILighting(rimResult.normal, rimResult.litColor,
                             _LightingAmbient, specularMod, normalOffset, light1, light2, light3);
+                        UI_MATERIAL_V2(litColor, rimResult.litColor, rimResult.normal, Panel, 1.0)
 
                         buttonCompositeOver(finalColor, litColor, bodyMask * panelComp.alpha);
                         emissiveAccum += baseColor * bodyMask * _PanelRenderEmissive;

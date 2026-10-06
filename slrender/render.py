@@ -69,7 +69,9 @@ def builtin_globals(w: int, h: int, time: float = 0.0, orientation: str = "textu
         "unity_DeltaTime": (1 / 60, 60.0, 1 / 60, 60.0),
         "_ScreenParams": (float(w), float(h), 1.0 + 1.0 / w, 1.0 + 1.0 / h),
         # x = -1 under the screen flip keeps ComputeScreenPos's y = 1 at the top, as on D3D.
-        "_ProjectionParams": (-1.0 if orientation == "screen" else 1.0, -1.0, 100.0, 0.01),
+        # x = +1 in both modes: the screen flip happens AFTER the vertex shader (SPIRV-Cross
+        # --flip-vert-y), so ComputeScreenPos already sees the D3D-style clip y (+1 at the top).
+        "_ProjectionParams": (1.0, -1.0, 100.0, 0.01),
         "_ZBufferParams": (1.0, 0.0, 0.01, 0.0),
         "unity_OrthoParams": (0.5, 0.5, 0.0, 1.0),
         "_WorldSpaceCameraPos": (0.0, 0.0, 0.0),
@@ -193,6 +195,8 @@ class TextureSpec:
     filter: str = "linear"       # linear | point
     wrap: str = "clamp"          # clamp | repeat
     layers: int = 1              # >1 for Texture2DArray (data then HxWx4 repeated, or a list)
+    grid: tuple = None           # (cols, rows): split a flipbook atlas into array layers, row-major
+    mipmaps: bool = False        # build a mip chain (tex2Dlod / SampleLevel with lod > 0 need one)
 
 
 class Renderer:
@@ -271,7 +275,7 @@ class Renderer:
     # ── textures ──
     def _texture(self, spec: TextureSpec, dim: str):
         key = (id(spec.data) if spec.data is not None and not isinstance(spec.data, str) else spec.data,
-               spec.color, spec.filter, spec.wrap, spec.layers, dim)
+               spec.color, spec.filter, spec.wrap, spec.layers, spec.grid, spec.mipmaps, dim)
         if key in self._tex_cache:
             return self._tex_cache[key]
         if spec.data is not None:
@@ -284,10 +288,24 @@ class Renderer:
                     arr = np.concatenate([arr, np.full(arr.shape[:2] + (1,), 255, np.uint8)], axis=2)
         else:
             arr = np.array([[spec.color or (255, 255, 255, 255)]], dtype=np.uint8)
-        # GL row 0 is the BOTTOM (uv.y = 0); images arrive top-first.
-        arr = np.ascontiguousarray(np.flipud(arr))
-        h, w = arr.shape[:2]
-        if "array" in dim:
+        if arr.ndim == 2:
+            arr = np.repeat(arr[..., None], 4, axis=2)
+            arr[..., 3] = 255
+        if spec.grid and "array" in dim:
+            cols, rows = spec.grid
+            th, tw = arr.shape[0] // rows, arr.shape[1] // cols
+            tiles = [arr[r * th:(r + 1) * th, c * tw:(c + 1) * tw] for r in range(rows) for c in range(cols)]
+            # each layer flipped on its own: GL row 0 of a layer is that tile's BOTTOM
+            data = np.concatenate([np.flipud(t) for t in tiles], axis=0)
+            tex = self.ctx.texture_array((tw, th, len(tiles)), 4, np.ascontiguousarray(data).tobytes())
+            arr = None
+        else:
+            # GL row 0 is the BOTTOM (uv.y = 0); images arrive top-first.
+            arr = np.ascontiguousarray(np.flipud(arr))
+            h, w = arr.shape[:2]
+        if arr is None:
+            pass
+        elif "array" in dim:
             layers = max(1, spec.layers)
             data = np.concatenate([arr] * layers, axis=0) if arr.shape[0] == h else arr
             tex = self.ctx.texture_array((w, h, layers), 4, np.ascontiguousarray(data).tobytes())
@@ -298,7 +316,11 @@ class Renderer:
         else:
             tex = self.ctx.texture((w, h), 4, arr.tobytes())
         f = self._mgl.NEAREST if spec.filter == "point" else self._mgl.LINEAR
-        tex.filter = (f, f)
+        if spec.mipmaps:
+            tex.build_mipmaps()
+            tex.filter = (self._mgl.LINEAR_MIPMAP_LINEAR, f)
+        else:
+            tex.filter = (f, f)
         if hasattr(tex, "repeat_x"):
             tex.repeat_x = spec.wrap == "repeat"
             tex.repeat_y = spec.wrap == "repeat"
@@ -307,7 +329,8 @@ class Renderer:
 
     # ── draw ──
     def render(self, shader, props=None, size=(96, 96), globals_=None, keywords=(), pass_index=0,
-               textures=None, bg=(0.0, 0.0, 0.0, 0.0), time=0.0, float_output=False, orientation="texture"):
+               textures=None, bg=(0.0, 0.0, 0.0, 0.0), time=0.0, float_output=False, orientation="texture",
+               bg_image=None):
         """
         Render one pass into a fresh w x h target cleared to `bg` (0..1 RGBA) and return an
         HxWx4 array, row 0 = top. uint8 unless float_output (then float32, unclamped HDR).
@@ -317,6 +340,7 @@ class Renderer:
         textures — name -> TextureSpec (material or global); unset textures use the Property default
         orientation — "texture" (Unity render-to-texture / SkinSheet) or "screen" (the app's
                    backbuffer); see the module docstring
+        bg_image — HxWx4 uint8 (row 0 = top) drawn under the pass instead of the flat `bg`
         """
         if orientation not in ("texture", "screen"):
             raise ValueError("orientation must be 'texture' or 'screen'")
@@ -396,11 +420,17 @@ class Renderer:
             self.ctx.vertex_array(prog, [], mode=self._mgl.TRIANGLE_STRIP)
 
         dtype = "f4" if float_output else "f1"
-        color = self.ctx.renderbuffer((w, h), 4, dtype=dtype)
+        color = self.ctx.texture((w, h), 4, dtype=dtype)
         fbo = self.ctx.framebuffer(color_attachments=[color])
         fbo.use()
         fbo.viewport = (0, 0, w, h)
         fbo.clear(*[float(c) for c in bg])
+        if bg_image is not None:
+            im = np.asarray(bg_image)
+            im = im if orientation == "screen" else np.flipud(im)   # GL row 0 = bottom unless flipped
+            if float_output:
+                im = im.astype(np.float32) / 255.0
+            color.write(np.ascontiguousarray(im[:h, :w]).astype(np.float32 if float_output else np.uint8).tobytes())
         self._apply_state(cp.pass_, values)
         vao.render(vertices=4)
         raw = fbo.read(components=4, dtype=dtype)

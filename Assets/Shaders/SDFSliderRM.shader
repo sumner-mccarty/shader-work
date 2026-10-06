@@ -605,6 +605,17 @@ Shader "UI/SDFSliderRM"
         _ShadowPassMode ("Shadow Pass Mode (0=widget, 1=shadow quad)", Float) = 0
         _ShadowUvExpand ("Shadow Quad UV Expand", Float) = 1
 
+        // Materials v2 (CG/Core/UIMaterials.cginc): matcap reflection + backdrop glass on the Handle body.
+        _HandleMatcapEnabled ("Handle Matcap Enabled", Float) = 0
+        _HandleMatcapLayer ("Handle Matcap Layer (UiMaterials/catalog.json)", Float) = 0
+        _HandleMatcapStrength ("Handle Matcap Strength", Range(0, 1)) = 1
+        _HandleMatcapMode ("Handle Matcap Mode (0 metal, 1 coat, 2 tint)", Float) = 0
+        _HandleGlassEnabled ("Handle Glass Enabled", Float) = 0
+        _HandleGlassStrength ("Handle Glass Strength", Range(0, 1)) = 0.85
+        _HandleGlassRefract ("Handle Glass Refraction", Range(0, 0.2)) = 0.03
+        _HandleGlassBlur ("Handle Glass Blur (mip)", Range(0, 8)) = 3
+        _HandleGlassTint ("Handle Glass Tint", Color) = (1, 1, 1, 1)
+        _HandleGlassRim ("Handle Glass Rim", Range(0, 2)) = 0.6
         _StencilComp ("Stencil Comparison", Float) = 8
         _Stencil ("Stencil ID", Float) = 0
         _StencilOp ("Stencil Operation", Float) = 0
@@ -655,6 +666,8 @@ Shader "UI/SDFSliderRM"
             #include "CG/Core/UIComponents.cginc"
             #include "CG/Core/UIPatterns.cginc"
             #include "CG/Core/UILighting.cginc"
+            #include "CG/Core/UIMaterials.cginc"
+            UI_MATERIAL_V2_UNIFORMS(Handle)
             #include "CG/Core/UIViewCamera.cginc"
             #include "CG/Core/UIRenderer.cginc"
             #include "CG/Core/UIGradients.cginc"
@@ -941,6 +954,7 @@ Shader "UI/SDFSliderRM"
 
             fixed4 frag(v2f IN) : SV_Target
             {
+                UI_SET_SCREEN_UV(IN.screenPos)
                 float2 uv     = IN.texcoord;
                 // Shadow quad: remap uv into the widget's own uv space (quad is
                 // _ShadowUvExpand× the widget, centered) so all SDF math is unchanged and
@@ -2992,6 +3006,7 @@ Shader "UI/SDFSliderRM"
                                     float3 surfaceColor = ApplyUILighting(lightNormal, surfaceBaseColor,
                                         _LightingAmbient, handleSpecularMod, handleNormalOffset,
                                         light1, light2, light3);
+                                    UI_MATERIAL_V2(surfaceColor, surfaceBaseColor, lightNormal, Handle, -1.0)
 
                                     // ---- Self-shadow: bevel wall occludes rim/lip ----
                                     UNITY_BRANCH

@@ -33,6 +33,21 @@ uniform sampler2D _UIShadowBuffer;
 // Guard, don't hope.
 uniform float _UIShadowBufferBound;
 
+// Materials v2 (2026-10-06) — bound by UiMaterialLibrary.cs (runtime) and SkinSheet.cs (editor).
+// _UIMaterialTexArray: tileable surface textures (pattern type 20, PATTERN_TEXTURE).
+// _UIMatcapArray:      lit-sphere reflections (UIMaterials.cginc).
+// _UIBackdropTex:      the look's wallpaper, mipmapped, sampled by glass parts at their screen UV.
+// The *Bound flags gate every read: an unbound texture is not "neutral", it is whatever is left
+// in the slot.
+UNITY_DECLARE_TEX2DARRAY(_UIMaterialTexArray);
+UNITY_DECLARE_TEX2DARRAY(_UIMatcapArray);
+uniform float _UIMaterialLibBound;
+uniform sampler2D _UIBackdropTex;
+uniform float _UIBackdropBound;
+// screen uv → wallpaper uv (scale xy, offset zw): the wallpaper is drawn aspect-FILLED, so a screen
+// whose aspect differs from the image sees a centred crop; a negative y scale flips it.
+uniform float4 _UIBackdropUV;
+
 // Global gradient uniforms
 uniform float _GlobalGradientTime;
 uniform int _GlobalGradientType;

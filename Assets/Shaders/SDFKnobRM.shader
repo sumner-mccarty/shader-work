@@ -941,6 +941,17 @@ Shader "UI/SDFKnobRM"
         _TextId15 ("Text ID 15", Float) = 15
 
         // Unity UI
+        // Materials v2 (CG/Core/UIMaterials.cginc): matcap reflection + backdrop glass on the Knob body.
+        _KnobMatcapEnabled ("Knob Matcap Enabled", Float) = 0
+        _KnobMatcapLayer ("Knob Matcap Layer (UiMaterials/catalog.json)", Float) = 0
+        _KnobMatcapStrength ("Knob Matcap Strength", Range(0, 1)) = 1
+        _KnobMatcapMode ("Knob Matcap Mode (0 metal, 1 coat, 2 tint)", Float) = 0
+        _KnobGlassEnabled ("Knob Glass Enabled", Float) = 0
+        _KnobGlassStrength ("Knob Glass Strength", Range(0, 1)) = 0.85
+        _KnobGlassRefract ("Knob Glass Refraction", Range(0, 0.2)) = 0.03
+        _KnobGlassBlur ("Knob Glass Blur (mip)", Range(0, 8)) = 3
+        _KnobGlassTint ("Knob Glass Tint", Color) = (1, 1, 1, 1)
+        _KnobGlassRim ("Knob Glass Rim", Range(0, 2)) = 0.6
         _StencilComp ("Stencil Comparison", Float) = 8
         _Stencil ("Stencil ID", Float) = 0
         _StencilOp ("Stencil Operation", Float) = 0
@@ -1000,6 +1011,8 @@ Shader "UI/SDFKnobRM"
             #include "CG/Core/UIComponents.cginc"
             #include "CG/Core/UIPatterns.cginc"
             #include "CG/Core/UILighting.cginc"
+            #include "CG/Core/UIMaterials.cginc"
+            UI_MATERIAL_V2_UNIFORMS(Knob)
             #include "CG/Core/UIViewCamera.cginc"
             #include "CG/Core/UIRenderer.cginc"
             #include "CG/Core/UIGradients.cginc"
@@ -1994,6 +2007,7 @@ Shader "UI/SDFKnobRM"
                                 float3 surfaceColor = ApplyUILighting(lightNormal, surfaceBaseColor,
                                                                       _LightingAmbient, knobSpecularMod, knobNormalOffset,
                                                                       light1, light2, light3);
+                                UI_MATERIAL_V2(surfaceColor, surfaceBaseColor, lightNormal, Knob, -1.0)
 
                                 // Self-shadow: bevel wall casts shadow onto rim/lip
                                 UNITY_BRANCH
@@ -2045,6 +2059,7 @@ Shader "UI/SDFKnobRM"
             // ---- Fragment ----
             fixed4 frag(v2f IN) : SV_Target
             {
+                UI_SET_SCREEN_UV(IN.screenPos)
                 float2 uv = IN.texcoord;
                 // Shadow quad: remap uv into the widget's own uv space (quad is
                 // _ShadowUvExpand× the widget, centered) so all SDF math is unchanged and

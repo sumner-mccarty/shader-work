@@ -9,6 +9,7 @@ project's own Tools/*.py run here unchanged (headless, via slrender):
 
     Assets/Shaders/**                      shader sources (scratch __probe_* skipped)
     Assets/Resources/{MaterialStates,UiStyles,Themes,TrackThemes,UiThemes}/*.json
+    Assets/Resources/{UiMaterials,Backdrops}/*      Materials v2 textures, matcaps, wallpapers
     Tools/<skin tooling>                   skinsheet/skinlib/shaderprops/bake/design_*/sheet_*/...
     .claude/skills/skin-authoring/**       the skill workers follow
     Docs/Skinning/**                       per-shader property references
@@ -30,7 +31,7 @@ REPO = Path(__file__).resolve().parent.parent
 TOOLS = ["skinsheet.py", "skinlib.py", "shaderprops.py", "bake.py", "build_recipes.py", "patch_skin.py",
          "sheet_style.py", "sheet_rack.py", "sheet_faceplates.py", "sheet_pads.py", "sheet_baseline.py",
          "design_realistic.py", "design_neomorphic.py", "design_others.py", "design_flat.py", "design_tron.py",
-         "scopesheet.py", "s_mixer.py", "checklayout.py"]
+         "scopesheet.py", "s_mixer.py", "checklayout.py", "gen_materials.py"]
 
 MAPPINGS = [
     # (relative path, glob, include .meta)
@@ -40,6 +41,8 @@ MAPPINGS = [
     ("Assets/Resources/Themes", "*.json", False),
     ("Assets/Resources/TrackThemes", "*.json", False),
     ("Assets/Resources/UiThemes", "*.json", False),
+    ("Assets/Resources/UiMaterials", "*", True),          # Materials v2 atlases + catalog (+ import settings)
+    ("Assets/Resources/Backdrops", "*", True),            # wallpapers for glass looks
     (".claude/skills/skin-authoring", "**/*", False),
     ("Docs/Skinning", "**/*", False),
 ] + [("Tools", t, False) for t in TOOLS]
