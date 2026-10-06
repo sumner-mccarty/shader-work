@@ -23,12 +23,14 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
-BUS = ROOT / ".skinsheet"
+# SKINSHEET_BUS gives each parallel worker its own job bus + output folder (several agents in one
+# checkout would otherwise overwrite each other's job.json and PNGs). Unity only watches the default.
+BUS = Path(os.environ["SKINSHEET_BUS"]).resolve() if os.environ.get("SKINSHEET_BUS") else ROOT / ".skinsheet"
 OUT = BUS / "out"
 SKINS = ROOT / "Assets" / "Resources" / "MaterialStates"
 
-BUS.mkdir(exist_ok=True)
-OUT.mkdir(exist_ok=True)
+BUS.mkdir(parents=True, exist_ok=True)
+OUT.mkdir(parents=True, exist_ok=True)
 
 
 # ── talking to Unity ─────────────────────────────────────────────────────────

@@ -161,6 +161,57 @@ Do not edit shaders, shared JSON, mirrored Tools, or any other look.
 Batch size: start with 4 (e.g. rodeo, ice-cold, candy-cane, walnut-brass), review, adjust the
 prompt or kit from what you see, then go wider.
 
+### Prompt B — hands-off batch (one prompt → many looks, one PR to review)
+
+One cloud session acts as a **factory foreman**: it picks briefs itself, runs builder subagents in
+parallel, has an independent critic judge every look and send it back for fixes, and opens ONE PR
+for the whole batch. You only review that PR. Run the foreman on **Sonnet 5.5**; it puts builders
+on Sonnet and the critic on Opus (the critic reads only four pictures, so Opus there is cheap and
+it's where taste matters most). Change `6` to set the batch size.
+
+```
+You are the Look Factory foreman. Deliver up to 6 new, accepted looks this session with no help
+from me. I will only review the final PR.
+
+1. Setup: read CLAUDE.md, FACTORY.md, Looks/README.md (rubric) and the lookkit docstring. Run
+   `python -m slrender --software doctor`; stop and report if it fails.
+2. Pick: `git fetch --all`. Take briefs from Looks/BACKLOG.md in order (Wave 1, then Wave 2) that
+   have NO Looks/<slug>/ folder on origin/main or on any origin branch. Keep the batch varied: no two
+   looks with the same lighting class AND primary material. If the backlog runs dry, write new briefs
+   with the theme formula at the end of BACKLOG.md and use those.
+3. Build: one builder subagent per look (model: sonnet), at most 3 running at once — they share
+   this container's CPU for rendering. Give each: the brief's slug, Prompt L from FACTORY.md, and
+   these rules: export SKINSHEET_BUS=.skinsheet-<slug> and SKINSHEET_BACKEND=bus, run its own
+   `python -m slrender watch --bus .skinsheet-<slug> &`, touch only files with its own prefix and its
+   own Looks/<slug>/ folder, do NOT commit or push, and reply with: file list, lookcheck output,
+   the four sheet paths, and its own rubric critique.
+4. Judge: for each finished look, start a fresh critic subagent (model: opus) that sees ONLY the brief,
+   the rubric, the look's four sheets, and a contact sheet of every other look's rack-dark.png
+   (`python -m slrender contact "Looks/*/sheets/rack-dark.png"`). It returns a 1-10 score per rubric
+   item, PASS or REVISE, and the 3 most important concrete fixes. On REVISE, give those fixes to the
+   builder (continue the same subagent if you can, otherwise a new builder working on the existing
+   files) — at most 2 revision rounds. Still failing after 2: set look.json status "rejected", keep
+   the critic's notes in NOTES.md, and do not count it.
+5. Ship: for each accepted look set status "candidate" and commit it alone ("look: <Title>").
+   Re-run `python Tools/lookcheck.py <Style>` for every accepted look and `python tests/test_basics.py`.
+   Push and open ONE PR "looks: batch <date> — <n> looks". For each look the description has: title,
+   one-line concept, critic score, rack-dark and rack-light embedded, known issues. Rejected looks
+   go in a short list at the end with the reason.
+6. Stop when 6 looks are accepted, or early if 3 looks in a row are rejected — then report what in
+   the kit or the prompt is causing it instead of burning more budget.
+```
+
+**Reviewing a batch:** open the PR, scroll the racks. Merge it as is, or comment e.g.
+"drop candy-cane; ice-cold: gold too orange" and run the follow-up prompt on that branch. Mark the
+ones you keep `approved` (the follow-up session can do that for you) and import them.
+
+**Fully unattended (optional):** a scheduled cloud routine (Claude Code's `/schedule`, e.g. "every
+night at 2am") can run Prompt B with a batch of 3 — a new batch PR waits for you each morning.
+Check that routines draw from the same credits, and keep the batch small so one bad night is cheap.
+
+**Cost:** a 6-look batch ≈ $25–40 (builders ~$4 each, revisions, ~$0.50 per critic pass, foreman).
+Do one batch, look at the quality and the real cost, then decide on the next.
+
 ---------------------------------------------------------------------------------------------------
 ## Phase 3 — Shader features for true gold / chrome / glass (Opus 5.5)
 

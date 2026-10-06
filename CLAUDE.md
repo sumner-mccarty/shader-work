@@ -40,6 +40,9 @@ github.com, objects.githubusercontent.com, pypi.org and the Ubuntu archive.
   python -m slrender watch --bus .skinsheet > /tmp/slr-watch.log 2>&1 &
   export SKINSHEET_BACKEND=bus      # Tools/skinsheet.py now talks to the warm process
   ```
+* **Parallel workers in one checkout** (e.g. builder subagents): each must use its OWN bus —
+  `export SKINSHEET_BUS=.skinsheet-<slug>` and `python -m slrender watch --bus .skinsheet-<slug> &` —
+  or they overwrite each other's job.json and PNGs.
 * Everything renders in the app's **screen** orientation by default. Do not "fix" bevel direction
   to match the skill's warnings about the Unity SkinSheet — slrender already shows what players see.
 * LOOK at results: build ONE contact sheet per round (`python -m slrender contact "<pngs>" -o sheet.png`
