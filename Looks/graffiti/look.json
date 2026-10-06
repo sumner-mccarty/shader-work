@@ -1,0 +1,16 @@
+{
+  "slug": "graffiti",
+  "style": "Graffiti",
+  "title": "Street Wall",
+  "prefix": "Graffiti",
+  "brief": "BACKLOG.md#graffiti",
+  "class": "unlit",
+  "status": "rejected",
+  "files": [
+    "Tools/looks/graffiti.py",
+    "Assets/Resources/UiStyles/Graffiti.style.json",
+    "Assets/Resources/Themes/Graffiti*.theme.json",
+    "Assets/Resources/MaterialStates/GraffitiDark*.states.json",
+    "Assets/Resources/MaterialStates/GraffitiLight*.states.json"
+  ]
+}

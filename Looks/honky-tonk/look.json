@@ -1,0 +1,17 @@
+{
+  "slug": "honky-tonk",
+  "style": "HonkyTonk",
+  "title": "Honky-Tonk Neon",
+  "prefix": "HonkyTonk",
+  "brief": "BACKLOG.md#honky-tonk",
+  "class": "neon",
+  "status": "rejected",
+  "files": [
+    "Tools/looks/honky_tonk.py",
+    "Assets/Resources/UiStyles/HonkyTonk.style.json",
+    "Assets/Resources/Themes/HonkyTonk*.theme.json",
+    "Assets/Resources/MaterialStates/HonkyTonkDark*.states.json",
+    "Assets/Resources/MaterialStates/HonkyTonkLight*.states.json",
+    "Assets/Resources/TrackThemes/HonkyTonk.track.json"
+  ]
+}

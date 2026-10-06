@@ -1,0 +1,370 @@
+{
+    "controlType": "UIToggle",
+    "shaderName": "UI/SDFTogglePill",
+    "states": [
+        {
+            "stateId": "MarbleRoseLightPill-normal",
+            "stateName": "Normal",
+            "description": "Default resting state",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [
+                "default"
+            ],
+            "parameters": [
+                {
+                    "name": "_BgBevelEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgBevelPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgBevelPatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgBevelGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgRimEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgPatternRotateEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgPatternModEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgPatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_TrackBevelEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_TrackPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_TrackPatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_TrackGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleBevelEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleBevelPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleBevelPatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleBevelGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleRimEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandlePatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandlePatternRotateEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandlePatternModEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandlePatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleFaceGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_EdgeEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_EdgeGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BorderGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingShadow1Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingShadow2Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingShadow3Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ToggleShadow1Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ToggleShadow2Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ToggleShadow3Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingUnlit",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingAmbient",
+                    "type": "Range",
+                    "value": "0.6"
+                },
+                {
+                    "name": "_ReceiveSceneShadows",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_Value",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_StateCount",
+                    "type": "Range",
+                    "value": "2"
+                },
+                {
+                    "name": "_BgEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgColor",
+                    "type": "Color",
+                    "value": "0.866667,0.85098,0.831373,1"
+                },
+                {
+                    "name": "_BgPadding",
+                    "type": "Range",
+                    "value": "0.12"
+                },
+                {
+                    "name": "_TrackEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_TrackColor",
+                    "type": "Color",
+                    "value": "0.0784314,0.0509804,0.054902,1"
+                },
+                {
+                    "name": "_TrackHeight",
+                    "type": "Range",
+                    "value": "0.7"
+                },
+                {
+                    "name": "_TrackCornerRadius",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleColor",
+                    "type": "Color",
+                    "value": "0.890196,0.662745,0.611765,1"
+                },
+                {
+                    "name": "_HandlePadding",
+                    "type": "Range",
+                    "value": "0.26"
+                },
+                {
+                    "name": "_HandleFaceEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleBevelDistance",
+                    "type": "Range",
+                    "value": "0.3"
+                },
+                {
+                    "name": "_HandleBevelDepth",
+                    "type": "Range",
+                    "value": "0.4"
+                },
+                {
+                    "name": "_HandleBevelSmoothness",
+                    "type": "Range",
+                    "value": "0.8"
+                },
+                {
+                    "name": "_HandleFaceSmoothness",
+                    "type": "Range",
+                    "value": "0.3"
+                },
+                {
+                    "name": "_LedEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_LedColor",
+                    "type": "Color",
+                    "value": "0.905882,0.603922,0.658824,1"
+                },
+                {
+                    "name": "_LedIntensity",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_LedSurfaceBlend",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_BorderEnabled",
+                    "type": "Float",
+                    "value": "0"
+                }
+            ]
+        },
+        {
+            "stateId": "MarbleRoseLightPill-hover",
+            "stateName": "Hover",
+            "description": "Hover",
+            "baseStateName": "Normal",
+            "priority": 1,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_HandleColor",
+                    "type": "Color",
+                    "value": "0.929412,0.72549,0.67451,1"
+                }
+            ]
+        },
+        {
+            "stateId": "MarbleRoseLightPill-pressed",
+            "stateName": "Pressed",
+            "description": "Pressed",
+            "baseStateName": "Hover",
+            "priority": 2,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_HandleColor",
+                    "type": "Color",
+                    "value": "0.494118,0.290196,0.258824,1"
+                }
+            ]
+        },
+        {
+            "stateId": "MarbleRoseLightPill-disabled",
+            "stateName": "Disabled",
+            "description": "Disabled",
+            "baseStateName": "Normal",
+            "priority": 4,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_HandleColor",
+                    "type": "Color",
+                    "value": "0.415686,0.329412,0.313725,1"
+                },
+                {
+                    "name": "_LedSurfaceBlend",
+                    "type": "Range",
+                    "value": "0"
+                }
+            ]
+        }
+    ],
+    "bounds": {
+        "type": 0,
+        "width": 0.953125,
+        "height": 0.90625,
+        "radiusNorm": 1.0
+    },
+    "author": "DrumSumDrum"
+}

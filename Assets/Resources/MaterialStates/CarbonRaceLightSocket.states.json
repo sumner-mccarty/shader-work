@@ -1,0 +1,375 @@
+{
+    "controlType": "UIPanel",
+    "shaderName": "UI/SDFPanel",
+    "states": [
+        {
+            "stateId": "CarbonRaceLightSocket-normal",
+            "stateName": "Normal",
+            "description": "Default resting state",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [
+                "default"
+            ],
+            "parameters": [
+                {
+                    "name": "_PanelBevelEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelBevelPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelBevelPatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelBevelGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelRimEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelPatternEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelPatternRotateEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelPatternModEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelPatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelGradientEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelFaceShapeEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_InnerFrameEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_InnerFrameShapeEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_InnerFrameBevelEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_InnerFrameBevelPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_InnerFrameBevelPatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_InnerFrameBevelGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_InnerFrameRimEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_InnerFramePatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_InnerFramePatternRotateEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_InnerFramePatternModEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_InnerFramePatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_InnerFrameGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_EdgeEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_EdgeGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BorderGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingShadow1Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingShadow2Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingShadow3Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelShadow1Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelShadow2Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelShadow3Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelScrewsEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingUnlit",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingAmbient",
+                    "type": "Range",
+                    "value": "0.9"
+                },
+                {
+                    "name": "_ReceiveSceneShadows",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelColor",
+                    "type": "Color",
+                    "value": "0.854902,0.862745,0.854902,1"
+                },
+                {
+                    "name": "_PanelRenderAlpha",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelRenderEmissive",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelShapeType",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelShapeParam1",
+                    "type": "Range",
+                    "value": "0.9"
+                },
+                {
+                    "name": "_PanelPadding",
+                    "type": "Range",
+                    "value": "0.01"
+                },
+                {
+                    "name": "_PanelPaddingPx",
+                    "type": "Float",
+                    "value": "2"
+                },
+                {
+                    "name": "_PanelCornerRadiusPx",
+                    "type": "Float",
+                    "value": "4"
+                },
+                {
+                    "name": "_PanelFaceSmoothness",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelGradientType",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelGradientDirection",
+                    "type": "Vector4",
+                    "value": "0,1,0,0"
+                },
+                {
+                    "name": "_PanelGradientScale",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelGradientOffset",
+                    "type": "Range",
+                    "value": "-0"
+                },
+                {
+                    "name": "_PanelGradientSpeed",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelGradientColorA",
+                    "type": "Color",
+                    "value": "0.803922,0.807843,0.796078,1"
+                },
+                {
+                    "name": "_PanelGradientColorB",
+                    "type": "Color",
+                    "value": "0.870588,0.878431,0.870588,1"
+                },
+                {
+                    "name": "_PanelGradientColorC",
+                    "type": "Color",
+                    "value": "0.870588,0.878431,0.870588,1"
+                },
+                {
+                    "name": "_PanelGradientColorD",
+                    "type": "Color",
+                    "value": "0.870588,0.878431,0.870588,1"
+                },
+                {
+                    "name": "_PanelGradientColorUsed",
+                    "type": "Range",
+                    "value": "2"
+                },
+                {
+                    "name": "_PanelPatternType",
+                    "type": "Float",
+                    "value": "3"
+                },
+                {
+                    "name": "_PanelPatternScale",
+                    "type": "Range",
+                    "value": "13.33"
+                },
+                {
+                    "name": "_PanelPatternIntensity",
+                    "type": "Range",
+                    "value": "0.14"
+                },
+                {
+                    "name": "_PanelPatternContrast",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelPatternSpecularEffect",
+                    "type": "Range",
+                    "value": "0.5"
+                },
+                {
+                    "name": "_PanelPatternRoughnessEffect",
+                    "type": "Range",
+                    "value": "0.3"
+                },
+                {
+                    "name": "_PanelPatternParam1",
+                    "type": "Range",
+                    "value": "0.5"
+                },
+                {
+                    "name": "_PanelPatternParam2",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelPatternParam3",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelPatternPx",
+                    "type": "Float",
+                    "value": "200"
+                },
+                {
+                    "name": "_BorderEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelRimDepth",
+                    "type": "Range",
+                    "value": "-0.3"
+                },
+                {
+                    "name": "_PanelRimWidth",
+                    "type": "Range",
+                    "value": "0.03"
+                },
+                {
+                    "name": "_PanelRimSmoothness",
+                    "type": "Range",
+                    "value": "0.03"
+                }
+            ]
+        }
+    ],
+    "bounds": {
+        "type": 0,
+        "width": 1.0,
+        "height": 1.0,
+        "radiusNorm": 1.0
+    },
+    "author": "DrumSumDrum"
+}

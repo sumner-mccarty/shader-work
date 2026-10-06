@@ -1,0 +1,9 @@
+{
+  "themeName": "Honky-Tonk Neon rig (unlit)",
+  "scene": {
+    "light1": { "pos": [0.5, 2.0], "height": 2.0, "color": "#FFFFFF", "intensity": 0.0, "specular": 0.0, "specularPower": 16, "enabled": false },
+    "light2": { "pos": [0.5, 2.0], "height": 2.0, "color": "#FFFFFF", "intensity": 0.0, "specular": 0.0, "specularPower": 16, "enabled": false },
+    "light3": { "pos": [0.5, 2.0], "height": 2.0, "color": "#FFFFFF", "intensity": 0.0, "specular": 0.0, "specularPower": 16, "enabled": false },
+    "animate": { "enabled": false, "mode": "random", "speed": 0.45, "reach": 2.5 }
+  }
+}

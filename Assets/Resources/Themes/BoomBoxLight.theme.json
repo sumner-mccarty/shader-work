@@ -1,0 +1,9 @@
+{
+  "themeName": "Boom Box '86 Light rig",
+  "scene": {
+    "light1": { "pos": [-0.4, 1.5], "height": 1.2, "color": "#FFFFFF", "intensity": 0.95, "specular": 0.5, "specularPower": 56, "enabled": false },
+    "light2": { "pos": [1.3, 0.6], "height": 0.9, "color": "#BFD4FF", "intensity": 0.3, "specular": 0.1, "specularPower": 32, "enabled": false },
+    "light3": { "pos": [0.5, 2.0], "height": 2.0, "color": "#FFFFFF", "intensity": 0.0, "specular": 0.0, "specularPower": 32, "enabled": false },
+    "animate": { "enabled": false, "mode": "random", "speed": 0.45, "reach": 2.5 }
+  }
+}

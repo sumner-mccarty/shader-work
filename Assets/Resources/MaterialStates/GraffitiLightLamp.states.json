@@ -1,0 +1,521 @@
+{
+    "controlType": "UIButton",
+    "shaderName": "UI/SDFButton",
+    "states": [
+        {
+            "stateId": "GraffitiLightLamp-normal",
+            "stateName": "Normal",
+            "description": "Default resting state",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [
+                "default"
+            ],
+            "parameters": [
+                {
+                    "name": "_ButtonBevelEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonBevelPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonBevelPatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonBevelGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonRimEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonPatternRotateEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonPatternModEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonPatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonFaceShapeEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_IconBevelEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_IconPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_IconPatternRotateEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_IconPatternModEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_IconPatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_IconGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_IconRimEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_EdgeEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_EdgeGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BorderGradientEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_LightingShadow1Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingShadow2Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingShadow3Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonShadow1Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonShadow2Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonShadow3Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingUnlit",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_LightingAmbient",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_ReceiveSceneShadows",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_ButtonColor",
+                    "type": "Color",
+                    "value": "0.0901961,0.0901961,0.105882,1"
+                },
+                {
+                    "name": "_ButtonRenderAlpha",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_ButtonRenderEmissive",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonShapeType",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonShapeParam1",
+                    "type": "Range",
+                    "value": "0.8"
+                },
+                {
+                    "name": "_ButtonPadding",
+                    "type": "Range",
+                    "value": "0.34"
+                },
+                {
+                    "name": "_ButtonRoundness",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_BorderEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_BorderColor",
+                    "type": "Color",
+                    "value": "0.0431373,0.0431373,0.0509804,1"
+                },
+                {
+                    "name": "_BorderWidth",
+                    "type": "Range",
+                    "value": "0.16"
+                },
+                {
+                    "name": "_BorderSoftness",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_IconEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_IconShapeType",
+                    "type": "Float",
+                    "value": "29"
+                },
+                {
+                    "name": "_IconColor",
+                    "type": "Color",
+                    "value": "0.705882,1,0.164706,1"
+                },
+                {
+                    "name": "_IconWidth",
+                    "type": "Range",
+                    "value": "0.78"
+                },
+                {
+                    "name": "_IconHeight",
+                    "type": "Range",
+                    "value": "0.78"
+                },
+                {
+                    "name": "_IconRenderAlpha",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_IconRenderEmissive",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_BorderGradientType",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BorderGradientDirection",
+                    "type": "Vector4",
+                    "value": "0,1,0,0"
+                },
+                {
+                    "name": "_BorderGradientScale",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_BorderGradientOffset",
+                    "type": "Range",
+                    "value": "-0"
+                },
+                {
+                    "name": "_BorderGradientSpeed",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BorderGradientColorA",
+                    "type": "Color",
+                    "value": "0.0627451,0.839216,1,1"
+                },
+                {
+                    "name": "_BorderGradientColorB",
+                    "type": "Color",
+                    "value": "0.541176,0.168627,1,1"
+                },
+                {
+                    "name": "_BorderGradientColorC",
+                    "type": "Color",
+                    "value": "1,0.164706,0.54902,1"
+                },
+                {
+                    "name": "_BorderGradientColorD",
+                    "type": "Color",
+                    "value": "1,0.164706,0.54902,1"
+                },
+                {
+                    "name": "_BorderGradientColorUsed",
+                    "type": "Range",
+                    "value": "3"
+                }
+            ]
+        },
+        {
+            "stateId": "GraffitiLightLamp-hover",
+            "stateName": "Hover",
+            "description": "Hover",
+            "baseStateName": "Normal",
+            "priority": 1,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_ButtonColor",
+                    "type": "Color",
+                    "value": "0.203922,0.203922,0.231373,1"
+                },
+                {
+                    "name": "_IconColor",
+                    "type": "Color",
+                    "value": "1,1,1,1"
+                }
+            ]
+        },
+        {
+            "stateId": "GraffitiLightLamp-pressed",
+            "stateName": "Pressed",
+            "description": "Pressed",
+            "baseStateName": "Hover",
+            "priority": 2,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_ButtonColor",
+                    "type": "Color",
+                    "value": "1,0.164706,0.54902,1"
+                },
+                {
+                    "name": "_IconColor",
+                    "type": "Color",
+                    "value": "0.0431373,0.0431373,0.0509804,1"
+                },
+                {
+                    "name": "_ButtonGradientEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_ButtonGradientType",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonGradientDirection",
+                    "type": "Vector4",
+                    "value": "0,1,0,0"
+                },
+                {
+                    "name": "_ButtonGradientScale",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_ButtonGradientOffset",
+                    "type": "Range",
+                    "value": "-0"
+                },
+                {
+                    "name": "_ButtonGradientSpeed",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonGradientColorA",
+                    "type": "Color",
+                    "value": "0.0627451,0.839216,1,1"
+                },
+                {
+                    "name": "_ButtonGradientColorB",
+                    "type": "Color",
+                    "value": "0.541176,0.168627,1,1"
+                },
+                {
+                    "name": "_ButtonGradientColorC",
+                    "type": "Color",
+                    "value": "1,0.164706,0.54902,1"
+                },
+                {
+                    "name": "_ButtonGradientColorD",
+                    "type": "Color",
+                    "value": "1,0.164706,0.54902,1"
+                },
+                {
+                    "name": "_ButtonGradientColorUsed",
+                    "type": "Range",
+                    "value": "3"
+                }
+            ]
+        },
+        {
+            "stateId": "GraffitiLightLamp-disabled",
+            "stateName": "Disabled",
+            "description": "Disabled",
+            "baseStateName": "Normal",
+            "priority": 4,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_ButtonColor",
+                    "type": "Color",
+                    "value": "0.454902,0.458824,0.478431,1"
+                },
+                {
+                    "name": "_IconColor",
+                    "type": "Color",
+                    "value": "0.305882,0.309804,0.329412,1"
+                },
+                {
+                    "name": "_ButtonGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BorderGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                }
+            ]
+        },
+        {
+            "stateId": "GraffitiLightLamp-active",
+            "stateName": "Active",
+            "description": "Active",
+            "baseStateName": "Normal",
+            "priority": 5,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_ButtonColor",
+                    "type": "Color",
+                    "value": "0.705882,1,0.164706,1"
+                },
+                {
+                    "name": "_IconColor",
+                    "type": "Color",
+                    "value": "0.0431373,0.0431373,0.0509804,1"
+                },
+                {
+                    "name": "_ButtonGradientEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_ButtonGradientType",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonGradientDirection",
+                    "type": "Vector4",
+                    "value": "0,1,0,0"
+                },
+                {
+                    "name": "_ButtonGradientScale",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_ButtonGradientOffset",
+                    "type": "Range",
+                    "value": "-0"
+                },
+                {
+                    "name": "_ButtonGradientSpeed",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonGradientColorA",
+                    "type": "Color",
+                    "value": "0.0627451,0.839216,1,1"
+                },
+                {
+                    "name": "_ButtonGradientColorB",
+                    "type": "Color",
+                    "value": "0.541176,0.168627,1,1"
+                },
+                {
+                    "name": "_ButtonGradientColorC",
+                    "type": "Color",
+                    "value": "1,0.164706,0.54902,1"
+                },
+                {
+                    "name": "_ButtonGradientColorD",
+                    "type": "Color",
+                    "value": "1,0.164706,0.54902,1"
+                },
+                {
+                    "name": "_ButtonGradientColorUsed",
+                    "type": "Range",
+                    "value": "3"
+                }
+            ]
+        }
+    ],
+    "bounds": {
+        "type": 0,
+        "width": 0.9375,
+        "height": 0.953125,
+        "radiusNorm": 0.9888291954994202,
+        "paddingParam": "_ButtonPadding"
+    },
+    "author": "DrumSumDrum"
+}

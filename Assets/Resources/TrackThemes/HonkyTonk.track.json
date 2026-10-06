@@ -1,0 +1,35 @@
+{
+  "name": "HonkyTonk",
+  "blurb": "Midnight roadhouse: pink, mint and amber on dark boards.",
+  "palette": {
+    "row1": "#FF4F9A",
+    "row2": "#3DFFC0",
+    "row3": "#FFB02E",
+    "row4": "#FF7A4A",
+    "rail": "#FF5FA8",
+    "laneLine": "#8A4A36",
+    "laneFill": "#120804",
+    "hitLine": "#FFE9D0",
+    "receptor": "#E8A27A",
+    "gridBar": "#FFB02E",
+    "gridBeat": "#5A3220",
+    "bgTop": "#0A0503",
+    "bgBottom": "#2A140C",
+    "fog": "#7A2E48",
+    "star": "#FFD8B0",
+    "miss": "#FF2A4E",
+    "perfect": "#FFF0B8"
+  },
+  "props": {
+    "skyMode": 0,
+    "starDensity": 0.12,
+    "horizonGlow": 0.5,
+    "railGlow": 1.25,
+    "noteGlow": 1.1,
+    "additive": 0.3,
+    "radiance": 1.0,
+    "gridBrightness": 0.6,
+    "fog": 0.4,
+    "vignette": 0.5
+  }
+}

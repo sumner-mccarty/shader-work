@@ -1,0 +1,16 @@
+{
+  "slug": "boom-box",
+  "style": "BoomBox",
+  "title": "Boom Box '86",
+  "prefix": "BoomBox",
+  "brief": "BACKLOG.md#boom-box",
+  "class": "lit",
+  "status": "rejected",
+  "files": [
+    "Tools/looks/boom_box.py",
+    "Assets/Resources/UiStyles/BoomBox.style.json",
+    "Assets/Resources/Themes/BoomBox*.theme.json",
+    "Assets/Resources/MaterialStates/BoomBoxDark*.states.json",
+    "Assets/Resources/MaterialStates/BoomBoxLight*.states.json"
+  ]
+}
