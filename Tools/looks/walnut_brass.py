@@ -23,7 +23,7 @@ CONTROLS = dict(                     # the hardware — identical in both modes
     VALUE="#F0AA3C", VALUE_EM=0.25, TRACK="#120B06", ARC_OFF="#2A1B10",
     SCROLL="#4A3A2A", SCROLL_HI="#C9A24A", PAD_BODY="#3A2C20", PAD_TINT=0.6,
 )
-BRASS = {"preset": "brass", "plate_ramp": (0.2, 0.3)}
+BRASS = {"preset": "brass", "plate_ramp": (0.2, 0.3), "plate_amb": 0.62}
 WALNUT = {"preset": "wood.oiled"}
 
 LOOK = Look(
@@ -45,7 +45,7 @@ LOOK = Look(
         "accent": {"preset": "enamel", "tint": AMBER, "edge": "brass"},
         "cap": {"preset": "aluminium.brushed", "amb": 0.85, "dome": 0.45,
                 "pattern": ("RadialBrushed", 3.0, 0.1, 1.0, 0.45, 0.2, 0.0)},
-        "skirt": {"preset": "aluminium.brushed", "pattern": ("Knurled", 2.4, 0.18, 1.0, 0.5, 0.6, 0.5)},
+        "skirt": {"preset": "aluminium.brushed", "pattern": ("Knurled", 3.0, 0.12, 1.0, 0.5, 0.6, 0.5)},
         "handle": "aluminium.brushed",
     },
     rig={
@@ -60,7 +60,7 @@ LOOK = Look(
     modes={
         "dark": dict(
             track="Sunset", blurb="Walnut and brass in lamplight.",
-            palette=dict(CONTROLS, GAP="#0E0805", BACK="#3A2314", FACE="#8A6E2C", INSET="#4A2D18", SOCKET="#2E1C10",
+            palette=dict(CONTROLS, GAP="#0E0805", BACK="#3A2314", FACE="#B0903C", INSET="#4A2D18", SOCKET="#2E1C10",
                          WELL="#080503", SHADOW="#000000", SHADOW_A=0.6, WELL_EM=0.05),
             app=dict(display=dict(text="#F2B25A", textDim="#8A6636", textAlt="#F2B25A"),
                      ui=dict(text="#F0E2BC", textDim="#9C8A60", accent=AMBER),
@@ -70,7 +70,7 @@ LOOK = Look(
                               reviewBar="#F0E2BC", reviewBarDim="#A8946A"))),
         "light": dict(
             track="Rosewater", blurb="Teak and champagne aluminium, same hardware.",
-            palette=dict(CONTROLS, GAP="#8E7552", BACK="#A8723F", FACE="#D9CCA6", INSET="#B88450", SOCKET="#9C6A3A",
+            palette=dict(CONTROLS, GAP="#8E7552", BACK="#8C5A30", FACE="#D9CCA6", INSET="#965F33", SOCKET="#7C4E28",
                          WELL="#100B07", SHADOW="#3A2A16", SHADOW_A=0.35, WELL_EM=0.05, AMB_PLATE=0.9),
             material={"plate": {"preset": "aluminium.brushed", "tint": "#D9CCA6", "lo": "#7C6E4C", "hi": "#FFFFFF",
                                 "plate_ramp": (0.1, 0.15), "plate_amb": 0.9}},
