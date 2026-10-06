@@ -63,7 +63,7 @@ LOOK = Look(
             track="Starfield", blurb="Matte black, gold and ice.",
             palette=dict(CONTROLS, GAP="#050506", BACK="#0B0C0E", FACE="#0F1012", INSET="#0B0C0D", SOCKET="#09090A",
                          WELL="#030304", SHADOW="#000000", SHADOW_A=0.65, WELL_EM=0.05, AMB_PLATE=0.7),
-            app=dict(display=dict(text="#8FE0FF", textDim="#4F7F94", textAlt="#F2C14E"),
+            app=dict(display=dict(text="#7FD2F2", textDim="#4F7F94", textAlt="#F2C14E"),
                      ui=dict(text="#DDE3E8", textDim="#7D8892", accent="#6FD3FF"),
                      # black plates, white keys: plate print is light, key print stays dark
                      ink=dict(faceplate="#DDE3E8", faceplateDim="#7D8892", inset="#DDE3E8", insetDim="#7D8892",
@@ -72,10 +72,10 @@ LOOK = Look(
         "light": dict(
             track="Rosewater", blurb="White leather chassis, the same gold and ice.",
             palette=dict(CONTROLS, GAP="#A9AAAE", BACK="#D2D3D6", FACE="#ECECEA", INSET="#DCDDE0", SOCKET="#D6D7DA",
-                         WELL="#0A0B0D", SHADOW="#2C2E33", SHADOW_A=0.35, WELL_EM=0.05, AMB_PLATE=1.05),
+                         WELL="#0A0B0D", SHADOW="#2C2E33", SHADOW_A=0.35, WELL_EM=0.05, AMB_PLATE=0.95),
             material={"plate": {"preset": "leather.tooled", "tint": "#ECECEA", "lo": "#6C6C6E", "hi": "#FFFFFF",
                                 "plate_ramp": (0.1, 0.15), "pattern": ("Leather", 5.0, 0.25, 1.0, 0.5, 0.5, 0.0)}},
-            app=dict(display=dict(text="#8FE0FF", textDim="#4F7F94", textAlt="#F2C14E"),
+            app=dict(display=dict(text="#7FD2F2", textDim="#4F7F94", textAlt="#F2C14E"),
                      ui=dict(text="#17181B", textDim="#5C5F66", accent="#1F8FC0"),
                      ink=dict(faceplate="#17181B", faceplateDim="#5C5F66", inset="#17181B", insetDim="#5C5F66",
                               backplane="#17181B", backplaneDim="#5C5F66", socket="#17181B", socketDim="#5C5F66",

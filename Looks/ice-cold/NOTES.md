@@ -28,3 +28,10 @@ Metrics: dark clip 0.0%, ΔL knob +98, key +145. Light: **plate clip 99%** (AMB_
 - **Craft:** matte black is black. Light plate blown out — fix. The dark mode's plate print
   ("A01 KICK") vanished: derived ink came from the dark key mark. Set `ink`/`ui` text light.
 - **Fix next:** light ambient 1.05; check clip < 1%.
+
+## Round 3
+Metrics: dark clip 0.0%, ΔL knob +98, key +145. Light: Face clip 10.8%, Well 3.0%, Bezel 1.2% — over
+budget. White leather reads white; diamond keys, gold ring and "A01 KICK" print all good.
+- **Craft:** light chassis still too hot at ambient 1.05 → 0.95. The Well's 3% is the display text
+  (#8FE0FF has a 255 channel) → text #7FD2F2.
+- **Identity (25% zoom):** gold domes + white-ice keys on black/white reads as flex in a second.
