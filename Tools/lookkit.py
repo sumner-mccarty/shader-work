@@ -1058,6 +1058,14 @@ class Lit(Unlit):
         return d
 
     @staticmethod
+    def dim_edge(layer, m, c, toward_c, amount=0.65):
+        """A Disabled delta for a preset surface's EDGE band: on a dark finish the lit chamfer is what
+        you see, so a disabled control must dim it (recolouring the body alone changes nothing)."""
+        if not m or m.get("edge") is None:
+            return {}
+        return gcol(f"{layer}BevelGradient", tuple(mix(e, toward_c, amount) for e in edge_of(m, c)))
+
+    @staticmethod
     def recolour(layer, m, c):
         """A STATE delta that changes a layer's colour: with a ramp on the layer, the stops must move
         (a gradient beats a plain colour write)."""
@@ -1143,7 +1151,8 @@ class Lit(Unlit):
             return dict({"_ButtonBevelDepth": -S["sunk"], "_ButtonFaceSmoothness": 0.0,
                          "_ButtonShadow1Intensity": 0.3}, **kw)
         dis = {**col(P["DIS_BODY"]), "_ButtonBevelDepth": self.geom(L, "Button", mk)["depth"] * 0.4,
-               "_IconColor": P["DIS_MARK"], "_ButtonShadow1Intensity": 0.5}
+               "_IconColor": P["DIS_MARK"], "_ButtonShadow1Intensity": 0.5,
+               **self.dim_edge("_Button", mk, P["BODY"], P["FACE"])}
 
         def std(slot):
             return {"Hover": col(P["BODY_HI"]), "Pressed": sunk(slot, **col(P["BODY_LO"])), "Disabled": dict(dis)}
@@ -1152,7 +1161,8 @@ class Lit(Unlit):
                        amb=P["AMB_ACCENT"] if "AMB_ACCENT" in P["_GIVEN"] or not ma else None,
                        states={"Hover": col(P["ACCENT_HI"], ma),
                                "Pressed": sunk("Accent", **col(P["ACCENT_LO"], ma)),
-                               "Disabled": {**col(P["ACCENT_DIS"], ma), "_ButtonShadow1Intensity": 0.5}})
+                               "Disabled": {**col(P["ACCENT_DIS"], ma), "_ButtonShadow1Intensity": 0.5,
+                                            **self.dim_edge("_Button", ma, P["ACCENT"], P["FACE"])}})
         # A latch: ON is pressed IN, filled with its meaning, and the mark glows — shape AND colour.
         for slot, on in (("ToggleBtn", "ACCENT"), ("Solo", "SOLO"), ("Lamp", "LAMP")):
             mark = P["LAMP_OFF"] if slot == "Lamp" else P["MARK_DIM"]
