@@ -63,9 +63,14 @@ LOOK = Look(
             palette=dict(CONTROLS, GAP="#0E0805", BACK="#3A2314", FACE="#B0903C", INSET="#4A2D18", SOCKET="#2E1C10",
                          WELL="#080503", SHADOW="#000000", SHADOW_A=0.6, WELL_EM=0.05),
             app=dict(display=dict(text="#F2B25A", textDim="#8A6636", textAlt="#F2B25A"),
-                     ui=dict(text="#F0E2BC", textDim="#9C8A60", accent=AMBER),
-                     # brass faceplate takes dark print, walnut takes cream
-                     ink=dict(faceplate="#1E1409", faceplateDim="#33260F", inset="#F0E2BC", insetDim="#A8946A",
+                     # print on the brass faceplate is a dark ENGRAVED brown (module names, captions, cards);
+                     # the walnut plates, header and track lanes take cream
+                     ui=dict(text="#2B1D0C", textDim="#5A4326", accent=AMBER),
+                     chrome=dict(label="#CDB88C", labelActive="#2B1D0C", icon="#CDB88C", iconActive="#5A2E08",
+                                 gear="#CDB88CCC", meatballIdle="#CDB88C", meatballLit=AMBER),
+                     tracks=dict(text="#F0E2BC", ruler="#CDB88CE6", playhead="#F0E2BCE6",
+                                 rowWithSample="#6B4A2A", rowEmpty="#2A180C"),
+                     ink=dict(faceplate="#2B1D0C", faceplateDim="#5A4326", inset="#F0E2BC", insetDim="#A8946A",
                               backplane="#F0E2BC", backplaneDim="#A8946A", socket="#F0E2BC", socketDim="#A8946A",
                               reviewBar="#F0E2BC", reviewBarDim="#A8946A"))),
         "light": dict(
@@ -76,9 +81,13 @@ LOOK = Look(
                                 "plate_ramp": (0.1, 0.15), "plate_amb": 0.9}},
             app=dict(display=dict(text="#F2B25A", textDim="#8A6636", textAlt="#F2B25A"),
                      ui=dict(text="#2A1A0E", textDim="#6B5238", accent="#B26A12"),
+                     chrome=dict(label="#F3E6C8", labelActive="#2A1A0E", icon="#F3E6C8", iconActive="#7A3E08",
+                                 gear="#F3E6C8CC", meatballIdle="#F3E6C8", meatballLit="#FFD27A"),
+                     tracks=dict(text="#FBF0D8", ruler="#F3E6C8E6", playhead="#FBF0D8E6",
+                                 rowWithSample="#7C4E28", rowEmpty="#A06C3C"),
                      ink=dict(faceplate="#2A1A0E", faceplateDim="#4A3820", inset="#FBF0D8", insetDim="#E3D2AE",
                               backplane="#FBF0D8", backplaneDim="#E3D2AE", socket="#FBF0D8", socketDim="#E3D2AE",
-                              reviewBar="#2A1A0E", reviewBarDim="#6B5238"))),
+                              reviewBar="#FBF0D8", reviewBarDim="#E3D2AE"))),
     },
 )
 

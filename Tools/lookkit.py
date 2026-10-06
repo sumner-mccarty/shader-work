@@ -7,6 +7,7 @@
     python Tools/looks/<module>.py recipe                   # just Resources/UiStyles/<Style>.style.json
     python Tools/looks/<module>.py diff                     # what `write` would change, byte for byte
     python Tools/looks/<module>.py manifest                 # Looks/<slug>/look.json
+    python Tools/looks/<module>.py printcheck               # WCAG contrast of every app print role on its plate
     python Tools/looks/<module>.py selftest                 # break each rule on a copy: audit must catch it
     python Tools/lookkit.py materials [preset ...]          # the material swatch sheet (Looks/_materials/)
       --root DIR      write/diff against DIR/Assets/Resources/... instead of the repo (scratch builds)
@@ -2352,6 +2353,46 @@ def load_spec(arg):
     return mod.LOOK
 
 
+def print_contrast(look, floor=3.0):
+    """WCAG contrast of every app print role against the plate it lands on. The app prints per surface and
+    its derived defaults leak the KEY mark colour into chrome/track text, so a look with dark keys on dark
+    plates (or pale keys on pale plates) needs explicit `app` overrides. -> [(mode, pair, fg, bg, ratio)]"""
+    def lin(c):
+        c = first(c).lstrip("#")
+        return [(int(c[i:i + 2], 16) / 255) for i in (0, 2, 4)]
+
+    def L(c):
+        f = lambda v: v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4          # noqa: E731
+        r, g, b = map(f, lin(c))
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+    def ratio(a, b):
+        hi, lo = max(L(a), L(b)), min(L(a), L(b))
+        return (hi + 0.05) / (lo + 0.05)
+    bad = []
+    for mode in MODES:
+        P = look.palette(mode)
+        chrome, g = look.app(mode, P)
+        t = lambda k: first(P[k])                                                          # noqa: E731
+        ink_, ui, tr = g["ink"], g["ui"], g["tracks"]
+        pairs = [("ink.faceplate/FACE", ink_["faceplate"], t("FACE")), ("ink.faceplateDim/FACE", ink_["faceplateDim"], t("FACE")),
+                 ("ink.inset/INSET", ink_["inset"], t("INSET")), ("ink.insetDim/INSET", ink_["insetDim"], t("INSET")),
+                 ("ink.backplane/BACK", ink_["backplane"], t("BACK")), ("ink.backplaneDim/BACK", ink_["backplaneDim"], t("BACK")),
+                 ("ink.socket/SOCKET", ink_["socket"], t("SOCKET")), ("ink.reviewBar/BACK", ink_["reviewBar"], t("BACK")),
+                 ("ui.text/FACE", ui["text"], t("FACE")), ("ui.textDim/FACE", ui["textDim"], t("FACE")),
+                 ("chrome.label/BACK", chrome["label"], t("BACK")), ("chrome.labelActive/FACE", chrome["labelActive"], t("FACE")),
+                 ("chrome.icon/BACK", chrome["icon"], t("BACK")),
+                 ("tracks.text/backdrop", tr["text"], tr["backdrop"]), ("tracks.text/strip", tr["text"], tr["strip"]),
+                 ("tracks.text/rowEmpty", tr["text"], tr["rowEmpty"]), ("tracks.text/rowWithSample", tr["text"], tr["rowWithSample"]),
+                 ("key.label/BODY", g["key"]["label"], t("BODY")),
+                 ("display.text/WELL", g["display"]["text"], t("WELL")), ("display.textDim/WELL", g["display"]["textDim"], t("WELL"))]
+        for name, fg, bg in pairs:
+            r = ratio(fg, bg)
+            if r < floor:
+                bad.append((mode, name, first(fg), first(bg), round(r, 2)))
+    return bad
+
+
 def main(look, argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
 
@@ -2387,6 +2428,12 @@ def main(look, argv=None):
                 print("  ERROR ", e)
             print(f"  {len(errors)} error(s), {len(warns)} warning(s), {len(waivers)} waived")
             rc |= 1 if errors else 0
+        elif cmd == "printcheck":
+            bad = print_contrast(lk)
+            for mode, name, fg, bg, r in bad:
+                print(f"  LOW   {mode:5} {name:28} {fg} on {bg}  contrast {r}")
+            print(f"  {len(bad)} print pair(s) under 3:1")
+            rc |= 1 if bad else 0
         elif cmd == "write":
             if lk.status == "example" and not root_opt:
                 print("  an example spec only writes to a scratch --root")

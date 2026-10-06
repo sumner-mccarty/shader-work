@@ -65,6 +65,8 @@ LOOK = Look(
                          WELL="#030304", SHADOW="#000000", SHADOW_A=0.65, WELL_EM=0.05, AMB_PLATE=0.7),
             app=dict(display=dict(text="#7FD2F2", textDim="#4F7F94", textAlt="#F2C14E"),
                      ui=dict(text="#DDE3E8", textDim="#7D8892", accent="#6FD3FF"),
+                     chrome=dict(label="#9AA6B0", labelActive="#DDE3E8", icon="#9AA6B0"),
+                     tracks=dict(text="#DDE3E8", ruler="#9AA6B0E6", playhead="#DDE3E8E6", rowWithSample="#2A2D33"),
                      # black plates, white keys: plate print is light, key print stays dark
                      ink=dict(faceplate="#DDE3E8", faceplateDim="#7D8892", inset="#DDE3E8", insetDim="#7D8892",
                               backplane="#DDE3E8", backplaneDim="#7D8892", socket="#DDE3E8", socketDim="#7D8892",
