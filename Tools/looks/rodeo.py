@@ -38,12 +38,13 @@ LOOK = Look(
         "shadow": dict(blur=1.4, cast=0.24),
     },
     material={
-        "plate": {"preset": "leather.tooled", "lo": "#2A0A0A", "hi": "#E6B27A", "plate_ramp": (0.35, 0.3)},
+        "plate": {"preset": "leather.tooled", "lo": "#2A0A0A", "hi": "#EBB880", "plate_ramp": (0.3, 0.38),
+                  "pattern": ("Leather", 5.0, 0.5, 1.0, 0.5, 0.5, 0.0)},
         "key": {"preset": "leather.tooled", "edge": "chrome"},
         "accent": {"preset": "enamel", "tint": TURQ, "edge": "chrome"},
         "cap": {"preset": "enamel", "tint": TURQ, "edge": "chrome", "dome": 0.5, "amb": 0.8,
                 "pattern": ("RadialBrushed", 3.0, 0.08, 1.0, 0.45, 0.2, 0.0)},
-        "skirt": {"preset": "chrome", "pattern": ("Knurled", 1.4, 0.2, 1.0, 0.5, 0.6, 0.5)},
+        "skirt": {"preset": "chrome", "pattern": ("Metal", 1.0, 0.05, 1.0, 0.5, 0.0, 0.0)},
         "handle": "chrome",
     },
     rig={
@@ -59,16 +60,16 @@ LOOK = Look(
     modes={
         "dark": dict(
             track="Sunset", blurb="Oxblood leather, silver and turquoise by lamplight.",
-            palette=dict(CONTROLS, GAP="#120805", BACK="#26140C", FACE="#5A3220", INSET="#3C2014", SOCKET="#34190F",
+            palette=dict(CONTROLS, GAP="#120805", BACK="#341C11", FACE="#76412A", INSET="#4A2818", SOCKET="#34190F",
                          WELL="#0B0605", SHADOW="#000000", SHADOW_A=0.6, WELL_EM=0.05),
             app=dict(display=dict(text="#F6B25A", textDim="#8A6636", textAlt="#F6B25A"),
                      ui=dict(accent="#2BB5AA"))),
         "light": dict(
             track="Rosewater", blurb="Bleached rawhide and pale denim, the same silver and turquoise.",
-            palette=dict(CONTROLS, GAP="#9A8868", BACK="#C2AD86", FACE="#DDCBA6", INSET="#9FB3C7", SOCKET="#93A9BE",
+            palette=dict(CONTROLS, GAP="#9A8868", BACK="#C2AD86", FACE="#DDCBA6", INSET="#7F9CBC", SOCKET="#7391B2",
                          WELL="#14100C", SHADOW="#3A2A18", SHADOW_A=0.35, WELL_EM=0.05, AMB_PLATE=0.9),
             material={"plate": {"preset": "leather.tooled", "tint": "#DDCBA6", "lo": "#7A6648", "hi": "#FFFFFF",
-                                "plate_ramp": (0.1, 0.18)}},
+                                "plate_ramp": (0.1, 0.18), "pattern": ("Leather", 5.0, 0.35, 1.0, 0.5, 0.5, 0.0)}},
             app=dict(display=dict(text="#F6B25A", textDim="#8A6636", textAlt="#F6B25A"),
                      ui=dict(text="#2A1A0E", textDim="#6B5238", accent="#16857C"),
                      ink=dict(faceplate="#2A1A0E", faceplateDim="#6B5238", inset="#1B2A38", insetDim="#46586A",
