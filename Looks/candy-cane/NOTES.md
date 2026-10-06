@@ -33,3 +33,8 @@ Metrics: dark clip 0.0%, ΔL knob +65 / knob.small +86 / key +36. **Light clip 8
 blew the pale frosted plate out.
 - **Craft:** the velvet now has a visible nap and sheen; still soft, which is right for velvet.
 - **Fix:** light plate gets its own Frosted pattern, AMB_PLATE 0.95 → 0.85.
+
+## Round 4
+Metrics: clip 0.0% both modes. ΔL light: knob −94, key −135.
+- **Light:** clip fixed, but "snow white" renders cool grey (ambient 0.85 too low once the pattern
+  is right). Raise to 0.98 and re-measure; revert to 0.85 if clip > 1%.
