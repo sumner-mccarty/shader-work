@@ -18,3 +18,13 @@ Metrics: clip 0.0% (both modes). ΔL dark: knob +68, knob.small +103, key +63.
 - **Legibility:** ice-blue arcs on black separate 0/40/80/100 at 30 px. States distinct.
 Fix order: 1. key ambient up so ceramic reads white; 2. plates: black darker, white brighter;
 3. coarser, fainter knurl.
+
+## Round 2
+Changes: key ambient 0.55 → 0.95 (ceramic reads white), plates darker/brighter, knurl 5 px @ 0.3,
+plate print ink set explicitly for the dark mode.
+Metrics: dark clip 0.0%, ΔL knob +98, key +145. Light: **plate clip 99%** (AMB_PLATE 1.25 too hot).
+- **Identity:** now unmistakable — white-ice keys with gold bezels, gold chain-ringed caps, matte
+  black. The ice half of the signature lands.
+- **Craft:** matte black is black. Light plate blown out — fix. The dark mode's plate print
+  ("A01 KICK") vanished: derived ink came from the dark key mark. Set `ink`/`ui` text light.
+- **Fix next:** light ambient 1.05; check clip < 1%.
