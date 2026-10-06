@@ -23,7 +23,7 @@ CONTROLS = dict(                     # the hardware — identical in both modes
     VALUE="#7FDBFF", VALUE_EM=0.35, TRACK="#08090B", ARC_OFF="#24262B",
     SCROLL="#2A2C31", SCROLL_HI="#E0B040", PAD_BODY="#2A2D33", PAD_TINT=0.7,
 )
-ICED = {"preset": "ceramic", "tint": ICE, "amb": 0.55, "spec": 1.0, "rough": 0.08,
+ICED = {"preset": "ceramic", "tint": ICE, "amb": 0.95, "spec": 1.0, "rough": 0.08,
         "pattern": ("Ceramic", 2.4, 0.3, 1.0, 0.5, 0.5, 0.0), "edge": "gold.polished"}
 
 LOOK = Look(
@@ -41,12 +41,12 @@ LOOK = Look(
         "shadow": dict(blur=1.5, cast=0.26),
     },
     material={
-        "plate": {"preset": "rubber.matte", "tint": "#141518", "plate_ramp": (0.1, 0.35)},
+        "plate": {"preset": "rubber.matte", "tint": "#141518", "plate_ramp": (0.05, 0.18)},
         "key": ICED,
-        "accent": {"preset": "ceramic", "tint": BLUE, "amb": 0.6, "spec": 1.0, "rough": 0.08,
+        "accent": {"preset": "ceramic", "tint": BLUE, "amb": 0.8, "spec": 1.0, "rough": 0.08,
                    "pattern": ("Ceramic", 2.4, 0.3, 1.0, 0.5, 0.5, 0.0), "edge": "gold.polished"},
         "cap": {"preset": "gold.polished", "amb": 0.9, "ramp": (-0.45, 0.05, 0.45, 0.85)},
-        "skirt": {"preset": "gold.brushed", "pattern": ("Knurled", 3.2, 0.5, 1.0, 0.5, 0.6, 0.5)},
+        "skirt": {"preset": "gold.brushed", "pattern": ("Knurled", 5.0, 0.3, 1.0, 0.5, 0.6, 0.5)},
         "handle": "gold.polished",
     },
     rig={
@@ -61,14 +61,14 @@ LOOK = Look(
     modes={
         "dark": dict(
             track="Starfield", blurb="Matte black, gold and ice.",
-            palette=dict(CONTROLS, GAP="#050506", BACK="#0B0C0E", FACE="#16171A", INSET="#101113", SOCKET="#0D0E10",
-                         WELL="#050506", SHADOW="#000000", SHADOW_A=0.65, WELL_EM=0.05, AMB_PLATE=0.9),
+            palette=dict(CONTROLS, GAP="#050506", BACK="#0B0C0E", FACE="#0F1012", INSET="#0B0C0D", SOCKET="#09090A",
+                         WELL="#030304", SHADOW="#000000", SHADOW_A=0.65, WELL_EM=0.05, AMB_PLATE=0.7),
             app=dict(display=dict(text="#8FE0FF", textDim="#4F7F94", textAlt="#F2C14E"),
                      ui=dict(accent="#6FD3FF"))),
         "light": dict(
             track="Rosewater", blurb="White leather chassis, the same gold and ice.",
             palette=dict(CONTROLS, GAP="#A9AAAE", BACK="#D2D3D6", FACE="#ECECEA", INSET="#DCDDE0", SOCKET="#D6D7DA",
-                         WELL="#0A0B0D", SHADOW="#2C2E33", SHADOW_A=0.35, WELL_EM=0.05, AMB_PLATE=0.9),
+                         WELL="#0A0B0D", SHADOW="#2C2E33", SHADOW_A=0.35, WELL_EM=0.05, AMB_PLATE=1.25),
             material={"plate": {"preset": "leather.tooled", "tint": "#ECECEA", "lo": "#6C6C6E", "hi": "#FFFFFF",
                                 "plate_ramp": (0.1, 0.15), "pattern": ("Leather", 5.0, 0.25, 1.0, 0.5, 0.5, 0.0)}},
             app=dict(display=dict(text="#8FE0FF", textDim="#4F7F94", textAlt="#F2C14E"),
