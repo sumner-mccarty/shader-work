@@ -28,3 +28,8 @@ Metrics: clip 0.0%. ΔL dark: knob +80, knob.small +88, key +37.
 
 ## Round 3
 Changes: fabric grain 2.5 px @ 0.4, stronger sheen ramp on the plate (0.25/0.3).
+Metrics: dark clip 0.0%, ΔL knob +65 / knob.small +86 / key +36. **Light clip 8.4% (Face), 3.4% (Bezel)**
+— the dark plate's new fabric pattern was inherited by the light plate (modes merge materials) and
+blew the pale frosted plate out.
+- **Craft:** the velvet now has a visible nap and sheen; still soft, which is right for velvet.
+- **Fix:** light plate gets its own Frosted pattern, AMB_PLATE 0.95 → 0.85.

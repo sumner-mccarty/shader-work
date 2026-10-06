@@ -74,9 +74,10 @@ LOOK = Look(
         "light": dict(
             track="Rosewater", blurb="Snow-white frosted chassis, the same stripes and green.",
             palette=dict(CONTROLS, GAP="#9FB0BC", BACK="#CAD6DE", FACE="#EEF3F6", INSET="#DCE8E4", SOCKET="#D5E2DE",
-                         WELL="#0C0A0A", SHADOW="#2E3A44", SHADOW_A=0.35, WELL_EM=0.05, AMB_PLATE=0.95),
+                         WELL="#0C0A0A", SHADOW="#2E3A44", SHADOW_A=0.35, WELL_EM=0.05, AMB_PLATE=0.85),
             material={"plate": {"preset": "glass.frosted", "tint": "#EEF3F6", "lo": "#7C8E9C", "hi": "#FFFFFF",
-                                "alpha": 1.0, "plate_ramp": (0.1, 0.15)}},
+                                "alpha": 1.0, "plate_ramp": (0.1, 0.15),
+                                "pattern": ("Frosted", 1.5, 0.12, 1.0, 0.5, 0.5, 0.0)}},
             app=dict(display=dict(text="#FFC96A", textDim="#8C6E3A", textAlt="#FFC96A"),
                      ui=dict(text="#2A1218", textDim="#6B4A52", accent="#B01E2E"),
                      ink=dict(faceplate="#2A1218", faceplateDim="#6B4A52", inset="#17301F", insetDim="#46604E",
