@@ -1,0 +1,86 @@
+"""Walnut & Brass — 70s hi-fi receiver (lit). Brief: Looks/BACKLOG.md#walnut-brass.
+
+    python Tools/looks/walnut_brass.py check | sheet | write | manifest
+
+Signature: real wood + warm metal. A brushed-brass faceplate flanked by oiled-walnut side plates and
+inset panels (px-locked grain), skirted aluminium knobs with a fine flute, aluminium keys, cream dial
+lamps and amber glass for ON. Light mode changes the chassis only: teak side panels and a champagne
+aluminium faceplate; the hardware is the same.
+"""
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from lookkit import Look, main  # noqa: E402
+
+AMBER = "#E39A2E"
+ALU = "#A9AEB4"
+CONTROLS = dict(                     # the hardware — identical in both modes
+    BODY=ALU, BODY_HI="#C4C8CD", BODY_LO="#7E838A", DIS_BODY="#5C5A55",
+    MARK="#1B140E", MARK_DIM="#4F4538", DIS_MARK="#8A857B", ON_MARK="#2A1805",
+    ACCENT=AMBER, SOLO="#E8B64A", LAMP="#F7E4B0", LAMP_OFF="#7A6A48", HOT="#D8452E",
+    CAP="#B4B9BF", SKIRT="#8C9197", NUB=AMBER, HANDLE="#B4B9BF",
+    VALUE="#F0AA3C", VALUE_EM=0.25, TRACK="#120B06", ARC_OFF="#2A1B10",
+    SCROLL="#4A3A2A", SCROLL_HI="#C9A24A", PAD_BODY="#3A2C20", PAD_TINT=0.6,
+)
+BRASS = {"preset": "brass", "plate_ramp": (0.2, 0.3)}
+WALNUT = {"preset": "wood.oiled"}
+
+LOOK = Look(
+    title="Walnut & Brass", style="WalnutBrass", prefix="WalnutBrass", slug="walnut-brass", cls="lit", order=23,
+    status="draft", brief="BACKLOG.md#walnut-brass",
+    blurb="Oiled walnut, brushed brass, aluminium knobs and amber glass.",
+    tagline="oiled walnut, brushed brass, skirted aluminium knobs.",
+    displays="neo",
+    shape={
+        "key": dict(corner=0.22, round=0.25, bevel=0.14, depth=0.5, dome=0.2),
+        "dial": dict(skirt="Fluted", skirt_count=36, skirt_depth=0.05, cap_r=0.62, bevel=0.2, depth=0.5,
+                     smooth=0.6, dome=0.45, nub=0.07, nub_dist=0.4, arc_px=3.0),
+        "KnobHero": dict(ticks=11, arc_px=4.0),
+        "shadow": dict(blur=1.4, cast=0.24),
+    },
+    material={
+        "plate": BRASS, "Back": WALNUT, "Inset": WALNUT, "Socket": WALNUT, "ScrollTrack": WALNUT,
+        "key": {"preset": "aluminium.brushed", "amb": 0.8},
+        "accent": {"preset": "enamel", "tint": AMBER, "edge": "brass"},
+        "cap": {"preset": "aluminium.brushed", "amb": 0.85, "dome": 0.45,
+                "pattern": ("RadialBrushed", 3.0, 0.1, 1.0, 0.45, 0.2, 0.0)},
+        "skirt": {"preset": "aluminium.brushed", "pattern": ("Knurled", 2.4, 0.18, 1.0, 0.5, 0.6, 0.5)},
+        "handle": "aluminium.brushed",
+    },
+    rig={
+        "dark": {"light1": dict(pos=[-0.4, 1.5], height=1.2, color="#FFD9A0", intensity=0.9, specular=0.3,
+                                specularPower=40),
+                 "light2": dict(pos=[1.3, 0.6], height=0.9, color="#FFB070", intensity=0.18, specular=0.05),
+                 "light3": dict(enabled=False)},
+        "light": {"light1": dict(pos=[-1.5, 3.0], height=4.0, color="#FFF0D8", intensity=0.8, specular=0.12,
+                                 specularPower=40),
+                  "light2": dict(enabled=False), "light3": dict(enabled=False)},
+    },
+    modes={
+        "dark": dict(
+            track="Sunset", blurb="Walnut and brass in lamplight.",
+            palette=dict(CONTROLS, GAP="#0E0805", BACK="#3A2314", FACE="#8A6E2C", INSET="#4A2D18", SOCKET="#2E1C10",
+                         WELL="#080503", SHADOW="#000000", SHADOW_A=0.6, WELL_EM=0.05),
+            app=dict(display=dict(text="#F2B25A", textDim="#8A6636", textAlt="#F2B25A"),
+                     ui=dict(text="#F0E2BC", textDim="#9C8A60", accent=AMBER),
+                     # brass faceplate takes dark print, walnut takes cream
+                     ink=dict(faceplate="#1E1409", faceplateDim="#4F4020", inset="#F0E2BC", insetDim="#A8946A",
+                              backplane="#F0E2BC", backplaneDim="#A8946A", socket="#F0E2BC", socketDim="#A8946A",
+                              reviewBar="#F0E2BC", reviewBarDim="#A8946A"))),
+        "light": dict(
+            track="Rosewater", blurb="Teak and champagne aluminium, same hardware.",
+            palette=dict(CONTROLS, GAP="#8E7552", BACK="#A8723F", FACE="#D9CCA6", INSET="#B88450", SOCKET="#9C6A3A",
+                         WELL="#100B07", SHADOW="#3A2A16", SHADOW_A=0.35, WELL_EM=0.05, AMB_PLATE=0.9),
+            material={"plate": {"preset": "aluminium.brushed", "tint": "#D9CCA6", "lo": "#7C6E4C", "hi": "#FFFFFF",
+                                "plate_ramp": (0.1, 0.15), "plate_amb": 0.9}},
+            app=dict(display=dict(text="#F2B25A", textDim="#8A6636", textAlt="#F2B25A"),
+                     ui=dict(text="#2A1A0E", textDim="#6B5238", accent="#B26A12"),
+                     ink=dict(faceplate="#2A1A0E", faceplateDim="#6B5238", inset="#1E1209", insetDim="#4E3A24",
+                              backplane="#1E1209", backplaneDim="#4E3A24", socket="#1E1209", socketDim="#4E3A24",
+                              reviewBar="#2A1A0E", reviewBarDim="#6B5238"))),
+    },
+)
+
+if __name__ == "__main__":
+    sys.exit(main(LOOK))
