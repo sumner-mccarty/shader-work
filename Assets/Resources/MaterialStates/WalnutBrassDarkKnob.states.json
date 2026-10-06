@@ -425,7 +425,7 @@
                 {
                     "name": "_LightingAmbient",
                     "type": "Range",
-                    "value": "0.85"
+                    "value": "1.2"
                 },
                 {
                     "name": "_ReceiveSceneShadows",
@@ -560,7 +560,7 @@
                 {
                     "name": "_LineSublineFilledRenderEmissive",
                     "type": "Range",
-                    "value": "0.25"
+                    "value": "0.55"
                 },
                 {
                     "name": "_KnobEnabled",

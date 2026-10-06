@@ -2125,7 +2125,9 @@ def parts_sheet(look, mode, out):
         y += h + lab_h + row_gap
     H = y
     sc = Scene(look, mode, W, H, "parts")
-    sc.canvas.px[:] = sc.canvas.np.array(rgbf(look.kit.plate_colors(look, sc.P, "Face")[0]), "float32")
+    lo_, hi_ = look.kit.plate_colors(look, sc.P, "Face")
+    page = mix(lo_, hi_, 0.5) if look.cls == "lit" else lo_       # a lit plate's page is its gradient's middle
+    sc.canvas.px[:] = sc.canvas.np.array(rgbf(page), "float32")
     for by, bh in bands:
         sc.canvas.px[max(0, by):by + bh] = sc.canvas.np.array(rgbf(sc.P["GAP"]), "float32")
     rowsc = _track_rows(look.modes[mode]["track"], look.track_themes)

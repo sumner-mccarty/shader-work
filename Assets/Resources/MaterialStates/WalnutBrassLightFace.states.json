@@ -300,12 +300,12 @@
                 {
                     "name": "_PanelPatternScale",
                     "type": "Range",
-                    "value": "200"
+                    "value": "142.86"
                 },
                 {
                     "name": "_PanelPatternIntensity",
                     "type": "Range",
-                    "value": "0.12"
+                    "value": "0.1"
                 },
                 {
                     "name": "_PanelPatternContrast",
@@ -315,7 +315,7 @@
                 {
                     "name": "_PanelPatternSpecularEffect",
                     "type": "Range",
-                    "value": "0.4"
+                    "value": "0.5"
                 },
                 {
                     "name": "_PanelPatternRoughnessEffect",

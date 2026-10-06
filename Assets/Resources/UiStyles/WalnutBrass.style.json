@@ -125,18 +125,18 @@
         "tabFillTop": "#4A2D18",
         "tabFillActiveBottom": "#B0903C",
         "tabFillActiveTop": "#B0903C",
-        "label": "#4F4538",
-        "labelActive": "#1B140E",
-        "icon": "#4F4538",
-        "iconActive": "#E39A2E",
-        "gear": "#4F4538CC",
-        "meatballIdle": "#4F4538",
+        "label": "#CDB88C",
+        "labelActive": "#2B1D0C",
+        "icon": "#CDB88C",
+        "iconActive": "#5A2E08",
+        "gear": "#CDB88CCC",
+        "meatballIdle": "#CDB88C",
         "meatballLit": "#E39A2E"
       },
       "palettes": {
         "ui": {
-          "text": "#F0E2BC",
-          "textDim": "#9C8A60",
+          "text": "#2B1D0C",
+          "textDim": "#46311A",
           "textFaint": "#47372AFF",
           "accent": "#E39A2E",
           "warn": "#F7E4B0",
@@ -152,8 +152,8 @@
           "gap": "#0E0805"
         },
         "ink": {
-          "faceplate": "#1E1409",
-          "faceplateDim": "#33260F",
+          "faceplate": "#2B1D0C",
+          "faceplateDim": "#46311A",
           "inset": "#F0E2BC",
           "insetDim": "#A8946A",
           "backplane": "#F0E2BC",
@@ -196,12 +196,12 @@
         "tracks": {
           "backdrop": "#3A2314",
           "strip": "#4A2D18",
-          "rowWithSample": "#A9AEB4",
-          "rowEmpty": "#B0903C",
+          "rowWithSample": "#6B4A2A",
+          "rowEmpty": "#2A180C",
           "rowNotesNoSample": "#B6853AFF",
-          "text": "#1B140E",
-          "ruler": "#4F4538E6",
-          "playhead": "#1B140EE6",
+          "text": "#F0E2BC",
+          "ruler": "#CDB88CE6",
+          "playhead": "#F0E2BCE6",
           "recMarker": "#D8452EDC",
           "scrollbar": "#0000001E",
           "noteSeparator": "#E7DEC4FF"
@@ -355,13 +355,13 @@
         "tabFillTop": "#965F33",
         "tabFillActiveBottom": "#D9CCA6",
         "tabFillActiveTop": "#D9CCA6",
-        "label": "#4F4538",
-        "labelActive": "#1B140E",
-        "icon": "#4F4538",
-        "iconActive": "#E39A2E",
-        "gear": "#4F4538CC",
-        "meatballIdle": "#4F4538",
-        "meatballLit": "#E39A2E"
+        "label": "#F3E6C8",
+        "labelActive": "#2A1A0E",
+        "icon": "#F3E6C8",
+        "iconActive": "#7A3E08",
+        "gear": "#F3E6C8CC",
+        "meatballIdle": "#F3E6C8",
+        "meatballLit": "#FFD27A"
       },
       "palettes": {
         "ui": {
@@ -392,8 +392,8 @@
           "socketDim": "#E3D2AE",
           "key": "#1B140E",
           "keyDim": "#4F4538",
-          "reviewBar": "#2A1A0E",
-          "reviewBarDim": "#6B5238"
+          "reviewBar": "#FBF0D8",
+          "reviewBarDim": "#E3D2AE"
         },
         "display": {
           "text": "#F2B25A",
@@ -426,12 +426,12 @@
         "tracks": {
           "backdrop": "#8C5A30",
           "strip": "#965F33",
-          "rowWithSample": "#A9AEB4",
-          "rowEmpty": "#D9CCA6",
+          "rowWithSample": "#7C4E28",
+          "rowEmpty": "#A06C3C",
           "rowNotesNoSample": "#D9B894FF",
-          "text": "#1B140E",
-          "ruler": "#4F4538E6",
-          "playhead": "#1B140EE6",
+          "text": "#FBF0D8",
+          "ruler": "#F3E6C8E6",
+          "playhead": "#FBF0D8E6",
           "recMarker": "#D8452EDC",
           "scrollbar": "#0000001E",
           "noteSeparator": "#F4F0E4FF"

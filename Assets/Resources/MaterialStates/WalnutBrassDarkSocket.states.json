@@ -305,12 +305,12 @@
                 {
                     "name": "_PanelPatternIntensity",
                     "type": "Range",
-                    "value": "0.5"
+                    "value": "0.55"
                 },
                 {
                     "name": "_PanelPatternContrast",
                     "type": "Range",
-                    "value": "1"
+                    "value": "1.05"
                 },
                 {
                     "name": "_PanelPatternSpecularEffect",
