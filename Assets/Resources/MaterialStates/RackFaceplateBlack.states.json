@@ -1,0 +1,279 @@
+{
+  "controlType": "UIPanel",
+  "shaderName": "UI/SDFPanel",
+  "states": [
+    {
+      "stateId": "c0ffee00-000b-4a10-9f00-000000000010",
+      "stateName": "Normal",
+      "description": "Realistic rack faceplate \u2014 BLACK finish (flipbook f-black #33302c\u2192#211f1c). Dark anodized brushed metal, top-lit. Pairs with light nameplate + light text.",
+      "baseStateName": "",
+      "priority": 0,
+      "tags": [
+        "default"
+      ],
+      "parameters": [
+        {
+          "name": "_PanelEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_PanelColor",
+          "type": "Color",
+          "value": "0.165,0.157,0.145,1"
+        },
+        {
+          "name": "_PanelShapeType",
+          "type": "Enum",
+          "value": "0"
+        },
+        {
+          "name": "_PanelShapeParam1",
+          "type": "Range",
+          "value": "0.9"
+        },
+        {
+          "name": "_PanelBodyRoundness",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_PanelCornerRadiusPx",
+          "type": "Float",
+          "value": "4"
+        },
+        {
+          "name": "_PanelPadding",
+          "type": "Range",
+          "value": "0.004"
+        },
+        {
+          "name": "_PanelBevelEnabled",
+          "type": "Float",
+          "value": "1.0"
+        },
+        {
+          "name": "_PanelBevelDepth",
+          "type": "Range",
+          "value": "0.55"
+        },
+        {
+          "name": "_PanelBevelSmoothness",
+          "type": "Range",
+          "value": "0.12"
+        },
+        {
+          "name": "_PanelBevelDistance",
+          "type": "Range",
+          "value": "0.006"
+        },
+        {
+          "name": "_PanelFaceSmoothness",
+          "type": "Range",
+          "value": "0.0"
+        },
+        {
+          "name": "_PanelRimEnabled",
+          "type": "Float",
+          "value": "0.0"
+        },
+        {
+          "name": "_PanelRimDepth",
+          "type": "Range",
+          "value": "-0.14"
+        },
+        {
+          "name": "_PanelRimWidth",
+          "type": "Range",
+          "value": "0.012"
+        },
+        {
+          "name": "_PanelRimSmoothness",
+          "type": "Range",
+          "value": "0.012"
+        },
+        {
+          "name": "_PanelGradientEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_PanelGradientType",
+          "type": "Enum",
+          "value": "1"
+        },
+        {
+          "name": "_PanelGradientDirection",
+          "type": "Vector4",
+          "value": "0,1,0,0"
+        },
+        {
+          "name": "_PanelGradientScale",
+          "type": "Range",
+          "value": "1"
+        },
+        {
+          "name": "_PanelGradientOffset",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_PanelGradientColorUsed",
+          "type": "Range",
+          "value": "2"
+        },
+        {
+          "name": "_PanelGradientColorA",
+          "type": "Color",
+          "value": "0.20,0.188,0.173,1"
+        },
+        {
+          "name": "_PanelGradientColorB",
+          "type": "Color",
+          "value": "0.129,0.122,0.11,1"
+        },
+        {
+          "name": "_PanelPatternEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_PanelPatternType",
+          "type": "Enum",
+          "value": "0"
+        },
+        {
+          "name": "_PanelPatternScale",
+          "type": "Range",
+          "value": "60"
+        },
+        {
+          "name": "_PanelPatternIntensity",
+          "type": "Range",
+          "value": "0.1"
+        },
+        {
+          "name": "_PanelPatternContrast",
+          "type": "Range",
+          "value": "1"
+        },
+        {
+          "name": "_PanelPatternSpecularEffect",
+          "type": "Range",
+          "value": "0.3"
+        },
+        {
+          "name": "_PanelPatternRoughnessEffect",
+          "type": "Range",
+          "value": "0.5"
+        },
+        {
+          "name": "_LightingLight1Enabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_LightingLight1Direction",
+          "type": "Vector4",
+          "value": "1.16,1.46,1,0"
+        },
+        {
+          "name": "_LightingLight1Intensity",
+          "type": "Range",
+          "value": "1.0"
+        },
+        {
+          "name": "_PanelScrewsEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_PanelScrewShapeType",
+          "type": "Float",
+          "value": "0"
+        },
+        {
+          "name": "_PanelScrewInset",
+          "type": "Range",
+          "value": "0.115"
+        },
+        {
+          "name": "_PanelScrewRadius",
+          "type": "Range",
+          "value": "0.052"
+        },
+        {
+          "name": "_PanelScrewColor",
+          "type": "Color",
+          "value": "0.54902,0.568627,0.607843,1"
+        },
+        {
+          "name": "_PanelScrewSlotColor",
+          "type": "Color",
+          "value": "0.0627451,0.0705882,0.0862745,1"
+        },
+        {
+          "name": "_PanelScrewRotation",
+          "type": "Range",
+          "value": "32"
+        },
+        {
+          "name": "_PanelScrewDepth",
+          "type": "Range",
+          "value": "0.85"
+        },
+        {
+          "name": "_PanelScrewMetallic",
+          "type": "Range",
+          "value": "0.9"
+        },
+        {
+          "name": "_PanelScrewInsetPx",
+          "type": "Float",
+          "value": "7.5"
+        },
+        {
+          "name": "_PanelScrewRadiusPx",
+          "type": "Float",
+          "value": "3.8"
+        },
+        {
+          "name": "_PanelScrewBore",
+          "type": "Range",
+          "value": "0.8"
+        },
+        {
+          "name": "_LightingAmbient",
+          "type": "Range",
+          "value": "0.34"
+        },
+        {
+          "name": "_PanelPatternParam1",
+          "type": "Range",
+          "value": "0.7"
+        },
+        {
+          "name": "_PanelPatternParam2",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_PanelPatternParam3",
+          "type": "Range",
+          "value": "0.15"
+        },
+        {
+          "name": "_PanelPatternPx",
+          "type": "Float",
+          "value": "100"
+        }
+      ]
+    }
+  ],
+  "bounds": {
+    "type": 0,
+    "width": 1.0,
+    "height": 1.0,
+    "radiusNorm": 1.0
+  }
+}

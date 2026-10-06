@@ -108,6 +108,11 @@ Shader "UI/SDFPanel"
         [Enum(PatternType)] _PanelPatternType ("Panel Pattern Type", Int) = 0
         _PanelPatternScale ("Panel Pattern Scale", Range(1, 100)) = 20
         _PanelPatternIntensity ("Panel Pattern Intensity", Range(0, 1)) = 0.3
+        // Pixel-locked grain (2026-10-04): CANVAS units one pattern tile spans, so the scale counts
+        // cycles per that many units instead of per widget. A brushed plate then keeps the same grain
+        // at 60 or 1200 units wide. 0 = legacy widget-relative UV (grain stretches with the panel).
+        // Applies to every pattern this shader samples (face, bevel, inner frame + its bevel).
+        _PanelPatternPx ("Panel Pattern Tile (px, 0 = per-widget UV)", Float) = 0
         _PanelPatternContrast ("Panel Pattern Contrast", Range(0.1, 5)) = 1.5
         _PanelPatternSpecularEffect ("Panel Pattern Specular", Range(0, 2)) = 1.0
         _PanelPatternRoughnessEffect ("Panel Pattern Roughness", Range(0, 2)) = 0.3
@@ -523,6 +528,7 @@ Shader "UI/SDFPanel"
             float _BorderWidthPx;    // canvas units, 0 = proportional _BorderWidth
             float _EdgeWidthPx;      // canvas units, 0 = proportional _EdgeWidth
             float _EdgeCutInside;    // 1 = the Edge is a bloom outside the plate, never under it
+            float _PanelPatternPx;   // canvas units per pattern tile, 0 = widget-relative uvIso
 
             fixed4 frag(v2f IN) : SV_Target
             {
@@ -535,6 +541,12 @@ Shader "UI/SDFPanel"
                 float2 aspectScale = float2(max(rectAspect, 1.0), max(1.0 / rectAspect, 1.0));
                 float2 pos    = (uv - center) * 2.0 * aspectScale;
                 float2 uvIso  = (uv - center) / float2(aspectScale.x, aspectScale.y) + center;
+                // Pattern sampling space. uvIso spans the widget's short side, so grain size scaled
+                // with the panel (blotches on a rack, mush on a strip); with _PanelPatternPx it is
+                // fixed canvas units instead, centred so the grain doesn't slide when the rect grows.
+                float2 patUV = (_PanelPatternPx > 0.001 && _WidgetPixelSize.x > 1.0 && _WidgetPixelSize.y > 1.0)
+                             ? (uv - center) * _WidgetPixelSize.xy / _PanelPatternPx + center
+                             : uvIso;
 
                 // Panel body half-extents (nine-slice: padding is constant equi-pixel margin, or a
                 // fixed canvas-unit margin when _PanelPaddingPx is set — same 2/minPix conversion as
@@ -765,7 +777,7 @@ Shader "UI/SDFPanel"
 
                         float specularMod;
                         float2 normalOffset;
-                        float3 mainPatternedColor = ApplyMaterialPattern(baseColor, uvIso, panelComp, 0.0, 0.0, specularMod, normalOffset);
+                        float3 mainPatternedColor = ApplyMaterialPattern(baseColor, patUV, panelComp, 0.0, 0.0, specularMod, normalOffset);
 
                         float effectiveBevelDepth = (_PanelBevelEnabled > 0.5) ? panelComp.bevelDepth : 0.0;
                         float effectiveBevelDist  = panelComp.bevelDistance;
@@ -804,7 +816,7 @@ Shader "UI/SDFPanel"
                         }
 
                         ButtonBevelRenderResult bevelResult = RenderButtonBevelWithPatternAndGradient(
-                            uv, uvIso, baseColor, mainPatternedColor, faceNormal, bevelSDF,
+                            uv, patUV, baseColor, mainPatternedColor, faceNormal, bevelSDF,
                             effectiveBevelDepth, effectiveBevelDist, panelComp.bevelSmoothness,
                             _PanelBevelEnabled,
                             _PanelBevelPatternEnabled, _PanelBevelPatternType, _PanelBevelPatternScale,
@@ -905,7 +917,7 @@ Shader "UI/SDFPanel"
 
                         float ifSpecularMod;
                         float2 ifNormalOffset;
-                        float3 ifPatternedColor = ApplyMaterialPattern(ifBaseColor, uvIso, ifComp, 0.0, 0.0, ifSpecularMod, ifNormalOffset);
+                        float3 ifPatternedColor = ApplyMaterialPattern(ifBaseColor, patUV, ifComp, 0.0, 0.0, ifSpecularMod, ifNormalOffset);
 
                         float ifEffBevelDepth = (_InnerFrameBevelEnabled > 0.5) ? ifComp.bevelDepth : 0.0;
                         float3 ifNormal = CalculateShapeBevelNormal(innerDist, ifEffBevelDepth,
@@ -913,7 +925,7 @@ Shader "UI/SDFPanel"
                             _InnerFrameBevelProfileType, _InnerFrameBevelProfileSharpness, aspectScale);
 
                         ButtonBevelRenderResult ifBevelResult = RenderButtonBevelWithPatternAndGradient(
-                            uv, uvIso, ifBaseColor, ifPatternedColor, ifNormal, innerDist,
+                            uv, patUV, ifBaseColor, ifPatternedColor, ifNormal, innerDist,
                             ifEffBevelDepth, ifComp.bevelDistance, ifComp.bevelSmoothness,
                             _InnerFrameBevelEnabled,
                             _InnerFrameBevelPatternEnabled, _InnerFrameBevelPatternType, _InnerFrameBevelPatternScale,

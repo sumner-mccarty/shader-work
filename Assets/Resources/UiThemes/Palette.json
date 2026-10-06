@@ -1,0 +1,71 @@
+{
+  "_doc": "Theme COLOUR ROLES (tracker §3.8, Docs/SettingsMap.md). Layout docs reference these as \"@group.role\" instead of carrying literal hex, so text, track lanes and review marks become themable the same way SDF skins already were. Groups here are the ones that had no home; chrome and waveform keep their own files (ChromePalette.json / WaveformPalette.json) because they are not flat role maps. Anything omitted falls back to Palette.ApplyBuiltInDefaults(), so this file can never make the UI unreadable.",
+
+  "palettes": {
+    "ui": {
+      "text": "#E6EBF2",
+      "textDim": "#8A93A0",
+      "textFaint": "#5A6674",
+      "accent": "#4FD1E0",
+      "warn": "#FFB84D",
+      "danger": "#FF6B6B",
+      "ok": "#7FE0A8"
+    },
+
+    "surface": {
+      "card": "#1C1F24FA",
+      "cardEdge": "#2B3440",
+      "divider": "#1E242C",
+      "scrim": "#000000B8"
+    },
+
+    "tracks": {
+      "row1": "#FF3A4A",
+      "row2": "#36E86B",
+      "row3": "#FF9E2E",
+      "row4": "#40A8FF",
+      "velocity": "#EE2A2E",
+
+      "rail": "#80E6FF",
+      "laneLine": "#8CADE6",
+      "laneFill": "#0B0E1A",
+      "hitLine": "#EBF7FF",
+      "receptor": "#9EB8D9",
+      "gridBar": "#A6CCFF",
+      "gridBeat": "#667AA8",
+      "bgTop": "#030412",
+      "bgBottom": "#090B22",
+      "fog": "#4D62A0",
+      "star": "#BFD4FF",
+      "miss": "#FF2138",
+      "perfect": "#FFE8A8",
+
+      "backdrop": "#0F1115",
+      "strip": "#15181D",
+      "rowWithSample": "#2A3038",
+      "rowEmpty": "#1B1F25",
+      "rowNotesNoSample": "#45272C",
+      "text": "#D9DEE6",
+      "ruler": "#8E96A4E6",
+      "playhead": "#8F8FF5E6",
+      "recMarker": "#FF5A3CDC",
+      "scrollbar": "#00000059"
+    },
+
+    "review": {
+      "slot": "#6E7C92",
+      "slotFill": "#1B222E",
+      "exact": "#5BF5C0",
+      "perfect": "#7CE08A",
+      "early": "#63B8FF",
+      "late": "#FFA53C",
+      "wayOff": "#FF5E4A",
+      "missed": "#E0394B",
+      "extra": "#D76CFF",
+      "heatCold": "#C42C3E",
+      "heatMid": "#E8B03C",
+      "heatHot": "#46D986",
+      "heatUntried": "#465060"
+    }
+  }
+}

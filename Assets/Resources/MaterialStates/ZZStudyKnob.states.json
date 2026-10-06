@@ -1,0 +1,143 @@
+{
+    "controlType": "UIKnob",
+    "shaderName": "UI/SDFKnobRM",
+    "states": [
+        {
+            "stateId": "ZZStudyKnob-normal",
+            "stateName": "Normal",
+            "description": "Default resting state",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [
+                "default"
+            ],
+            "parameters": [
+                {
+                    "name": "_KnobEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_KnobColor",
+                    "type": "Color",
+                    "value": "0.541176,0.564706,0.596078,1"
+                },
+                {
+                    "name": "_KnobShapeType",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobBevelEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_KnobBevelDepth",
+                    "type": "Range",
+                    "value": "0.9"
+                },
+                {
+                    "name": "_KnobBevelDistance",
+                    "type": "Range",
+                    "value": "0.3"
+                },
+                {
+                    "name": "_KnobBevelSmoothness",
+                    "type": "Range",
+                    "value": "0.35"
+                },
+                {
+                    "name": "_KnobFaceSmoothness",
+                    "type": "Range",
+                    "value": "0.1"
+                },
+                {
+                    "name": "_KnobSize",
+                    "type": "Range",
+                    "value": "0.8"
+                },
+                {
+                    "name": "_KnobPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobRimEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_FillEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LineEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_NubEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobNubEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_OuterRing1Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_OuterRing2Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_OuterRing3Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_OuterMarksEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_EdgeEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BorderEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LineSublineFilledEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LineSublineUnfilledEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingAmbient",
+                    "type": "Range",
+                    "value": "0.45"
+                },
+                {
+                    "name": "_ViewTilt",
+                    "type": "Range",
+                    "value": "0"
+                }
+            ]
+        }
+    ]
+}

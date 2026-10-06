@@ -1,0 +1,205 @@
+{
+    "controlType": "UIButton",
+    "shaderName": "UI/SDFKnob",
+    "states": [
+        {
+            "stateId": "86f54225-6149-4435-a4ac-1806b9409dda",
+            "stateName": "Normal",
+            "description": "Default resting state",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [
+                "default"
+            ],
+            "parameters": [
+                {
+                    "name": "_LightingLight1Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingAmbient",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_AngleStart",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_AngleRange",
+                    "type": "Float",
+                    "value": "220"
+                },
+                {
+                    "name": "_Value",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_NubEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_NubDistance",
+                    "type": "Range",
+                    "value": "0.181999996"
+                },
+                {
+                    "name": "_NubColor",
+                    "type": "Color",
+                    "value": "0.0817608833,0.0779042318,0.0779042318,1"
+                },
+                {
+                    "name": "_LightingShadow1Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobShadow1Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BorderEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobPatternScale",
+                    "type": "Range",
+                    "value": "72.5999985"
+                },
+                {
+                    "name": "_KnobPatternRoughnessEffect",
+                    "type": "Range",
+                    "value": "0.469999999"
+                },
+                {
+                    "name": "_KnobRimBevelEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobRimBevelWidth",
+                    "type": "Range",
+                    "value": "0.0340000018"
+                },
+                {
+                    "name": "_KnobRimBevelDepth",
+                    "type": "Range",
+                    "value": "-0.200000003"
+                },
+                {
+                    "name": "_KnobPatternType",
+                    "type": "Float",
+                    "value": "2"
+                },
+                {
+                    "name": "_BorderColor",
+                    "type": "Color",
+                    "value": "0.975068986,0.992156863,0.00784312468,1"
+                },
+                {
+                    "name": "_BorderWidth",
+                    "type": "Range",
+                    "value": "0.0785000026"
+                },
+                {
+                    "name": "_BorderSoftness",
+                    "type": "Range",
+                    "value": "0.0500000007"
+                },
+                {
+                    "name": "_LineSublineFilledRenderAlpha",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_LineSublineUnfilledRenderAlpha",
+                    "type": "Range",
+                    "value": "0.583999991"
+                }
+            ],
+            "deltaParameters": []
+        },
+        {
+            "stateId": "2f271406-de81-4801-9319-f0f3c0ced50d",
+            "stateName": "Hover",
+            "description": "Mouse over state",
+            "baseStateName": "Normal",
+            "priority": 0,
+            "tags": [
+                "default",
+                "interactive"
+            ],
+            "parameters": [
+                {
+                    "name": "_BorderEnabled",
+                    "type": "Float",
+                    "value": "1"
+                }
+            ]
+        },
+        {
+            "stateId": "78c7160c-edef-4bda-b20b-6decf7d6d610",
+            "stateName": "Pressed",
+            "description": "Click/touch down state",
+            "baseStateName": "Normal",
+            "priority": 0,
+            "tags": [
+                "default",
+                "interactive"
+            ],
+            "parameters": [
+                {
+                    "name": "_BorderEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_BorderColor",
+                    "type": "Color",
+                    "value": "0.598579228,0.992156863,0.00784312468,1"
+                }
+            ]
+        },
+        {
+            "stateId": "880f4144-a273-46d7-ac0d-a9cd98fb0703",
+            "stateName": "Dragging",
+            "description": "Drag state",
+            "baseStateName": "Normal",
+            "priority": 0,
+            "tags": [
+                "default",
+                "interactive"
+            ],
+            "parameters": [
+                {
+                    "name": "_BorderEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_BorderColor",
+                    "type": "Color",
+                    "value": "0.992156863,0.411798358,0.00784312468,1"
+                }
+            ]
+        },
+        {
+            "stateId": "f95d2127-a954-4422-9888-90f2bc0c4658",
+            "stateName": "Disabled",
+            "description": "Inactive/disabled state",
+            "baseStateName": "Normal",
+            "priority": 0,
+            "tags": [
+                "default"
+            ],
+            "parameters": [],
+            "deltaParameters": []
+        }
+    ]
+}

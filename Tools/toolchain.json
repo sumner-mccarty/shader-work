@@ -1,0 +1,24 @@
+{
+  "_comment": "Pinned versions for slrender's toolchain. Tools/setup_toolchain.{sh,ps1} read this. Bump together, then re-run tests/parity.py check.",
+  "dxc": {
+    "tag": "v1.9.2609",
+    "linux": {
+      "asset": "linux_dxc_2026_09_28.x86_x64.tar.gz",
+      "sha256": "96faadc7f5c282d2ffda49804beb4c3ee38127bc252b723234e3c5cdf7aa39a1"
+    },
+    "windows": {
+      "asset": "dxc_2026_09_29.zip",
+      "sha256": "ad31b1fc8443175d204f77a611fdb3ef2ec42759bdc2f1167368de24a4a7e7f1"
+    }
+  },
+  "spirv_cross": {
+    "repo": "https://github.com/KhronosGroup/SPIRV-Cross.git",
+    "tag": "vulkan-sdk-1.4.363.0"
+  },
+  "mesa_windows": {
+    "_comment": "Optional, Windows only: Mesa llvmpipe so a Windows dev box can reproduce the cloud rasteriser (SLRENDER_SOFTWARE=1).",
+    "tag": "26.2.4",
+    "asset": "mesa3d-26.2.4-release-msvc.7z"
+  },
+  "python": ["moderngl>=5.10", "numpy>=1.24", "pillow>=10"]
+}

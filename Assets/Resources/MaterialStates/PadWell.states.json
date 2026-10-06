@@ -1,0 +1,431 @@
+{
+  "schemaVersion": 2,
+  "controlType": "UIButton",
+  "shaderName": "UI/SDFPanel",
+  "states": [
+    {
+      "stateId": "002d5462-0c27-41b5-8110-c0baec8a2732",
+      "stateName": "Normal",
+      "description": "The tray the drum pads sit in. A deeper, wider-walled version of RackPlateInset with a real face texture: the pads need something with grain and depth under them or their shadows read as falling onto nothing. Padding around it is the layout's job (DrumPad.layout.json's PadWell container), not this skin's.",
+      "baseStateName": "",
+      "priority": 0,
+      "tags": [
+        "default"
+      ],
+      "parameters": [
+        {
+          "name": "_PanelEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_PanelColor",
+          "type": "Color",
+          "value": "0.25882352941176473,0.23529411764705882,0.2,1.0"
+        },
+        {
+          "name": "_PanelShapeType",
+          "type": "Enum",
+          "value": "0"
+        },
+        {
+          "name": "_PanelShapeParam1",
+          "type": "Range",
+          "value": "0.870999992"
+        },
+        {
+          "name": "_PanelBodyRoundness",
+          "type": "Range",
+          "value": "0.469000012"
+        },
+        {
+          "name": "_PanelCornerRadiusPx",
+          "type": "Float",
+          "value": "8.0"
+        },
+        {
+          "name": "_PanelPadding",
+          "type": "Range",
+          "value": "0.022"
+        },
+        {
+          "name": "_PanelBevelEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_PanelBevelDepth",
+          "type": "Range",
+          "value": "0.3"
+        },
+        {
+          "name": "_PanelBevelSmoothness",
+          "type": "Range",
+          "value": "0.230000004"
+        },
+        {
+          "name": "_PanelBevelDistance",
+          "type": "Range",
+          "value": "0.03"
+        },
+        {
+          "name": "_PanelFaceSmoothness",
+          "type": "Range",
+          "value": "0.0"
+        },
+        {
+          "name": "_PanelRimEnabled",
+          "type": "Float",
+          "value": "1.0"
+        },
+        {
+          "name": "_PanelRimDepth",
+          "type": "Range",
+          "value": "-0.26"
+        },
+        {
+          "name": "_PanelRimWidth",
+          "type": "Range",
+          "value": "0.02"
+        },
+        {
+          "name": "_PanelRimSmoothness",
+          "type": "Range",
+          "value": "0.0179999992"
+        },
+        {
+          "name": "_PanelPatternEnabled",
+          "type": "Float",
+          "value": "1.0"
+        },
+        {
+          "name": "_PanelPatternType",
+          "type": "Float",
+          "value": "4.0"
+        },
+        {
+          "name": "_PanelPatternScale",
+          "type": "Range",
+          "value": "60.0"
+        },
+        {
+          "name": "_PanelPatternIntensity",
+          "type": "Range",
+          "value": "0.05"
+        },
+        {
+          "name": "_PanelPatternContrast",
+          "type": "Range",
+          "value": "1.2"
+        },
+        {
+          "name": "_PanelPatternSpecularEffect",
+          "type": "Range",
+          "value": "0.4"
+        },
+        {
+          "name": "_PanelPatternRoughnessEffect",
+          "type": "Range",
+          "value": "0.5"
+        },
+        {
+          "name": "_PanelPatternParam1",
+          "type": "Range",
+          "value": "0.550000012"
+        },
+        {
+          "name": "_PanelPatternParam2",
+          "type": "Range",
+          "value": "0.449999988"
+        },
+        {
+          "name": "_PanelPatternParam3",
+          "type": "Range",
+          "value": "0.5"
+        },
+        {
+          "name": "_PanelPatternPx",
+          "type": "Float",
+          "value": "406"
+        },
+        {
+          "name": "_PanelGradientEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_PanelGradientType",
+          "type": "Enum",
+          "value": "1"
+        },
+        {
+          "name": "_PanelGradientDirection",
+          "type": "Vector4",
+          "value": "0,1,0,0"
+        },
+        {
+          "name": "_PanelGradientScale",
+          "type": "Range",
+          "value": "1"
+        },
+        {
+          "name": "_PanelGradientOffset",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_PanelGradientColorUsed",
+          "type": "Range",
+          "value": "2"
+        },
+        {
+          "name": "_PanelGradientColorA",
+          "type": "Color",
+          "value": "0.2,0.1843137254901961,0.1568627450980392,1.0"
+        },
+        {
+          "name": "_PanelGradientColorB",
+          "type": "Color",
+          "value": "0.3058823529411765,0.2823529411764706,0.24313725490196078,1.0"
+        },
+        {
+          "name": "_PanelScrewsEnabled",
+          "type": "Float",
+          "value": "0.0"
+        },
+        {
+          "name": "_ReceiveSceneShadows",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_PanelShapeParam2",
+          "type": "Range",
+          "value": "0.5"
+        },
+        {
+          "name": "_PanelShapeParam3",
+          "type": "Range",
+          "value": "0.5"
+        },
+        {
+          "name": "_PanelShapeRotation",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_PanelFaceSize",
+          "type": "Range",
+          "value": "1"
+        },
+        {
+          "name": "_PanelFaceEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_PanelFaceShapeEnabled",
+          "type": "Float",
+          "value": "0"
+        },
+        {
+          "name": "_PanelBevelProfileType",
+          "type": "Float",
+          "value": "0"
+        },
+        {
+          "name": "_PanelFaceShapeType",
+          "type": "Enum",
+          "value": "0"
+        },
+        {
+          "name": "_InnerFrameEnabled",
+          "type": "Float",
+          "value": "0"
+        },
+        {
+          "name": "_InnerFrameColor",
+          "type": "Color",
+          "value": "0.127911329,1,0,1"
+        },
+        {
+          "name": "_InnerFrameSize",
+          "type": "Range",
+          "value": "0.00999999978"
+        },
+        {
+          "name": "_Value",
+          "type": "Float",
+          "value": "0.00333328242"
+        },
+        {
+          "name": "_LightingShadow1Enabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_LightingShadow2Enabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_LightingShadow3Enabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_EdgeEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_EdgeSoftness",
+          "type": "Range",
+          "value": "0.266000003"
+        },
+        {
+          "name": "_EdgeWidth",
+          "type": "Range",
+          "value": "0.075000003"
+        },
+        {
+          "name": "_EdgeIntensity",
+          "type": "Range",
+          "value": "0.860000014"
+        },
+        {
+          "name": "_EdgeColor",
+          "type": "Color",
+          "value": "0.207547188,0.0715487748,0,1"
+        },
+        {
+          "name": "_EdgeInset",
+          "type": "Range",
+          "value": "0.0370000005"
+        },
+        {
+          "name": "_PanelScrewShapeType",
+          "type": "Float",
+          "value": "4.0"
+        },
+        {
+          "name": "_PanelScrewInsetPx",
+          "type": "Float",
+          "value": "4.5"
+        },
+        {
+          "name": "_PanelScrewRadiusPx",
+          "type": "Float",
+          "value": "1.2"
+        },
+        {
+          "name": "_PanelScrewBore",
+          "type": "Range",
+          "value": "0.7"
+        },
+        {
+          "name": "_PanelScrewColor",
+          "type": "Color",
+          "value": "0.3607843137254902,0.3843137254901961,0.4235294117647059,1.0"
+        },
+        {
+          "name": "_PanelScrewMetallic",
+          "type": "Range",
+          "value": "0.7"
+        },
+        {
+          "name": "_PanelScrewDepth",
+          "type": "Range",
+          "value": "0.5"
+        },
+        {
+          "name": "_LightingAmbient",
+          "type": "Range",
+          "value": "0.34"
+        }
+      ]
+    },
+    {
+      "stateId": "fbb2463a-797e-4b3a-8957-f7c000765128",
+      "stateName": "Hover",
+      "description": "Mouse over state",
+      "baseStateName": "Normal",
+      "priority": 0,
+      "tags": [
+        "default",
+        "interactive"
+      ],
+      "parameters": [
+        {
+          "name": "_BorderEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_BorderColor",
+          "type": "Color",
+          "value": "0.880503118,0.729547739,0.0193819981,0.800000012"
+        },
+        {
+          "name": "_BorderWidth",
+          "type": "Range",
+          "value": "0.00100000005"
+        },
+        {
+          "name": "_BorderSoftness",
+          "type": "Range",
+          "value": "0.0120000001"
+        }
+      ]
+    },
+    {
+      "stateId": "c8996f47-93de-409e-8be0-1f1ca5744af9",
+      "stateName": "Pressed",
+      "description": "Click/touch down state",
+      "baseStateName": "Hover",
+      "priority": 0,
+      "tags": [
+        "default",
+        "interactive"
+      ],
+      "parameters": [
+        {
+          "name": "_BorderSoftness",
+          "type": "Range",
+          "value": "0.0280000009"
+        }
+      ]
+    },
+    {
+      "stateId": "4bdb13c2-c033-41c7-ae93-b51fc41f0664",
+      "stateName": "Dragging",
+      "description": "Drag state",
+      "baseStateName": "Pressed",
+      "priority": 0,
+      "tags": [
+        "default",
+        "interactive"
+      ],
+      "parameters": []
+    },
+    {
+      "stateId": "af1f92d2-3d05-4224-bc16-e5a12adbce82",
+      "stateName": "Disabled",
+      "description": "Inactive/disabled state",
+      "baseStateName": "Normal",
+      "priority": 0,
+      "tags": [
+        "default",
+        "interactive"
+      ],
+      "parameters": []
+    }
+  ],
+  "bounds": {
+    "type": 0,
+    "width": 1.0,
+    "height": 1.0,
+    "radiusNorm": 1.0,
+    "paddingParam": ""
+  }
+}

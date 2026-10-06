@@ -1,0 +1,44 @@
+{
+  "_doc": "See Starfield.track.json for the format.",
+
+  "name": "Nebula",
+  "blurb": "Dust lanes and hot gas. The loudest sky.",
+
+  "palette": {
+    "row1": "#FF4370",
+    "row2": "#3BF0A8",
+    "row3": "#FFB03A",
+    "row4": "#5AA8FF",
+
+    "rail": "#B98CFF",
+    "laneLine": "#8E7FD8",
+    "laneFill": "#0A0716",
+    "hitLine": "#FFF0FF",
+    "receptor": "#C0A8E8",
+    "gridBar": "#C9A6FF",
+    "gridBeat": "#5F4C93",
+    "bgTop": "#04030F",
+    "bgBottom": "#0B0722",
+    "fog": "#7A4BC8",
+    "star": "#E6E2FF",
+    "miss": "#FF3355",
+    "perfect": "#FFE9C2"
+  },
+
+  "props": {
+    "skyMode": 1,
+    "skyColorA": "#7A2E9E",
+    "skyColorB": "#1E6ED8",
+    "skyAmount": 0.75,
+    "skyScale": 4.0,
+
+    "starDensity": 0.5,
+    "horizonGlow": 0.55,
+    "railGlow": 1.25,
+    "noteGlow": 1.15,
+    "additive": 0.34,
+    "radiance": 1.05,
+    "fog": 0.6,
+    "vignette": 0.46
+  }
+}

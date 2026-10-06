@@ -1,0 +1,45 @@
+{
+  "_doc": "See Starfield.track.json for the format. NON-SPACE (skyMode 5 = lit cable strands).",
+
+  "name": "Patchbay",
+  "blurb": "Cable runs glowing in a dark studio. 2am, and it's working.",
+
+  "palette": {
+    "row1": "#FF6B4A",
+    "row2": "#3AD8C8",
+    "row3": "#FFB03A",
+    "row4": "#6BA8FF",
+
+    "rail": "#3AD8C8",
+    "laneLine": "#2A4A4A",
+    "laneFill": "#050708",
+    "hitLine": "#EAFFFB",
+    "receptor": "#8FC4BC",
+    "gridBar": "#5FBFB2",
+    "gridBeat": "#1E3838",
+    "bgTop": "#040506",
+    "bgBottom": "#0A0D10",
+    "fog": "#2A6B66",
+    "star": "#BFE8E0",
+    "miss": "#FF3B2E",
+    "perfect": "#FFDD9E"
+  },
+
+  "props": {
+    "skyMode": 5,
+    "skyColorA": "#FFB03A",
+    "skyColorB": "#3AD8C8",
+    "skyAmount": 0.9,
+
+    "starDensity": 0.0,
+    "horizonGlow": 0.25,
+    "railGlow": 1.1,
+    "noteGlow": 1.0,
+    "additive": 0.28,
+    "radiance": 0.95,
+    "beatPulse": 0.7,
+    "gridBrightness": 0.6,
+    "fog": 0.5,
+    "vignette": 0.45
+  }
+}

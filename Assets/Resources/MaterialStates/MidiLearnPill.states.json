@@ -1,0 +1,414 @@
+{
+    "controlType": "UIButton",
+    "shaderName": "UI/SDFTogglePill",
+    "states": [
+        {
+            "stateId": "502f2c69-c3a0-447d-a503-24ee1a05b629",
+            "stateName": "Normal",
+            "description": "Default resting state",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [
+                "default"
+            ],
+            "parameters": [
+                {
+                    "name": "_ViewTilt",
+                    "type": "Range",
+                    "value": "1.80999994"
+                },
+                {
+                    "name": "_KnobBevelEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_KnobShapeType",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_KnobShapeScale",
+                    "type": "Float",
+                    "value": "7"
+                },
+                {
+                    "name": "_KnobShapeParam1",
+                    "type": "Float",
+                    "value": "0.5"
+                },
+                {
+                    "name": "_KnobShapeParam2",
+                    "type": "Float",
+                    "value": "0.5"
+                },
+                {
+                    "name": "_KnobRimEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_KnobBevelDepth",
+                    "type": "Range",
+                    "value": "4"
+                },
+                {
+                    "name": "_KnobBevelSmoothness",
+                    "type": "Range",
+                    "value": "0.0842999965"
+                },
+                {
+                    "name": "_LightingLight1Direction",
+                    "type": "Vector4",
+                    "value": "0.319999993,0.560000002,0.5,0"
+                },
+                {
+                    "name": "_LightingLight1Specular",
+                    "type": "Float",
+                    "value": "0.200000003"
+                },
+                {
+                    "name": "_Value",
+                    "type": "Float",
+                    "value": "0.476664305"
+                },
+                {
+                    "name": "_KnobBevelDistance",
+                    "type": "Range",
+                    "value": "0.0299999993"
+                },
+                {
+                    "name": "_KnobSize",
+                    "type": "Range",
+                    "value": "0.913999975"
+                },
+                {
+                    "name": "_KnobFaceSmoothness",
+                    "type": "Range",
+                    "value": "0.0949999988"
+                },
+                {
+                    "name": "_KnobFaceShapeEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_KnobFaceShapeType",
+                    "type": "Enum",
+                    "value": "8"
+                },
+                {
+                    "name": "_KnobFaceShapeParam1",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_KnobFaceShapeParam2",
+                    "type": "Range",
+                    "value": "0.677999973"
+                },
+                {
+                    "name": "_KnobFaceShapeParam3",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_KnobFaceShapeParam4",
+                    "type": "Range",
+                    "value": "0.532999992"
+                },
+                {
+                    "name": "_KnobFaceShapeParam5",
+                    "type": "Range",
+                    "value": "0.596000016"
+                },
+                {
+                    "name": "_KnobFaceShapeParam6",
+                    "type": "Range",
+                    "value": "0.76700002"
+                },
+                {
+                    "name": "_BorderEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobFaceShapeRotation",
+                    "type": "Range",
+                    "value": "-90"
+                },
+                {
+                    "name": "_KnobFaceShapeScale",
+                    "type": "Range",
+                    "value": "9.56000042"
+                },
+                {
+                    "name": "_KnobFaceShapeSize",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_KnobBevelGradientEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_KnobColor",
+                    "type": "Color",
+                    "value": "0.9843137,0.7137255,0.24705882,1"
+                },
+                {
+                    "name": "_FillColor",
+                    "type": "Color",
+                    "value": "0.36078432,0.20392157,0.03529412,1"
+                },
+                {
+                    "name": "_Color",
+                    "type": "Color",
+                    "value": "0.44025147,0.433329254,0.433329254,1"
+                },
+                {
+                    "name": "_KnobBevelGradientColorA",
+                    "type": "Color",
+                    "value": "0.4392157,0.28627452,0.08235294,1"
+                },
+                {
+                    "name": "_KnobBevelGradientColorB",
+                    "type": "Color",
+                    "value": "0.5686275,0.36862746,0.10980392,1"
+                },
+                {
+                    "name": "_KnobBevelGradientColorC",
+                    "type": "Color",
+                    "value": "0.29411766,0.1882353,0.05490196,1"
+                },
+                {
+                    "name": "_KnobBevelGradientColorD",
+                    "type": "Color",
+                    "value": "0.43529412,0.29803923,0.09803922,1"
+                },
+                {
+                    "name": "_KnobBevelPatternEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_KnobPatternEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_LightingShadow1Distance",
+                    "type": "Range",
+                    "value": "0.0189999994"
+                },
+                {
+                    "name": "_LightingShadow1Blur",
+                    "type": "Range",
+                    "value": "0.00899999961"
+                },
+                {
+                    "name": "_EdgeSoftness",
+                    "type": "Range",
+                    "value": "1.90999997"
+                },
+                {
+                    "name": "_KnobShadow1Distance",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobBevelGradientSpeed",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobBevelGradientScale",
+                    "type": "Range",
+                    "value": "0.74000001"
+                },
+                {
+                    "name": "_KnobBevelGradientType",
+                    "type": "Enum",
+                    "value": "3"
+                },
+                {
+                    "name": "_KnobShadow1Cast",
+                    "type": "Range",
+                    "value": "0.50999999"
+                },
+                {
+                    "name": "_KnobShadow1Blur",
+                    "type": "Range",
+                    "value": "0.0299999993"
+                },
+                {
+                    "name": "_OuterMarksEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_OuterMarksRadius",
+                    "type": "Range",
+                    "value": "1.5"
+                },
+                {
+                    "name": "_OuterMarksType",
+                    "type": "Enum",
+                    "value": "1"
+                },
+                {
+                    "name": "_OuterMarksLength",
+                    "type": "Range",
+                    "value": "0.111000001"
+                },
+                {
+                    "name": "_OuterMarksMajorThicknessMultiplier",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_OuterMarksMajorLengthMultiplier",
+                    "type": "Range",
+                    "value": "1.66999996"
+                },
+                {
+                    "name": "_OuterMarksThickness",
+                    "type": "Range",
+                    "value": "0.00260000001"
+                },
+                {
+                    "name": "_OuterMarksArcThickness",
+                    "type": "Range",
+                    "value": "0.226999998"
+                },
+                {
+                    "name": "_OuterMarksCount",
+                    "type": "Range",
+                    "value": "16.1000004"
+                },
+                {
+                    "name": "_OuterMarksArcGapSize",
+                    "type": "Range",
+                    "value": "0.0140000004"
+                },
+                {
+                    "name": "_OuterMarksMajorInterval",
+                    "type": "Range",
+                    "value": "15.5"
+                },
+                {
+                    "name": "_OuterMarksMajorColorFilled",
+                    "type": "Color",
+                    "value": "0.9843137,0.6431373,0.10196079,1"
+                },
+                {
+                    "name": "_OuterMarksMajorColorUnfilled",
+                    "type": "Color",
+                    "value": "0.09411765,0.08627451,0.07450981,1"
+                },
+                {
+                    "name": "_OuterMarksColorUnfilled",
+                    "type": "Color",
+                    "value": "0.11764706,0.10588235,0.09019608,1"
+                },
+                {
+                    "name": "_BgPadding",
+                    "type": "Range",
+                    "value": "0.119999997"
+                },
+                {
+                    "name": "_BgEnabled",
+                    "type": "Float",
+                    "value": "1"
+                }
+            ]
+        },
+        {
+            "stateId": "c1cf2b67-945f-466d-bd06-d0a146e29b78",
+            "stateName": "Hover",
+            "description": "Mouse over state",
+            "baseStateName": "Normal",
+            "priority": 0,
+            "tags": [
+                "default",
+                "interactive"
+            ],
+            "parameters": [
+                {
+                    "name": "_EdgeEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_EdgeWidth",
+                    "type": "Range",
+                    "value": "0.0340000018"
+                },
+                {
+                    "name": "_EdgeSoftness",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_EdgeColor",
+                    "type": "Color",
+                    "value": "0.98039216,0.7529412,0.23529412,0.25"
+                },
+                {
+                    "name": "_EdgeIntensity",
+                    "type": "Range",
+                    "value": "0.85"
+                }
+            ]
+        },
+        {
+            "stateId": "94cd8728-e90f-4d22-8b2b-58d6f44d4b9a",
+            "stateName": "Pressed",
+            "description": "Click/touch down state",
+            "baseStateName": "Hover",
+            "priority": 0,
+            "tags": [
+                "default",
+                "interactive"
+            ],
+            "parameters": [
+                {
+                    "name": "_EdgeIntensity",
+                    "type": "Range",
+                    "value": "1"
+                }
+            ]
+        },
+        {
+            "stateId": "35b95487-d1d3-45b7-8533-1baebc595487",
+            "stateName": "Dragging",
+            "description": "Drag state",
+            "baseStateName": "Pressed",
+            "priority": 0,
+            "tags": [
+                "default",
+                "interactive"
+            ],
+            "parameters": []
+        },
+        {
+            "stateId": "a3c4b083-b45e-4abc-8f6f-973ed7437172",
+            "stateName": "Disabled",
+            "description": "Inactive/disabled state",
+            "baseStateName": "Normal",
+            "priority": 0,
+            "tags": [
+                "default",
+                "interactive"
+            ],
+            "parameters": []
+        }
+    ],
+    "bounds": {
+        "type": 0,
+        "width": 0.953125,
+        "height": 0.90625,
+        "radiusNorm": 1.0
+    }
+}

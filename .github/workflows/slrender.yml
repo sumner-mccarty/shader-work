@@ -1,0 +1,43 @@
+name: slrender
+
+# Proves the Linux/llvmpipe path: toolchain setup, every shader compiles, the generic contract,
+# Unity parity, and every candidate/approved look passes lookcheck. Parity sheets are uploaded.
+on:
+  push:
+    paths: ["slrender/**", "Assets/**", "Tools/**", "tests/**", "Looks/**", ".github/workflows/slrender.yml"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Toolchain (dxc, spirv-cross, Mesa EGL) + doctor
+        run: bash Tools/setup_toolchain.sh
+      - name: Compile every shader
+        run: python -m slrender --software compile --all
+      - name: Contract tests
+        run: python tests/test_basics.py
+      - name: Unity parity
+        run: python tests/parity.py check
+      - name: Looks
+        run: |
+          set -e
+          for f in Looks/*/look.json; do
+            [ -f "$f" ] || continue
+            st=$(python -c "import json,sys; d=json.load(open('$f')); print(d.get('status',''))")
+            style=$(python -c "import json,sys; print(json.load(open('$f'))['style'])")
+            if [ "$st" = "candidate" ] || [ "$st" = "approved" ]; then python Tools/lookcheck.py "$style"; fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: parity-and-checks
+          path: |
+            tests/out/
+            Looks/*/check_parts.png

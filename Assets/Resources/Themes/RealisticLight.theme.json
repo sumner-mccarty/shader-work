@@ -1,0 +1,14 @@
+{
+  "themeName": "Realistic Light rig",
+  "// 2026-09-20": "Retuned: the old rig was ONE white lamp almost straight overhead (height 3.0, intensity 0.75) — even, but flat and glaring, with no cast shadow to give the milled plates depth. Now a softbox KEY up-left at a moderate rake (height 1.05, so bevels and screws throw short, soft shadows down-right), a dim cool FILL from the right to keep the shadow side from going dead, and no third lamp. Intensities are down ~20% from before for a rig you can look at for an hour; the key's specular is raised a little and tightened so the brushed-aluminium grain shows through the highlight instead of the plate reading as flat grey. NOT animated — a moving lamp on a light skin is what made it hard to judge. Tune from here: KEY intensity is overall brightness, KEY height is shadow length (smaller = longer, harder), FILL intensity is how dark the shadows get.",
+  "scene": {
+    "light1": { "pos": [0.38, 1.70], "height": 1.05, "color": "#FFFFFF", "intensity": 0.62, "specular": 0.20, "specularPower": 44, "enabled": true },
+    "light2": { "pos": [1.10, 0.85], "height": 0.90, "color": "#EAF0FF", "intensity": 0.14, "specular": 0.05, "specularPower": 24, "enabled": true },
+    "light3": { "pos": [0.5, -0.5], "height": 1.2, "color": "#FFFFFF", "intensity": 0.0, "specular": 0.0, "specularPower": 16, "enabled": false },
+    "portrait": {
+      "light1": { "pos": [0.50, 1.75], "height": 1.15 },
+      "light2": { "pos": [1.15, 0.80], "height": 1.0 }
+    },
+    "animate": { "enabled": false, "mode": "random", "speed": 0.45, "reach": 2.5 }
+  }
+}

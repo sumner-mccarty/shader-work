@@ -1,0 +1,12 @@
+{
+  "themeName": "Neomorphic Light rig",
+  "scene": {
+    "light1": { "pos": [-1.8, 3.0], "height": 2.6, "color": "#FFFFFF", "intensity": 0.72, "specular": 0.06, "specularPower": 40, "enabled": true },
+    "light2": { "pos": [0.95, 0.92], "height": 0.5, "color": "#FFFFFF", "intensity": 0.0, "specular": 0.0, "specularPower": 30, "enabled": false },
+    "light3": { "pos": [0.9, -0.6], "height": 1.2, "color": "#FFFFFF", "intensity": 0.0, "specular": 0.0, "specularPower": 16, "enabled": false },
+    "portrait": {
+      "light1": { "pos": [-1.2, 3.4], "height": 2.8 }
+    },
+    "animate": { "enabled": false, "mode": "random", "speed": 0.45, "reach": 2.5 }
+  }
+}

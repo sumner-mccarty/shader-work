@@ -1,0 +1,45 @@
+{
+  "_doc": "See Starfield.track.json for the format. NON-SPACE (skyMode 6 = silk).",
+
+  "name": "Velvet",
+  "blurb": "Plum and old gold. The room where the good piano is.",
+
+  "palette": {
+    "row1": "#FF5C7A",
+    "row2": "#5FD9A8",
+    "row3": "#E8B84A",
+    "row4": "#A87ADB",
+
+    "rail": "#C9A227",
+    "laneLine": "#5E3352",
+    "laneFill": "#120309",
+    "hitLine": "#FFF4E0",
+    "receptor": "#D8B48C",
+    "gridBar": "#C9A227",
+    "gridBeat": "#4A2038",
+    "bgTop": "#150310",
+    "bgBottom": "#2A0820",
+    "fog": "#8C2A56",
+    "star": "#FFE0C2",
+    "miss": "#FF3355",
+    "perfect": "#FFEDB8"
+  },
+
+  "props": {
+    "skyMode": 6,
+    "skyColorA": "#6E1638",
+    "skyColorB": "#C9A227",
+    "skyAmount": 0.8,
+    "skyScale": 2.6,
+
+    "starDensity": 0.0,
+    "horizonGlow": 0.45,
+    "railGlow": 1.0,
+    "noteGlow": 0.95,
+    "additive": 0.24,
+    "radiance": 0.95,
+    "beatPulse": 0.6,
+    "fog": 0.55,
+    "vignette": 0.5
+  }
+}

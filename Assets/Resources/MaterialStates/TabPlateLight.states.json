@@ -1,0 +1,240 @@
+{
+    "_doc": "LIGHT-mode panel tab plate (tracker \u00a74.16 C2). The counterpart to TabPlateDark: a pale anodized plate that takes DARK text. Same geometry, bevel and rim as the dark plate so a mode flip changes color and nothing else \u2014 the tab keeps its exact shape, weight and shadow.",
+    "controlType": "UIPanel",
+    "shaderName": "UI/SDFPanel",
+    "states": [
+        {
+            "stateId": "c0ffee00-000b-4a10-9f00-000000000043",
+            "stateName": "Normal",
+            "description": "Pale anodized tab plate, light mode.",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [
+                "default"
+            ],
+            "parameters": [
+                {
+                    "name": "_PanelEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelColor",
+                    "type": "Color",
+                    "value": "0.784,0.796,0.812,1"
+                },
+                {
+                    "name": "_PanelShapeType",
+                    "type": "Enum",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelShapeParam1",
+                    "type": "Range",
+                    "value": "0.9"
+                },
+                {
+                    "name": "_PanelBodyRoundness",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelCornerRadiusPx",
+                    "type": "Float",
+                    "value": "5"
+                },
+                {
+                    "name": "_PanelPadding",
+                    "type": "Range",
+                    "value": "0.015"
+                },
+                {
+                    "name": "_PanelBevelEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelBevelDepth",
+                    "type": "Range",
+                    "value": "0.42"
+                },
+                {
+                    "name": "_PanelBevelSmoothness",
+                    "type": "Range",
+                    "value": "0.05"
+                },
+                {
+                    "name": "_PanelBevelDistance",
+                    "type": "Range",
+                    "value": "0.035"
+                },
+                {
+                    "name": "_PanelFaceSmoothness",
+                    "type": "Range",
+                    "value": "0.1"
+                },
+                {
+                    "name": "_PanelRimEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelRimDepth",
+                    "type": "Range",
+                    "value": "0.22"
+                },
+                {
+                    "name": "_PanelRimWidth",
+                    "type": "Range",
+                    "value": "0.03"
+                },
+                {
+                    "name": "_PanelRimSmoothness",
+                    "type": "Range",
+                    "value": "0.02"
+                },
+                {
+                    "name": "_PanelGradientEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelGradientType",
+                    "type": "Enum",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelGradientDirection",
+                    "type": "Vector4",
+                    "value": "0,1,0,0"
+                },
+                {
+                    "name": "_PanelGradientScale",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelGradientOffset",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelGradientColorUsed",
+                    "type": "Range",
+                    "value": "2"
+                },
+                {
+                    "name": "_PanelGradientColorA",
+                    "type": "Color",
+                    "value": "0.902,0.910,0.918,1"
+                },
+                {
+                    "name": "_PanelGradientColorB",
+                    "type": "Color",
+                    "value": "0.702,0.714,0.733,1"
+                },
+                {
+                    "name": "_PanelPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingLight1Enabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_LightingLight1GlobalEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_LightingLight1Direction",
+                    "type": "Vector4",
+                    "value": "0.6,1.4,1,0"
+                },
+                {
+                    "name": "_LightingLight1Intensity",
+                    "type": "Range",
+                    "value": "0.85"
+                },
+                {
+                    "name": "_LightingLight1Specular",
+                    "type": "Range",
+                    "value": "0.30"
+                },
+                {
+                    "name": "_LightingShadow1Enabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_LightingShadow1Color",
+                    "type": "Color",
+                    "value": "0.06,0.08,0.11,0.40"
+                },
+                {
+                    "name": "_LightingShadow1Blur",
+                    "type": "Range",
+                    "value": "0.05"
+                },
+                {
+                    "name": "_LightingShadow1Distance",
+                    "type": "Range",
+                    "value": "0.03"
+                },
+                {
+                    "name": "_LightingShadow1BlurFactor",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_LightingShadow1Intensity",
+                    "type": "Range",
+                    "value": "0.7"
+                },
+                {
+                    "name": "_PanelPaddingPx",
+                    "type": "Float",
+                    "value": "4"
+                }
+            ]
+        },
+        {
+            "stateId": "c0ffee00-000b-4a10-9f00-000000000044",
+            "stateName": "Active",
+            "description": "Selected tab \u2014 brightens toward white so it lifts off the rack, keeping the dark label readable.",
+            "baseStateName": "Normal",
+            "priority": 10,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_PanelGradientColorA",
+                    "type": "Color",
+                    "value": "0.980,0.984,0.992,1"
+                },
+                {
+                    "name": "_PanelGradientColorB",
+                    "type": "Color",
+                    "value": "0.812,0.824,0.843,1"
+                },
+                {
+                    "name": "_PanelBevelDepth",
+                    "type": "Range",
+                    "value": "0.55"
+                },
+                {
+                    "name": "_LightingLight1Intensity",
+                    "type": "Range",
+                    "value": "1.0"
+                }
+            ]
+        }
+    ],
+    "bounds": {
+        "type": 0,
+        "width": 1.0,
+        "height": 1.0,
+        "radiusNorm": 0.35
+    }
+}

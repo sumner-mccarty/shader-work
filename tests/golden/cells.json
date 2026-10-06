@@ -1,0 +1,279 @@
+{
+ "theme": "Themes/Realistic.theme",
+ "cells": [
+  {
+   "id": "knobrm_real_hero",
+   "states": "states/RealisticKnobHero.states.json",
+   "w": 132,
+   "h": 132,
+   "bg": "#1A1D22",
+   "set": {
+    "_Value": 0.4
+   }
+  },
+  {
+   "id": "knobrm_real_hero_sh",
+   "states": "states/RealisticKnobHero.states.json",
+   "w": 132,
+   "h": 132,
+   "bg": "#1A1D22",
+   "set": {
+    "_Value": 0.4
+   },
+   "shadow": 2
+  },
+  {
+   "id": "knobrm_real_0",
+   "states": "states/RealisticKnob.states.json",
+   "w": 72,
+   "h": 72,
+   "bg": "#1A1D22",
+   "set": {
+    "_Value": 0.0
+   }
+  },
+  {
+   "id": "knobrm_real_80",
+   "states": "states/RealisticKnob.states.json",
+   "w": 72,
+   "h": 72,
+   "bg": "#1A1D22",
+   "set": {
+    "_Value": 0.8
+   }
+  },
+  {
+   "id": "knobrm_real_corner",
+   "states": "states/RealisticKnob.states.json",
+   "w": 72,
+   "h": 72,
+   "bg": "#1A1D22",
+   "set": {
+    "_Value": 0.5
+   },
+   "pos": [
+    0.1,
+    0.9
+   ]
+  },
+  {
+   "id": "knobrm_neol",
+   "states": "states/NeoLightKnob.states.json",
+   "w": 72,
+   "h": 72,
+   "bg": "#C9CED6",
+   "set": {
+    "_Value": 0.6
+   }
+  },
+  {
+   "id": "knobrm_neod_small",
+   "states": "states/NeoDarkKnobSmall.states.json",
+   "w": 48,
+   "h": 48,
+   "bg": "#1A1D22",
+   "set": {
+    "_Value": 0.3
+   }
+  },
+  {
+   "id": "knob_tron_hero",
+   "states": "states/TronDarkKnobHero.states.json",
+   "w": 132,
+   "h": 132,
+   "bg": "#05070A",
+   "set": {
+    "_Value": 0.6
+   }
+  },
+  {
+   "id": "knob_flatl",
+   "states": "states/FlatLightKnob.states.json",
+   "w": 72,
+   "h": 72,
+   "bg": "#E8EBEF",
+   "set": {
+    "_Value": 0.25
+   }
+  },
+  {
+   "id": "btnrm_real",
+   "states": "states/RealisticButton.states.json",
+   "w": 120,
+   "h": 56,
+   "bg": "#1A1D22"
+  },
+  {
+   "id": "btnrm_real_hover",
+   "states": "states/RealisticButton.states.json",
+   "w": 120,
+   "h": 56,
+   "bg": "#1A1D22",
+   "state": "Hover"
+  },
+  {
+   "id": "btnrm_real_press",
+   "states": "states/RealisticButton.states.json",
+   "w": 120,
+   "h": 56,
+   "bg": "#1A1D22",
+   "state": "Pressed"
+  },
+  {
+   "id": "btnrm_real_sh",
+   "states": "states/RealisticButton.states.json",
+   "w": 120,
+   "h": 56,
+   "bg": "#1A1D22",
+   "shadow": 2
+  },
+  {
+   "id": "btnrm_neol",
+   "states": "states/NeoLightButton.states.json",
+   "w": 120,
+   "h": 56,
+   "bg": "#C9CED6"
+  },
+  {
+   "id": "btnrm_neod_lamp",
+   "states": "states/NeoDarkLamp.states.json",
+   "w": 56,
+   "h": 56,
+   "bg": "#1A1D22",
+   "state": "Active"
+  },
+  {
+   "id": "btn_flatd",
+   "states": "states/FlatDarkButton.states.json",
+   "w": 120,
+   "h": 56,
+   "bg": "#1A1D22"
+  },
+  {
+   "id": "btn_flatd_pad",
+   "states": "states/FlatDarkPad.states.json",
+   "w": 96,
+   "h": 96,
+   "bg": "#1A1D22"
+  },
+  {
+   "id": "btn_tron",
+   "states": "states/TronDarkButton.states.json",
+   "w": 120,
+   "h": 56,
+   "bg": "#05070A"
+  },
+  {
+   "id": "btn_tron_ss2",
+   "states": "states/TronDarkButton.states.json",
+   "w": 120,
+   "h": 56,
+   "bg": "#05070A",
+   "ss": 2
+  },
+  {
+   "id": "sldrm_real",
+   "states": "states/RealisticSlider.states.json",
+   "w": 64,
+   "h": 220,
+   "bg": "#1A1D22",
+   "set": {
+    "_Value": 0.3
+   }
+  },
+  {
+   "id": "sldrm_neod",
+   "states": "states/NeoDarkSlider.states.json",
+   "w": 64,
+   "h": 220,
+   "bg": "#1A1D22",
+   "set": {
+    "_Value": 0.7
+   }
+  },
+  {
+   "id": "sld_flatl_fader",
+   "states": "states/FlatLightFader.states.json",
+   "w": 48,
+   "h": 200,
+   "bg": "#E8EBEF",
+   "set": {
+    "_Value": 0.5
+   }
+  },
+  {
+   "id": "sld_tron_h",
+   "states": "states/TronDarkSlider.states.json",
+   "w": 220,
+   "h": 48,
+   "bg": "#05070A",
+   "set": {
+    "_Value": 0.65
+   }
+  },
+  {
+   "id": "pill_real_off",
+   "states": "states/RealisticPill.states.json",
+   "w": 80,
+   "h": 40,
+   "bg": "#1A1D22",
+   "set": {
+    "_Value": 0.0
+   }
+  },
+  {
+   "id": "pill_real_on",
+   "states": "states/RealisticPill.states.json",
+   "w": 80,
+   "h": 40,
+   "bg": "#1A1D22",
+   "set": {
+    "_Value": 1.0
+   }
+  },
+  {
+   "id": "pill_tron",
+   "states": "states/TronDarkPill.states.json",
+   "w": 80,
+   "h": 40,
+   "bg": "#05070A",
+   "set": {
+    "_Value": 1.0
+   }
+  },
+  {
+   "id": "panel_rack_graphite",
+   "states": "states/RackFaceplateGraphite.states.json",
+   "w": 300,
+   "h": 160,
+   "bg": "#1A1D22"
+  },
+  {
+   "id": "panel_neol_face",
+   "states": "states/NeoLightFace.states.json",
+   "w": 300,
+   "h": 160,
+   "bg": "#1A1D22"
+  },
+  {
+   "id": "panel_flatd_face",
+   "states": "states/FlatDarkFace.states.json",
+   "w": 300,
+   "h": 160,
+   "bg": "#1A1D22"
+  },
+  {
+   "id": "panel_tron_face",
+   "states": "states/TronDarkFace.states.json",
+   "w": 300,
+   "h": 160,
+   "bg": "#05070A"
+  }
+ ],
+ "unity": {
+  "ok": 30,
+  "fail": 0,
+  "log": ""
+ },
+ "made": "2026-10-06 00:04"
+}

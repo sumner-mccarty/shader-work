@@ -1,0 +1,199 @@
+{
+    "controlType": "UIPanel",
+    "shaderName": "UI/SDFPanel",
+    "states": [
+        {
+            "stateId": "RealisticInset-normal",
+            "stateName": "Normal",
+            "description": "Default resting state",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [
+                "default"
+            ],
+            "parameters": [
+                {
+                    "name": "_LightingAmbient",
+                    "type": "Range",
+                    "value": "0.48"
+                },
+                {
+                    "name": "_PanelEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelColor",
+                    "type": "Color",
+                    "value": "0.129412,0.141176,0.160784,1"
+                },
+                {
+                    "name": "_PanelShapeType",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelShapeParam1",
+                    "type": "Range",
+                    "value": "0.88"
+                },
+                {
+                    "name": "_PanelPadding",
+                    "type": "Range",
+                    "value": "0.06"
+                },
+                {
+                    "name": "_PanelFaceSize",
+                    "type": "Range",
+                    "value": "0.99"
+                },
+                {
+                    "name": "_PanelBevelEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelFaceSmoothness",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelPatternEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelPatternType",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelPatternScale",
+                    "type": "Range",
+                    "value": "70"
+                },
+                {
+                    "name": "_PanelPatternIntensity",
+                    "type": "Range",
+                    "value": "0.028"
+                },
+                {
+                    "name": "_PanelPatternParam1",
+                    "type": "Range",
+                    "value": "0.5"
+                },
+                {
+                    "name": "_PanelPatternParam2",
+                    "type": "Range",
+                    "value": "0.95"
+                },
+                {
+                    "name": "_PanelPatternParam3",
+                    "type": "Range",
+                    "value": "0.08"
+                },
+                {
+                    "name": "_PanelPatternPx",
+                    "type": "Float",
+                    "value": "200"
+                },
+                {
+                    "name": "_PanelRimEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelGradientEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_PanelGradientType",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelGradientColorUsed",
+                    "type": "Range",
+                    "value": "2"
+                },
+                {
+                    "name": "_PanelGradientColorA",
+                    "type": "Color",
+                    "value": "0.113725,0.121569,0.141176,1"
+                },
+                {
+                    "name": "_PanelGradientColorB",
+                    "type": "Color",
+                    "value": "0.258824,0.270588,0.286275,1"
+                },
+                {
+                    "name": "_PanelGradientDirection",
+                    "type": "Vector4",
+                    "value": "0,1,0,0"
+                },
+                {
+                    "name": "_PanelScrewsEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelScrewShapeType",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_PanelScrewInset",
+                    "type": "Range",
+                    "value": "0.13"
+                },
+                {
+                    "name": "_PanelScrewRadius",
+                    "type": "Range",
+                    "value": "0.058"
+                },
+                {
+                    "name": "_PanelScrewColor",
+                    "type": "Color",
+                    "value": "0.607843,0.631373,0.670588,1"
+                },
+                {
+                    "name": "_PanelScrewSlotColor",
+                    "type": "Color",
+                    "value": "0.0823529,0.0901961,0.109804,1"
+                },
+                {
+                    "name": "_PanelScrewRotation",
+                    "type": "Range",
+                    "value": "32"
+                },
+                {
+                    "name": "_PanelScrewDepth",
+                    "type": "Range",
+                    "value": "0.85"
+                },
+                {
+                    "name": "_PanelScrewMetallic",
+                    "type": "Range",
+                    "value": "0.85"
+                },
+                {
+                    "name": "_EdgeEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BorderEnabled",
+                    "type": "Float",
+                    "value": "0"
+                }
+            ]
+        }
+    ],
+    "bounds": {
+        "type": 0,
+        "width": 1.0,
+        "height": 1.0,
+        "radiusNorm": 1.0
+    }
+}

@@ -1,0 +1,45 @@
+{
+  "_doc": "See Starfield.track.json for the format. NON-SPACE (skyMode 4 = club beams).",
+
+  "name": "Blacklight",
+  "blurb": "UV and acid. The darkest room in the building.",
+
+  "palette": {
+    "row1": "#FF3D8A",
+    "row2": "#B6FF3C",
+    "row3": "#FFE03C",
+    "row4": "#8A3CFF",
+
+    "rail": "#A96BFF",
+    "laneLine": "#4A2A78",
+    "laneFill": "#06020C",
+    "hitLine": "#F2E8FF",
+    "receptor": "#B79BE8",
+    "gridBar": "#B6FF3C",
+    "gridBeat": "#3A2560",
+    "bgTop": "#05020C",
+    "bgBottom": "#0E0620",
+    "fog": "#6B2FC4",
+    "star": "#D8C2FF",
+    "miss": "#FF2050",
+    "perfect": "#E8FF9E"
+  },
+
+  "props": {
+    "skyMode": 4,
+    "skyColorA": "#8A3CFF",
+    "skyColorB": "#B6FF3C",
+    "skyAmount": 0.95,
+
+    "starDensity": 0.0,
+    "horizonGlow": 0.3,
+    "railGlow": 1.5,
+    "noteGlow": 1.35,
+    "noteCoreBrightness": 1.15,
+    "additive": 0.42,
+    "radiance": 1.05,
+    "beatPulse": 1.1,
+    "fog": 0.45,
+    "vignette": 0.55
+  }
+}

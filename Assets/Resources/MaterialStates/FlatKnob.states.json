@@ -1,0 +1,290 @@
+{
+    "controlType": "UIKnob",
+    "shaderName": "UI/SDFKnobRM",
+    "states": [
+        {
+            "stateId": "FlatKnob-normal",
+            "stateName": "Normal",
+            "description": "Default resting state",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [
+                "default"
+            ],
+            "parameters": [
+                {
+                    "name": "_LightingAmbient",
+                    "type": "Range",
+                    "value": "0.55"
+                },
+                {
+                    "name": "_ViewTilt",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_AngleStart",
+                    "type": "Float",
+                    "value": "315"
+                },
+                {
+                    "name": "_AngleRange",
+                    "type": "Float",
+                    "value": "270"
+                },
+                {
+                    "name": "_Value",
+                    "type": "Range",
+                    "value": "0.5"
+                },
+                {
+                    "name": "_FillEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_FillColor",
+                    "type": "Color",
+                    "value": "0.0980392,0.113725,0.133333,1"
+                },
+                {
+                    "name": "_FillPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_FillBevelEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_KnobColor",
+                    "type": "Color",
+                    "value": "0.223529,0.25098,0.290196,1"
+                },
+                {
+                    "name": "_KnobShapeType",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobSize",
+                    "type": "Range",
+                    "value": "0.58"
+                },
+                {
+                    "name": "_KnobBevelEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobRimEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobEdgeEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LineEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_LineRadius",
+                    "type": "Range",
+                    "value": "0.84"
+                },
+                {
+                    "name": "_LineWidth",
+                    "type": "Range",
+                    "value": "0.13"
+                },
+                {
+                    "name": "_LineRoundedEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_LineColor",
+                    "type": "Color",
+                    "value": "0.0980392,0.113725,0.133333,1"
+                },
+                {
+                    "name": "_LineSublineUnfilledEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_LineSublineUnfilledColor",
+                    "type": "Color",
+                    "value": "0.270588,0.301961,0.341176,1"
+                },
+                {
+                    "name": "_LineSublineFilledEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_LineSublineFilledColor",
+                    "type": "Color",
+                    "value": "0.298039,0.619608,0.941176,1"
+                },
+                {
+                    "name": "_LineSublineFilledRenderEmissive",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobNubEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_KnobNubShapeType",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobNubColor",
+                    "type": "Color",
+                    "value": "0.941176,0.952941,0.968627,1"
+                },
+                {
+                    "name": "_KnobNubSize",
+                    "type": "Range",
+                    "value": "0.085"
+                },
+                {
+                    "name": "_KnobNubDistance",
+                    "type": "Range",
+                    "value": "0.6"
+                },
+                {
+                    "name": "_NubEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_OuterMarksEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_OuterRing1Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_OuterRing2Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_OuterRing3Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobShadow1Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobShadow2Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_KnobShadow3Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_EdgeEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BorderEnabled",
+                    "type": "Float",
+                    "value": "0"
+                }
+            ]
+        },
+        {
+            "stateId": "FlatKnob-hover",
+            "stateName": "Hover",
+            "description": "Hover",
+            "baseStateName": "Normal",
+            "priority": 1,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_KnobColor",
+                    "type": "Color",
+                    "value": "0.317647,0.341176,0.376471,1"
+                }
+            ]
+        },
+        {
+            "stateId": "FlatKnob-pressed",
+            "stateName": "Pressed",
+            "description": "Pressed",
+            "baseStateName": "Hover",
+            "priority": 2,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_KnobColor",
+                    "type": "Color",
+                    "value": "0.196078,0.219608,0.254902,1"
+                }
+            ]
+        },
+        {
+            "stateId": "FlatKnob-disabled",
+            "stateName": "Disabled",
+            "description": "Disabled",
+            "baseStateName": "Normal",
+            "priority": 4,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_KnobColor",
+                    "type": "Color",
+                    "value": "0.172549,0.196078,0.227451,1"
+                },
+                {
+                    "name": "_LineSublineFilledColor",
+                    "type": "Color",
+                    "value": "0.541176,0.572549,0.611765,1"
+                },
+                {
+                    "name": "_KnobNubColor",
+                    "type": "Color",
+                    "value": "0.541176,0.572549,0.611765,1"
+                }
+            ]
+        }
+    ],
+    "bounds": {
+        "type": 0,
+        "width": 0.890625,
+        "height": 0.890625,
+        "radiusNorm": 0.9019293785095215,
+        "paddingParam": ""
+    }
+}

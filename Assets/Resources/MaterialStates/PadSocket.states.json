@@ -1,0 +1,259 @@
+{
+  "controlType": "UIPanel",
+  "shaderName": "UI/SDFPanel",
+  "states": [
+    {
+      "stateId": "c0ffee00-000b-4a10-9f00-000000000024",
+      "stateName": "Normal",
+      "description": "The APERTURE one drum pad pokes through \u2014 one per pad, filling that pad's grid cell, so what lies between two pads is a chassis edge rather than bare tray.\n\n\u26a0 MEASURED LIMIT: the visible ring is only ~11 canvas units (about 13 device pixels at 1080p), and at that width NONE of this shader's edge machinery renders legibly \u2014 a 300x300 render of this skin alone is indistinguishable with the bevel on and off, and a bevel gradient set to red->green shows as a single tinted pixel at one corner. So the aperture reads by VALUE CONTRAST against the tray and by the pad's own contact shadow, not by a lit wall. Keep the floor dark and the tray (PadWell) light; do not spend time tuning rim/bevel numbers here expecting them to show.\n\nCorner radius is RELATIVE (_PanelShapeParam1), never _PanelCornerRadiusPx: the pad it surrounds rounds proportionally, so a fixed-pixel hole diverges from it at every panel size.\n\nMEASURE THE CORNER, DO NOT DERIVE IT. Both shaders document the squircle radius as minDim * (1 - param1), and solving that pair analytically gives 0.71 \u2014 which is WRONG by a factor of two. The RM pad's drawn silhouette is rounder than that formula predicts (measured 27 canvas units against the 24 it implies, and the discrepancy grows with _ButtonRoundness, which the RM path also folds in). Tools/t_concentric.py renders both bodies alone, white on black with every edge layer off, and reports the true minimum distance from each point of the pad's boundary to the aperture's. 0.39 minimises it: ring 6.3-8.0 units all the way round, against 6.5-14.3 at 0.71.\n\n\u26a0 Rays from the centre are a trap on a non-square cell: a 45 deg ray leaves through a straight edge rather than the corner, so a 'diagonal' reading measures the wrong thing and a corner-radius solve silently saturates at zero. That is why this tool compares point sets instead.",
+      "baseStateName": "",
+      "priority": 0,
+      "tags": [
+        "default"
+      ],
+      "parameters": [
+        {
+          "name": "_PanelEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_PanelColor",
+          "type": "Color",
+          "value": "0.0784313725490196,0.08235294117647059,0.09803921568627451,1.0"
+        },
+        {
+          "name": "_PanelShapeType",
+          "type": "Float",
+          "value": "0.0"
+        },
+        {
+          "name": "_PanelShapeParam1",
+          "type": "Range",
+          "value": "0.39"
+        },
+        {
+          "name": "_PanelBodyRoundness",
+          "type": "Range",
+          "value": "1"
+        },
+        {
+          "name": "_PanelCornerRadiusPx",
+          "type": "Float",
+          "value": "0.0"
+        },
+        {
+          "name": "_PanelPadding",
+          "type": "Range",
+          "value": "0.03"
+        },
+        {
+          "name": "_PanelBevelEnabled",
+          "type": "Float",
+          "value": "1.0"
+        },
+        {
+          "name": "_PanelBevelDepth",
+          "type": "Range",
+          "value": "-0.3"
+        },
+        {
+          "name": "_PanelBevelSmoothness",
+          "type": "Range",
+          "value": "0.07"
+        },
+        {
+          "name": "_PanelBevelDistance",
+          "type": "Range",
+          "value": "0.06"
+        },
+        {
+          "name": "_PanelFaceSmoothness",
+          "type": "Range",
+          "value": "0.0"
+        },
+        {
+          "name": "_PanelRimEnabled",
+          "type": "Float",
+          "value": "1.0"
+        },
+        {
+          "name": "_PanelRimDepth",
+          "type": "Range",
+          "value": "-0.45"
+        },
+        {
+          "name": "_PanelRimWidth",
+          "type": "Range",
+          "value": "0.045"
+        },
+        {
+          "name": "_PanelRimSmoothness",
+          "type": "Range",
+          "value": "0.01"
+        },
+        {
+          "name": "_PanelGradientEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_PanelGradientType",
+          "type": "Enum",
+          "value": "1"
+        },
+        {
+          "name": "_PanelGradientDirection",
+          "type": "Vector4",
+          "value": "0,1,0,0"
+        },
+        {
+          "name": "_PanelGradientScale",
+          "type": "Range",
+          "value": "1"
+        },
+        {
+          "name": "_PanelGradientOffset",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_PanelGradientColorUsed",
+          "type": "Range",
+          "value": "2"
+        },
+        {
+          "name": "_PanelGradientColorA",
+          "type": "Color",
+          "value": "0.043137254901960784,0.047058823529411764,0.058823529411764705,1.0"
+        },
+        {
+          "name": "_PanelGradientColorB",
+          "type": "Color",
+          "value": "0.12549019607843137,0.13725490196078433,0.16470588235294117,1.0"
+        },
+        {
+          "name": "_PanelPatternEnabled",
+          "type": "Float",
+          "value": "0.0"
+        },
+        {
+          "name": "_LightingLight1Enabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_LightingLight1Direction",
+          "type": "Vector4",
+          "value": "1.16,1.46,1,0"
+        },
+        {
+          "name": "_LightingLight1Intensity",
+          "type": "Range",
+          "value": "0.9"
+        },
+        {
+          "name": "_PanelScrewsEnabled",
+          "type": "Float",
+          "value": "0.0"
+        },
+        {
+          "name": "_PanelScrewShapeType",
+          "type": "Float",
+          "value": "4.0"
+        },
+        {
+          "name": "_PanelScrewInset",
+          "type": "Range",
+          "value": "0.085"
+        },
+        {
+          "name": "_PanelScrewRadius",
+          "type": "Range",
+          "value": "0.034"
+        },
+        {
+          "name": "_PanelScrewColor",
+          "type": "Color",
+          "value": "0.3607843137254902,0.3843137254901961,0.4235294117647059,1.0"
+        },
+        {
+          "name": "_PanelScrewSlotColor",
+          "type": "Color",
+          "value": "0.0627451,0.0705882,0.0862745,1"
+        },
+        {
+          "name": "_PanelScrewRotation",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_PanelScrewDepth",
+          "type": "Range",
+          "value": "0.5"
+        },
+        {
+          "name": "_PanelScrewMetallic",
+          "type": "Range",
+          "value": "0.7"
+        },
+        {
+          "name": "_PanelScrewInsetPx",
+          "type": "Float",
+          "value": "7.0"
+        },
+        {
+          "name": "_PanelScrewRadiusPx",
+          "type": "Float",
+          "value": "1.2"
+        },
+        {
+          "name": "_PanelScrewBore",
+          "type": "Range",
+          "value": "0.7"
+        },
+        {
+          "name": "_LightingAmbient",
+          "type": "Range",
+          "value": "0.34"
+        },
+        {
+          "name": "_PanelBevelGradientEnabled",
+          "type": "Float",
+          "value": "0.0"
+        },
+        {
+          "name": "_PanelBevelGradientType",
+          "type": "Float",
+          "value": "5.0"
+        },
+        {
+          "name": "_PanelBevelGradientColorUsed",
+          "type": "Range",
+          "value": "2.0"
+        },
+        {
+          "name": "_PanelBevelGradientColorA",
+          "type": "Color",
+          "value": "0.2901960784313726,0.27058823529411763,0.23529411764705882,1.0"
+        },
+        {
+          "name": "_PanelBevelGradientColorB",
+          "type": "Color",
+          "value": "0.03137254901960784,0.03529411764705882,0.043137254901960784,1.0"
+        },
+        {
+          "name": "_PanelPaddingPx",
+          "type": "Float",
+          "value": "3"
+        }
+      ]
+    }
+  ],
+  "bounds": {
+    "type": 0,
+    "width": 1.0,
+    "height": 1.0,
+    "radiusNorm": 1.0
+  }
+}

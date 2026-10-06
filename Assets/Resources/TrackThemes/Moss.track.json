@@ -1,0 +1,45 @@
+{
+  "_doc": "See Starfield.track.json for the format. NON-SPACE (skyMode 6 = silk).",
+
+  "name": "Moss",
+  "blurb": "Deep green and brass. Nothing hurried about it.",
+
+  "palette": {
+    "row1": "#E8674A",
+    "row2": "#5FD97A",
+    "row3": "#C7A252",
+    "row4": "#5AB8C4",
+
+    "rail": "#C7A252",
+    "laneLine": "#2E4A38",
+    "laneFill": "#040A07",
+    "hitLine": "#F2FFF4",
+    "receptor": "#9EC4A8",
+    "gridBar": "#8FC49E",
+    "gridBeat": "#22402E",
+    "bgTop": "#030A07",
+    "bgBottom": "#0A1610",
+    "fog": "#2E6B4A",
+    "star": "#D4E8CE",
+    "miss": "#FF4436",
+    "perfect": "#F0E8A8"
+  },
+
+  "props": {
+    "skyMode": 6,
+    "skyColorA": "#1F5F3E",
+    "skyColorB": "#C7A252",
+    "skyAmount": 0.75,
+    "skyScale": 2.4,
+
+    "starDensity": 0.0,
+    "horizonGlow": 0.4,
+    "railGlow": 1.0,
+    "noteGlow": 0.95,
+    "additive": 0.24,
+    "radiance": 0.92,
+    "beatPulse": 0.6,
+    "fog": 0.55,
+    "vignette": 0.48
+  }
+}

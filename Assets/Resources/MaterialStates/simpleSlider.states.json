@@ -1,0 +1,350 @@
+{
+    "controlType": "UIButton",
+    "shaderName": "UI/SDFSlider",
+    "states": [
+        {
+            "stateId": "90014ed1-7f2a-4309-b493-2d21a35bc2db",
+            "stateName": "Normal",
+            "description": "Default resting state",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [
+                "default"
+            ],
+            "parameters": [
+                {
+                    "name": "_Value",
+                    "type": "Float",
+                    "value": "0.683333576"
+                },
+                {
+                    "name": "_BorderEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_EdgeEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_BgEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleRoundness",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleShapeParam1",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleWidth",
+                    "type": "Range",
+                    "value": "0.639999986"
+                },
+                {
+                    "name": "_HandlePadding",
+                    "type": "Range",
+                    "value": "0.372000009"
+                },
+                {
+                    "name": "_HandleShapeType",
+                    "type": "Enum",
+                    "value": "2"
+                },
+                {
+                    "name": "_HandleHeight",
+                    "type": "Range",
+                    "value": "0.779999971"
+                },
+                {
+                    "name": "_HandleShapeParam2",
+                    "type": "Range",
+                    "value": "0.50999999"
+                },
+                {
+                    "name": "_HandleShapeParam3",
+                    "type": "Range",
+                    "value": "0.469999999"
+                },
+                {
+                    "name": "_HandleShapeRotation",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleShadow1Enabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleShadow1Distance",
+                    "type": "Range",
+                    "value": "0.0719999969"
+                },
+                {
+                    "name": "_HandleShadow1Cast",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleShadow1Blur",
+                    "type": "Range",
+                    "value": "0.970000029"
+                },
+                {
+                    "name": "_HandleShadow1Color",
+                    "type": "Color",
+                    "value": "0,0,0,0.36470589"
+                },
+                {
+                    "name": "_LightingLight1Direction",
+                    "type": "Vector4",
+                    "value": "-0.239999995,0.699999988,0.5,0"
+                },
+                {
+                    "name": "_BgShapeParam1",
+                    "type": "Range",
+                    "value": "0.689999998"
+                },
+                {
+                    "name": "_BgColor",
+                    "type": "Color",
+                    "value": "0.251572251,0.183945313,0,1"
+                },
+                {
+                    "name": "_BgRenderAlpha",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_BgPatternEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_BgPatternType",
+                    "type": "Enum",
+                    "value": "4"
+                },
+                {
+                    "name": "_BgPatternIntensity",
+                    "type": "Range",
+                    "value": "0.5"
+                },
+                {
+                    "name": "_BgPatternParam1",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_EdgeWidth",
+                    "type": "Range",
+                    "value": "0.0199999996"
+                },
+                {
+                    "name": "_LightingShadow1Enabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_BgPatternOffset",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgPatternParam2",
+                    "type": "Range",
+                    "value": "0.569999993"
+                },
+                {
+                    "name": "_BgPatternParam3",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleColor",
+                    "type": "Color",
+                    "value": "0.213836372,0.207784384,0.207784384,1"
+                },
+                {
+                    "name": "_HandlePatternEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandlePatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleFaceEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_HandleFaceSize",
+                    "type": "Range",
+                    "value": "0.5"
+                },
+                {
+                    "name": "_HandleFaceShapeEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleFaceShapeType",
+                    "type": "Enum",
+                    "value": "4"
+                },
+                {
+                    "name": "_HandleFaceShapeParam1",
+                    "type": "Range",
+                    "value": "0.340000004"
+                },
+                {
+                    "name": "_HandleFaceShapeParam2",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleFaceShapeParam3",
+                    "type": "Range",
+                    "value": "0.219999999"
+                },
+                {
+                    "name": "_HandleFaceSmoothness",
+                    "type": "Range",
+                    "value": "-0.159999996"
+                },
+                {
+                    "name": "_HandlePatternType",
+                    "type": "Enum",
+                    "value": "0"
+                },
+                {
+                    "name": "_BgPatternContrast",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleRimEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_HandleRimWidth",
+                    "type": "Range",
+                    "value": "0.0500000007"
+                },
+                {
+                    "name": "_HandleRimSmoothness",
+                    "type": "Range",
+                    "value": "0.100000001"
+                },
+                {
+                    "name": "_HandleBevelDistance",
+                    "type": "Range",
+                    "value": "0.129999995"
+                }
+            ]
+        },
+        {
+            "stateId": "af77b4dc-8851-446a-9218-010aa8441409",
+            "stateName": "Hover",
+            "description": "Mouse over state",
+            "baseStateName": "Normal",
+            "priority": 0,
+            "tags": [
+                "default",
+                "interactive"
+            ],
+            "parameters": [
+                {
+                    "name": "_BorderEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_BorderColor",
+                    "type": "Color",
+                    "value": "0.716981173,0.695150375,0.029310422,0.980392158"
+                },
+                {
+                    "name": "_BorderSoftness",
+                    "type": "Range",
+                    "value": "0.0280000009"
+                },
+                {
+                    "name": "_BorderWidth",
+                    "type": "Range",
+                    "value": "0.00100000005"
+                },
+                {
+                    "name": "_BorderIntensity",
+                    "type": "Range",
+                    "value": "1"
+                }
+            ]
+        },
+        {
+            "stateId": "9faa97c5-67a5-461e-8a0c-b330fe89d62e",
+            "stateName": "Pressed",
+            "description": "Click/touch down state",
+            "baseStateName": "Hover",
+            "priority": 0,
+            "tags": [
+                "default",
+                "interactive"
+            ],
+            "parameters": [
+                {
+                    "name": "_BorderColor",
+                    "type": "Color",
+                    "value": "0.993710637,0.964427054,0.0468730181,0.980392158"
+                },
+                {
+                    "name": "_BorderSoftness",
+                    "type": "Range",
+                    "value": "0.0390000008"
+                }
+            ]
+        },
+        {
+            "stateId": "aaeaf36a-167a-4e9b-9add-89e9b386cedc",
+            "stateName": "Dragging",
+            "description": "Drag state",
+            "baseStateName": "Pressed",
+            "priority": 0,
+            "tags": [
+                "default",
+                "interactive"
+            ],
+            "parameters": []
+        },
+        {
+            "stateId": "3baf1b85-5f5b-4624-b80d-cf39234100e7",
+            "stateName": "Disabled",
+            "description": "Inactive/disabled state",
+            "baseStateName": "Normal",
+            "priority": 0,
+            "tags": [
+                "default",
+                "interactive"
+            ],
+            "parameters": []
+        }
+    ],
+    "bounds": {
+        "type": 0,
+        "width": 1.0,
+        "height": 0.9375,
+        "radiusNorm": 1.0,
+        "paddingParam": "_BgPadding"
+    }
+}

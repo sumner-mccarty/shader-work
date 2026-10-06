@@ -1,0 +1,74 @@
+{
+  "_doc": "THEME MANIFEST (Realistic). The single blueprint that composes one look from independent axes — the organizational target of the theme work (see Docs/ThemeSystem.md). Some sections are already live (waveformPalette via WaveformPalette.cs, lighting via UiSceneDirector.cs); the skin roster + layouts + a loader that applies the whole file are the staged next step. Kept as data so a future ThemeService can swap the whole app look by loading a different theme file.",
+
+  "name": "Realistic",
+  "description": "Boutique rack gear — brushed-metal faceplates, engraved nameplates, corner screws, backlit displays, moving 3-light with per-position perspective.",
+
+  "// SKIN AXIS": "states.json per control class / device finish (Assets/Resources/MaterialStates).",
+  "skins": {
+    "panel.backplane": "RackBackplane",
+    "panel.faceplate.default": "RackFaceplateGraphite",
+    "panel.faceplate.finishes": ["RackFaceplateBlack", "RackFaceplateSilver", "RackFaceplateCream", "RackFaceplateGraphite", "RackFaceplateBlue", "RackFaceplateGreen", "RackFaceplateRust"],
+    "panel.subplate": "RackPlateInset",
+    "panel.nameplate": "Nameplate",
+    "panel.ledwell": "LedWellBlue",
+    "control.knob": "RedKnobRM",
+    "control.button": "GreyButtonRM",
+    "control.slider": "RackSlider"
+  },
+
+  "// LAYOUT AXIS": "which PanelLayouts + which device→finish mapping this theme uses (custom layouts live here per §3.2). Mixer finish mapping is currently baked into Mixer.layout.json; listed here as the migration target.",
+  "layouts": {
+    "set": "default",
+    "mixerFinishes": {
+      "envy": "RackFaceplateGraphite", "amp": "RackFaceplateSilver",
+      "pitch": "RackFaceplateGraphite", "duck": "RackFaceplateGraphite",
+      "filter": "RackFaceplateBlue", "comp": "RackFaceplateCream",
+      "chorus": "RackFaceplateGreen", "flange": "RackFaceplateGraphite",
+      "echo": "RackFaceplateRust", "drive": "RackFaceplateSilver", "reverb": "RackFaceplateBlue"
+    }
+  },
+
+  "// WAVEFORM PALETTE": "shared audio-display colors — LIVE via WaveformPalette.cs (main waveform panel + ENV7 carrier + filter spectrum). Mirrors Resources/UiThemes/WaveformPalette.json.",
+  "waveformPalette": {
+    "colorMode": 2,
+    "body": "#8CC7FF", "low": "#FF5947", "mid": "#36E86B", "high": "#40A8FF",
+    "playhead": "#FFFFFF", "baseline": "#7389BF59"
+  },
+
+  "// CHROME": "Panel tab/indicator colors — LIVE via ChromePalette.cs, which reads Resources/UiThemes/ChromePalette.json. Listed here as the migration target so one theme file eventually carries both halves.",
+  "chrome": {
+    "palette": "UiThemes/ChromePalette",
+    "mode": "dark"
+  },
+
+  "// DISPLAY FINISHES": "What each mixer screen physically IS — LIVE via ScopeFinishes.cs reading Resources/UiThemes/ScopeFinishes.json. Mixed on purpose: collected gear does not have one screen technology.",
+  "scopeFinishes": {
+    "file": "UiThemes/ScopeFinishes",
+    "default": "glass.amber"
+  },
+
+  "// LIGHTING + CAMERA": "3-light rig + scene camera - LIVE via UiSceneDirector.cs. Light HEIGHT is the z of the direction and is what makes a light grazing rather than head-on (small = dramatic, large = washed out). The camera is a BOUNDED add-on: this sets where the eye is and how fast distance reaches a material's own _ViewCamShift/_ViewCamTilt maximum - it never overwrites a skin's authored _ViewShift/_ViewTilt.",
+  "scene": {
+    "// lights": "The ONLY lights in the UI — there are no per-material lights any more. POS is plain normalized screen, 0..1 across the window, y UP; outside 0..1 is normal (a key light usually sits just off an edge). HEIGHT is the z of the derived direction: small = grazing, large = head-on. DIRECTION is not listed because it is not a property of the light — each widget derives its own from the lamp position and its own screen position. ENABLED switches the light off for every control at once. Skins still own their shadow LENGTHS (_LightingShadowN* etc.); the rig only decides where shadows point. Omit any key to keep UiLightRig.CreateDefault's value.",
+    "// lights, 2026-09-05": "The lamps used to sit near the BOTTOM edge (y 0.05-0.20), so every control was lit from underneath: highlights along the bottom chamfer of every button and screw, and cast shadows thrown UP and to the right. No photograph or render of real hardware is lit that way. KEY is now a high, fairly head-on softbox just off the TOP edge (height 0.78 keeps the bevels from blowing out into chrome bars the way a grazing key does), FILL sits high on the right, and light3 is a dim BOUNCE from below the frame. light3 is also no longer green: at 0.35 intensity that green was tinting every pale faceplate and every light-mode skin olive. 2026-09-06: intensities came down (0.95/0.42/0.22 -> 0.70/0.28/0.15) and the key's highlight tightened (specularPower 40 -> 56) - at the first pass's levels the cream and silver faceplates were clipping to white and the graphite ones had lost their gradient, which reads as blown out rather than lit.",
+    "light1": { "pos": [0.34, 1.25], "height": 0.78, "color": "#FFF0D2", "intensity": 0.70, "specular": 0.20, "specularPower": 56, "enabled": true },
+    "light2": { "pos": [0.95, 0.92], "height": 0.50, "color": "#9FC4FF", "intensity": 0.28, "specular": 0.10, "specularPower": 30, "enabled": true },
+    "light3": { "pos": [0.15, -0.35], "height": 0.30, "color": "#7E8CA8", "intensity": 0.15, "specular": 0.04, "specularPower": 16, "enabled": true },
+
+    "// portrait": "Merged ON TOP of the three above, key by key, when the window is taller than it is wide (UiLightRig.Load(resource, portrait); UiSceneDirector re-reads on the flip). A lamp position is an ANGLE, not a place: the key that rakes across a 16:9 rack at [0.34, 1.25] is nearly edge-on to the tall single column a 9:16 screen shows, so portrait pulls it centre-top and raises it. Only the keys that differ need naming.",
+    "portrait": {
+      "light1": { "pos": [0.50, 1.42], "height": 0.88 },
+      "light2": { "pos": [1.10, 0.80], "height": 0.58, "intensity": 0.24 },
+      "light3": { "pos": [0.50, -0.50], "height": 0.36 }
+    },
+
+    "// animate": "How the rig MOVES (UiLightAnimator; the lights card's Animate section edits the same fields live). REACH is the one number that changes the character of it: a multiple of the SCREEN, so 1 keeps every lamp inside the window and 2.5 lets them roam a box two and a half screens across and rake past from well off an edge. It used to be a pair of constants at +/-0.15 - barely off-screen - which made all three modes read as lamps jiggling in place. SPEED is deliberately low: the movement should be something you notice only if you watch for it.",
+    "animate": { "enabled": true, "mode": "random", "speed": 0.45, "reach": 2.5 },
+
+    "camera": { "pos": [0.50, 0.50] },
+    "viewShiftGain": 2.2,
+    "viewTiltGain": 2.2,
+    "lookAround": { "enabled": false, "strength": 0.22, "damping": 0.35 }
+  }
+}

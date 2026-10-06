@@ -1,0 +1,311 @@
+{
+    "controlType": "UIButton",
+    "shaderName": "UI/SDFButtonRM",
+    "states": [
+        {
+            "stateId": "NeoClose-normal",
+            "stateName": "Normal",
+            "description": "Default resting state",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [
+                "default"
+            ],
+            "parameters": [
+                {
+                    "name": "_LightingAmbient",
+                    "type": "Range",
+                    "value": "0.5"
+                },
+                {
+                    "name": "_ViewTilt",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_ButtonColor",
+                    "type": "Color",
+                    "value": "0.909804,0.921569,0.941176,1"
+                },
+                {
+                    "name": "_ButtonShapeType",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonShapeParam1",
+                    "type": "Range",
+                    "value": "0.3"
+                },
+                {
+                    "name": "_ButtonShapeParam2",
+                    "type": "Range",
+                    "value": "0.5"
+                },
+                {
+                    "name": "_ButtonPadding",
+                    "type": "Range",
+                    "value": "0.2"
+                },
+                {
+                    "name": "_ButtonRoundness",
+                    "type": "Range",
+                    "value": "0.32"
+                },
+                {
+                    "name": "_ButtonBevelEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_ButtonBevelDistance",
+                    "type": "Range",
+                    "value": "0.34"
+                },
+                {
+                    "name": "_ButtonBevelDepth",
+                    "type": "Range",
+                    "value": "0.15"
+                },
+                {
+                    "name": "_ButtonBevelSmoothness",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_ButtonFaceSmoothness",
+                    "type": "Range",
+                    "value": "0.12"
+                },
+                {
+                    "name": "_ButtonPatternEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_ButtonRimEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_EdgeEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BorderEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_IconEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_IconShapeType",
+                    "type": "Float",
+                    "value": "19"
+                },
+                {
+                    "name": "_IconColor",
+                    "type": "Color",
+                    "value": "0.352941,0.384314,0.447059,1"
+                },
+                {
+                    "name": "_IconWidth",
+                    "type": "Range",
+                    "value": "0.3"
+                },
+                {
+                    "name": "_IconHeight",
+                    "type": "Range",
+                    "value": "0.3"
+                },
+                {
+                    "name": "_ButtonShadow1Enabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_ButtonShadow1Color",
+                    "type": "Color",
+                    "value": "0.560784,0.596078,0.65098,0.3"
+                },
+                {
+                    "name": "_ButtonShadow1Blur",
+                    "type": "Range",
+                    "value": "2.5"
+                },
+                {
+                    "name": "_ButtonShadow1Distance",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonShadow1Cast",
+                    "type": "Range",
+                    "value": "0.3"
+                },
+                {
+                    "name": "_ButtonShadow1Intensity",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_ButtonShadow2Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonShadow2Color",
+                    "type": "Color",
+                    "value": "0.0509804,0.0588235,0.0705882,0.4"
+                },
+                {
+                    "name": "_ButtonShadow2Blur",
+                    "type": "Range",
+                    "value": "1.8"
+                },
+                {
+                    "name": "_ButtonShadow2Distance",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonShadow2Cast",
+                    "type": "Range",
+                    "value": "0.45"
+                },
+                {
+                    "name": "_ButtonShadow2Intensity",
+                    "type": "Range",
+                    "value": "0.8"
+                },
+                {
+                    "name": "_ButtonShadow3Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonPatternType",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonPatternScale",
+                    "type": "Float",
+                    "value": "14"
+                },
+                {
+                    "name": "_ButtonPatternIntensity",
+                    "type": "Float",
+                    "value": "0.05"
+                },
+                {
+                    "name": "_ButtonPatternContrast",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_ButtonPatternSpecularEffect",
+                    "type": "Float",
+                    "value": "0.3"
+                },
+                {
+                    "name": "_ButtonPatternRoughnessEffect",
+                    "type": "Float",
+                    "value": "0.6"
+                },
+                {
+                    "name": "_ButtonRenderEmissive",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonLipHeight",
+                    "type": "Float",
+                    "value": "0"
+                }
+            ]
+        },
+        {
+            "stateId": "NeoClose-hover",
+            "stateName": "Hover",
+            "description": "Hover",
+            "baseStateName": "Normal",
+            "priority": 1,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_ButtonColor",
+                    "type": "Color",
+                    "value": "0.917647,0.929412,0.945098,1"
+                }
+            ]
+        },
+        {
+            "stateId": "NeoClose-pressed",
+            "stateName": "Pressed",
+            "description": "Pressed",
+            "baseStateName": "Hover",
+            "priority": 2,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_ButtonBevelDepth",
+                    "type": "Float",
+                    "value": "-0.2"
+                },
+                {
+                    "name": "_ButtonShadow1Intensity",
+                    "type": "Float",
+                    "value": "0.25"
+                },
+                {
+                    "name": "_ButtonColor",
+                    "type": "Color",
+                    "value": "0.862745,0.878431,0.901961,1"
+                }
+            ]
+        },
+        {
+            "stateId": "NeoClose-disabled",
+            "stateName": "Disabled",
+            "description": "Disabled",
+            "baseStateName": "Normal",
+            "priority": 4,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_ButtonColor",
+                    "type": "Color",
+                    "value": "0.901961,0.913725,0.933333,1"
+                },
+                {
+                    "name": "_ButtonBevelDepth",
+                    "type": "Float",
+                    "value": "0.1"
+                },
+                {
+                    "name": "_IconColor",
+                    "type": "Color",
+                    "value": "0.713725,0.737255,0.776471,1"
+                }
+            ]
+        }
+    ],
+    "bounds": {
+        "type": 0,
+        "width": 0.9375,
+        "height": 0.953125,
+        "radiusNorm": 0.9888291954994202,
+        "paddingParam": "_ButtonPadding"
+    },
+    "author": "DrumSumDrum"
+}

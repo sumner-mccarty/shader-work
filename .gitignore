@@ -1,0 +1,8 @@
+.toolchain/
+.slrender-cache/
+.scratch/
+tests/out/
+__pycache__/
+*.pyc
+Looks/*/check/
+.skinsheet/

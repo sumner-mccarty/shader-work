@@ -1,0 +1,47 @@
+{
+    "controlType": "UIButton",
+    "shaderName": "UI/SDFKnobRM",
+    "states": [
+        {
+            "stateId": "405ca0d6-a694-42f8-830d-21c7f0c9c6fe",
+            "stateName": "Hover",
+            "description": "Mouse over state",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_BorderSoftness",
+                    "type": "Range",
+                    "value": "0.0120000001"
+                },
+                {
+                    "name": "_BorderWidth",
+                    "type": "Range",
+                    "value": "0.00100000005"
+                }
+            ]
+        },
+        {
+            "stateId": "7cd976a2-35c5-47f1-a652-c4a82af0d19c",
+            "stateName": "Pressed",
+            "description": "Click/touch down state",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_BorderSoftness",
+                    "type": "Range",
+                    "value": "0.0280000009"
+                }
+            ]
+        }
+    ],
+    "bounds": {
+        "type": 0,
+        "width": 0.65625,
+        "height": 0.65625,
+        "radiusNorm": 0.668779194355011
+    }
+}

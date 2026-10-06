@@ -1,0 +1,351 @@
+{
+    "controlType": "UIButton",
+    "shaderName": "UI/SDFButton",
+    "states": [
+        {
+            "stateId": "FlatLightToggleBtn-normal",
+            "stateName": "Normal",
+            "description": "Default resting state",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [
+                "default"
+            ],
+            "parameters": [
+                {
+                    "name": "_ButtonBevelEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonBevelPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonBevelPatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonBevelGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonRimEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonPatternRotateEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonPatternModEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonPatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonFaceShapeEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_IconBevelEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_IconPatternEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_IconPatternRotateEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_IconPatternModEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_IconPatternColorEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_IconGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_IconRimEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_EdgeEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_EdgeGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BorderGradientEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingShadow1Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingShadow2Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingShadow3Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonShadow1Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonShadow2Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonShadow3Enabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_LightingUnlit",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_LightingAmbient",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_ReceiveSceneShadows",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_ButtonColor",
+                    "type": "Color",
+                    "value": "0.741176,0.741176,0.741176,1"
+                },
+                {
+                    "name": "_ButtonRenderAlpha",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_ButtonRenderEmissive",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonShapeType",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_ButtonShapeParam1",
+                    "type": "Range",
+                    "value": "0.78"
+                },
+                {
+                    "name": "_ButtonPadding",
+                    "type": "Range",
+                    "value": "0.116"
+                },
+                {
+                    "name": "_ButtonRoundness",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_BorderEnabled",
+                    "type": "Float",
+                    "value": "0"
+                },
+                {
+                    "name": "_BorderColor",
+                    "type": "Color",
+                    "value": "0.741176,0.741176,0.741176,1"
+                },
+                {
+                    "name": "_BorderWidth",
+                    "type": "Range",
+                    "value": "0.05"
+                },
+                {
+                    "name": "_BorderSoftness",
+                    "type": "Range",
+                    "value": "0"
+                },
+                {
+                    "name": "_IconEnabled",
+                    "type": "Float",
+                    "value": "1"
+                },
+                {
+                    "name": "_IconShapeType",
+                    "type": "Float",
+                    "value": "17"
+                },
+                {
+                    "name": "_IconColor",
+                    "type": "Color",
+                    "value": "0.333333,0.333333,0.333333,1"
+                },
+                {
+                    "name": "_IconWidth",
+                    "type": "Range",
+                    "value": "0.55"
+                },
+                {
+                    "name": "_IconHeight",
+                    "type": "Range",
+                    "value": "0.55"
+                },
+                {
+                    "name": "_IconRenderAlpha",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_IconRenderEmissive",
+                    "type": "Range",
+                    "value": "0"
+                }
+            ]
+        },
+        {
+            "stateId": "FlatLightToggleBtn-hover",
+            "stateName": "Hover",
+            "description": "Hover",
+            "baseStateName": "Normal",
+            "priority": 1,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_ButtonColor",
+                    "type": "Color",
+                    "value": "0.698039,0.698039,0.698039,1"
+                },
+                {
+                    "name": "_IconColor",
+                    "type": "Color",
+                    "value": "0.109804,0.109804,0.109804,1"
+                }
+            ]
+        },
+        {
+            "stateId": "FlatLightToggleBtn-pressed",
+            "stateName": "Pressed",
+            "description": "Pressed",
+            "baseStateName": "Hover",
+            "priority": 2,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_ButtonColor",
+                    "type": "Color",
+                    "value": "0.94902,0.54902,0,1"
+                },
+                {
+                    "name": "_IconColor",
+                    "type": "Color",
+                    "value": "0.0784314,0.0784314,0.0784314,1"
+                }
+            ]
+        },
+        {
+            "stateId": "FlatLightToggleBtn-disabled",
+            "stateName": "Disabled",
+            "description": "Disabled",
+            "baseStateName": "Normal",
+            "priority": 4,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_ButtonColor",
+                    "type": "Color",
+                    "value": "0.788235,0.788235,0.788235,1"
+                },
+                {
+                    "name": "_IconColor",
+                    "type": "Color",
+                    "value": "0.647059,0.647059,0.647059,1"
+                }
+            ]
+        },
+        {
+            "stateId": "FlatLightToggleBtn-active",
+            "stateName": "Active",
+            "description": "Active",
+            "baseStateName": "Normal",
+            "priority": 5,
+            "tags": [],
+            "parameters": [
+                {
+                    "name": "_ButtonColor",
+                    "type": "Color",
+                    "value": "0.94902,0.54902,0,1"
+                },
+                {
+                    "name": "_IconColor",
+                    "type": "Color",
+                    "value": "0.0784314,0.0784314,0.0784314,1"
+                }
+            ]
+        }
+    ],
+    "bounds": {
+        "type": 0,
+        "width": 0.9375,
+        "height": 0.953125,
+        "radiusNorm": 0.9888291954994202,
+        "paddingParam": "_ButtonPadding"
+    },
+    "author": "DrumSumDrum"
+}

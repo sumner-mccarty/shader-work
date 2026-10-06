@@ -1,0 +1,44 @@
+{
+  "_doc": "See Starfield.track.json for the format. NON-SPACE (skyMode 4 = club beams).",
+
+  "name": "Neon Room",
+  "blurb": "A rig above you, four heads sweeping through the haze.",
+
+  "palette": {
+    "row1": "#FF2E6B",
+    "row2": "#3DFFC4",
+    "row3": "#FFC53D",
+    "row4": "#3DC8FF",
+
+    "rail": "#FF3DA6",
+    "laneLine": "#7A3F86",
+    "laneFill": "#0B0410",
+    "hitLine": "#FFF0FA",
+    "receptor": "#E08FC8",
+    "gridBar": "#FF7ACB",
+    "gridBeat": "#612E62",
+    "bgTop": "#08030F",
+    "bgBottom": "#150726",
+    "fog": "#9B3AB8",
+    "star": "#F0C8FF",
+    "miss": "#FF1F4A",
+    "perfect": "#FFF2C2"
+  },
+
+  "props": {
+    "skyMode": 4,
+    "skyColorA": "#FF3DA6",
+    "skyColorB": "#3DE0FF",
+    "skyAmount": 1.0,
+
+    "starDensity": 0.0,
+    "horizonGlow": 0.35,
+    "railGlow": 1.4,
+    "noteGlow": 1.2,
+    "additive": 0.36,
+    "radiance": 1.0,
+    "beatPulse": 1.0,
+    "fog": 0.5,
+    "vignette": 0.5
+  }
+}

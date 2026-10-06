@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "slrender"
+version = "0.1.0"
+description = "Headless renderer for Unity ShaderLab shaders: compile and render .shader files without Unity (DXC + SPIRV-Cross + OpenGL/Mesa)."
+requires-python = ">=3.9"
+dependencies = ["moderngl>=5.10", "numpy>=1.24", "pillow>=10"]
+
+[project.scripts]
+slrender = "slrender.__main__:main"
+
+[tool.setuptools]
+packages = ["slrender"]
+
+[tool.setuptools.package-data]
+slrender = ["unity_shim/*.cginc", "README.md"]

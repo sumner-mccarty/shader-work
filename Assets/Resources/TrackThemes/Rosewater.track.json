@@ -1,0 +1,47 @@
+{
+  "_doc": "See Starfield.track.json for the format. NON-SPACE (skyMode 6 = silk).",
+
+  "name": "Rosewater",
+  "blurb": "Rose, peach and cream. The softest room in the set.",
+
+  "palette": {
+    "row1": "#FF6E8A",
+    "row2": "#6FE0C0",
+    "row3": "#FFC98A",
+    "row4": "#9EB8FF",
+
+    "rail": "#FFB3C6",
+    "laneLine": "#6E4658",
+    "laneFill": "#160910",
+    "hitLine": "#FFF6F0",
+    "receptor": "#E8BFC8",
+    "gridBar": "#FFC2D4",
+    "gridBeat": "#54313F",
+    "bgTop": "#1A0B14",
+    "bgBottom": "#2E1620",
+    "fog": "#C4728C",
+    "star": "#FFE8EE",
+    "miss": "#FF4066",
+    "perfect": "#FFF0C8"
+  },
+
+  "props": {
+    "skyMode": 6,
+    "skyColorA": "#FF9EB5",
+    "skyColorB": "#FFE0C2",
+    "skyAmount": 0.55,
+    "skyScale": 2.2,
+
+    "starDensity": 0.0,
+    "horizonGlow": 0.5,
+    "railGlow": 0.95,
+    "noteGlow": 0.9,
+    "noteCoreBrightness": 1.1,
+    "additive": 0.2,
+    "radiance": 0.9,
+    "beatPulse": 0.55,
+    "bedOpacity": 0.78,
+    "fog": 0.6,
+    "vignette": 0.45
+  }
+}

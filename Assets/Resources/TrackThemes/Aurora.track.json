@@ -1,0 +1,43 @@
+{
+  "_doc": "See Starfield.track.json for the format.",
+
+  "name": "Aurora",
+  "blurb": "Cold, green, and moving. Easiest on the eyes for a long session.",
+
+  "palette": {
+    "row1": "#FF5A6B",
+    "row2": "#2CF0A0",
+    "row3": "#FFC24A",
+    "row4": "#3FC8FF",
+
+    "rail": "#5CF2D0",
+    "laneLine": "#4C8C9E",
+    "laneFill": "#04100F",
+    "hitLine": "#E8FFFA",
+    "receptor": "#8FD8CC",
+    "gridBar": "#7CE8D8",
+    "gridBeat": "#33685F",
+    "bgTop": "#01060A",
+    "bgBottom": "#03131A",
+    "fog": "#2C8C8C",
+    "star": "#CFF6FF",
+    "miss": "#FF3B47",
+    "perfect": "#EBFFD0"
+  },
+
+  "props": {
+    "skyMode": 3,
+    "skyColorA": "#33F5B0",
+    "skyColorB": "#4A7BFF",
+    "skyAmount": 0.85,
+
+    "starDensity": 0.55,
+    "horizonGlow": 0.45,
+    "railGlow": 1.15,
+    "noteGlow": 1.0,
+    "additive": 0.28,
+    "radiance": 1.0,
+    "fog": 0.62,
+    "vignette": 0.4
+  }
+}

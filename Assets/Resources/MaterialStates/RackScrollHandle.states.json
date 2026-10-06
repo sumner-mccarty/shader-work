@@ -1,0 +1,466 @@
+{
+  "controlType": "UIButton",
+  "shaderName": "UI/SDFButtonRM",
+  "states": [
+    {
+      "stateId": "5d357eb7-a1f3-4f25-81e8-77152c615465",
+      "stateName": "Normal",
+      "description": "Scrollbar thumb \u2014 a machined bar riding in a milled channel. Deliberately NOT the standard grey button: a button skin stretched to 11px across turns its surface pattern into static and its chamfer into a hard bright line, which is why the multitrack's bars read as flat slabs floating over the grid rather than hardware set into the frame.",
+      "baseStateName": "",
+      "priority": 0,
+      "tags": [
+        "default"
+      ],
+      "parameters": [
+        {
+          "name": "_ViewTilt",
+          "type": "Range",
+          "value": "0.5"
+        },
+        {
+          "name": "_LightingLight1Direction",
+          "type": "Vector4",
+          "value": "-1.44000006,-0.180000007,1,0"
+        },
+        {
+          "name": "_LightingLight1Specular",
+          "type": "Float",
+          "value": "0.200000003"
+        },
+        {
+          "name": "_Value",
+          "type": "Range",
+          "value": "0.449999988"
+        },
+        {
+          "name": "_BorderEnabled",
+          "type": "Float",
+          "value": "0"
+        },
+        {
+          "name": "_EdgeWidth",
+          "type": "Range",
+          "value": "0.128800005"
+        },
+        {
+          "name": "_EdgeSoftness",
+          "type": "Range",
+          "value": "0.630999982"
+        },
+        {
+          "name": "_LightingShadow1Distance",
+          "type": "Range",
+          "value": "0.0388999991"
+        },
+        {
+          "name": "_ViewFOV",
+          "type": "Range",
+          "value": "0.200000003"
+        },
+        {
+          "name": "_LightingShadow1Blur",
+          "type": "Range",
+          "value": "0.758000016"
+        },
+        {
+          "name": "_BorderWidth",
+          "type": "Range",
+          "value": "0.0214000009"
+        },
+        {
+          "name": "_BorderSoftness",
+          "type": "Range",
+          "value": "0.0881000012"
+        },
+        {
+          "name": "_ButtonBevelEnabled",
+          "type": "Float",
+          "value": "1.0"
+        },
+        {
+          "name": "_ButtonBevelDistance",
+          "type": "Range",
+          "value": "0.09"
+        },
+        {
+          "name": "_ButtonBevelSmoothness",
+          "type": "Range",
+          "value": "0.35"
+        },
+        {
+          "name": "_ButtonPadding",
+          "type": "Range",
+          "value": "0.1"
+        },
+        {
+          "name": "_ButtonShadow1Enabled",
+          "type": "Float",
+          "value": "0.0"
+        },
+        {
+          "name": "_ButtonShadow1Cast",
+          "type": "Range",
+          "value": "0.62"
+        },
+        {
+          "name": "_ButtonShadow1Distance",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonRimEnabled",
+          "type": "Float",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonBevelDepth",
+          "type": "Range",
+          "value": "0.18"
+        },
+        {
+          "name": "_ButtonFaceSmoothness",
+          "type": "Range",
+          "value": "0.06"
+        },
+        {
+          "name": "_ButtonShapeType",
+          "type": "Enum",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonShapeParam2",
+          "type": "Range",
+          "value": "0.428000003"
+        },
+        {
+          "name": "_ButtonShapeParam1",
+          "type": "Range",
+          "value": "0.35"
+        },
+        {
+          "name": "_ButtonRoundness",
+          "type": "Range",
+          "value": "0.45"
+        },
+        {
+          "name": "_ButtonPatternEnabled",
+          "type": "Float",
+          "value": "0.0"
+        },
+        {
+          "name": "_ButtonPatternSpecularEffect",
+          "type": "Range",
+          "value": "0.746999979"
+        },
+        {
+          "name": "_ButtonPatternRoughnessEffect",
+          "type": "Range",
+          "value": "0.568000019"
+        },
+        {
+          "name": "_ButtonPatternType",
+          "type": "Enum",
+          "value": "4"
+        },
+        {
+          "name": "_ButtonPatternOffset",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonPatternParam1",
+          "type": "Range",
+          "value": "0.27700001"
+        },
+        {
+          "name": "_ButtonPatternParam2",
+          "type": "Range",
+          "value": "0.492000014"
+        },
+        {
+          "name": "_ButtonShapeParam3",
+          "type": "Range",
+          "value": "0.193000004"
+        },
+        {
+          "name": "_ButtonShapeRotation",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_EdgeEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_ViewShift",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_ViewAngle",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_LightingShadow1Enabled",
+          "type": "Float",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonShadow1Blur",
+          "type": "Range",
+          "value": "0.30"
+        },
+        {
+          "name": "_ButtonShadow2Enabled",
+          "type": "Float",
+          "value": "0.0"
+        },
+        {
+          "name": "_ButtonShadow3Enabled",
+          "type": "Float",
+          "value": "0.0"
+        },
+        {
+          "name": "_ButtonShadow2Blur",
+          "type": "Range",
+          "value": "0.28"
+        },
+        {
+          "name": "_ButtonShadow2Cast",
+          "type": "Range",
+          "value": "0.66"
+        },
+        {
+          "name": "_ButtonShadow2Distance",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonShadow2Color",
+          "type": "Color",
+          "value": "0,0,0,0.533333361"
+        },
+        {
+          "name": "_ButtonShadow3Color",
+          "type": "Color",
+          "value": "0,0,0,0.541176498"
+        },
+        {
+          "name": "_ButtonShadow3Blur",
+          "type": "Range",
+          "value": "0.26"
+        },
+        {
+          "name": "_ButtonShadow3Cast",
+          "type": "Range",
+          "value": "0.52"
+        },
+        {
+          "name": "_ButtonShadow3Distance",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_EdgeInset",
+          "type": "Range",
+          "value": "-0.0126"
+        },
+        {
+          "name": "_BorderColor",
+          "type": "Color",
+          "value": "1,0.873058438,0,0.300000012"
+        },
+        {
+          "name": "_ViewCamEnabled",
+          "type": "Float",
+          "value": "0"
+        },
+        {
+          "name": "_ShadowUvExpand",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_ShadowPassMode",
+          "type": "Float",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonShadow1BlurFactor",
+          "type": "Range",
+          "value": "0.55"
+        },
+        {
+          "name": "_ButtonShadow2BlurFactor",
+          "type": "Range",
+          "value": "0.55"
+        },
+        {
+          "name": "_ButtonShadow3BlurFactor",
+          "type": "Range",
+          "value": "0.55"
+        },
+        {
+          "name": "_ButtonShadow1MaxCast",
+          "type": "Range",
+          "value": "2.0"
+        },
+        {
+          "name": "_ButtonShadow2MaxCast",
+          "type": "Range",
+          "value": "2.0"
+        },
+        {
+          "name": "_ButtonShadow3MaxCast",
+          "type": "Range",
+          "value": "2.0"
+        },
+        {
+          "name": "_ButtonColor",
+          "type": "Color",
+          "value": "0.27058823529411763,0.2901960784313726,0.3215686274509804,1.0"
+        },
+        {
+          "name": "_ButtonGradientEnabled",
+          "type": "Float",
+          "value": "1.0"
+        },
+        {
+          "name": "_ButtonGradientType",
+          "type": "Float",
+          "value": "0.0"
+        },
+        {
+          "name": "_ButtonGradientColorUsed",
+          "type": "Range",
+          "value": "3.0"
+        },
+        {
+          "name": "_ButtonGradientColorA",
+          "type": "Color",
+          "value": "0.21176470588235294,0.23137254901960785,0.25882352941176473,1.0"
+        },
+        {
+          "name": "_ButtonGradientColorB",
+          "type": "Color",
+          "value": "0.33725490196078434,0.3607843137254902,0.396078431372549,1.0"
+        },
+        {
+          "name": "_ButtonGradientColorC",
+          "type": "Color",
+          "value": "0.23921568627450981,0.25882352941176473,0.2901960784313726,1.0"
+        },
+        {
+          "name": "_ButtonGradientDirection",
+          "type": "Vector4",
+          "value": "0.0,1.0,0.0,0.0"
+        },
+        {
+          "name": "_LightingAmbient",
+          "type": "Range",
+          "value": "0.34"
+        }
+      ]
+    },
+    {
+      "stateId": "cd590336-a854-4afa-a7de-d32d9fbbee33",
+      "stateName": "Hover",
+      "description": "Mouse over state",
+      "baseStateName": "Normal",
+      "priority": 0,
+      "tags": [
+        "default",
+        "interactive"
+      ],
+      "parameters": [
+        {
+          "name": "_BorderEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_ButtonColor",
+          "type": "Color",
+          "value": "0.5411764705882353,0.5725490196078431,0.615686274509804,1.0"
+        }
+      ]
+    },
+    {
+      "stateId": "0e81cdc8-546c-4ce9-845e-6d2f53371bc2",
+      "stateName": "Pressed",
+      "description": "Click/touch down state",
+      "baseStateName": "Hover",
+      "priority": 0,
+      "tags": [
+        "default",
+        "interactive"
+      ],
+      "parameters": [
+        {
+          "name": "_ButtonBevelDepth",
+          "type": "Range",
+          "value": "0.119999997"
+        },
+        {
+          "name": "_Value",
+          "type": "Float",
+          "value": "0.893332779"
+        },
+        {
+          "name": "_ButtonRenderEmissive",
+          "type": "Range",
+          "value": "0.495000005"
+        },
+        {
+          "name": "_ButtonColor",
+          "type": "Color",
+          "value": "0.611764705882353,0.6509803921568628,0.6980392156862745,1.0"
+        }
+      ]
+    },
+    {
+      "stateId": "bf7892e8-6563-4c83-8aa6-67497c13ecce",
+      "stateName": "Dragging",
+      "description": "Drag state",
+      "baseStateName": "Pressed",
+      "priority": 0,
+      "tags": [
+        "default",
+        "interactive"
+      ],
+      "parameters": []
+    },
+    {
+      "stateId": "b74e5963-055a-4289-af50-ddb2852096fc",
+      "stateName": "Disabled",
+      "description": "Inactive/disabled state",
+      "baseStateName": "Normal",
+      "priority": 0,
+      "tags": [
+        "default",
+        "interactive"
+      ],
+      "parameters": [
+        {
+          "name": "_ButtonColor",
+          "type": "Color",
+          "value": "0.24313725490196078,0.2627450980392157,0.29411764705882354,1.0"
+        }
+      ]
+    }
+  ],
+  "bounds": {
+    "type": 0,
+    "width": 0.890625,
+    "height": 0.90625,
+    "radiusNorm": 1.0,
+    "paddingParam": "_ButtonPadding"
+  }
+}

@@ -1,0 +1,225 @@
+# The Skin Factory — how to drive shader-work from the cloud
+
+Goal: an open-ended catalogue of high-quality, distinct DrumSumDrum looks (gold, water/glass,
+country & western, hip-hop, Christmas, and every theme after them), made by cloud Claude sessions
+on this GitHub repo, reviewed by you as PRs with pictures, and imported into the Unity project
+(audiogame, GitLab) only when approved.
+
+```
+ audiogame (GitLab, Unity — source of truth)            shader-work (GitHub — cloud workshop)
+ ┌──────────────────────────────────┐  sync_from_unity  ┌────────────────────────────────────────┐
+ │ Assets/Shaders, Resources/…      │ ────────────────▶ │ same paths + slrender + Looks/ + gates │
+ │ Tools/ (skin tooling)            │                   │ cloud sessions: one look per session   │
+ │ .claude/skills/skin-authoring    │ ◀──────────────── │ PR per look: sheets, lookcheck, notes  │
+ │ Unity: packs, Play Mode check    │  import_to_unity  │ you merge = approved                   │
+ └──────────────────────────────────┘                   └────────────────────────────────────────┘
+```
+
+## 0. Once, locally (done in this session except the push)
+
+* `slrender` (headless renderer), parity-tested: 30/30 cells against the Unity editor, GPU and
+  llvmpipe; `tests/test_basics.py` 12/12.
+* shader-work restructured to the Unity layout; mirror filled by `Tools/sync_from_unity.py`
+  (shaders, all skins/recipes/rigs/track themes, the skin tooling, the skin skill, the param docs).
+* `Tools/skinsheet.py` (in both repos) renders headless when Unity isn't running, or through a warm
+  `slrender watch` process (`SKINSHEET_BACKEND=bus`) — so every existing `design_*`/`sheet_*` tool runs
+  in the cloud unchanged.
+* `Tools/lookcheck.py` (the PR gate), `Tools/import_to_unity.py` (the way back), `Looks/` (format,
+  rubric, 40+ briefs), `CLAUDE.md` (worker rules), a SessionStart hook that installs the toolchain,
+  and a GitHub Actions workflow that re-proves the Linux path on every push.
+* audiogame: `SkinSheet.cs` now pins `_Time` and `_GlobalViewCam` (its renders were not repeatable).
+
+**You:** commit + push shader-work (and commit the two audiogame files on GitLab). Then check the
+Actions tab: the `slrender` workflow is the first real Linux run — it must go green before you
+spend credits.
+
+## Before each batch (2 minutes, local)
+
+```bash
+cd D:/repos/shader-work
+python Tools/sync_from_unity.py --project D:/repos/audiogame     # pick up anything you changed in Unity
+git add -A && git commit -m "sync from audiogame" && git push
+```
+
+## How to launch a cloud session
+
+claude.ai/code (or the desktop app's cloud option) → repository **sumner-mccarty/shader-work** →
+choose the **model** → paste the prompt → start. The session gets a fresh Linux container, the hook
+installs the toolchain (~2–3 min the first time), and the session works on its own branch and opens
+a PR. Run several sessions in parallel — each look touches only its own files, so PRs don't conflict.
+If setup reports a blocked download, set the environment's network access to allow GitHub release
+downloads, PyPI and the Ubuntu archive (or full access).
+
+To give feedback, comment on the PR and start a session on that branch with the follow-up prompt
+(§ Review).
+
+## Model choice
+
+| Work | Model | Why |
+|---|---|---|
+| Phase 1 foundation (look kit, material library), Phase 3 shader features | **Opus 5.5** | architecture + subtle shader maths; a mistake here poisons every look after it |
+| Phase 2 looks, follow-up fixes | **Sonnet 5.5** | pattern-following with visual judgement, at half Opus's price |
+| Phase 4 colourways | Sonnet 5.5 (or Haiku 4.5 once a look's spec is fully parameterised) | mechanical palette swaps under a gate |
+
+Prices per million tokens (input/output): Opus 5.5 $4/$20, Sonnet 5.5 $2/$10, Haiku 4.5 $1/$5.
+Haiku is not recommended for whole looks: the skill is ~600 lines of non-obvious traps and the job
+is judging renders — cost per *approved* look is what matters.
+
+## Budget for $100 (rough estimates — watch the first sessions and adjust)
+
+| Phase | Sessions | Est. |
+|---|---|---|
+| 1 Foundation (Opus) | 2 | $25–35 |
+| 2 Looks Wave 1 (Sonnet) | 10–12 | $40–55 |
+| 3 Reflection/glass shader feature (Opus) | 1 | $10–15 |
+| 4 Colourways (Sonnet) | 2–4 | $5–10 |
+
+---------------------------------------------------------------------------------------------------
+## Phase 1 — Foundation (Opus 5.5, run F1 first; F2 after F1 merges)
+
+### Prompt F1 — the look kit
+```
+Read CLAUDE.md, .claude/skills/skin-authoring/SKILL.md (all), Looks/README.md, and study
+Tools/design_flat.py and Tools/design_tron.py closely.
+
+Build Tools/lookkit.py: a library that turns a compact LOOK SPEC into a complete DrumSumDrum look,
+so future looks are ~150-line specs instead of 700-line generators.
+
+Requirements:
+- Generalise design_flat.py/design_tron.py: part builders for every slot they emit (keys/pad/lamp/
+  toggle/close/accent/chip/dot/solo, dials hero/standard/small, faders + sliders + scroll handle/
+  track, pill switch, plates face/inset/back/socket/well/bezel), the roster tables (roles, families,
+  swaps), app palette roles, display map, rig, recipe writer, write/check/sheet/recipe CLI.
+- Support three classes: unlit (Flat), neon (Tron), and LIT raymarched (UI/*RM shaders) — derive the
+  lit vocabulary from the shipped Realistic*, NeoDark*, NeoLight* and RackFaceplate* skins.
+- Encode the skill's rules so a spec cannot break them: bounds on every part, every effect guard
+  explicit, footprints copied from the app skins each part swaps for, _ButtonLipHeight 0,
+  _LightingShadow1Enabled explicit on knobs, plate bevel/dome limits (medial-axis rule), px-locked
+  plate patterns, arc radius+width <= 0.88, light modes change the chassis.
+- A spec names: title/style/prefix, class, per-mode palette, per-family material + shape language
+  (corner radius, bevel, dome, knob silhouette, pattern), rig, track theme, display map, colourways.
+- Output per look: states files, UiStyles recipe, Themes rig, and Looks/<slug>/sheets/{rack,parts}-
+  {dark,light}.png. A rack composite renderer is required (parts placed on their faceplate, as
+  Tools/sheet_rack.py does) — that is what reviewers judge.
+- Proof: re-express Flat and Tron as specs (Tools/looks/flat.py, tron.py) that reproduce the shipped
+  FlatDark*/FlatLight*/TronDark*/TronLight* files and recipes byte-for-byte, or list every
+  intentional difference with a reason. Write them to a scratch dir for the comparison, do NOT
+  overwrite the shipped files.
+- Document the spec format in Looks/README.md and update CLAUDE.md's Look workflow to use the kit.
+Gates: python tests/test_basics.py; python Tools/lookcheck.py on both proofs (0 errors).
+Open a PR "lookkit: shared look kit + Flat/Tron proofs" with sheets of both proofs.
+```
+
+### Prompt F2 — lit material library + pilot looks
+```
+Read CLAUDE.md and the lookkit docstring. Add a material library to Tools/lookkit.py for LIT looks:
+named presets for polished gold, brushed gold, rose gold, chrome, brushed aluminium, brass, copper,
+black lacquer, enamel, gloss plastic, matte rubber, oiled wood, tooled leather, marble, ceramic,
+frosted glass (translucent), velvet/fabric, carbon fibre, concrete. Each preset = the pattern
+(type, px-derived scale, intensity, contrast, params), dome, bevel, spec/roughness effect, ambient
+and the colour ramp it needs to read correctly under the shipped and a neutral rig. Tune each on a
+swatch sheet (knob cap, key, plate, slider handle at real sizes), 3+ rounds, judged at 1:1; keep the
+final swatch sheet in Looks/_materials/.
+Then build two pilot looks from Looks/BACKLOG.md with the kit: gold-leaf and liquid-glass, following
+the Look workflow in CLAUDE.md completely (rubric critique rounds in NOTES.md, lookcheck 0 errors).
+One PR per pilot, plus one for the material library.
+```
+
+---------------------------------------------------------------------------------------------------
+## Phase 2 — Look production (Sonnet 5.5, 4–6 sessions in parallel per batch)
+
+Pick briefs from `Looks/BACKLOG.md` (Wave 1 first). One look per session. Paste, replacing the slug:
+
+### Prompt L — one look
+```
+Make the look "<slug>" from Looks/BACKLOG.md.
+Follow CLAUDE.md's Look workflow exactly: read the skin skill, Looks/README.md and the lookkit
+docstring first; build Tools/looks/<module>.py on the look kit; dark AND light; every role/family/
+swap rostered; your own prefix; your own rig if lit.
+Iterate on rack composites for at least 3 rounds; each round write a critique against the
+Looks/README.md rubric in Looks/<slug>/NOTES.md and fix the worst issue first. Push the theme's
+signature until it reads in one second at 25% zoom, then check it against every other look's rack
+for distinctness.
+Gate: python Tools/lookcheck.py <Style> with 0 errors, python tests/test_basics.py.
+Deliver Looks/<slug>/ (look.json status "candidate", NOTES.md, sheets/) and open a PR
+"look: <Title>" embedding rack-dark, rack-light, parts-dark, parts-light.
+Do not edit shaders, shared JSON, mirrored Tools, or any other look.
+```
+
+Batch size: start with 4 (e.g. rodeo, ice-cold, candy-cane, walnut-brass), review, adjust the
+prompt or kit from what you see, then go wider.
+
+---------------------------------------------------------------------------------------------------
+## Phase 3 — Shader features for true gold / chrome / glass (Opus 5.5)
+
+Today's widget lighting is Blinn-Phong under the lamp rig — gold and glass are faked with domes,
+specular and gradients. Real reflection needs a new lighting term. The screens' `UIDisplaySurface.cginc`
+already has a fresnel + reflected-environment model to borrow.
+
+### Prompt S1 — environment reflection
+```
+Read CLAUDE.md (Shader workflow), SKILL.md, CG/Core/UILighting.cginc and CG/Core/UIDisplaySurface.cginc.
+Add an environment-reflection term to the widget lighting so metals and glass can read as truly
+reflective: a procedural studio environment (horizon gradient + soft-box highlights, no textures),
+fresnel-weighted, sampled with the surface normal the bevel/dome already computes, tinted by the
+material colour for metals and untinted for dielectrics, plus an optional thin-film (iridescence)
+tint. Expose it as float-guarded properties (_XxxReflectEnabled, strength, tint mode, roughness/blur)
+on the body/cap/handle sections of SDFKnobRM, SDFButtonRM, SDFSliderRM, SDFTogglePillRM and the panel
+face of SDFPanel, all defaulting OFF.
+Hard requirement: python tests/parity.py check must still pass unchanged (existing skins untouched),
+and compile time of SDFKnobRM must not blow up (report before/after slrender compile times).
+Show it with swatch sheets (chrome, gold, glass, holographic) and upgrade the lookkit material
+presets to use it. PR "shader: environment reflection" — state clearly that it needs a Unity
+compile + Play Mode check before shipping.
+```
+**After merging:** import with shaders and check in Unity yourself (Phase 3 is the one step that
+must touch the editor):
+```bash
+python Tools/import_to_unity.py --project D:/repos/audiogame --with-shaders --dry-run   # review the list
+python Tools/import_to_unity.py --project D:/repos/audiogame --with-shaders
+```
+Then let Unity compile (watch the console), open a lit look in Play Mode, and only then run Wave 3.
+
+---------------------------------------------------------------------------------------------------
+## Phase 4 — Colourways (multiply approved looks)
+
+### Prompt C — colourways
+```
+Add 3 colourways to the approved look <slug> (see its spec in Tools/looks/): <e.g. "on black",
+"on ivory", "emerald"> — same structure, new palettes, each its own Style (<Style><Variant>),
+dark and light. Re-run every rubric legibility/state check (palette changes break contrast),
+lookcheck 0 errors each, sheets in Looks/<slug>-<variant>/. One PR for all three.
+```
+
+---------------------------------------------------------------------------------------------------
+## Review — your part (this is where quality comes from)
+
+On each PR: look at the four sheets on GitHub, then ask:
+1. Do I know the theme in one second? 2. Would I ship it next to Realistic Dark?
+3. Small knobs readable at 0/40/80%? 4. Anything crude — hard lines, blown highlights, mush?
+5. Is it different enough from what we already have?
+
+Feedback prompt (new session on the PR branch, Sonnet):
+```
+Continue the look on this branch. Review feedback: <your notes>. Address every point, re-run the
+rubric round in NOTES.md, regenerate the sheets, keep lookcheck at 0 errors, push to the same PR.
+```
+Approve = set `status: "approved"` in its look.json and merge.
+
+## Import approved looks into audiogame (local)
+
+```bash
+cd D:/repos/shader-work && git pull
+python Tools/import_to_unity.py --project D:/repos/audiogame --look rodeo --look ice-cold --dry-run
+python Tools/import_to_unity.py --project D:/repos/audiogame --look rodeo --look ice-cold --rebuild-packs
+```
+Then in Unity: let it import, Play Mode → Skin Studio → each new look over the creator/mixer, and
+capture it in the flipbook. Mark the look `shipped`. Commit audiogame on GitLab.
+
+## Using slrender elsewhere (the side project)
+
+`slrender` is project-agnostic — any Unity project with `Assets/Shaders`:
+`python -m slrender --project <path> compile --all`, `render --shader ... --set ...`, `contact`.
+For a cloud worker in another repo, vendor or pip-install it (slrender/README.md). The workflow
+"write .shader → compile → render a property sweep → look → iterate → drop into Unity" works for any
+built-in-pipeline shader today; URP/HDRP need a ShaderLibrary shim (next step if you want it).

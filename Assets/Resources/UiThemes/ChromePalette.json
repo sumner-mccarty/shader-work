@@ -1,0 +1,39 @@
+{
+  "_doc": "Panel CHROME colors (tracker §4.16 C) — the header strip a panel's tabs sit on, the tab plate's own fill, tab label/icon, and the vertical-dots edit-mode indicator. Read by ChromePalette.cs as the FALLBACK when no active skin names its own chrome block. CONTRACT: dark = dark plate + light text; light = mid/light plate + dark text. Anything missing here falls back to ChromePalette.ApplyBuiltInDefaults(). 2026-09-06: this file is now a fallback, not the only source — every shipped style (Resources/UiStyles/<Style>.style.json) carries its own modes.<mode>.chrome block, which SkinForge bakes and SkinResolver.ApplyGlobalTheme loads on every theme switch. Edit THIS file to change what a build shows before any theme has loaded, or as a build-wide floor; edit a style's own chrome block to change what THAT skin looks like.",
+
+  "mode": "dark",
+
+  "dark": {
+    "plateSkin": "TabPlateDark",
+    "headerBg": "#111418",
+    "headerBorder": "#4A505800",
+    "tabFillBottom": "#1E2228",
+    "tabFillTop": "#2A2F36",
+    "tabFillActiveBottom": "#3D434B",
+    "tabFillActiveTop": "#2E343B",
+    "label": "#E6EBF2",
+    "labelActive": "#FFFFFF",
+    "icon": "#9FB4CC",
+    "iconActive": "#6FD8FF",
+    "gear": "#9EACBCCC",
+    "meatballIdle": "#D9E0EF",
+    "meatballLit": "#4CD9FF"
+  },
+
+  "light": {
+    "plateSkin": "TabPlateLight",
+    "headerBg": "#61666C",
+    "headerBorder": "#8D949C00",
+    "tabFillBottom": "#7A8086",
+    "tabFillTop": "#8C9298",
+    "tabFillActiveBottom": "#949AA1",
+    "tabFillActiveTop": "#7D838A",
+    "label": "#1C222B",
+    "labelActive": "#0A0D12",
+    "icon": "#445263",
+    "iconActive": "#0B639C",
+    "gear": "#475366D9",
+    "meatballIdle": "#29303D",
+    "meatballLit": "#0B73B8"
+  }
+}

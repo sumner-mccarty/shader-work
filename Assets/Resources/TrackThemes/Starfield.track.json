@@ -1,0 +1,39 @@
+{
+  "_doc": "GAME-TRACK THEME (tracker §3.8b). Chosen independently of the hardware skin theme — any skin x any track. `palette` writes the Palette 'tracks' group (so every '@tracks.*' reference in a layout doc re-colours with no wiring); `props` overlays TrackLanesView.HighwaySettings on top of whatever the layout doc authored. See TrackThemes.cs.",
+
+  "name": "Starfield",
+  "blurb": "Deep space. The one that shipped.",
+
+  "palette": {
+    "row1": "#FF3A4A",
+    "row2": "#36E86B",
+    "row3": "#FF9E2E",
+    "row4": "#40A8FF",
+
+    "rail": "#80E6FF",
+    "laneLine": "#8CADE6",
+    "laneFill": "#0B0E1A",
+    "hitLine": "#EBF7FF",
+    "receptor": "#9EB8D9",
+    "gridBar": "#A6CCFF",
+    "gridBeat": "#667AA8",
+    "bgTop": "#030412",
+    "bgBottom": "#090B22",
+    "fog": "#4D62A0",
+    "star": "#BFD4FF",
+    "miss": "#FF2138",
+    "perfect": "#FFE8A8"
+  },
+
+  "props": {
+    "skyMode": 0,
+    "starDensity": 0.45,
+    "horizonGlow": 0.7,
+    "railGlow": 1.1,
+    "noteGlow": 1.0,
+    "additive": 0.30,
+    "radiance": 1.0,
+    "fog": 0.62,
+    "vignette": 0.4
+  }
+}

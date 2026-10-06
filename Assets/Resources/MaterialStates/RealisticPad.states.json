@@ -1,0 +1,690 @@
+{
+  "schemaVersion": 2,
+  "controlType": "UIButton",
+  "shaderName": "UI/SDFButtonRM",
+  "states": [
+    {
+      "stateId": "355532ce-4c88-4bc8-a0d9-38cf45ae4220",
+      "stateName": "Normal",
+      "description": "Default resting state",
+      "baseStateName": "",
+      "priority": 0,
+      "tags": [
+        "default"
+      ],
+      "parameters": [
+        {
+          "name": "_ViewTilt",
+          "type": "Range",
+          "value": "2.5"
+        },
+        {
+          "name": "_LightingLight1Direction",
+          "type": "Vector4",
+          "value": "-1.44000006,-0.180000007,1,0"
+        },
+        {
+          "name": "_LightingLight1Specular",
+          "type": "Float",
+          "value": "0.200000003"
+        },
+        {
+          "name": "_Value",
+          "type": "Float",
+          "value": "0.949999809"
+        },
+        {
+          "name": "_BorderEnabled",
+          "type": "Float",
+          "value": "0"
+        },
+        {
+          "name": "_EdgeWidth",
+          "type": "Range",
+          "value": "0.0810000002"
+        },
+        {
+          "name": "_EdgeSoftness",
+          "type": "Range",
+          "value": "0.963999987"
+        },
+        {
+          "name": "_LightingShadow1Distance",
+          "type": "Range",
+          "value": "0.00999999978"
+        },
+        {
+          "name": "_ViewFOV",
+          "type": "Range",
+          "value": "0.0170000009"
+        },
+        {
+          "name": "_LightingShadow1Blur",
+          "type": "Range",
+          "value": "0.758000016"
+        },
+        {
+          "name": "_BorderWidth",
+          "type": "Range",
+          "value": "0.0214000009"
+        },
+        {
+          "name": "_BorderSoftness",
+          "type": "Range",
+          "value": "0.0900000036"
+        },
+        {
+          "name": "_ButtonBevelEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_ButtonBevelDistance",
+          "type": "Range",
+          "value": "0.0500000007"
+        },
+        {
+          "name": "_ButtonBevelSmoothness",
+          "type": "Range",
+          "value": "0.788999975"
+        },
+        {
+          "name": "_ButtonPadding",
+          "type": "Range",
+          "value": "0.129999995"
+        },
+        {
+          "name": "_ButtonShadow1Enabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_ButtonShadow1Cast",
+          "type": "Range",
+          "value": "0.219999999"
+        },
+        {
+          "name": "_ButtonShadow1Distance",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonRimEnabled",
+          "type": "Float",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonBevelDepth",
+          "type": "Range",
+          "value": "0.280999988"
+        },
+        {
+          "name": "_ButtonFaceSmoothness",
+          "type": "Range",
+          "value": "0.200000003"
+        },
+        {
+          "name": "_ButtonShapeType",
+          "type": "Enum",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonShapeParam2",
+          "type": "Range",
+          "value": "0.428000003"
+        },
+        {
+          "name": "_ButtonShapeParam1",
+          "type": "Range",
+          "value": "0.744000018"
+        },
+        {
+          "name": "_ButtonRoundness",
+          "type": "Range",
+          "value": "0.340000004"
+        },
+        {
+          "name": "_ButtonPatternEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_ButtonPatternSpecularEffect",
+          "type": "Range",
+          "value": "0.140000001"
+        },
+        {
+          "name": "_ButtonPatternRoughnessEffect",
+          "type": "Range",
+          "value": "0.300000012"
+        },
+        {
+          "name": "_ButtonPatternType",
+          "type": "Float",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonPatternOffset",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonPatternParam1",
+          "type": "Range",
+          "value": "0.319999993"
+        },
+        {
+          "name": "_ButtonPatternParam2",
+          "type": "Range",
+          "value": "0.649999976"
+        },
+        {
+          "name": "_ButtonShapeParam3",
+          "type": "Range",
+          "value": "0.193000004"
+        },
+        {
+          "name": "_ButtonShapeRotation",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_EdgeEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_ViewShift",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_ViewAngle",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_LightingShadow1Enabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_ButtonShadow1Blur",
+          "type": "Range",
+          "value": "0.0500000007"
+        },
+        {
+          "name": "_ButtonShadow2Enabled",
+          "type": "Float",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonShadow3Enabled",
+          "type": "Float",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonShadow2Blur",
+          "type": "Range",
+          "value": "0.150000006"
+        },
+        {
+          "name": "_ButtonShadow2Cast",
+          "type": "Range",
+          "value": "0.49000001"
+        },
+        {
+          "name": "_ButtonShadow2Distance",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonShadow2Color",
+          "type": "Color",
+          "value": "0,0,0,0.533333361"
+        },
+        {
+          "name": "_ButtonShadow3Color",
+          "type": "Color",
+          "value": "0,0,0,0.541176498"
+        },
+        {
+          "name": "_ButtonShadow3Blur",
+          "type": "Range",
+          "value": "0.150000006"
+        },
+        {
+          "name": "_ButtonShadow3Cast",
+          "type": "Range",
+          "value": "0.469999999"
+        },
+        {
+          "name": "_ButtonShadow3Distance",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_EdgeInset",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_BorderColor",
+          "type": "Color",
+          "value": "0.100000001,0.100000001,0.119999997,1"
+        },
+        {
+          "name": "_ViewCamEnabled",
+          "type": "Float",
+          "value": "0"
+        },
+        {
+          "name": "_ShadowUvExpand",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_ShadowPassMode",
+          "type": "Float",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonRimWidth",
+          "type": "Range",
+          "value": "0.0379999988"
+        },
+        {
+          "name": "_ButtonRimDepth",
+          "type": "Range",
+          "value": "-0.0599999987"
+        },
+        {
+          "name": "_ButtonRimSmoothness",
+          "type": "Range",
+          "value": "0.0120000001"
+        },
+        {
+          "name": "_ButtonLipHeight",
+          "type": "Range",
+          "value": "0.0850000009"
+        },
+        {
+          "name": "_EdgeRenderEmissive",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_EdgeIntensity",
+          "type": "Range",
+          "value": "1.89999998"
+        },
+        {
+          "name": "_EdgeColor",
+          "type": "Color",
+          "value": "0.0196078438,0.0235294122,0.0392156877,1"
+        },
+        {
+          "name": "_ButtonColor",
+          "type": "Color",
+          "value": "0.137254909,0.152941182,0.180392161,1"
+        },
+        {
+          "name": "_ButtonRenderAlpha",
+          "type": "Range",
+          "value": "1"
+        },
+        {
+          "name": "_ButtonRenderEmissive",
+          "type": "Range",
+          "value": "0.42"
+        },
+        {
+          "name": "_ButtonShadow1MaxCast",
+          "type": "Range",
+          "value": "0.600000024"
+        },
+        {
+          "name": "_ButtonShadow2MaxCast",
+          "type": "Range",
+          "value": "1"
+        },
+        {
+          "name": "_ButtonShadow3MaxCast",
+          "type": "Range",
+          "value": "1"
+        },
+        {
+          "name": "_ButtonShadow1BlurFactor",
+          "type": "Range",
+          "value": "0.550000012"
+        },
+        {
+          "name": "_ButtonBevelGradientEnabled",
+          "type": "Float",
+          "value": "0"
+        },
+        {
+          "name": "_ButtonBevelGradientColorUsed",
+          "type": "Range",
+          "value": "2"
+        },
+        {
+          "name": "_ButtonBevelGradientColorA",
+          "type": "Color",
+          "value": "0.138364673,0.138364673,0.138364673,1"
+        },
+        {
+          "name": "_ButtonBevelGradientColorB",
+          "type": "Color",
+          "value": "0.257861614,0.257861614,0.257861614,1"
+        },
+        {
+          "name": "_ButtonPatternScale",
+          "type": "Range",
+          "value": "44"
+        },
+        {
+          "name": "_ButtonPatternParam3",
+          "type": "Range",
+          "value": "0.50999999"
+        },
+        {
+          "name": "_ButtonPatternContrast",
+          "type": "Range",
+          "value": "1.20000005"
+        },
+        {
+          "name": "_LightingShadow2Enabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_LightingShadow3Enabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_LightingShadow2Distance",
+          "type": "Range",
+          "value": "0.00999999978"
+        },
+        {
+          "name": "_LightingShadow3Distance",
+          "type": "Range",
+          "value": "0.00999999978"
+        },
+        {
+          "name": "_LightingAmbient",
+          "type": "Range",
+          "value": "0.340000004"
+        },
+        {
+          "name": "_ButtonPatternIntensity",
+          "type": "Range",
+          "value": "0.0900000036"
+        }
+      ]
+    },
+    {
+      "stateId": "734ecc10-ba8a-4601-aed6-77170195a4d7",
+      "stateName": "Hover",
+      "description": "Mouse over state",
+      "baseStateName": "Normal",
+      "priority": 0,
+      "tags": [
+        "default",
+        "interactive"
+      ],
+      "parameters": [
+        {
+          "name": "_BorderEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_BorderRenderAlpha",
+          "type": "Range",
+          "value": "1"
+        },
+        {
+          "name": "_BorderWidth",
+          "type": "Range",
+          "value": "0.00100000005"
+        },
+        {
+          "name": "_BorderSoftness",
+          "type": "Range",
+          "value": "0.0637999997"
+        },
+        {
+          "name": "_Value",
+          "type": "Float",
+          "value": "0.946666658"
+        }
+      ]
+    },
+    {
+      "stateId": "45337977-2d55-41f9-89cd-34d4ae688244",
+      "stateName": "Pressed",
+      "description": "Click/touch down state",
+      "baseStateName": "Hover",
+      "priority": 0,
+      "tags": [
+        "default",
+        "interactive"
+      ],
+      "parameters": [
+        {
+          "name": "_ButtonBevelDepth",
+          "type": "Range",
+          "value": "0.119999997"
+        },
+        {
+          "name": "_ButtonRenderEmissive",
+          "type": "Range",
+          "value": "0.85"
+        },
+        {
+          "name": "_BorderSoftness",
+          "type": "Range",
+          "value": "0.0834000036"
+        },
+        {
+          "name": "_BorderWidth",
+          "type": "Range",
+          "value": "0.0161000006"
+        }
+      ]
+    },
+    {
+      "stateId": "6b96c39d-d9fe-4616-bf66-d037b11d9107",
+      "stateName": "Dragging",
+      "description": "Drag state",
+      "baseStateName": "Pressed",
+      "priority": 0,
+      "tags": [
+        "default",
+        "interactive"
+      ],
+      "parameters": []
+    },
+    {
+      "stateId": "64b82cc9-fc2b-4293-aef5-1ecf24ed9fee",
+      "stateName": "Disabled",
+      "description": "Inactive/disabled state",
+      "baseStateName": "Normal",
+      "priority": 0,
+      "tags": [
+        "default",
+        "interactive"
+      ],
+      "parameters": [
+        {
+          "name": "_EdgeIntensity",
+          "type": "Range",
+          "value": "0.349999994"
+        },
+        {
+          "name": "_ButtonRenderEmissive",
+          "type": "Range",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "stateId": "aaaa0001-mute-4000-9000-000000000001",
+      "stateName": "Active",
+      "description": "Module ENABLE lamp, ON = the device is in circuit. BLUE, not red: red reads as an alarm or as record-arm, and this is the resting healthy state of every module in the rack. Driven hard — full emissive icon, lit body, lit edge and rim — because at 16px a subtle lamp is no lamp.",
+      "baseStateName": "Normal",
+      "priority": 5,
+      "tags": [],
+      "parameters": [
+        {
+          "name": "_IconColor",
+          "type": "Color",
+          "value": "0.620000005,0.920000017,1,1"
+        },
+        {
+          "name": "_IconRenderEmissive",
+          "type": "Range",
+          "value": "1"
+        },
+        {
+          "name": "_ButtonColor",
+          "type": "Color",
+          "value": "0.100000001,0.419999987,0.720000029,1"
+        },
+        {
+          "name": "_EdgeEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_EdgeColor",
+          "type": "Color",
+          "value": "0.184703931,0.201693609,0.207547188,1"
+        },
+        {
+          "name": "_EdgeWidth",
+          "type": "Range",
+          "value": "0.136999995"
+        },
+        {
+          "name": "_EdgeSoftness",
+          "type": "Range",
+          "value": "6.5"
+        },
+        {
+          "name": "_BorderEnabled",
+          "type": "Float",
+          "value": "1"
+        },
+        {
+          "name": "_BorderColor",
+          "type": "Color",
+          "value": "0.0578496121,0.509849429,0.735849023,0.949999988"
+        },
+        {
+          "name": "_BorderWidth",
+          "type": "Range",
+          "value": "0.063000001"
+        },
+        {
+          "name": "_BorderSoftness",
+          "type": "Range",
+          "value": "0.0780000016"
+        },
+        {
+          "name": "_ButtonPatternEnabled",
+          "type": "Float",
+          "value": "0"
+        },
+        {
+          "name": "_EdgeRenderEmissive",
+          "type": "Range",
+          "value": "0"
+        },
+        {
+          "name": "_EdgeIntensity",
+          "type": "Range",
+          "value": "1.79999995"
+        },
+        {
+          "name": "_EdgeFalloff",
+          "type": "Range",
+          "value": "2"
+        },
+        {
+          "name": "_ButtonRenderEmissive",
+          "type": "Range",
+          "value": "0.349999994"
+        },
+        {
+          "name": "_BorderInset",
+          "type": "Range",
+          "value": "0.0219999999"
+        },
+        {
+          "name": "_EdgeRenderAlpha",
+          "type": "Range",
+          "value": "1"
+        },
+        {
+          "name": "_BorderIntensity",
+          "type": "Range",
+          "value": "1.34000003"
+        }
+      ]
+    },
+    {
+      "stateId": "4587e7ad-67ff-4ea6-aab9-eabe172b63c1",
+      "stateName": "Latched",
+      "description": "LATCHED ON — a LOOP pad that is currently sounding (PadHoldMode.Loop turns the pad into an on/off switch). Lit exactly like Pressed, but the bevel stays at its NORMAL height: pressed means your finger is on it right now, latched means it is running without you. A pad that stayed visually depressed for as long as a loop played would be claiming the first thing while meaning the second.",
+      "baseStateName": "Normal",
+      "priority": 4,
+      "tags": [],
+      "parameters": [
+        {
+          "name": "_ButtonRenderEmissive",
+          "type": "Range",
+          "value": "0.7"
+        },
+        {
+          "name": "_BorderSoftness",
+          "type": "Range",
+          "value": "0.0834000036"
+        },
+        {
+          "name": "_BorderWidth",
+          "type": "Range",
+          "value": "0.0161000006"
+        }
+      ]
+    }
+  ],
+  "bounds": {
+    "type": 0,
+    "width": 1.0,
+    "height": 0.859375,
+    "radiusNorm": 1.0,
+    "paddingParam": "_ButtonPadding"
+  },
+  "padColor": {
+    "param": "",
+    "targets": [
+      {
+        "param": "_ButtonColor",
+        "amount": 0.9
+      },
+      {
+        "param": "_BorderColor",
+        "amount": 1.0
+      }
+    ]
+  }
+}

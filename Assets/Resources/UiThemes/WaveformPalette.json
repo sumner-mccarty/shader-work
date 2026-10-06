@@ -1,0 +1,10 @@
+{
+  "_comment": "Shared waveform colors for EVERY display that draws audio — the main Waveform panel and the mixer ENV7 envelope scope. Swap this file (or Resources.Load a different one via WaveformPalette.Load) to retheme both at once. colorMode: 0 solid body, 1 spectral-centroid gradient (warm low -> cool high), 2 band mix (low/mid/high energies).",
+  "colorMode": 2,
+  "body": "#8CC7FF",
+  "low": "#FF5947",
+  "mid": "#36E86B",
+  "high": "#40A8FF",
+  "playhead": "#FFFFFF",
+  "baseline": "#7389BF59"
+}

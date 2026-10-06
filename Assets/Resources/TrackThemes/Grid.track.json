@@ -1,0 +1,52 @@
+{
+  "_doc": "See Starfield.track.json for the format.",
+
+  "name": "Grid",
+  "blurb": "A wireframe corridor running out to the horizon. Nothing else on screen is made of straight lines.",
+
+  "palette": {
+    "row1": "#FF2D55",
+    "row2": "#00FF9C",
+    "row3": "#FFD400",
+    "row4": "#00CFFF",
+
+    "rail": "#00E5FF",
+    "laneLine": "#0E7A8C",
+    "laneFill": "#000305",
+    "hitLine": "#FFFFFF",
+    "receptor": "#5CE6FF",
+    "gridBar": "#00E5FF",
+    "gridBeat": "#0A4A5C",
+    "bgTop": "#000205",
+    "bgBottom": "#00080E",
+    "fog": "#0E7A8C",
+    "star": "#8FE8FF",
+    "miss": "#FF0033",
+    "perfect": "#FFFFFF"
+  },
+
+  "props": {
+    // A real GRID (skyMode 7), added 2026-08-08. This theme used to be skyMode 0 — its whole
+    // identity lived in the HIGHWAY's beat grid and rail glow, and `backdropOnly` switches the
+    // highway off. So on the side stages and behind every menu it was a dark gradient with a few
+    // stars in it: indistinguishable from Starfield, which is exactly what it looked like.
+    "skyMode": 7,
+    "skyColorA": "#00E5FF",
+    "skyColorB": "#0E4A66",
+    "skyAmount": 0.85,
+    "skyHorizon": 0.56,
+
+    // None. It is a room, not space — and the stars were half of why it read as Starfield.
+    "starDensity": 0.0,
+    "horizonGlow": 0.35,
+    "gridBrightness": 1.25,
+    "railGlow": 1.6,
+    "noteGlow": 1.3,
+    "noteCoreBrightness": 1.2,
+    "additive": 0.45,
+    "radiance": 1.1,
+    "bedOpacity": 0.85,
+    "fog": 0.5,
+    "vignette": 0.5
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "_doc": "See Starfield.track.json for the format.",
+
+  "name": "Sunset",
+  "blurb": "Banded sun on the horizon. Eighties, on purpose.",
+
+  "palette": {
+    "row1": "#FF3D6E",
+    "row2": "#3DF2C4",
+    "row3": "#FFC24A",
+    "row4": "#7A5CFF",
+
+    "rail": "#FF74C8",
+    "laneLine": "#B060B8",
+    "laneFill": "#170526",
+    "hitLine": "#FFE9FB",
+    "receptor": "#E39BD8",
+    "gridBar": "#FF8FE0",
+    "gridBeat": "#7A3A78",
+    "bgTop": "#160424",
+    "bgBottom": "#3A0B3F",
+    "fog": "#C4479B",
+    "star": "#FFD8F0",
+    "miss": "#FF2A4E",
+    "perfect": "#FFF0B8"
+  },
+
+  "props": {
+    "skyMode": 2,
+    "skyColorA": "#FF4D8D",
+    "skyColorB": "#FFC24A",
+    "skyAmount": 1.0,
+    "skyHorizon": 0.74,
+
+    "starDensity": 0.30,
+    "horizonGlow": 0.9,
+    "railGlow": 1.35,
+    "noteGlow": 1.1,
+    "additive": 0.32,
+    "radiance": 1.0,
+    "gridBrightness": 0.85,
+    "fog": 0.55,
+    "vignette": 0.42
+  }
+}
