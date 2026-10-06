@@ -1063,7 +1063,7 @@ class Lit(Unlit):
         you see, so a disabled control must dim it (recolouring the body alone changes nothing)."""
         if not m or m.get("edge") is None:
             return {}
-        return gcol(f"{layer}BevelGradient", tuple(mix(e, toward_c, amount) for e in edge_of(m, c)))
+        return gcol(f"{layer}Bevel", tuple(mix(e, toward_c, amount) for e in edge_of(m, c)))
 
     @staticmethod
     def recolour(layer, m, c):
