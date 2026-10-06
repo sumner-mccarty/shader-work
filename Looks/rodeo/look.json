@@ -1,0 +1,16 @@
+{
+  "slug": "rodeo",
+  "style": "Rodeo",
+  "title": "Rodeo",
+  "prefix": "Rodeo",
+  "brief": "BACKLOG.md#rodeo",
+  "class": "lit",
+  "status": "candidate",
+  "files": [
+    "Tools/looks/rodeo.py",
+    "Assets/Resources/UiStyles/Rodeo.style.json",
+    "Assets/Resources/Themes/Rodeo*.theme.json",
+    "Assets/Resources/MaterialStates/RodeoDark*.states.json",
+    "Assets/Resources/MaterialStates/RodeoLight*.states.json"
+  ]
+}

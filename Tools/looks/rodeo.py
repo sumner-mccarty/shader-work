@@ -26,7 +26,7 @@ RAWHIDE_SKIRT = {"preset": "chrome", "pattern": ("Fluted", 1.0, 0.0, 1.0, 0.5, 0
 
 LOOK = Look(
     title="Rodeo", style="Rodeo", prefix="Rodeo", slug="rodeo", cls="lit", order=20,
-    status="draft", brief="BACKLOG.md#rodeo",
+    status="candidate", brief="BACKLOG.md#rodeo",
     blurb="Tooled leather, silver conchos, turquoise inlay and amber oil glow.",
     tagline="saddle leather, silver concho knobs, turquoise inlay.",
     displays="neo",
