@@ -300,12 +300,12 @@
                 {
                     "name": "_ButtonPatternIntensity",
                     "type": "Range",
-                    "value": "0.3"
+                    "value": "0.4"
                 },
                 {
                     "name": "_ButtonPatternContrast",
                     "type": "Range",
-                    "value": "1"
+                    "value": "1.1"
                 },
                 {
                     "name": "_ButtonPatternSpecularEffect",
@@ -525,27 +525,27 @@
                 {
                     "name": "_ButtonColor",
                     "type": "Color",
-                    "value": "0.741176,0.611765,0.470588,1"
+                    "value": "0.780392,0.643137,0.486275,1"
                 },
                 {
                     "name": "_ButtonGradientColorA",
                     "type": "Color",
-                    "value": "0.552941,0.439216,0.333333,1"
+                    "value": "0.580392,0.462745,0.341176,1"
                 },
                 {
                     "name": "_ButtonGradientColorB",
                     "type": "Color",
-                    "value": "0.709804,0.584314,0.447059,1"
+                    "value": "0.745098,0.611765,0.462745,1"
                 },
                 {
                     "name": "_ButtonGradientColorC",
                     "type": "Color",
-                    "value": "0.752941,0.619608,0.47451,1"
+                    "value": "0.792157,0.647059,0.490196,1"
                 },
                 {
                     "name": "_ButtonGradientColorD",
                     "type": "Color",
-                    "value": "0.764706,0.627451,0.478431,1"
+                    "value": "0.8,0.65098,0.494118,1"
                 },
                 {
                     "name": "_ButtonGradientColorUsed",

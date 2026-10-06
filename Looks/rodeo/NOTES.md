@@ -53,3 +53,10 @@ from Gold Leaf (the nearest warm look) in material family (leather vs lacquer), 
 ## Gate
 `check` 0 errors · `lookcheck.py Rodeo` 46 skins, 0 errors, 0 warnings · `tests/test_basics.py` all
 passed. Not verified: Play Mode in the real app (no Unity here).
+
+## Quality pass (after Play Mode feedback on Walnut & Brass)
+- **Print audit (new `printcheck` command):** the app's derived chrome / track print leaked the key-mark
+  colour. Rodeo Light printed cream on rawhide (chrome label 1.03:1, track text 1.74:1). Now explicit
+  dark-brown chrome, `tracks.text`, `insetDim` on denim and a mid leather `rowWithSample`; all print roles >= 3:1.
+- **Craft:** leather keys lifted (#A66A3E, grain 3 px @ 0.4), plate nap bolder (0.62) and a stronger tan-top
+  ramp — the dark chassis now reads as tooled leather rather than flat chocolate. Clip 0.0% both modes.

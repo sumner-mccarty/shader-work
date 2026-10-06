@@ -270,22 +270,22 @@
                 {
                     "name": "_PanelGradientColorA",
                     "type": "Color",
-                    "value": "0.372549,0.188235,0.12549,1"
+                    "value": "0.34902,0.172549,0.117647,1"
                 },
                 {
                     "name": "_PanelGradientColorB",
                     "type": "Color",
-                    "value": "0.635294,0.431373,0.294118,1"
+                    "value": "0.670588,0.466667,0.317647,1"
                 },
                 {
                     "name": "_PanelGradientColorC",
                     "type": "Color",
-                    "value": "0.635294,0.431373,0.294118,1"
+                    "value": "0.670588,0.466667,0.317647,1"
                 },
                 {
                     "name": "_PanelGradientColorD",
                     "type": "Color",
-                    "value": "0.635294,0.431373,0.294118,1"
+                    "value": "0.670588,0.466667,0.317647,1"
                 },
                 {
                     "name": "_PanelGradientColorUsed",
@@ -305,12 +305,12 @@
                 {
                     "name": "_PanelPatternIntensity",
                     "type": "Range",
-                    "value": "0.5"
+                    "value": "0.62"
                 },
                 {
                     "name": "_PanelPatternContrast",
                     "type": "Range",
-                    "value": "1"
+                    "value": "1.1"
                 },
                 {
                     "name": "_PanelPatternSpecularEffect",

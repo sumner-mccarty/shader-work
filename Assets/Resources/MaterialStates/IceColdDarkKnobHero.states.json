@@ -625,7 +625,7 @@
                 {
                     "name": "_KnobShapeType",
                     "type": "Float",
-                    "value": "0"
+                    "value": "6"
                 },
                 {
                     "name": "_KnobSize",
@@ -635,12 +635,12 @@
                 {
                     "name": "_KnobShapeScale",
                     "type": "Range",
-                    "value": "6"
+                    "value": "28"
                 },
                 {
                     "name": "_KnobShapeParam1",
                     "type": "Range",
-                    "value": "0.15"
+                    "value": "0.09"
                 },
                 {
                     "name": "_KnobLipHeight",
@@ -715,17 +715,17 @@
                 {
                     "name": "_KnobBevelPatternType",
                     "type": "Float",
-                    "value": "12"
+                    "value": "1"
                 },
                 {
                     "name": "_KnobBevelPatternScale",
                     "type": "Range",
-                    "value": "22.4"
+                    "value": "112"
                 },
                 {
                     "name": "_KnobBevelPatternIntensity",
                     "type": "Range",
-                    "value": "0.3"
+                    "value": "0.1"
                 },
                 {
                     "name": "_KnobBevelPatternContrast",
@@ -750,12 +750,12 @@
                 {
                     "name": "_KnobBevelPatternParam2",
                     "type": "Range",
-                    "value": "0.6"
+                    "value": "0"
                 },
                 {
                     "name": "_KnobBevelPatternParam3",
                     "type": "Range",
-                    "value": "0.5"
+                    "value": "0"
                 },
                 {
                     "name": "_KnobNubEnabled",

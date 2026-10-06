@@ -270,22 +270,22 @@
                 {
                     "name": "_PanelGradientColorA",
                     "type": "Color",
-                    "value": "0.282353,0.0431373,0.0901961,1"
+                    "value": "0.262745,0.0392157,0.0862745,1"
                 },
                 {
                     "name": "_PanelGradientColorB",
                     "type": "Color",
-                    "value": "0.509804,0.180392,0.247059,1"
+                    "value": "0.572549,0.231373,0.298039,1"
                 },
                 {
                     "name": "_PanelGradientColorC",
                     "type": "Color",
-                    "value": "0.509804,0.180392,0.247059,1"
+                    "value": "0.572549,0.231373,0.298039,1"
                 },
                 {
                     "name": "_PanelGradientColorD",
                     "type": "Color",
-                    "value": "0.509804,0.180392,0.247059,1"
+                    "value": "0.572549,0.231373,0.298039,1"
                 },
                 {
                     "name": "_PanelGradientColorUsed",

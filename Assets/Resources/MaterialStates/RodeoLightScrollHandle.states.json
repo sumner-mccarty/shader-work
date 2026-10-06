@@ -300,12 +300,12 @@
                 {
                     "name": "_ButtonPatternIntensity",
                     "type": "Range",
-                    "value": "0.3"
+                    "value": "0.4"
                 },
                 {
                     "name": "_ButtonPatternContrast",
                     "type": "Range",
-                    "value": "1"
+                    "value": "1.1"
                 },
                 {
                     "name": "_ButtonPatternSpecularEffect",

@@ -56,3 +56,9 @@ Rodeo (nearest warm/brown) in hue, material (velvet vs leather) and the red/whit
 ## Gate
 `check` 0 errors · `lookcheck.py CandyCane` 46 skins, 0 errors, 0 warnings · `tests/test_basics.py`
 passed. Not verified: Play Mode in the real app (no Unity here).
+
+## Quality pass (after Play Mode feedback on Walnut & Brass)
+- **Print audit:** Light mode printed cream chrome / track text on a snow chassis (1.0-1.35:1). Now dark
+  red-brown chrome and `tracks.text`, pale-green `rowWithSample`; all print roles >= 3:1.
+- **Craft:** stripe white lifted to #FFFFFF (it rendered grey), velvet sheen ramp 0.32/0.42 so the nap
+  catches the lamp. Clip 0.0% both modes.

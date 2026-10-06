@@ -480,7 +480,7 @@
                 {
                     "name": "_HandleColor",
                     "type": "Color",
-                    "value": "0.501961,0.286275,0.176471,1"
+                    "value": "0.537255,0.317647,0.196078,1"
                 },
                 {
                     "name": "_TrackValueFilledColor",

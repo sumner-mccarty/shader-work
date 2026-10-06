@@ -185,7 +185,7 @@
                 {
                     "name": "_LightingAmbient",
                     "type": "Range",
-                    "value": "0.95"
+                    "value": "1"
                 },
                 {
                     "name": "_ReceiveSceneShadows",

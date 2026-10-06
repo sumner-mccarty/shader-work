@@ -50,3 +50,10 @@ black lacquer), value structure (high-contrast keys) and the ice-blue ON.
 
 ## Gate
 `check` 0 errors · `lookcheck.py IceCold` 46 skins, 0 errors, 0 warnings · `tests/test_basics.py` passed. Not verified: Play Mode in the real app.
+
+## Quality pass (after Play Mode feedback on Walnut & Brass)
+- **Print audit:** dark mode printed near-black chrome / track text on black plates (1.04:1). Now light
+  `chrome.labelActive`, `tracks.text`, ruler and a dark `rowWithSample`; all print roles >= 3:1.
+- **Craft:** the gold skirt is now a fluted (serrated) gold edge with a brushed finish instead of the halftone
+  knurl (the known limit above is gone); ceramic keys got a crisper, more crystalline facet grain (0.5 @ contrast 1.35);
+  light chassis ambient 0.95 -> 1.0 for a whiter leather. Clip 0.0% dark, 0.07% light.

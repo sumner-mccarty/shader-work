@@ -600,12 +600,12 @@
                 {
                     "name": "_TrackValueFilledGradientColorC",
                     "type": "Color",
-                    "value": "0.984314,0.956863,0.917647,1"
+                    "value": "1,1,1,1"
                 },
                 {
                     "name": "_TrackValueFilledGradientColorD",
                     "type": "Color",
-                    "value": "0.984314,0.956863,0.917647,1"
+                    "value": "1,1,1,1"
                 },
                 {
                     "name": "_TrackValueFilledGradientColorUsed",

@@ -655,27 +655,27 @@
                 {
                     "name": "_HandleColor",
                     "type": "Color",
-                    "value": "0.501961,0.286275,0.176471,1"
+                    "value": "0.537255,0.317647,0.196078,1"
                 },
                 {
                     "name": "_HandleGradientColorA",
                     "type": "Color",
-                    "value": "0.109804,0.0823529,0.0784314,1"
+                    "value": "0.113725,0.0862745,0.0784314,1"
                 },
                 {
                     "name": "_HandleGradientColorB",
                     "type": "Color",
-                    "value": "0.317647,0.192157,0.129412,1"
+                    "value": "0.337255,0.207843,0.141176,1"
                 },
                 {
                     "name": "_HandleGradientColorC",
                     "type": "Color",
-                    "value": "0.776471,0.678431,0.627451,1"
+                    "value": "0.792157,0.694118,0.639216,1"
                 },
                 {
                     "name": "_HandleGradientColorD",
                     "type": "Color",
-                    "value": "0.576471,0.392157,0.298039,1"
+                    "value": "0.607843,0.419608,0.317647,1"
                 },
                 {
                     "name": "_HandleGradientColorUsed",
