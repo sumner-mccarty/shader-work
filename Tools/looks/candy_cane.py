@@ -14,7 +14,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from lookkit import Look, main  # noqa: E402
 
-RED, WHITE, GREEN, GOLD = "#D12A3A", "#FBF4EA", "#1E6B44", "#DDB650"
+RED, WHITE, GREEN, GOLD = "#D12A3A", "#FFFFFF", "#1E6B44", "#DDB650"
 CONTROLS = dict(                     # the hardware — identical in both modes
     BODY=GREEN, BODY_HI="#2A8458", BODY_LO="#154D31", DIS_BODY="#3E4A42",
     MARK="#FFF3DC", MARK_DIM="#B9C8A8", DIS_MARK="#76806F", ON_MARK="#FFF8EC",
@@ -46,7 +46,7 @@ LOOK = Look(
         "shadow": dict(blur=1.5, cast=0.24),
     },
     material={
-        "plate": {"preset": "fabric.velvet", "tint": "#7A1426", "plate_ramp": (0.25, 0.3),
+        "plate": {"preset": "fabric.velvet", "tint": "#7A1426", "plate_ramp": (0.32, 0.42),
                   "pattern": ("Fabric", 2.5, 0.4, 1.0, 0.5, 0.5, 0.0)},
         "key": {"preset": "enamel", "tint": GREEN, "edge": "gold.brushed"},
         "accent": {"preset": "enamel", "tint": RED, "edge": "gold.brushed"},

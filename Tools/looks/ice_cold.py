@@ -24,7 +24,7 @@ CONTROLS = dict(                     # the hardware — identical in both modes
     SCROLL="#2A2C31", SCROLL_HI="#E0B040", PAD_BODY="#2A2D33", PAD_TINT=0.7,
 )
 ICED = {"preset": "ceramic", "tint": ICE, "amb": 0.95, "spec": 1.0, "rough": 0.08,
-        "pattern": ("Ceramic", 2.4, 0.3, 1.0, 0.5, 0.5, 0.0), "edge": "gold.polished"}
+        "pattern": ("Ceramic", 2.4, 0.5, 1.35, 0.5, 0.5, 0.0), "edge": "gold.polished"}
 
 LOOK = Look(
     title="Ice Cold", style="IceCold", prefix="IceCold", slug="ice-cold", cls="lit", order=21,
@@ -35,7 +35,7 @@ LOOK = Look(
     shape={
         "key": dict(corner=0.5, round=0.5, bevel=0.2, depth=0.6, dome=0.35),
         # heavy: a wide skirt band of coarse gold knurl and a dashed 'chain link' ring round the cap
-        "dial": dict(skirt="Circle", cap_r=0.56, bevel=0.3, depth=0.6, smooth=0.6, dome=0.5, nub=0.07,
+        "dial": dict(skirt="Fluted", skirt_count=28, skirt_depth=0.09, cap_r=0.56, bevel=0.3, depth=0.6, smooth=0.6, dome=0.5, nub=0.07,
                      nub_dist=0.36, arc_px=3.0, stitch=(0.68, 0.045, "#E0B040")),
         "KnobHero": dict(ticks=11, arc_px=4.0),
         "shadow": dict(blur=1.5, cast=0.26),
@@ -44,9 +44,9 @@ LOOK = Look(
         "plate": {"preset": "rubber.matte", "tint": "#141518", "plate_ramp": (0.05, 0.18)},
         "key": ICED,
         "accent": {"preset": "ceramic", "tint": BLUE, "amb": 0.8, "spec": 1.0, "rough": 0.08,
-                   "pattern": ("Ceramic", 2.4, 0.3, 1.0, 0.5, 0.5, 0.0), "edge": "gold.polished"},
+                   "pattern": ("Ceramic", 2.4, 0.5, 1.35, 0.5, 0.5, 0.0), "edge": "gold.polished"},
         "cap": {"preset": "gold.polished", "amb": 0.9, "ramp": (-0.45, 0.05, 0.45, 0.85)},
-        "skirt": {"preset": "gold.brushed", "pattern": ("Knurled", 5.0, 0.3, 1.0, 0.5, 0.6, 0.5)},
+        "skirt": {"preset": "gold.brushed", "pattern": ("Metal", 1.0, 0.1, 1.0, 0.5, 0.0, 0.0)},
         "handle": "gold.polished",
     },
     rig={
@@ -74,7 +74,7 @@ LOOK = Look(
         "light": dict(
             track="Rosewater", blurb="White leather chassis, the same gold and ice.",
             palette=dict(CONTROLS, GAP="#A9AAAE", BACK="#D2D3D6", FACE="#ECECEA", INSET="#DCDDE0", SOCKET="#D6D7DA",
-                         WELL="#0A0B0D", SHADOW="#2C2E33", SHADOW_A=0.35, WELL_EM=0.05, AMB_PLATE=0.95),
+                         WELL="#0A0B0D", SHADOW="#2C2E33", SHADOW_A=0.35, WELL_EM=0.05, AMB_PLATE=1.0),
             material={"plate": {"preset": "leather.tooled", "tint": "#ECECEA", "lo": "#6C6C6E", "hi": "#FFFFFF",
                                 "plate_ramp": (0.1, 0.15), "pattern": ("Leather", 5.0, 0.25, 1.0, 0.5, 0.5, 0.0)}},
             app=dict(display=dict(text="#7FD2F2", textDim="#4F7F94", textAlt="#F2C14E"),

@@ -14,7 +14,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from lookkit import Look, main  # noqa: E402
 
 TURQ = "#2BB5AA"
-LEATHER = "#8E5632"
+LEATHER = "#A66A3E"
 CONTROLS = dict(                     # the hardware — identical in both modes
     BODY=LEATHER, MARK="#F4E4C4", MARK_DIM="#C9A878", DIS_MARK="#6A4E36", ON_MARK="#06201D",
     ACCENT=TURQ, SOLO="#E3A33A", LAMP="#F4A83A", LAMP_OFF="#7A5530", HOT="#D8452E",
@@ -39,9 +39,9 @@ LOOK = Look(
         "plate": dict(stitch=("#E2BE8A", 1.2)),
     },
     material={
-        "plate": {"preset": "leather.tooled", "lo": "#2A0A0A", "hi": "#EBB880", "plate_ramp": (0.3, 0.38),
-                  "pattern": ("Leather", 5.0, 0.5, 1.0, 0.5, 0.5, 0.0)},
-        "key": {"preset": "leather.tooled", "edge": "chrome"},
+        "plate": {"preset": "leather.tooled", "lo": "#2A0A0A", "hi": "#EBB880", "plate_ramp": (0.38, 0.45),
+                  "pattern": ("Leather", 5.0, 0.62, 1.1, 0.5, 0.5, 0.0)},
+        "key": {"preset": "leather.tooled", "edge": "chrome", "pattern": ("Leather", 3.0, 0.4, 1.1, 0.5, 0.5, 0.0)},
         "accent": {"preset": "enamel", "tint": TURQ, "edge": "chrome"},
         "cap": {"preset": "enamel", "tint": TURQ, "edge": "chrome", "dome": 0.5, "amb": 0.8,
                 "pattern": ("RadialBrushed", 3.0, 0.08, 1.0, 0.45, 0.2, 0.0)},

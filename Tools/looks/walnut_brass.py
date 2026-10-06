@@ -23,8 +23,11 @@ CONTROLS = dict(                     # the hardware — identical in both modes
     VALUE="#F0AA3C", VALUE_EM=0.25, TRACK="#120B06", ARC_OFF="#2A1B10",
     SCROLL="#4A3A2A", SCROLL_HI="#C9A24A", PAD_BODY="#3A2C20", PAD_TINT=0.6,
 )
-BRASS = {"preset": "brass", "plate_ramp": (0.2, 0.3), "plate_amb": 0.62}
-WALNUT = {"preset": "wood.oiled"}
+# brushed brass: long anisotropic streaks (Metal, p1 0.5, p2 0 = longest) at a visible 2 px grain and a real
+# bright-top / dark-foot gradient, so a large plate reads as lit metal at 1:1 rather than flat mustard
+BRASS = {"preset": "brass", "plate_ramp": (0.45, 0.5), "plate_amb": 0.6, "spec": 0.9, "rough": 0.2,
+         "pattern": ("Metal", 2.2, 0.24, 1.0, 0.5, 0.0, 0.0)}
+WALNUT = {"preset": "wood.oiled", "pattern": ("WoodGrain", 40.0, 0.7, 1.15, 0.5, 0.5, 0.5)}
 
 LOOK = Look(
     title="Walnut & Brass", style="WalnutBrass", prefix="WalnutBrass", slug="walnut-brass", cls="lit", order=23,
