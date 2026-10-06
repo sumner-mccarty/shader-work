@@ -318,6 +318,21 @@ class SkinRenderer:
         orient = cell.get("orientation") or self.orientation
 
         expand = float(cell.get("shadow", 0) or 0)
+        if expand > 1.001 and "_ShadowPassMode" not in sh.properties:
+            # The app only gives a control a shadow quad when its material HAS _ShadowPassMode
+            # (WidgetShadowQuad.cs) — toggles draw their shadow inline. Running the pass anyway
+            # would draw the whole control again at 2x behind itself. Keep the expanded frame so
+            # sheet layouts don't change, with no cast pass in it.
+            bw, bh = int(round(w * ss * expand)), int(round(h * ss * expand))
+            front = self.r.render(sh, props, (w * ss, h * ss), globals_, keywords, textures=textures,
+                                  bg=(0, 0, 0, 0), time=time, orientation=orient)
+            out = np.empty((bh, bw, 4), np.float32)
+            out[:] = bg
+            f = front.astype(np.float32) / 255.0
+            ox, oy = (bw - front.shape[1]) // 2, (bh - front.shape[0]) // 2
+            region = out[oy:oy + front.shape[0], ox:ox + front.shape[1]]
+            region[:] = f + region * (1.0 - f[..., 3:4])
+            return (np.clip(out, 0, 1) * 255.0 + 0.5).astype(np.uint8)
         if expand > 1.001:
             bw, bh = int(round(w * ss * expand)), int(round(h * ss * expand))
             back = self.r.render(sh, {**props, "_ShadowPassMode": 1.0, "_ShadowUvExpand": expand}, (bw, bh),
