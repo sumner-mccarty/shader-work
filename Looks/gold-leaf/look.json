@@ -5,7 +5,7 @@
   "prefix": "GoldLeaf",
   "brief": "BACKLOG.md#gold-leaf",
   "class": "lit",
-  "status": "candidate",
+  "status": "approved",
   "files": [
     "Tools/looks/gold_leaf.py",
     "Assets/Resources/UiStyles/GoldLeaf.style.json",
