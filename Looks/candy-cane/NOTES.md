@@ -42,3 +42,17 @@ Metrics: clip 0.0% both modes. ΔL light: knob −94, key −135.
 ## Round 5
 Ambient 0.98: Face clip 3.1%, Well 1.1% (the display text has a 255 channel) — over budget. Back to
 0.9 and display text #F6BE5E; this is the shipped balance (a slightly cool snow-white).
+
+Round 6 metrics: clip 0.0% on every plate in both modes (final).
+Known limits: lamps are one skin, so the brief's "slightly uneven per lamp" twinkle is not
+modelled; the yellow pad row tints olive (row colour is bound by the app); light mode reads a slightly
+cool snow-white (clip budget).
+
+## Diversity check
+Tiled with Flat, Gold Leaf, Ice Cold, Rodeo and Tron: Candy Cane is the only deep-red rack, the only
+one with striped controls (peppermint-swirl knobs, striped slider fills) and green keys. Differs from
+Rodeo (nearest warm/brown) in hue, material (velvet vs leather) and the red/white stripe motif.
+
+## Gate
+`check` 0 errors · `lookcheck.py CandyCane` 46 skins, 0 errors, 0 warnings · `tests/test_basics.py`
+passed. Not verified: Play Mode in the real app (no Unity here).

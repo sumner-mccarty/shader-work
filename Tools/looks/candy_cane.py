@@ -31,7 +31,7 @@ STRIPE = lambda layer, typ, direction, scale: {            # noqa: E731  red/whi
 
 LOOK = Look(
     title="Candy Cane", style="CandyCane", prefix="CandyCane", slug="candy-cane", cls="lit", order=22,
-    status="draft", brief="BACKLOG.md#candy-cane",
+    status="candidate", brief="BACKLOG.md#candy-cane",
     blurb="Red velvet, pine green, candy stripes and fairy lights. Seasonal.",
     tagline="red velvet, candy stripes, warm twinkle (seasonal).",
     displays="neo",
