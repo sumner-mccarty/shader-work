@@ -35,3 +35,18 @@ budget. White leather reads white; diamond keys, gold ring and "A01 KICK" print 
 - **Craft:** light chassis still too hot at ambient 1.05 → 0.95. The Well's 3% is the display text
   (#8FE0FF has a 255 channel) → text #7FD2F2.
 - **Identity (25% zoom):** gold domes + white-ice keys on black/white reads as flex in a second.
+
+## Round 4
+Metrics: clip 0.0% on every plate, both modes. ΔL dark: knob +98, knob.small +114, key +145; light: knob −87, key −44.
+- **Light mode:** off-white leather, silver-grey rather than snow white — the price of a 0% clip
+  budget under one far key. The controls are unchanged from dark (only the chassis moves).
+- **Identity / cohesion:** one world — black/white chassis, gold mass, ice faces, ice-blue ON.
+- **Known limit:** the hero cap's knurl still reads as a fine mesh at 3× zoom; fine at 1:1.
+
+## Diversity check
+Tiled with Flat, Gold Leaf, Rodeo and Tron: Ice Cold is the only rack with bright white keys on a
+near-black chassis; vs Gold Leaf (nearest, black + gold) it differs in key material (white ceramic vs
+black lacquer), value structure (high-contrast keys) and the ice-blue ON.
+
+## Gate
+`check` 0 errors · `lookcheck.py IceCold` 46 skins, 0 errors, 0 warnings · `tests/test_basics.py` passed. Not verified: Play Mode in the real app.

@@ -28,7 +28,7 @@ ICED = {"preset": "ceramic", "tint": ICE, "amb": 0.95, "spec": 1.0, "rough": 0.0
 
 LOOK = Look(
     title="Ice Cold", style="IceCold", prefix="IceCold", slug="ice-cold", cls="lit", order=21,
-    status="draft", brief="BACKLOG.md#ice-cold",
+    status="candidate", brief="BACKLOG.md#ice-cold",
     blurb="Matte black, heavy gold and diamond-white keys.",
     tagline="matte black, heavy gold chain hardware, iced keys.",
     displays="neo",
