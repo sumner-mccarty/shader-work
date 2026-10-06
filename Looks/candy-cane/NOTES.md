@@ -17,3 +17,14 @@ Metrics: clip 0.0% (both modes). ΔL dark: knob +85, knob.small +94, key +37.
 - **Craft:** pad rows tint to olive on the green pad body; velvet reads smooth (acceptable).
 - **Light:** snow frosted chassis good; clip 0%.
 Fix order: 1. bigger cap face + gold nub; 2. neutral pad body.
+
+## Round 2
+Changes: cap_r 0.6 / bevel 0.2 (bigger green face), gold nub, neutral pad body.
+Metrics: clip 0.0%. ΔL dark: knob +80, knob.small +88, key +37.
+- **Legibility:** the gold dot on the green cap reads at 30 px; the striped ring is a clean band. Fixed.
+- **Identity:** swirl ring + green face reads as candy/wreath in one second.
+- **Craft:** velvet still reads smooth — the fabric grain is invisible at 1:1 (**worst**). The yellow
+  pad row still tints olive (row colour is bound; accepted).
+
+## Round 3
+Changes: fabric grain 2.5 px @ 0.4, stronger sheen ramp on the plate (0.25/0.3).

@@ -46,7 +46,8 @@ LOOK = Look(
         "shadow": dict(blur=1.5, cast=0.24),
     },
     material={
-        "plate": {"preset": "fabric.velvet", "tint": "#7A1426"},
+        "plate": {"preset": "fabric.velvet", "tint": "#7A1426", "plate_ramp": (0.25, 0.3),
+                  "pattern": ("Fabric", 2.5, 0.4, 1.0, 0.5, 0.5, 0.0)},
         "key": {"preset": "enamel", "tint": GREEN, "edge": "gold.brushed"},
         "accent": {"preset": "enamel", "tint": RED, "edge": "gold.brushed"},
         "cap": {"preset": "enamel", "tint": GREEN, "edge": "gold.polished", "dome": 0.5, "amb": 0.8,
