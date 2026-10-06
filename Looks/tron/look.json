@@ -1,0 +1,16 @@
+{
+  "slug": "tron",
+  "style": "Tron",
+  "title": "Tron",
+  "prefix": "Tron",
+  "brief": "Tools/design_tron.py (shipped before the kit)",
+  "class": "neon",
+  "status": "shipped",
+  "files": [
+    "Tools/looks/tron.py",
+    "Assets/Resources/UiStyles/Tron.style.json",
+    "Assets/Resources/Themes/Tron*.theme.json",
+    "Assets/Resources/MaterialStates/TronDark*.states.json",
+    "Assets/Resources/MaterialStates/TronLight*.states.json"
+  ]
+}

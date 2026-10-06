@@ -16,7 +16,8 @@ You work here without Unity, ever. Everything you make is judged from slrender r
 | `Assets/Resources/UiStyles/` `Themes/` `TrackThemes/` | recipes, light rigs, highway palettes | only YOUR look's files |
 | `Assets/Resources/UiThemes/` | shared display finishes + palette | no (shared — causes PR conflicts) |
 | `Tools/*.py` (mirrored) | the project's skin tooling: `skinlib`, `skinsheet`, `bake`, `design_*`, `sheet_*` | no — import them |
-| `Tools/looks/` | one generator per look (yours) | yes |
+| `Tools/lookkit.py` | the shared look kit (spec → parts, recipe, rig, sheets, rule audit) | only to extend a class; keep the Flat/Tron proofs byte-identical |
+| `Tools/looks/` | one lookkit spec per look (yours); `flat.py`/`tron.py` are proofs, `example_lit.py` a template | yours only |
 | `Tools/lookcheck.py` `sync_from_unity.py` `import_to_unity.py` `setup_toolchain.*` | workshop tools | only if the task says so |
 | `Looks/` | one folder per look + `BACKLOG.md` briefs + `README.md` (format + rubric) | your look's folder |
 | `.claude/skills/skin-authoring/` | **the skin skill — read SKILL.md before any skin work** | no |
@@ -56,21 +57,30 @@ github.com, objects.githubusercontent.com, pypi.org and the Ubuntu archive.
 
 1. Read `.claude/skills/skin-authoring/SKILL.md` (all of it — the traps are real), `Looks/README.md`
    (package format + rubric), and your brief in `Looks/BACKLOG.md`.
-2. Write `Tools/looks/<module>.py`. Use `Tools/lookkit.py` if it exists (the shared look kit —
-   follow its docstring); until then use `Tools/design_flat.py` (unlit), `Tools/design_tron.py` (neon)
-   or the shipped `Realistic*`/`NeoDark*`/`NeoLight*`/`RackFaceplate*` skins (lit) as templates via
-   `skinlib.skin(...)`. Every part: own prefix, `bounds=`, every effect guard set explicitly.
-3. Roster EVERY role, family and swap in the recipe (lookcheck lists them), dark AND light.
-4. Iterate on **rack composites**, not part lists: ≥ 3 rounds. Each round write a short critique in
-   `Looks/<slug>/NOTES.md` against the rubric (identity, cohesion, legibility at 48 px, craft, states,
-   fidelity), then fix the worst problem first.
+2. Write `Tools/looks/<module>.py` as a **lookkit spec** (`Tools/lookkit.py` — read its docstring and
+   the spec section of `Looks/README.md`). Copy the closest template: `Tools/looks/flat.py` (unlit),
+   `Tools/looks/tron.py` (neon) or `Tools/looks/example_lit.py` (lit). A spec is palettes per mode,
+   shape language, materials, rig, displays and app-print overrides — the kit builds all 23 parts per
+   mode, the roster, recipe and rig, and enforces the skill's rules (bounds, every guard, footprints,
+   lip 0, knob shadow, plate bevel/dome, px-locked patterns, arc ≤ 0.88, light mode = chassis).
+   Never hand-write states files for a look; if the kit lacks a vocabulary, extend the class in
+   lookkit.py and keep the proofs green (`python Tools/looks/flat.py diff`, `tron.py diff`: every part
+   and rig identical, recipes differing only in the banner).
+3. `python Tools/looks/<module>.py check` → 0 errors. A rule may only be broken through
+   `waive={"rule:Slot": "reason"}`, and the reason belongs in NOTES.md too.
+4. Iterate on **rack composites**, not part lists: ≥ 3 rounds of
+   `python Tools/looks/<module>.py sheet` (writes `Looks/<slug>/sheets/{rack,parts}-{dark,light}.png`;
+   keep `SKINSHEET_BACKEND=bus`). Each round write a short critique in `Looks/<slug>/NOTES.md` against
+   the rubric (identity, cohesion, legibility at 48 px, craft, states, fidelity), then fix the worst
+   problem first.
 5. Diversity check: tile your `rack-dark.png` with every other look's
    (`python -m slrender contact Looks/*/sheets/rack-dark.png -o /tmp/family.png`) and confirm yours
    is unmistakable.
-6. Gate: `python Tools/lookcheck.py <Style>` → 0 errors (and read the warnings). `python tests/test_basics.py`.
-7. Save final sheets to `Looks/<slug>/sheets/` (`rack-dark.png`, `rack-light.png`, `parts-dark.png`,
-   `parts-light.png`), set `look.json` `status: "candidate"`, commit, push, open a PR titled
-   `look: <Title>` whose description embeds the four sheets and summarises NOTES.md.
+6. `python Tools/looks/<module>.py write` + `manifest`, then the gate: `python Tools/lookcheck.py <Style>`
+   → 0 errors (and read the warnings). `python tests/test_basics.py`.
+7. Final sheets in `Looks/<slug>/sheets/`, set the spec's `status="candidate"` (re-run `manifest`),
+   commit, push, open a PR titled `look: <Title>` whose description embeds the four sheets and
+   summarises NOTES.md.
 
 ## Shader workflow (only when the task is a shader feature)
 
