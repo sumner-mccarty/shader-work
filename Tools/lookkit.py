@@ -1946,10 +1946,13 @@ class Scene:
         return {"clip": clip, "sep": sep}
 
 
-def ink(look, mode, P):
+def ink(look, mode, P, plate="faceplate"):
+    """Print colours for a plate (`faceplate`, `inset`, `backplane`...): the app prints per surface, so a
+    look with a dark inset on a bright faceplate (or the reverse) names each ink separately."""
     _, groups = look.app(mode, P)
     i = groups.get("ink", {})
-    return i.get("faceplate", first(P["MARK"])), i.get("faceplateDim", first(P["MARK_DIM"]))
+    return (i.get(plate, i.get("faceplate", first(P["MARK"]))),
+            i.get(plate + "Dim", i.get("faceplateDim", first(P["MARK_DIM"]))))
 
 
 def rack_sheet(look, mode, out):
@@ -2022,6 +2025,8 @@ def rack_sheet(look, mode, out):
     a("Solo", 154, 540, 32, 32)
     cv = sc.render()
     ink_c, dim_c = ink(look, mode, P)
+    in_ink, in_dim = ink(look, mode, P, "inset")          # captions inside the knob bank / bottom strip
+    bp_ink, bp_dim = ink(look, mode, P, "backplane")      # print on the backplane strip
     key_ink = first(P["MARK"])
     screen = look.app(mode, P)[1].get("display", {})
     scr_ink, scr_dim = screen.get("text", ink_c), screen.get("textDim", dim_c)      # print IN a well
@@ -2030,7 +2035,7 @@ def rack_sheet(look, mode, out):
     t(130, 44, "dB  OUT", scr_dim, 11)
     t(446, 45, "LEARN", key_ink, 10, True, "mm")
     for i, lab in enumerate(("0%", "40%", "80%", "100%", "DIS", "HOVER")):
-        t(40 + i * 110 + kw / 2 if i < 4 else (480 if i == 4 else 560) + kw / 2, 112 + kw + 8, lab, dim_c, 10,
+        t(40 + i * 110 + kw / 2 if i < 4 else (480 if i == 4 else 560) + kw / 2, 112 + kw + 8, lab, in_dim, 10,
           False, "ma")
     t(660 + kh / 2, 104 + kh + 10, "MASTER", dim_c, 11, True, "ma")
     t(660 + kh * 1.5 + 30, 104 + kh + 10, "PRESSED", dim_c, 11, True, "ma")
@@ -2042,8 +2047,8 @@ def rack_sheet(look, mode, out):
         t(458 + i * 84 + 38, 344, lab, key_ink if i < 3 else key_dim, 11, True, "mm")
     t(24, 418, "FADER  62%  ·  DISABLED 30%", dim_c, 10)
     t(1160, 222, "PADS · latched · pressed · disabled", dim_c, 10, False, "ra")
-    t(700, 504, "A01  KICK", ink_c, 12, True)
-    t(200, 548, f"{look.title.upper()} {mode.upper()} · {look.cls}", dim_c, 11, True)
+    t(700, 504, "A01  KICK", bp_ink, 12, True)
+    t(200, 548, f"{look.title.upper()} {mode.upper()} · {look.cls}", bp_dim, 11, True)
     img = cv.image()
     sc.report()
     return _titled(img, f"{look.title} {mode} — rack composite (cohesion test)", P, out)

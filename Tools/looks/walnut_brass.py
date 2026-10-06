@@ -65,7 +65,7 @@ LOOK = Look(
             app=dict(display=dict(text="#F2B25A", textDim="#8A6636", textAlt="#F2B25A"),
                      ui=dict(text="#F0E2BC", textDim="#9C8A60", accent=AMBER),
                      # brass faceplate takes dark print, walnut takes cream
-                     ink=dict(faceplate="#1E1409", faceplateDim="#4F4020", inset="#F0E2BC", insetDim="#A8946A",
+                     ink=dict(faceplate="#1E1409", faceplateDim="#33260F", inset="#F0E2BC", insetDim="#A8946A",
                               backplane="#F0E2BC", backplaneDim="#A8946A", socket="#F0E2BC", socketDim="#A8946A",
                               reviewBar="#F0E2BC", reviewBarDim="#A8946A"))),
         "light": dict(
@@ -76,8 +76,8 @@ LOOK = Look(
                                 "plate_ramp": (0.1, 0.15), "plate_amb": 0.9}},
             app=dict(display=dict(text="#F2B25A", textDim="#8A6636", textAlt="#F2B25A"),
                      ui=dict(text="#2A1A0E", textDim="#6B5238", accent="#B26A12"),
-                     ink=dict(faceplate="#2A1A0E", faceplateDim="#6B5238", inset="#1E1209", insetDim="#4E3A24",
-                              backplane="#1E1209", backplaneDim="#4E3A24", socket="#1E1209", socketDim="#4E3A24",
+                     ink=dict(faceplate="#2A1A0E", faceplateDim="#4A3820", inset="#FBF0D8", insetDim="#E3D2AE",
+                              backplane="#FBF0D8", backplaneDim="#E3D2AE", socket="#FBF0D8", socketDim="#E3D2AE",
                               reviewBar="#2A1A0E", reviewBarDim="#6B5238"))),
     },
 )
