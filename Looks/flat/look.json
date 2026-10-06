@@ -1,0 +1,16 @@
+{
+  "slug": "flat",
+  "style": "Flat",
+  "title": "Flat",
+  "prefix": "Flat",
+  "brief": "Tools/design_flat.py (shipped before the kit)",
+  "class": "unlit",
+  "status": "shipped",
+  "files": [
+    "Tools/looks/flat.py",
+    "Assets/Resources/UiStyles/Flat.style.json",
+    "Assets/Resources/Themes/Flat*.theme.json",
+    "Assets/Resources/MaterialStates/FlatDark*.states.json",
+    "Assets/Resources/MaterialStates/FlatLight*.states.json"
+  ]
+}

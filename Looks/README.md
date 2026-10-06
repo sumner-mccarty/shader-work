@@ -8,7 +8,7 @@ automatically from `Assets/Resources/UiStyles/<Style>.style.json`.
 
 | Path | What |
 |---|---|
-| `Tools/looks/<module>.py` | the generator — **the source of truth**; everything below is written by it |
+| `Tools/looks/<module>.py` | the look SPEC (see below) — **the source of truth**; `Tools/lookkit.py` writes everything below from it |
 | `Assets/Resources/MaterialStates/<Prefix>Dark*.states.json`, `<Prefix>Light*` | ~23 parts per mode |
 | `Assets/Resources/UiStyles/<Style>.style.json` | recipe: roles, families, swaps, palettes, displays, rig |
 | `Assets/Resources/Themes/<Style>[Light].theme.json` | the look's light rig (lit looks; unlit looks use all-off) |
@@ -42,9 +42,77 @@ display finishes (`flat.*`, `neo.*`, `tron.*`, authored hardware) via the recipe
 `status`: `draft` (work in progress) → `candidate` (passes the gate, PR open) → `approved` (you merged
 it after review) → `shipped` (imported into audiogame and checked in Play Mode).
 
+## The look spec (`Tools/lookkit.py`)
+
+A look is a ~150-line **spec**, not a generator. `Tools/lookkit.py` owns everything that is the same
+for every look — the 23 part builders per mode, the roster (roles, families, by-name swaps), app
+palette derivation, display map, rig and recipe writers, the rule audit, the rack/parts sheets and
+the CLI. Start from the closest spec: `Tools/looks/flat.py` (unlit), `Tools/looks/tron.py` (neon) or
+`Tools/looks/example_lit.py` (lit — a template, never shipped).
+
+```python
+import sys; from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from lookkit import Look, main
+
+LOOK = Look(
+    title="Gold Leaf", style="GoldLeaf", prefix="GoldLeaf", slug="gold-leaf", cls="lit", order=7,
+    blurb="One line for Skin Studio.", tagline="first line of the recipe banner", note="more banner text",
+    modes={
+        "dark":  dict(track="Nebula", blurb="...", palette={...tokens...}, app={...overrides...}),
+        "light": dict(track="Rosewater", blurb="...", palette={...}, app={...}),
+    },
+    shape={"key": {...}, "dial": {...}, "fader": {...}, "switch": {...}, "plate": {...},
+           "<Slot>": {...}, "shadow": {"blur": 1.4, "cast": 0.22}},       # form language
+    material={"plate": {...}, "key": {...}, "cap": {...}, "skirt": {...}, "handle": {...}},   # lit
+    rig={"dark": {"light1": {...}, "light2": {...}, "light3": {...}}, "light": {...}},     # lit
+    displays="neo",                  # a finish family (flat/neo/tron), or a full {authored: finish} map
+    colourways={"Emerald": dict(palette={"dark": {...}, "light": {...}}, app={"dark": {...}})},
+    waive={"<rule>:<Slot|token>": "why this look must break the rule"},
+    track_themes={"MyTrack": {...a TrackThemes json...}},                # optional
+)
+if __name__ == "__main__":
+    sys.exit(main(LOOK))
+```
+
+| Field | Meaning |
+|---|---|
+| `cls` | `unlit` (Flat's rules: non-RM, `_LightingUnlit 1`, value steps), `neon` (Tron's: unlit light tubes — core/bloom/sheen), `lit` (UI/*RM under the look's rig; the Realistic/Neo/RackFaceplate vocabulary). Each class documents its palette tokens (`TOKENS`) and shape defaults (`SHAPE`) in lookkit.py. |
+| `palette` | Per-mode tokens the class reads (`FACE`, `BODY`, `ACCENT`, `VALUE`, …). A missing required token is an error; optional ones are derived (`PALETTE_DEFAULTS`). App-print tiers `INK` / `INK_DIM` / `PRINT_DIM` default to `MARK` / `MARK_DIM`. Neon keeps mode-dependent weights (`LINE`, `BLOOM`, `GRID`, plate px) in the palette. |
+| `shape` | Form language, resolved **class group < spec group < class slot < spec slot**. Groups: `key` (corner, round, bevel, depth, dome, icon…), `dial` (`silhouette` needle/capped/cap, px, arc_px, skirt = a KnobShapeType name, cap_r, dome, nub…), `fader`, `switch`, `plate` (radius_px, pad_px, recess…). Slots: `Button Accent ToggleBtn Solo Lamp Close Chip Dot ScrollHandle Pad Knob KnobHero KnobSmall Slider Fader Pill Face Inset Socket Well Back Bezel ScrollTrack`. `pad` is the footprint — leave it. |
+| `material` | Lit patterns per surface: `pattern` (a PatternType name: Metal, Plastic, RadialBrushed, Knurled, WoodGrain…), `scale`, `px` (pixel lock — required on plates), `intensity`, `contrast`, `spec`, `rough`, `p1..p3`. |
+| `app` | Overrides on the DERIVED app palettes (`chrome`, `ui`, `surface`, `ink`, `display`, `key`, `pad`, `review`, `tracks`). Derivation already covers the pale-look pieces (`ink.key` only on pale keys; `review.slot/slotFill`, `tracks.noteSeparator` on pale lanes). `None` deletes a key. |
+| `rig` | Lit only: lamps per mode → `Themes/<Style>{Dark,Light}.theme.json`. Unlit/neon always get `Themes/<Style>.theme.json` with every lamp off. |
+| `waive` | The only way past a rule. The reason prints on every `check`, so the exception gets reviewed. |
+
+```bash
+python Tools/looks/<module>.py check       # build in memory + audit every rule (0 errors before anything else)
+python Tools/looks/<module>.py sheet       # Looks/<slug>/sheets/{rack,parts}-{dark,light}.png
+python Tools/looks/<module>.py write       # MaterialStates, UiStyles recipe, Themes rig (refuses with errors)
+python Tools/looks/<module>.py diff        # byte-for-byte against what is on disk (--root DIR for a scratch tree)
+python Tools/looks/<module>.py manifest    # Looks/<slug>/look.json
+python Tools/looks/<module>.py selftest    # break each rule on a copy and confirm `check` catches it
+#   --colourway <Name|all> acts on a declared colourway (its own Style, prefix <Prefix><Name>)
+```
+
+**Rules the kit enforces** (`check` errors): bounds on every part; every effect guard written; the
+footprint (`_ButtonPadding`/`_BgPadding`) equals the app skin each part swaps for; `_ButtonLipHeight`,
+`_KnobLipHeight`, `_HandleLipHeight` authored 0 on RM parts; `_LightingShadow1Enabled` explicit on
+knobs; knob bevel inside the cap; plates never domed, bevel distance ≤ 0.14, no bevel on a lit look's
+Face/Back; every patterned plate pixel-locked; value arc `_LineRadius + _LineWidth` ≤ 0.88 (0.92
+with square ends); a light mode moves no control token (`BODY`, `ACCENT`, `CAP`, `HANDLE`) by ≥ 0.3
+luminance; every mode names an existing track theme; every shader key validated. The sheets
+composite slrender's premultiplied cells exactly (`src + (1 - a) · dst`), so an AA edge never grows
+a dark outline and a neon bloom stays additive — no per-cell `bg` hacks.
+
+The proof that the kit is complete: `python Tools/looks/flat.py diff` and `tron.py diff` reproduce
+every shipped FlatDark*/FlatLight*/TronDark*/TronLight* part and both rigs byte-for-byte; the two
+recipes are JSON-identical (only the generated banner comment and one hand-formatted line differ).
+
 ## The gate (a PR is not ready until all pass)
 
 ```bash
+python Tools/looks/<module>.py check     # 0 errors: the kit's rule audit
 python Tools/lookcheck.py <Style>        # 0 errors: full roster, bounds, valid params, every part renders
 python tests/test_basics.py              # renderer contract still holds
 ```
@@ -73,4 +141,6 @@ SkinSheet's bevel direction, which is inverted.
 
 A look may declare colourways (same structure, new palette — e.g. Gold Leaf on black / ivory /
 emerald). Each colourway ships as its own Style so it appears in Skin Studio; it must still pass
-the gate and rubric points 3–5.
+the gate and rubric points 3–5. In a spec: `colourways={"Emerald": dict(palette={"dark": {...},
+"light": {...}}, app={"light": {...}})}` → Style `<Style>Emerald`, prefix `<Prefix>Emerald`, built with
+`--colourway Emerald` (or `all`).
