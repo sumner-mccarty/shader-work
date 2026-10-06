@@ -1,0 +1,16 @@
+{
+  "slug": "gold-leaf",
+  "style": "GoldLeaf",
+  "title": "Gold Leaf",
+  "prefix": "GoldLeaf",
+  "brief": "BACKLOG.md#gold-leaf",
+  "class": "lit",
+  "status": "candidate",
+  "files": [
+    "Tools/looks/gold_leaf.py",
+    "Assets/Resources/UiStyles/GoldLeaf.style.json",
+    "Assets/Resources/Themes/GoldLeaf*.theme.json",
+    "Assets/Resources/MaterialStates/GoldLeafDark*.states.json",
+    "Assets/Resources/MaterialStates/GoldLeafLight*.states.json"
+  ]
+}
