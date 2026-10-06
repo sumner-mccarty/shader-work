@@ -1,0 +1,16 @@
+{
+  "slug": "walnut-brass",
+  "style": "WalnutBrass",
+  "title": "Walnut & Brass",
+  "prefix": "WalnutBrass",
+  "brief": "BACKLOG.md#walnut-brass",
+  "class": "lit",
+  "status": "candidate",
+  "files": [
+    "Tools/looks/walnut_brass.py",
+    "Assets/Resources/UiStyles/WalnutBrass.style.json",
+    "Assets/Resources/Themes/WalnutBrass*.theme.json",
+    "Assets/Resources/MaterialStates/WalnutBrassDark*.states.json",
+    "Assets/Resources/MaterialStates/WalnutBrassLight*.states.json"
+  ]
+}

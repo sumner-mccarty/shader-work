@@ -1,0 +1,16 @@
+{
+  "slug": "ice-cold",
+  "style": "IceCold",
+  "title": "Ice Cold",
+  "prefix": "IceCold",
+  "brief": "BACKLOG.md#ice-cold",
+  "class": "lit",
+  "status": "candidate",
+  "files": [
+    "Tools/looks/ice_cold.py",
+    "Assets/Resources/UiStyles/IceCold.style.json",
+    "Assets/Resources/Themes/IceCold*.theme.json",
+    "Assets/Resources/MaterialStates/IceColdDark*.states.json",
+    "Assets/Resources/MaterialStates/IceColdLight*.states.json"
+  ]
+}

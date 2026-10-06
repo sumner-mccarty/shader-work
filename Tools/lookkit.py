@@ -7,6 +7,7 @@
     python Tools/looks/<module>.py recipe                   # just Resources/UiStyles/<Style>.style.json
     python Tools/looks/<module>.py diff                     # what `write` would change, byte for byte
     python Tools/looks/<module>.py manifest                 # Looks/<slug>/look.json
+    python Tools/looks/<module>.py printcheck               # WCAG contrast of every app print role on its plate
     python Tools/looks/<module>.py selftest                 # break each rule on a copy: audit must catch it
     python Tools/lookkit.py materials [preset ...]          # the material swatch sheet (Looks/_materials/)
       --root DIR      write/diff against DIR/Assets/Resources/... instead of the repo (scratch builds)
@@ -1232,6 +1233,12 @@ class Lit(Unlit):
             "_KnobNubEnabled": 1, "_KnobNubShapeType": 0, "_KnobNubColor": P["NUB"], "_KnobNubSize": S["nub"],
             "_KnobNubDistance": S["nub_dist"],
         })
+        if S.get("stitch"):
+            # a dashed ring of thread round the cap (24 fixed dashes): leather-stitched concho collar
+            rad, th, col = S["stitch"]
+            base.update({"_OuterRing1Enabled": 1, "_OuterRing1Radius": rad, "_OuterRing1Thickness": th,
+                         "_OuterRing1Color": col, "_OuterRing1AngleStart": 0, "_OuterRing1AngleRange": 360,
+                         "_OuterRing1Style": 1, "_OuterRing1RenderAlpha": 1.0, "_OuterRing1RenderEmissive": 0.0})
         if ms:
             # the skirt is the bevel band: it wears the skirt material's EDGE ramp (+ pattern above) —
             # the lit chamfer that lifts a dark knob off a dark plate
@@ -1341,6 +1348,11 @@ class Lit(Unlit):
             # a recessed dish reads as a dish only if its wall catches light — a RIM, low depth
             base.update({"_PanelRimEnabled": 1, "_PanelRimDepth": S["recess"], "_PanelRimWidth": S["rim_w"],
                          "_PanelRimSmoothness": S["rim_w"]})
+        if S.get("stitch") and slot in ("Face", "Inset", "Back"):
+            # a welt/stitch line hugging the plate edge: a thin solid Border band in the thread colour
+            col, wpx = S["stitch"]
+            base.update({"_BorderEnabled": 1, "_BorderColor": col, "_BorderWidthPx": wpx,
+                         "_BorderRenderAlpha": 1.0, "_BorderRenderEmissive": 0.0})
         if S["screws"]:
             base.update({"_PanelScrewsEnabled": 1, "_PanelScrewShapeType": 1, "_PanelScrewInsetPx": 7.5,
                          "_PanelScrewRadiusPx": 3.8, "_PanelScrewColor": mix(c, "#FFFFFF", 0.35),
@@ -1554,6 +1566,9 @@ class Look:
         for slot, base, states, extra in self.kit.parts(self, P):
             fam, bkey = SLOTS[slot][:2]
             name = P["prefix"] + slot
+            # `shape.<group|slot>["set"]`: raw shader properties a spec adds to a part (validated by skin()
+            # against the shader's own Properties) — for a motif the kit has no vocabulary for, e.g. stripes
+            base = dict(base, **self.S(slot).get("set", {}))
             doc, probs = skin(name, fam, base, states, bounds=BOUNDS[bkey], flat_shader=not self.kit.rm,
                               extra=extra, write=False, quiet=True)
             doc["author"] = self.author
@@ -1932,10 +1947,13 @@ class Scene:
         return {"clip": clip, "sep": sep}
 
 
-def ink(look, mode, P):
+def ink(look, mode, P, plate="faceplate"):
+    """Print colours for a plate (`faceplate`, `inset`, `backplane`...): the app prints per surface, so a
+    look with a dark inset on a bright faceplate (or the reverse) names each ink separately."""
     _, groups = look.app(mode, P)
     i = groups.get("ink", {})
-    return i.get("faceplate", first(P["MARK"])), i.get("faceplateDim", first(P["MARK_DIM"]))
+    return (i.get(plate, i.get("faceplate", first(P["MARK"]))),
+            i.get(plate + "Dim", i.get("faceplateDim", first(P["MARK_DIM"]))))
 
 
 def rack_sheet(look, mode, out):
@@ -2008,6 +2026,8 @@ def rack_sheet(look, mode, out):
     a("Solo", 154, 540, 32, 32)
     cv = sc.render()
     ink_c, dim_c = ink(look, mode, P)
+    in_ink, in_dim = ink(look, mode, P, "inset")          # captions inside the knob bank / bottom strip
+    bp_ink, bp_dim = ink(look, mode, P, "backplane")      # print on the backplane strip
     key_ink = first(P["MARK"])
     screen = look.app(mode, P)[1].get("display", {})
     scr_ink, scr_dim = screen.get("text", ink_c), screen.get("textDim", dim_c)      # print IN a well
@@ -2016,7 +2036,7 @@ def rack_sheet(look, mode, out):
     t(130, 44, "dB  OUT", scr_dim, 11)
     t(446, 45, "LEARN", key_ink, 10, True, "mm")
     for i, lab in enumerate(("0%", "40%", "80%", "100%", "DIS", "HOVER")):
-        t(40 + i * 110 + kw / 2 if i < 4 else (480 if i == 4 else 560) + kw / 2, 112 + kw + 8, lab, dim_c, 10,
+        t(40 + i * 110 + kw / 2 if i < 4 else (480 if i == 4 else 560) + kw / 2, 112 + kw + 8, lab, in_dim, 10,
           False, "ma")
     t(660 + kh / 2, 104 + kh + 10, "MASTER", dim_c, 11, True, "ma")
     t(660 + kh * 1.5 + 30, 104 + kh + 10, "PRESSED", dim_c, 11, True, "ma")
@@ -2028,8 +2048,8 @@ def rack_sheet(look, mode, out):
         t(458 + i * 84 + 38, 344, lab, key_ink if i < 3 else key_dim, 11, True, "mm")
     t(24, 418, "FADER  62%  ·  DISABLED 30%", dim_c, 10)
     t(1160, 222, "PADS · latched · pressed · disabled", dim_c, 10, False, "ra")
-    t(700, 504, "A01  KICK", ink_c, 12, True)
-    t(200, 548, f"{look.title.upper()} {mode.upper()} · {look.cls}", dim_c, 11, True)
+    t(700, 504, "A01  KICK", bp_ink, 12, True)
+    t(200, 548, f"{look.title.upper()} {mode.upper()} · {look.cls}", bp_dim, 11, True)
     img = cv.image()
     sc.report()
     return _titled(img, f"{look.title} {mode} — rack composite (cohesion test)", P, out)
@@ -2105,12 +2125,17 @@ def parts_sheet(look, mode, out):
         y += h + lab_h + row_gap
     H = y
     sc = Scene(look, mode, W, H, "parts")
-    sc.canvas.px[:] = sc.canvas.np.array(rgbf(look.kit.plate_colors(look, sc.P, "Face")[0]), "float32")
+    lo_, hi_ = look.kit.plate_colors(look, sc.P, "Face")
+    page = mix(lo_, hi_, 0.5) if look.cls == "lit" else lo_       # a lit plate's page is its gradient's middle
+    sc.canvas.px[:] = sc.canvas.np.array(rgbf(page), "float32")
     for by, bh in bands:
         sc.canvas.px[max(0, by):by + bh] = sc.canvas.np.array(rgbf(sc.P["GAP"]), "float32")
     rowsc = _track_rows(look.modes[mode]["track"], look.track_themes)
-    ink_c, dim_c = ink(look, mode, sc.P)
+    face_ink, face_dim = ink(look, mode, sc.P)
+    band_ink, band_dim = ink(look, mode, sc.P, "backplane")       # the Plates/Screens bands sit on the GAP
     for label, c, x, yy in placed:
+        banded = label.startswith(("Plates", "Screens"))
+        ink_c, dim_c = (band_ink, band_dim) if banded else (face_ink, face_dim)
         if c is None:
             sc.canvas.text(x, yy, label, ink_c, 12, True)
             continue
@@ -2333,6 +2358,46 @@ def load_spec(arg):
     return mod.LOOK
 
 
+def print_contrast(look, floor=3.0):
+    """WCAG contrast of every app print role against the plate it lands on. The app prints per surface and
+    its derived defaults leak the KEY mark colour into chrome/track text, so a look with dark keys on dark
+    plates (or pale keys on pale plates) needs explicit `app` overrides. -> [(mode, pair, fg, bg, ratio)]"""
+    def lin(c):
+        c = first(c).lstrip("#")
+        return [(int(c[i:i + 2], 16) / 255) for i in (0, 2, 4)]
+
+    def L(c):
+        f = lambda v: v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4          # noqa: E731
+        r, g, b = map(f, lin(c))
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+    def ratio(a, b):
+        hi, lo = max(L(a), L(b)), min(L(a), L(b))
+        return (hi + 0.05) / (lo + 0.05)
+    bad = []
+    for mode in MODES:
+        P = look.palette(mode)
+        chrome, g = look.app(mode, P)
+        t = lambda k: first(P[k])                                                          # noqa: E731
+        ink_, ui, tr = g["ink"], g["ui"], g["tracks"]
+        pairs = [("ink.faceplate/FACE", ink_["faceplate"], t("FACE")), ("ink.faceplateDim/FACE", ink_["faceplateDim"], t("FACE")),
+                 ("ink.inset/INSET", ink_["inset"], t("INSET")), ("ink.insetDim/INSET", ink_["insetDim"], t("INSET")),
+                 ("ink.backplane/BACK", ink_["backplane"], t("BACK")), ("ink.backplaneDim/BACK", ink_["backplaneDim"], t("BACK")),
+                 ("ink.socket/SOCKET", ink_["socket"], t("SOCKET")), ("ink.reviewBar/BACK", ink_["reviewBar"], t("BACK")),
+                 ("ui.text/FACE", ui["text"], t("FACE")), ("ui.textDim/FACE", ui["textDim"], t("FACE")),
+                 ("chrome.label/BACK", chrome["label"], t("BACK")), ("chrome.labelActive/FACE", chrome["labelActive"], t("FACE")),
+                 ("chrome.icon/BACK", chrome["icon"], t("BACK")),
+                 ("tracks.text/backdrop", tr["text"], tr["backdrop"]), ("tracks.text/strip", tr["text"], tr["strip"]),
+                 ("tracks.text/rowEmpty", tr["text"], tr["rowEmpty"]), ("tracks.text/rowWithSample", tr["text"], tr["rowWithSample"]),
+                 ("key.label/BODY", g["key"]["label"], t("BODY")),
+                 ("display.text/WELL", g["display"]["text"], t("WELL")), ("display.textDim/WELL", g["display"]["textDim"], t("WELL"))]
+        for name, fg, bg in pairs:
+            r = ratio(fg, bg)
+            if r < floor:
+                bad.append((mode, name, first(fg), first(bg), round(r, 2)))
+    return bad
+
+
 def main(look, argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
 
@@ -2368,6 +2433,12 @@ def main(look, argv=None):
                 print("  ERROR ", e)
             print(f"  {len(errors)} error(s), {len(warns)} warning(s), {len(waivers)} waived")
             rc |= 1 if errors else 0
+        elif cmd == "printcheck":
+            bad = print_contrast(lk)
+            for mode, name, fg, bg, r in bad:
+                print(f"  LOW   {mode:5} {name:28} {fg} on {bg}  contrast {r}")
+            print(f"  {len(bad)} print pair(s) under 3:1")
+            rc |= 1 if bad else 0
         elif cmd == "write":
             if lk.status == "example" and not root_opt:
                 print("  an example spec only writes to a scratch --root")

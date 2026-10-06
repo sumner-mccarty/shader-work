@@ -1,0 +1,64 @@
+# Candy Cane — notes (seasonal)
+
+Brief (BACKLOG.md#candy-cane): red velvet plates with gold trim, candy-cane striped slider tracks and
+knob skirts, pine-green keys, warm fairy-light lamps (amber glow, slightly uneven per lamp); light
+mode snow-white frosted chassis with red and green. **Signature:** stripes + velvet + warm twinkle.
+
+Built on the lookkit `lit` class: `fabric.velvet` plates with a gold welt (kit `plate.stitch`), green
+`enamel` keys with a `gold.brushed` chamfer, gold slider handles, red/white stripes through the kit's
+new `shape[...]["set"]` raw-property hook (default off; Flat/Tron/Gold Leaf proofs unchanged):
+Angular gradient on the knob skirt (a peppermint swirl), Triangle gradient on the slider fill.
+
+## Round 1
+Metrics: clip 0.0% (both modes). ΔL dark: knob +85, knob.small +94, key +37.
+- **Identity:** unmistakable — peppermint-swirl knobs, striped fills, red velvet, green keys, gold.
+- **Legibility:** **worst problem** — the cap is a tiny green dot and the white nub vanishes on the
+  white/red swirl: the pointer is unreadable at 30 px.
+- **Craft:** pad rows tint to olive on the green pad body; velvet reads smooth (acceptable).
+- **Light:** snow frosted chassis good; clip 0%.
+Fix order: 1. bigger cap face + gold nub; 2. neutral pad body.
+
+## Round 2
+Changes: cap_r 0.6 / bevel 0.2 (bigger green face), gold nub, neutral pad body.
+Metrics: clip 0.0%. ΔL dark: knob +80, knob.small +88, key +37.
+- **Legibility:** the gold dot on the green cap reads at 30 px; the striped ring is a clean band. Fixed.
+- **Identity:** swirl ring + green face reads as candy/wreath in one second.
+- **Craft:** velvet still reads smooth — the fabric grain is invisible at 1:1 (**worst**). The yellow
+  pad row still tints olive (row colour is bound; accepted).
+
+## Round 3
+Changes: fabric grain 2.5 px @ 0.4, stronger sheen ramp on the plate (0.25/0.3).
+Metrics: dark clip 0.0%, ΔL knob +65 / knob.small +86 / key +36. **Light clip 8.4% (Face), 3.4% (Bezel)**
+— the dark plate's new fabric pattern was inherited by the light plate (modes merge materials) and
+blew the pale frosted plate out.
+- **Craft:** the velvet now has a visible nap and sheen; still soft, which is right for velvet.
+- **Fix:** light plate gets its own Frosted pattern, AMB_PLATE 0.95 → 0.85.
+
+## Round 4
+Metrics: clip 0.0% both modes. ΔL light: knob −94, key −135.
+- **Light:** clip fixed, but "snow white" renders cool grey (ambient 0.85 too low once the pattern
+  is right). Raise to 0.98 and re-measure; revert to 0.85 if clip > 1%.
+
+## Round 5
+Ambient 0.98: Face clip 3.1%, Well 1.1% (the display text has a 255 channel) — over budget. Back to
+0.9 and display text #F6BE5E; this is the shipped balance (a slightly cool snow-white).
+
+Round 6 metrics: clip 0.0% on every plate in both modes (final).
+Known limits: lamps are one skin, so the brief's "slightly uneven per lamp" twinkle is not
+modelled; the yellow pad row tints olive (row colour is bound by the app); light mode reads a slightly
+cool snow-white (clip budget).
+
+## Diversity check
+Tiled with Flat, Gold Leaf, Ice Cold, Rodeo and Tron: Candy Cane is the only deep-red rack, the only
+one with striped controls (peppermint-swirl knobs, striped slider fills) and green keys. Differs from
+Rodeo (nearest warm/brown) in hue, material (velvet vs leather) and the red/white stripe motif.
+
+## Gate
+`check` 0 errors · `lookcheck.py CandyCane` 46 skins, 0 errors, 0 warnings · `tests/test_basics.py`
+passed. Not verified: Play Mode in the real app (no Unity here).
+
+## Quality pass (after Play Mode feedback on Walnut & Brass)
+- **Print audit:** Light mode printed cream chrome / track text on a snow chassis (1.0-1.35:1). Now dark
+  red-brown chrome and `tracks.text`, pale-green `rowWithSample`; all print roles >= 3:1.
+- **Craft:** stripe white lifted to #FFFFFF (it rendered grey), velvet sheen ramp 0.32/0.42 so the nap
+  catches the lamp. Clip 0.0% both modes.

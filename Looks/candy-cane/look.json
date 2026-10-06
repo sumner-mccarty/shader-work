@@ -1,0 +1,16 @@
+{
+  "slug": "candy-cane",
+  "style": "CandyCane",
+  "title": "Candy Cane",
+  "prefix": "CandyCane",
+  "brief": "BACKLOG.md#candy-cane",
+  "class": "lit",
+  "status": "candidate",
+  "files": [
+    "Tools/looks/candy_cane.py",
+    "Assets/Resources/UiStyles/CandyCane.style.json",
+    "Assets/Resources/Themes/CandyCane*.theme.json",
+    "Assets/Resources/MaterialStates/CandyCaneDark*.states.json",
+    "Assets/Resources/MaterialStates/CandyCaneLight*.states.json"
+  ]
+}
