@@ -1,0 +1,9 @@
+{
+  "themeName": "Gold Leaf Dark rig",
+  "scene": {
+    "light1": { "pos": [-0.4, 1.5], "height": 1.3, "color": "#FFE7BD", "intensity": 0.85, "specular": 0.35, "specularPower": 48, "enabled": false },
+    "light2": { "pos": [1.3, 0.6], "height": 0.9, "color": "#CAD6FF", "intensity": 0.2, "specular": 0.06, "specularPower": 32, "enabled": false },
+    "light3": { "pos": [0.5, 2.0], "height": 2.0, "color": "#FFFFFF", "intensity": 0.0, "specular": 0.0, "specularPower": 32, "enabled": false },
+    "animate": { "enabled": false, "mode": "random", "speed": 0.45, "reach": 2.5 }
+  }
+}
