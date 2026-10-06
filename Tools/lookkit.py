@@ -1915,7 +1915,8 @@ class Scene:
                 self.stats["clip"].setdefault(part, []).append(clip)
             elif part in ("Knob", "KnobSmall", "KnobHero", "Button", "ToggleBtn"):
                 lumf = lambda a: a[..., 0] * 0.2126 + a[..., 1] * 0.7152 + a[..., 2] * 0.0722   # noqa: E731
-                diff = (cover[:region.shape[0], :region.shape[1]] > 0.95) if cover is not None else None
+                # 0.8, not opaque: a translucent control (glass, alpha ~0.85) is still the control
+                diff = (cover[:region.shape[0], :region.shape[1]] > 0.8) if cover is not None else None
                 if diff is not None and diff.any():
                     step = float((lumf(region)[diff] - lumf(before)[diff]).mean() * 255)
                     self.stats["sep"].setdefault(part, []).append(step)
