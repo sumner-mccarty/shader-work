@@ -25,9 +25,9 @@ CONTROLS = dict(                     # the hardware — identical in both modes
 )
 # brushed brass: long anisotropic streaks (Metal, p1 0.5, p2 0 = longest) at a visible 2 px grain and a real
 # bright-top / dark-foot gradient, so a large plate reads as lit metal at 1:1 rather than flat mustard
-BRASS = {"preset": "brass", "plate_ramp": (0.45, 0.5), "plate_amb": 0.6, "spec": 0.9, "rough": 0.2,
+BRASS = {"preset": "brass", "plate_ramp": (0.2, 0.45), "plate_amb": 1.1, "spec": 0.9, "rough": 0.2,
          "pattern": ("Metal", 2.2, 0.24, 1.0, 0.5, 0.0, 0.0)}
-WALNUT = {"preset": "wood.oiled", "pattern": ("WoodGrain", 40.0, 0.7, 1.15, 0.5, 0.5, 0.5)}
+WALNUT = {"preset": "wood.oiled", "pattern": ("WoodGrain", 40.0, 0.55, 1.05, 0.5, 0.5, 0.5)}
 
 LOOK = Look(
     title="Walnut & Brass", style="WalnutBrass", prefix="WalnutBrass", slug="walnut-brass", cls="lit", order=23,
@@ -44,17 +44,17 @@ LOOK = Look(
     },
     material={
         "plate": BRASS, "Back": WALNUT, "Inset": WALNUT, "Socket": WALNUT, "ScrollTrack": WALNUT,
-        "key": {"preset": "aluminium.brushed", "amb": 0.8},
+        "key": {"preset": "aluminium.brushed", "amb": 1.2},
         "accent": {"preset": "enamel", "tint": AMBER, "edge": "brass"},
-        "cap": {"preset": "aluminium.brushed", "amb": 0.85, "dome": 0.45,
+        "cap": {"preset": "aluminium.brushed", "amb": 1.2, "dome": 0.45,
                 "pattern": ("RadialBrushed", 3.0, 0.1, 1.0, 0.45, 0.2, 0.0)},
-        "skirt": {"preset": "aluminium.brushed", "pattern": ("Knurled", 3.0, 0.12, 1.0, 0.5, 0.6, 0.5)},
+        "skirt": {"preset": "aluminium.brushed", "amb": 0.28, "pattern": ("Knurled", 3.0, 0.12, 1.0, 0.5, 0.6, 0.5)},
         "handle": "aluminium.brushed",
     },
     rig={
         "dark": {"light1": dict(pos=[-0.4, 1.5], height=1.2, color="#FFD9A0", intensity=0.9, specular=0.3,
                                 specularPower=40),
-                 "light2": dict(pos=[1.3, 0.6], height=0.9, color="#FFB070", intensity=0.18, specular=0.05),
+                 "light2": dict(pos=[1.3, 0.6], height=0.9, color="#FFB070", intensity=0.5, specular=0.05),
                  "light3": dict(enabled=False)},
         "light": {"light1": dict(pos=[-1.5, 3.0], height=4.0, color="#FFF0D8", intensity=0.8, specular=0.12,
                                  specularPower=40),
@@ -68,12 +68,12 @@ LOOK = Look(
             app=dict(display=dict(text="#F2B25A", textDim="#8A6636", textAlt="#F2B25A"),
                      # print on the brass faceplate is a dark ENGRAVED brown (module names, captions, cards);
                      # the walnut plates, header and track lanes take cream
-                     ui=dict(text="#2B1D0C", textDim="#5A4326", accent=AMBER),
+                     ui=dict(text="#2B1D0C", textDim="#46311A", accent=AMBER),
                      chrome=dict(label="#CDB88C", labelActive="#2B1D0C", icon="#CDB88C", iconActive="#5A2E08",
                                  gear="#CDB88CCC", meatballIdle="#CDB88C", meatballLit=AMBER),
                      tracks=dict(text="#F0E2BC", ruler="#CDB88CE6", playhead="#F0E2BCE6",
                                  rowWithSample="#6B4A2A", rowEmpty="#2A180C"),
-                     ink=dict(faceplate="#2B1D0C", faceplateDim="#5A4326", inset="#F0E2BC", insetDim="#A8946A",
+                     ink=dict(faceplate="#2B1D0C", faceplateDim="#46311A", inset="#F0E2BC", insetDim="#A8946A",
                               backplane="#F0E2BC", backplaneDim="#A8946A", socket="#F0E2BC", socketDim="#A8946A",
                               reviewBar="#F0E2BC", reviewBarDim="#A8946A"))),
         "light": dict(
@@ -81,7 +81,8 @@ LOOK = Look(
             palette=dict(CONTROLS, GAP="#8E7552", BACK="#8C5A30", FACE="#D9CCA6", INSET="#965F33", SOCKET="#7C4E28",
                          WELL="#100B07", SHADOW="#3A2A16", SHADOW_A=0.35, WELL_EM=0.05, AMB_PLATE=0.9),
             material={"plate": {"preset": "aluminium.brushed", "tint": "#D9CCA6", "lo": "#7C6E4C", "hi": "#FFFFFF",
-                                "plate_ramp": (0.1, 0.15), "plate_amb": 0.9}},
+                                "plate_ramp": (0.1, 0.15), "plate_amb": 0.9,
+                                "pattern": ("Metal", 1.4, 0.1, 1.0, 0.5, 0.0, 0.0), "spec": 0.5, "rough": 0.35}},
             app=dict(display=dict(text="#F2B25A", textDim="#8A6636", textAlt="#F2B25A"),
                      ui=dict(text="#2A1A0E", textDim="#6B5238", accent="#B26A12"),
                      chrome=dict(label="#F3E6C8", labelActive="#2A1A0E", icon="#F3E6C8", iconActive="#7A3E08",
