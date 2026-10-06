@@ -1565,6 +1565,9 @@ class Look:
         for slot, base, states, extra in self.kit.parts(self, P):
             fam, bkey = SLOTS[slot][:2]
             name = P["prefix"] + slot
+            # `shape.<group|slot>["set"]`: raw shader properties a spec adds to a part (validated by skin()
+            # against the shader's own Properties) — for a motif the kit has no vocabulary for, e.g. stripes
+            base = dict(base, **self.S(slot).get("set", {}))
             doc, probs = skin(name, fam, base, states, bounds=BOUNDS[bkey], flat_shader=not self.kit.rm,
                               extra=extra, write=False, quiet=True)
             doc["author"] = self.author
