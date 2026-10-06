@@ -33,9 +33,10 @@ LOOK = Look(
     shape={
         "key": dict(corner=0.3, round=0.3),
         "dial": dict(skirt="Fluted", skirt_count=20, skirt_depth=0.1, cap_r=0.6, bevel=0.17, depth=0.45,
-                     smooth=0.6, dome=0.55, nub=0.07, nub_dist=0.4, arc_px=3.0),
+                     smooth=0.6, dome=0.55, nub=0.07, nub_dist=0.4, arc_px=3.0, stitch=(0.7, 0.03, "#E2BE8A")),
         "KnobHero": dict(ticks=11, arc_px=4.0),
         "shadow": dict(blur=1.4, cast=0.24),
+        "plate": dict(stitch=("#E2BE8A", 1.2)),
     },
     material={
         "plate": {"preset": "leather.tooled", "lo": "#2A0A0A", "hi": "#EBB880", "plate_ramp": (0.3, 0.38),

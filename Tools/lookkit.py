@@ -1232,6 +1232,12 @@ class Lit(Unlit):
             "_KnobNubEnabled": 1, "_KnobNubShapeType": 0, "_KnobNubColor": P["NUB"], "_KnobNubSize": S["nub"],
             "_KnobNubDistance": S["nub_dist"],
         })
+        if S.get("stitch"):
+            # a dashed ring of thread round the cap (24 fixed dashes): leather-stitched concho collar
+            rad, th, col = S["stitch"]
+            base.update({"_OuterRing1Enabled": 1, "_OuterRing1Radius": rad, "_OuterRing1Thickness": th,
+                         "_OuterRing1Color": col, "_OuterRing1AngleStart": 0, "_OuterRing1AngleRange": 360,
+                         "_OuterRing1Style": 1, "_OuterRing1RenderAlpha": 1.0, "_OuterRing1RenderEmissive": 0.0})
         if ms:
             # the skirt is the bevel band: it wears the skirt material's EDGE ramp (+ pattern above) —
             # the lit chamfer that lifts a dark knob off a dark plate
@@ -1341,6 +1347,11 @@ class Lit(Unlit):
             # a recessed dish reads as a dish only if its wall catches light — a RIM, low depth
             base.update({"_PanelRimEnabled": 1, "_PanelRimDepth": S["recess"], "_PanelRimWidth": S["rim_w"],
                          "_PanelRimSmoothness": S["rim_w"]})
+        if S.get("stitch") and slot in ("Face", "Inset", "Back"):
+            # a welt/stitch line hugging the plate edge: a thin solid Border band in the thread colour
+            col, wpx = S["stitch"]
+            base.update({"_BorderEnabled": 1, "_BorderColor": col, "_BorderWidthPx": wpx,
+                         "_BorderRenderAlpha": 1.0, "_BorderRenderEmissive": 0.0})
         if S["screws"]:
             base.update({"_PanelScrewsEnabled": 1, "_PanelScrewShapeType": 1, "_PanelScrewInsetPx": 7.5,
                          "_PanelScrewRadiusPx": 3.8, "_PanelScrewColor": mix(c, "#FFFFFF", 0.35),
