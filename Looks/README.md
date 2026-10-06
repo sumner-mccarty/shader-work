@@ -129,7 +129,7 @@ python tests/test_basics.py              # renderer contract still holds
 2. **One material story.** Every part is made of the same world. One shadow contract (colour,
    blur, cast) across the set, or parts float at different heights.
 3. **Legible before beautiful.** Values 0/40/80/100% distinguishable at the SMALLEST size the part is
-   used (knob.small 48px); ON vs OFF obvious at a glance; plate print readable (palette `ink`).
+   used — knob.small at 30 px, the ENV-7 row in the real app (a 48 px check missed Liquid Glass Dark's vanishing knobs); ON vs OFF obvious at a glance; plate print readable (palette `ink`).
 4. **Craft.** No medial-axis wedges on plates, no chrome bars on plate bevels, no dotted lip seams
    (`_ButtonLipHeight 0`), no clipped highlights, no grain that aliases at 1:1 (judge `ss` 1).
 5. **States.** Hover, Pressed, Disabled and (latching parts) Active all visibly differ.

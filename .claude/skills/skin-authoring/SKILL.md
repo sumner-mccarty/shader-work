@@ -112,6 +112,16 @@ These are the facts that are not discoverable from the property names:
   scratches, and at high intensity it beads along any lit edge. ~0.03 intensity at a high scale
   (~70) plus a top-to-bottom gradient is what reads as brushed aluminium.
 
+- **⚠ The RAYMARCHED shaders run gradients the other way up (2026-10-06).** `UI/SDFButtonRM`,
+  `SDFKnobRM` and `SDFSliderRM` put ColorA at the TOP on screen (measured: a red→blue vertical
+  gradient runs red-top on SDFButtonRM, red-bottom on SDFButton/SDFPanel, in both render
+  orientations, matching Unity). A lit cap authored with the panel convention looks lit from below.
+  `Tools/lookkit.py` flips RM gradients for you.
+
+- **The smallest knob in the app is ~30 px** (ENV-7's START/ATT/PK… row), not the 48 px the sheets
+  used to test. A look whose small knobs only separate from the plate at 48 px vanishes there
+  (Liquid Glass Dark, 2026-10-06 Play Mode check). Judge `knob.small` at 30 px.
+
 - **Gradient orientation: `uv.y` is 0 at the BOTTOM.** With `_PanelGradientDirection (0,1,0,0)` the
   position is `dot(uv, dir)` = `uv.y`, so **ColorA is the bottom colour and ColorB the top** — put
   the light in B for a top-lit plate. Do NOT try to flip it with a negative direction `(0,-1,0,0)`:

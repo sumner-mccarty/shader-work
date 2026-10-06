@@ -71,7 +71,7 @@ github.com, objects.githubusercontent.com, pypi.org and the Ubuntu archive.
 4. Iterate on **rack composites**, not part lists: ≥ 3 rounds of
    `python Tools/looks/<module>.py sheet` (writes `Looks/<slug>/sheets/{rack,parts}-{dark,light}.png`;
    keep `SKINSHEET_BACKEND=bus`). Each round write a short critique in `Looks/<slug>/NOTES.md` against
-   the rubric (identity, cohesion, legibility at 48 px, craft, states, fidelity), then fix the worst
+   the rubric (identity, cohesion, legibility at 30 px (render knob.small at 30x30 too), craft, states, fidelity), then fix the worst
    problem first.
 5. Diversity check: tile your `rack-dark.png` with every other look's
    (`python -m slrender contact Looks/*/sheets/rack-dark.png -o /tmp/family.png`) and confirm yours
