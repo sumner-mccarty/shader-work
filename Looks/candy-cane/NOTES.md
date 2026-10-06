@@ -38,3 +38,7 @@ blew the pale frosted plate out.
 Metrics: clip 0.0% both modes. ΔL light: knob −94, key −135.
 - **Light:** clip fixed, but "snow white" renders cool grey (ambient 0.85 too low once the pattern
   is right). Raise to 0.98 and re-measure; revert to 0.85 if clip > 1%.
+
+## Round 5
+Ambient 0.98: Face clip 3.1%, Well 1.1% (the display text has a 255 channel) — over budget. Back to
+0.9 and display text #F6BE5E; this is the shipped balance (a slightly cool snow-white).
