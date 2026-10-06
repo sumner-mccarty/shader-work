@@ -867,6 +867,11 @@ MATERIALS = {
                      edge=(0.2, 0.08, -0.05, -0.15), pattern=("Concrete", 2.0, 0.28, 1.0, 0.5, 0.5, 0.0),
                      spec=0.05, rough=0.9, dome=0.08, bevel=(0.14, 0.4, 0.7), amb=0.55, plate_amb=0.45),
 }
+# ⚠ RM CONTROLS RUN THEIR GRADIENT UV UPSIDE DOWN. On screen (slrender's app orientation, measured
+# 2026-10-06 with a red A / blue D ramp), SDFButtonRM, SDFKnobRM and SDFSliderRM put stop A at the TOP
+# of the control; SDFPanel and the non-RM shaders put it at the BOTTOM (the skill's "uv.y is 0 at the
+# BOTTOM"). A "ground below, sky above" ramp on an RM control therefore needs direction (0, -1).
+RM_UP = (0.0, -1.0)
 SURFACE_TOKEN = {"key": "BODY", "accent": "ACCENT", "cap": "CAP", "skirt": "SKIRT", "handle": "HANDLE",
                  "pad": "PAD_BODY"}
 NOMINAL_PX = {"key": 44, "accent": 44, "pad": 62, "handle": 40, "cap": 56, "skirt": 56}
@@ -1046,9 +1051,8 @@ class Lit(Unlit):
         """Colour a layer: the flat colour, and — for a preset surface — its ramp re-based on `c`."""
         d = {f"{layer}Color": c}
         if m and gradient:
-            rt = (0.0, 1.0)
             st = ramp_of(m, c)
-            d.update(grad(layer, st, rt))
+            d.update(grad(layer, st, RM_UP))
             if m.get("ramp_type") == "radial":
                 d.update({f"{layer}GradientType": 1, f"{layer}GradientScale": 1.0, f"{layer}GradientOffset": 0.0})
         return d
@@ -1068,7 +1072,7 @@ class Lit(Unlit):
         if not m:
             return d
         if m.get("edge") is not None:
-            d.update(grad(f"{layer}Bevel", edge_of(m, c), (0.0, 1.0)))
+            d.update(grad(f"{layer}Bevel", edge_of(m, c), RM_UP))
         if m.get("alpha", 1.0) < 1.0:
             d[f"{layer}RenderAlpha"] = m["alpha"]
         if m.get("reflect") and f"{layer}ReflectIntensity" in props(stem(family, True)):
@@ -1221,9 +1225,9 @@ class Lit(Unlit):
         if ms:
             # the skirt is the bevel band: it wears the skirt material's EDGE ramp (+ pattern above) —
             # the lit chamfer that lifts a dark knob off a dark plate
-            base.update(grad("_KnobBevel", edge_of(ms, P["SKIRT"]), (0.0, 1.0)))
+            base.update(grad("_KnobBevel", edge_of(ms, P["SKIRT"]), RM_UP))
         elif mc and mc.get("edge") is not None:
-            base.update(grad("_KnobBevel", edge_of(mc, P["CAP"]), (0.0, 1.0)))
+            base.update(grad("_KnobBevel", edge_of(mc, P["CAP"]), RM_UP))
         if mc and mc.get("alpha", 1.0) < 1.0:
             base["_KnobRenderAlpha"] = mc["alpha"]
         if S["ticks"]:

@@ -89,16 +89,34 @@ name), optionally with a tint or overrides: `{"preset": "enamel", "tint": "#1F7A
   - Dark presets under the shipped rig: knob ΔL 24–45, key ΔL 19–36.
   - Metals: 0–8% white under the shipped rig.
 
+**Round 6 — the ramps were upside down on every control.** This came from building the Gold
+Leaf pilot.
+- *Measurement:* the pilot's gold caps looked lit from below, so I ran a red-A / blue-D ramp test
+  on screen:
+  - `SDFButtonRM`, `SDFKnobRM` and `SDFSliderRM` put stop **A at the TOP** of the control;
+  - `SDFPanel` and the non-RM shaders put it at the bottom, as the skill says.
+- *So:* rounds 1–5 judged the control swatches with the "sky" at the bottom.
+- *Fix:* lookkit now writes `direction (0, −1)` (`RM_UP`) on every RM control ramp and edge
+  band. Plates are unchanged.
+- *Re-judged:*
+  - Chrome keys show a proper bright-top horizon reflection.
+  - Gold keys read as lit bars of metal.
+  - Lacquer keys separate better: key ΔL +19 → +23 (shipped), +34 → +37 (neutral).
+- *Unchanged:* no preset value needed retuning, and plates are still 0.0% clip.
+- *Final numbers* (`metrics.txt`):
+  - Dark presets under the shipped rig: knob ΔL 19–38, key ΔL 22–39.
+  - Metals: 0–11% white (chrome 11%), shipped rig.
+
 ## Known limits — read before choosing a preset
 
 - **The two rigs disagree by about 1.6× in brightness.** The neutral rig's near key lamp is far
   stronger than the shipped one. Pale presets (ceramic, marble, aluminium) are tuned between the
   two:
   - Under the shipped rig they read as grey stone / satin metal.
-  - Under the neutral rig they read white, with a 12–27% white highlight on domed caps.
+  - Under the neutral rig they read white, with a 14–18% white highlight on domed caps.
   - A look with a bright rig should lower `amb` on its pale surfaces (`{"preset": "ceramic",
     "amb": 0.2}`). Its rack sheet's `clip%` / control step print will say.
-- **Chrome is 8% / 25% white** (shipped / neutral). The white is the fake horizon reflection,
+- **Chrome is 11% / 24% white** (shipped / neutral). The white is the fake horizon reflection,
   which is what chrome is. Lower the top ramp stop if a look finds it loud.
 - **Marble veins are visible on plates only.** At key size, grain 60 px is under one cycle and
   reads as polished stone. That is deliberate: veins on a 40 px key read as dirt.
