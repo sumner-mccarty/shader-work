@@ -28,7 +28,7 @@ WALNUT = {"preset": "wood.oiled"}
 
 LOOK = Look(
     title="Walnut & Brass", style="WalnutBrass", prefix="WalnutBrass", slug="walnut-brass", cls="lit", order=23,
-    status="draft", brief="BACKLOG.md#walnut-brass",
+    status="candidate", brief="BACKLOG.md#walnut-brass",
     blurb="Oiled walnut, brushed brass, aluminium knobs and amber glass.",
     tagline="oiled walnut, brushed brass, skirted aluminium knobs.",
     displays="neo",

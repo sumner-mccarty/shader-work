@@ -30,3 +30,20 @@ Metrics: clip 0.0% both modes. ΔL dark: knob +93, key +54. Light: knob +29, kno
   surface. Kit fix: the rack sheet now uses the `inset` / `backplane` ink for captions that sit on
   those plates (a sheet change only: no part or recipe output moves; Flat proof still identical).
   Light-mode wood print set to cream, dark-mode faceplate dim ink darkened for contrast on brass.
+
+## Round 3
+Metrics unchanged (clip 0.0% both modes; ΔL dark knob +93 / key +54; light knob +29, key −36).
+- **Legibility:** every caption now reads on its plate (dark print on brass, cream on walnut/teak);
+  knob.small holds at 30 px (aluminium cap + amber nub + amber arc on near-black track).
+- **Identity (25% zoom):** brass-and-wood slab with aluminium dials — reads hi-fi in one second.
+- **Known limit:** the walnut grain is calm at 1:1 (px-locked, 0.5 intensity); the hero cap's skirt
+  knurl reads as a fine mesh at 3× zoom. Dim captions in light mode are cream on teak (contrast ~3:1).
+
+## Diversity check
+Tiled with the other looks: Walnut & Brass is the only rack with a bright brushed-brass faceplate
+flanked by wood and with aluminium (not gold) hardware. vs Rodeo (brown, nearest) it differs in
+material (metal faceplate + grain wood vs leather), value structure (bright centre, dark flanks) and
+hardware (plain aluminium, amber, no stitching).
+
+## Gate
+`check` 0 errors · `lookcheck.py WalnutBrass` 46 skins, 0 errors, 0 warnings · `tests/test_basics.py` passed. Not verified: Play Mode in the real app (no Unity here).
