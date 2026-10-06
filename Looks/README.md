@@ -80,7 +80,7 @@ if __name__ == "__main__":
 | `cls` | `unlit` (Flat's rules: non-RM, `_LightingUnlit 1`, value steps), `neon` (Tron's: unlit light tubes — core/bloom/sheen), `lit` (UI/*RM under the look's rig; the Realistic/Neo/RackFaceplate vocabulary). Each class documents its palette tokens (`TOKENS`) and shape defaults (`SHAPE`) in lookkit.py. |
 | `palette` | Per-mode tokens the class reads (`FACE`, `BODY`, `ACCENT`, `VALUE`, …). A missing required token is an error; optional ones are derived (`PALETTE_DEFAULTS`). App-print tiers `INK` / `INK_DIM` / `PRINT_DIM` default to `MARK` / `MARK_DIM`. Neon keeps mode-dependent weights (`LINE`, `BLOOM`, `GRID`, plate px) in the palette. |
 | `shape` | Form language, resolved **class group < spec group < class slot < spec slot**. Groups: `key` (corner, round, bevel, depth, dome, icon…), `dial` (`silhouette` needle/capped/cap, px, arc_px, skirt = a KnobShapeType name, cap_r, dome, nub…), `fader`, `switch`, `plate` (radius_px, pad_px, recess…). Slots: `Button Accent ToggleBtn Solo Lamp Close Chip Dot ScrollHandle Pad Knob KnobHero KnobSmall Slider Fader Pill Face Inset Socket Well Back Bezel ScrollTrack`. `pad` is the footprint — leave it. |
-| `material` | Lit patterns per surface: `pattern` (a PatternType name: Metal, Plastic, RadialBrushed, Knurled, WoodGrain…), `scale`, `px` (pixel lock — required on plates), `intensity`, `contrast`, `spec`, `rough`, `p1..p3`. |
+| `material` | Lit only. Per surface (`key`, `accent`, `cap`, `skirt`, `handle`, `plate`, `pad`, or a slot name) name a **preset** from the material library — `"gold.polished"`, `{"preset": "enamel", "tint": "#1F7A52"}`, `{"preset": "lacquer.black", "edge": "gold.polished", "amb": 0.8}` — which brings the colour ramp (fake reflection), edge band, px-derived pattern, spec/roughness, dome, bevel and ambient. Presets: gold.polished, gold.brushed, gold.rose, chrome, aluminium.brushed, brass, copper, lacquer.black, enamel, plastic.gloss, rubber.matte, wood.oiled, leather.tooled, marble, ceramic, glass.frosted, fabric.velvet, carbon, concrete — see `Looks/_materials/` (swatches + tuning notes + known limits). A plain dict without `preset` is the legacy pattern-only form (`pattern`, `scale`, `px`, `intensity`, …). A mode may re-tune its materials with `modes[mode]["material"]`. |
 | `app` | Overrides on the DERIVED app palettes (`chrome`, `ui`, `surface`, `ink`, `display`, `key`, `pad`, `review`, `tracks`). Derivation already covers the pale-look pieces (`ink.key` only on pale keys; `review.slot/slotFill`, `tracks.noteSeparator` on pale lanes). `None` deletes a key. |
 | `rig` | Lit only: lamps per mode → `Themes/<Style>{Dark,Light}.theme.json`. Unlit/neon always get `Themes/<Style>.theme.json` with every lamp off. |
 | `waive` | The only way past a rule. The reason prints on every `check`, so the exception gets reviewed. |
@@ -92,6 +92,7 @@ python Tools/looks/<module>.py write       # MaterialStates, UiStyles recipe, Th
 python Tools/looks/<module>.py diff        # byte-for-byte against what is on disk (--root DIR for a scratch tree)
 python Tools/looks/<module>.py manifest    # Looks/<slug>/look.json
 python Tools/looks/<module>.py selftest    # break each rule on a copy and confirm `check` catches it
+python Tools/lookkit.py materials          # the material swatch sheet (Looks/_materials/swatches.png)
 #   --colourway <Name|all> acts on a declared colourway (its own Style, prefix <Prefix><Name>)
 ```
 
@@ -103,7 +104,9 @@ Face/Back; every patterned plate pixel-locked; value arc `_LineRadius + _LineWid
 with square ends); a light mode moves no control token (`BODY`, `ACCENT`, `CAP`, `HANDLE`) by ≥ 0.3
 luminance; every mode names an existing track theme; every shader key validated. The sheets
 composite slrender's premultiplied cells exactly (`src + (1 - a) · dst`), so an AA edge never grows
-a dark outline and a neon bloom stays additive — no per-cell `bg` hacks.
+a dark outline and a neon bloom stays additive — no per-cell `bg` hacks. The rack sheet also MEASURES
+what FACTORY asks for: each plate's clipped-pixel % (a light-mode plate must stay < 1%) and each
+control's luminance step off its plate (dark controls must separate from dark plates).
 
 The proof that the kit is complete: `python Tools/looks/flat.py diff` and `tron.py diff` reproduce
 every shipped FlatDark*/FlatLight*/TronDark*/TronLight* part and both rigs byte-for-byte; the two

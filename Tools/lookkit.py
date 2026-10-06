@@ -8,6 +8,7 @@
     python Tools/looks/<module>.py diff                     # what `write` would change, byte for byte
     python Tools/looks/<module>.py manifest                 # Looks/<slug>/look.json
     python Tools/looks/<module>.py selftest                 # break each rule on a copy: audit must catch it
+    python Tools/lookkit.py materials [preset ...]          # the material swatch sheet (Looks/_materials/)
       --root DIR      write/diff against DIR/Assets/Resources/... instead of the repo (scratch builds)
       --colourway X   act on one declared colourway (its own Style) instead of the base look
     (or: python Tools/lookkit.py <module|path.py> <command> ...)
@@ -22,7 +23,7 @@ look lives here instead, so a look is the part that is actually its own — ~150
         modes={"dark":  dict(palette={...tokens...}, app={...overrides...}, track="Nebula", blurb="..."),
                "light": dict(palette={...}, app={...}, track="Rosewater", blurb="...")},
         shape={"key": {...}, "dial": {...}, "plate": {...}, "<Slot>": {...}},   # form language
-        material={"plate": {...}, "key": {...}, "knob": {...}},                   # lit only: patterns
+        material={"plate": "lacquer.black", "cap": "gold.polished", ...},          # lit: MATERIALS presets
         rig={"dark": {...lamps...}, "light": {...}},                              # lit only
         displays="neo",                       # finish family for screens, or a full {authored: finish}
         colourways={"Emerald": dict(title=..., palette={"dark": {...}, "light": {...}})},
@@ -39,7 +40,7 @@ THE THREE CLASSES (`cls`) — each is a complete part vocabulary with its own st
               Realistic*, NeoDark*/NeoLight* and RackFaceplate* skins: domed keys with a milled
               bevel, capped knobs with a skirt silhouette, px-locked patterned plates, ONE shadow
               contract for every control.
-  `shape` and `material` override the class defaults (CLASS_SHAPE / LIT_MATERIAL below) per group
+  `shape` and `material` override the class defaults (each class's SHAPE; MATERIALS presets) per group
   ("key", "dial", "fader", "switch", "plate") or per slot ("Accent", "KnobHero", "Face", ...);
   slot beats group beats class default. The palette is per mode: the token names each class reads
   are listed in PALETTE_DEFAULTS / *_TOKENS; a token a class needs and the spec omits is an error.
@@ -769,6 +770,140 @@ class Neon(Unlit):
         return P[f[0]], P[f[1]]
 
 
+# ═══ 4b. the material library (lit) ══════════════════════════════════════════════════════════════
+#
+# A PRESET is everything a surface needs to read as one material under a lamp rig:
+#   base / lo / hi  the colour and where its ramp goes darker (lo) and lighter (hi) — a metal's light
+#                   end is its own pale tint, not white
+#   ramp            4 stops (bottom → top, uv.y 0 is the BOTTOM) as amounts: -a = toward lo, +a = toward
+#                   hi. The vertical ramp is the poor man's ENVIRONMENT REFLECTION: dark "ground" below,
+#                   bright "sky" above — what makes gold or chrome read as metal before Phase 3 adds a
+#                   real reflection term. `ramp_type` "radial" rings out from the centre instead.
+#   edge            the chamfer's own ramp (bevel gradient) — the lit edge that separates a control from
+#                   a plate of the same value (FACTORY: dark controls vanish on dark plates otherwise)
+#   pattern         (name, grain, intensity, contrast, p1, p2, p3): GRAIN is pixels per pattern cycle,
+#                   so the shader scale is derived from the surface's real size (scale = px / grain)
+#                   and plates are pixel-locked at `lock` px. `tint` recolours the pattern signal
+#                   (PatternColor: type, mode, 4 stops as ramp amounts).
+#   spec / rough    the pattern's specular / roughness effect (spec = 1 + pattern·effect·10)
+#   dome, bevel     face smoothness and (distance, depth, smoothness) for controls (never plates)
+#   amb             the ambient that reads right under the shipped rig and a neutral one
+#   alpha           render alpha (translucent glass)
+#   reflect         HOOK: environment-reflection strength for when the shaders grow
+#                   `<layer>ReflectIntensity` (Phase 3). Written only if the shader declares it.
+# Tuned on Looks/_materials/swatches.png (knob, key, slider handle, plate at real sizes, shipped and
+# neutral rig, 1:1) — see Looks/_materials/NOTES.md for the rounds. A spec names a preset per surface:
+#   material={"plate": "lacquer.black", "key": {"preset": "lacquer.black", "edge": "gold.polished"},
+#             "cap": "gold.polished", "skirt": "gold.brushed", "handle": "gold.brushed",
+#             "accent": {"preset": "enamel", "tint": "#1F7A52"}}
+# and a preset may be extended in place: {"preset": "gold.polished", "dome": 0.3, "amb": 0.8}.
+
+MATERIALS = {
+    # ── metals: strong ramp (fake reflection), tinted highlight, tight spec, dome ──
+    "gold.polished": dict(base="#A97B22", lo="#1C0E00", hi="#FFEDB0", ramp=(-0.75, -0.25, 0.3, 0.75),
+                          edge=(0.85, 0.5, -0.35, -0.7), pattern=("RadialBrushed", 3.0, 0.05, 1.0, 0.45, 0.2, 0.0),
+                          linear=("Metal", 1.0, 0.06, 1.0, 0.5, 0.0, 0.0), plate_ramp=(0.3, 0.3),
+                          spec=0.5, rough=0.05, dome=0.45, bevel=(0.14, 0.55, 0.5), amb=0.6, plate_amb=0.38),
+    "gold.brushed": dict(base="#9E7A2E", lo="#1C0F00", hi="#F4DE9C", ramp=(-0.6, -0.15, 0.25, 0.6),
+                         edge=(0.7, 0.4, -0.3, -0.6), pattern=("Metal", 1.0, 0.16, 1.0, 0.5, 0.0, 0.0),
+                         spec=0.4, rough=0.3, dome=0.25, bevel=(0.12, 0.5, 0.5), plate_ramp=(0.25, 0.3), amb=0.6, plate_amb=0.4),
+    "gold.rose": dict(base="#A86E5C", lo="#220A05", hi="#FFE0D2", ramp=(-0.7, -0.2, 0.3, 0.72),
+                      edge=(0.8, 0.45, -0.35, -0.65), pattern=("RadialBrushed", 3.0, 0.05, 1.0, 0.45, 0.2, 0.0),
+                      linear=("Metal", 1.0, 0.06, 1.0, 0.5, 0.0, 0.0), plate_ramp=(0.3, 0.3),
+                      spec=0.5, rough=0.08, dome=0.45, bevel=(0.14, 0.55, 0.5), amb=0.6, plate_amb=0.38),
+    "chrome": dict(base="#7E868F", lo="#0A0C0F", hi="#FFFFFF", ramp=(-0.85, -0.4, 0.55, 0.15),
+                   edge=(0.9, 0.55, -0.5, -0.85), pattern=("Metal", 1.0, 0.03, 1.0, 0.5, 0.0, 0.0),
+                   spec=0.45, rough=0.02, dome=0.5, bevel=(0.14, 0.55, 0.45), plate_ramp=(0.35, 0.35), amb=0.55, plate_amb=0.45),
+    "aluminium.brushed": dict(base="#8C9197", lo="#2A2D31", hi="#F4F6F8", ramp=(-0.35, -0.05, 0.15, 0.4),
+                              edge=(0.6, 0.3, -0.2, -0.45), pattern=("Metal", 1.0, 0.12, 1.0, 0.5, 0.0, 0.0),
+                              spec=0.4, rough=0.35, dome=0.15, bevel=(0.12, 0.5, 0.5), plate_ramp=(0.15, 0.25), amb=0.38, plate_amb=0.36),
+    "brass": dict(base="#9C7F34", lo="#1E1603", hi="#F0DFA0", ramp=(-0.6, -0.15, 0.25, 0.55),
+                  edge=(0.7, 0.4, -0.3, -0.55), pattern=("Metal", 1.4, 0.1, 1.0, 0.5, 0.0, 0.0),
+                  spec=0.45, rough=0.25, dome=0.3, bevel=(0.13, 0.5, 0.5), plate_ramp=(0.25, 0.3), amb=0.6, plate_amb=0.4),
+    "copper": dict(base="#A05A38", lo="#220902", hi="#FFC6A0", ramp=(-0.65, -0.15, 0.28, 0.6),
+                   edge=(0.7, 0.4, -0.3, -0.6), pattern=("Metal", 1.4, 0.1, 1.0, 0.5, 0.0, 0.0),
+                   spec=0.5, rough=0.2, dome=0.35, bevel=(0.13, 0.5, 0.5), plate_ramp=(0.25, 0.3), amb=0.62, plate_amb=0.42),
+    # ── finishes: colourable (tint), gentle ramp, the spec decides gloss vs matte. Dark ones carry a
+    #    bright EDGE band: the chamfer is what separates a black key from a black plate ──
+    "lacquer.black": dict(base="#17181C", lo="#000000", hi="#9AA0AC", ramp=(-0.3, 0.0, 0.1, 0.25),
+                          edge=(0.95, 0.65, 0.2, -0.15), pattern=("Plastic", 6.0, 0.025, 1.0, 0.7, 0.0, 0.1),
+                          spec=0.9, rough=0.05, dome=0.3, bevel=(0.16, 0.6, 0.45), amb=0.9, plate_amb=0.8),
+    "enamel": dict(base="#2F5E8E", lo="#000000", hi="#FFFFFF", ramp=(-0.3, -0.05, 0.08, 0.2),
+                   edge=(0.45, 0.25, -0.05, -0.25), pattern=("Plastic", 8.0, 0.05, 1.0, 0.7, 0.0, 0.15),
+                   spec=0.35, rough=0.4, dome=0.22, bevel=(0.12, 0.5, 0.5), amb=0.7, plate_amb=0.55),
+    "plastic.gloss": dict(base="#C33A2E", lo="#000000", hi="#FFFFFF", ramp=(-0.3, -0.05, 0.1, 0.25),
+                          edge=(0.45, 0.25, -0.05, -0.25), pattern=("Plastic", 8.0, 0.03, 1.0, 0.6, 0.0, 0.0),
+                          spec=0.7, rough=0.12, dome=0.35, bevel=(0.14, 0.5, 0.5), amb=0.68, plate_amb=0.42),
+    "rubber.matte": dict(base="#2E3034", lo="#000000", hi="#A3A9B1", ramp=(-0.15, 0.0, 0.05, 0.12),
+                         edge=(0.7, 0.45, 0.1, -0.1), pattern=("Plastic", 2.0, 0.08, 1.0, 1.0, 0.0, 0.0),
+                         spec=0.0, rough=0.95, dome=0.12, bevel=(0.18, 0.45, 0.8), amb=0.85, plate_amb=0.75),
+    # ── organics / minerals: the pattern carries the colour (tint = PatternColor through lo/hi) ──
+    "wood.oiled": dict(base="#7A4A27", lo="#1E0C02", hi="#D9A06A", ramp=(-0.25, -0.05, 0.08, 0.18),
+                       edge=(0.4, 0.2, -0.1, -0.3), pattern=("WoodGrain", 40.0, 0.5, 1.0, 0.5, 0.5, 0.5),
+                       tint=(3, 1, (-0.5, -0.2, 0.15, 0.35)),
+                       spec=0.3, rough=0.45, dome=0.1, bevel=(0.12, 0.45, 0.5), amb=0.62, plate_amb=0.55),
+    "leather.tooled": dict(base="#8A5532", lo="#1C0A02", hi="#E8B488", ramp=(-0.3, -0.05, 0.08, 0.15),
+                           edge=(0.35, 0.15, -0.15, -0.35), pattern=("Leather", 3.0, 0.3, 1.0, 0.5, 0.5, 0.0),
+                           spec=0.2, rough=0.7, dome=0.15, bevel=(0.16, 0.45, 0.7), amb=0.62, plate_amb=0.52),
+    "marble": dict(base="#D2CDC4", lo="#4A4844", hi="#FFFFFF", ramp=(-0.12, 0.0, 0.04, 0.08),
+                   edge=(0.4, 0.2, -0.05, -0.15), pattern=("Marble", 60.0, 0.3, 1.0, 0.5, 0.5, 0.5),
+                   tint=(1, 3, (-0.04, -0.12, -0.25, -0.42)),
+                   spec=0.3, rough=0.15, dome=0.15, bevel=(0.12, 0.5, 0.5), amb=0.28, plate_amb=0.3),
+    "ceramic": dict(base="#D6D0C3", lo="#5A5246", hi="#FFFFFF", ramp=(-0.15, 0.0, 0.05, 0.12),
+                    edge=(0.45, 0.25, -0.05, -0.2), pattern=("Ceramic", 8.0, 0.08, 1.0, 0.5, 0.5, 0.0),
+                    spec=0.3, rough=0.12, dome=0.22, bevel=(0.14, 0.5, 0.6), amb=0.28, plate_amb=0.28),
+    "glass.frosted": dict(base="#A9D6D9", lo="#16383C", hi="#FFFFFF", ramp=(-0.35, -0.08, 0.2, 0.5),
+                          edge=(0.9, 0.6, 0.1, -0.2), pattern=("Frosted", 1.5, 0.12, 1.0, 0.5, 0.5, 0.0),
+                          spec=0.6, rough=0.45, dome=0.35, bevel=(0.2, 0.45, 0.8), amb=0.6, plate_amb=0.45,
+                          alpha=0.82),
+    "fabric.velvet": dict(base="#6B1E2D", lo="#120206", hi="#E07A8E", ramp=(-0.35, -0.25, -0.05, 0.25),
+                          ramp_type="radial", edge=(0.6, 0.4, 0.0, -0.25),
+                          pattern=("Fabric", 1.5, 0.22, 1.0, 0.5, 0.5, 0.0),
+                          spec=0.0, rough=1.0, dome=0.05, bevel=(0.2, 0.4, 0.9), amb=0.75, plate_amb=0.65),
+    "carbon": dict(base="#1E2024", lo="#000000", hi="#9CA2AA", ramp=(-0.2, 0.0, 0.1, 0.25),
+                   edge=(0.95, 0.6, 0.15, -0.15), pattern=("CarbonFiber", 4.0, 0.35, 1.0, 0.5, 0.5, 0.0),
+                   spec=0.6, rough=0.2, dome=0.25, bevel=(0.16, 0.55, 0.5), amb=0.9, plate_amb=0.8),
+    "concrete": dict(base="#8A8883", lo="#2A2926", hi="#D6D3CC", ramp=(-0.12, 0.0, 0.04, 0.08),
+                     edge=(0.2, 0.08, -0.05, -0.15), pattern=("Concrete", 2.0, 0.28, 1.0, 0.5, 0.5, 0.0),
+                     spec=0.05, rough=0.9, dome=0.08, bevel=(0.14, 0.4, 0.7), amb=0.55, plate_amb=0.45),
+}
+SURFACE_TOKEN = {"key": "BODY", "accent": "ACCENT", "cap": "CAP", "skirt": "SKIRT", "handle": "HANDLE",
+                 "pad": "PAD_BODY"}
+NOMINAL_PX = {"key": 44, "accent": 44, "pad": 62, "handle": 40, "cap": 56, "skirt": 56}
+
+
+def toward(base, lo, hi, a):
+    return mix(base, hi, a) if a >= 0 else mix(base, lo, -a)
+
+
+def resolve_material(entry):
+    """A spec's material entry -> (preset dict, or None for a legacy pattern-only dict, overrides)."""
+    if isinstance(entry, str):
+        return dict(MATERIALS[entry], name=entry)
+    if isinstance(entry, dict) and "preset" in entry:
+        m = dict(MATERIALS[entry["preset"]], name=entry["preset"])
+        m.update({k: v for k, v in entry.items() if k not in ("preset", "tint")})
+        if "tint" in entry:
+            m["base"] = entry["tint"]
+        return m
+    return None
+
+
+def ramp_of(m, base=None):
+    b = base or m["base"]
+    return tuple(toward(b, m["lo"], m["hi"], a) for a in m["ramp"])
+
+
+def edge_of(m, base=None):
+    e = m.get("edge")
+    if isinstance(e, str):                         # another preset's ramp on the chamfer (gold edge)
+        return ramp_of(MATERIALS[e])
+    if isinstance(e, dict):
+        return ramp_of(resolve_material(e))
+    b = base or m["base"]
+    return tuple(toward(b, m["lo"], m["hi"], a) for a in (e or m["ramp"]))
+
+
 class Lit(Unlit):
     """LIT — the raymarched UI/*RM shaders under the look's lamp rig. The vocabulary is the shipped
     Realistic*, NeoDark*/NeoLight* and RackFaceplate* skins, with every fix the skill records baked in:
@@ -785,7 +920,9 @@ class Lit(Unlit):
         bevel is a chrome bar waiting to happen), insets recessed with a rim at low depth, material
         from a top-lit GRADIENT (A = bottom, B = top) plus a faint, PIXEL-LOCKED pattern.
       * ONE shadow contract (colour, blur, cast) on every control's Shadow1, so parts sit at one height.
-      * light mode changes the chassis (plates), not the controls."""
+      * light mode changes the chassis (plates), not the controls.
+    Surfaces ("key", "accent", "pad", "cap", "skirt", "handle", "plate", or a slot name) take a
+    MATERIALS preset from `material`; a plain pattern dict (no "preset") is the legacy pattern-only form."""
     rm = True
     TOKENS = ("GAP BACK FACE INSET SOCKET WELL BODY BODY_HI BODY_LO DIS_BODY MARK MARK_DIM DIS_MARK ON_MARK "
               "ACCENT ACCENT_HI ACCENT_LO ACCENT_DIS HOT SOLO LAMP LAMP_OFF CAP SKIRT NUB ARC_OFF VALUE VALUE_EM "
@@ -803,18 +940,19 @@ class Lit(Unlit):
                      nub=0.075, nub_dist=0.62, ticks=0),
         "Knob": dict(px=56), "KnobHero": dict(px=112, ticks=11, arc_px=4.0), "KnobSmall": dict(px=48, arc_px=2.6),
         "fader": dict(track_w=0.16, handle="cap", handle_w=0.28, handle_h=0.9, bevel=0.12, depth=0.5, dome=0.3,
-                      corner=0.6),
+                      corner=0.6, smooth=0.5),
         "Fader": dict(track_w=0.4, handle_w=0.3, handle_h=0.9, bevel=0.0, dome=0.0),
         "switch": dict(track_h=0.7),
-        "plate": dict(radius_px=4.0, pad_px=2.0, corner=0.9, pad=0.01, recess=None, rim_w=0.03, screws=False),
+        "plate": dict(radius_px=4.0, pad_px=2.0, corner=0.9, pad=0.01, recess=None, rim_w=0.03, screws=False,
+                      lock=200),
         "Face": dict(fill="FACE", screws=False), "Back": dict(fill="BACK", radius_px=1.0, pad_px=0.0),
         "Inset": dict(fill="INSET", recess=-0.3), "Socket": dict(fill="SOCKET", recess=-0.3),
         "Well": dict(fill="WELL", recess=-0.3, radius_px=3.0, pad_px=3.0),
         "Bezel": dict(fill="INSET", recess=-0.2, radius_px=3.0, pad_px=3.0),
         "ScrollTrack": dict(fill="INSET", recess=-0.2, corner=1.0, radius_px=0.0, pad_px=1.0),
     }
-    # Pattern = (type, scale, Px, intensity, contrast, spec, rough, p1, p2, p3). The plate default is
-    # the 2026-10-04 realism pass's enamel; "Metal" plates want p1 0.5 (else mottled noise).
+    # Legacy pattern-only defaults (a surface with no preset). The plate default is the 2026-10-04
+    # realism pass's enamel; "Metal" plates want p1 0.5 (else mottled noise).
     MATERIAL = {
         "plate": dict(pattern="Plastic", scale=60, px=100, intensity=0.06, contrast=1.0, spec=0.3, rough=0.5,
                       p1=0.7, p2=0.0, p3=0.15),
@@ -822,10 +960,127 @@ class Lit(Unlit):
         "cap": dict(pattern="RadialBrushed", scale=11, intensity=0.15, p1=0.45, p2=0.2),
         "skirt": dict(pattern=None),
         "handle": dict(pattern=None),
+        "accent": None, "pad": None,
     }
     RECIPE_COLORS = dict(face="FACE", inset="INSET", backplane="BACK", well="WELL", body="BODY", bodyAlt="BODY_LO",
                          accent="ACCENT", line="ARC_OFF", hot="HOT", lamp="LAMP", mark="MARK")
 
+    # ── material plumbing ──
+    @staticmethod
+    def entry(mat, surface, slot=None):
+        """The spec's material entry for a slot/surface: slot name beats surface; the accent falls back
+        to the key's preset (tinted with ACCENT by its token), the pad to nothing (bound colour)."""
+        if slot and slot in mat:
+            return mat[slot]
+        if surface in mat:
+            return mat[surface]
+        if surface in ("accent",) and "key" in mat and resolve_material(mat["key"]):
+            e = mat["key"]
+            return {"preset": e} if isinstance(e, str) else {k: v for k, v in e.items() if k != "tint"}
+        return None
+
+    def preset(self, P, surface, slot=None):
+        return resolve_material(self.entry(P["MATERIAL"], surface, slot))
+
+    def geom(self, L, slot, m):
+        """Bevel/dome: class default < preset < anything the SPEC states for the group or slot."""
+        S = L.S(slot)
+        group = SLOTS[slot][2]
+        said = dict(L.shape.get(group, {}), **L.shape.get(slot, {}))
+        g = dict(bevel=S.get("bevel"), depth=S.get("depth"), smooth=S.get("smooth"), dome=S.get("dome"))
+        if m:
+            b = m.get("bevel")
+            if b:
+                g.update(bevel=b[0], depth=b[1], smooth=b[2])
+            if "dome" in m:
+                g["dome"] = m["dome"]
+        g.update({k: said[k] for k in g if k in said})
+        return g
+
+    def pattern(self, L, P, layer, which, slot=None, px=None):
+        m = self.preset(P, which, slot)
+        if m:
+            if which not in ("cap", "skirt") and m.get("linear"):
+                m = dict(m, pattern=m["linear"])       # a radial brush only belongs on a ROUND surface
+            return self.mpattern(layer, m, px or NOMINAL_PX.get(which, 44), lock=None)
+        mat = P["MATERIAL"]
+        legacy = self.MATERIAL.get(which) or {}
+        e = self.entry(mat, which, slot)
+        md = dict(legacy, **(e if isinstance(e, dict) else {}))
+        if not md.get("pattern"):
+            return {f"{layer}PatternEnabled": 0}
+        d = {f"{layer}PatternEnabled": 1, f"{layer}PatternType": PATTERNS[md["pattern"]],
+             f"{layer}PatternScale": md.get("scale", 20), f"{layer}PatternIntensity": md.get("intensity", 0.05)}
+        for k, prop in (("contrast", "Contrast"), ("spec", "SpecularEffect"), ("rough", "RoughnessEffect"),
+                        ("p1", "Param1"), ("p2", "Param2"), ("p3", "Param3"), ("px", "Px")):
+            if k in md:
+                d[f"{layer}Pattern{prop}"] = md[k]
+        return d
+
+    @staticmethod
+    def mpattern(layer, m, px, lock=None, base=None):
+        """A preset's pattern at a real size: scale = px / grain (cycles across the widget's UV), or
+        pixel-locked (`lock` px per tile) for plates that resize."""
+        if not m.get("pattern"):
+            return {f"{layer}PatternEnabled": 0}
+        name, grain, inten, contrast, p1, p2, p3 = m["pattern"]
+        span = lock or px
+        d = {f"{layer}PatternEnabled": 1, f"{layer}PatternType": PATTERNS[name],
+             f"{layer}PatternScale": round(span / grain, 2), f"{layer}PatternIntensity": inten,
+             f"{layer}PatternContrast": contrast, f"{layer}PatternSpecularEffect": m.get("spec", 0.3),
+             f"{layer}PatternRoughnessEffect": m.get("rough", 0.5),
+             f"{layer}PatternParam1": p1, f"{layer}PatternParam2": p2, f"{layer}PatternParam3": p3}
+        if lock:
+            d[f"{layer}PatternPx"] = lock
+        if m.get("tint"):
+            ctype, cmode, amts = m["tint"]
+            b = base or m["base"]
+            cols = [toward(b, m["lo"], m["hi"], a) for a in amts]
+            d.update({f"{layer}PatternColorEnabled": 1, f"{layer}PatternColorType": ctype,
+                      f"{layer}PatternColorMode": cmode, f"{layer}PatternColorUsed": 4,
+                      **{f"{layer}PatternColor{c}": cols[i] for i, c in enumerate("ABCD")}})
+        return d
+
+    @staticmethod
+    def paint(layer, m, c, gradient=True):
+        """Colour a layer: the flat colour, and — for a preset surface — its ramp re-based on `c`."""
+        d = {f"{layer}Color": c}
+        if m and gradient:
+            rt = (0.0, 1.0)
+            st = ramp_of(m, c)
+            d.update(grad(layer, st, rt))
+            if m.get("ramp_type") == "radial":
+                d.update({f"{layer}GradientType": 1, f"{layer}GradientScale": 1.0, f"{layer}GradientOffset": 0.0})
+        return d
+
+    @staticmethod
+    def recolour(layer, m, c):
+        """A STATE delta that changes a layer's colour: with a ramp on the layer, the stops must move
+        (a gradient beats a plain colour write)."""
+        d = {f"{layer}Color": c}
+        if m:
+            d.update(gcol(layer, ramp_of(m, c)))
+        return d
+
+    def finish(self, layer, m, family, c):
+        """Edge band, alpha, reflection hook for a preset surface."""
+        d = {}
+        if not m:
+            return d
+        if m.get("edge") is not None:
+            d.update(grad(f"{layer}Bevel", edge_of(m, c), (0.0, 1.0)))
+        if m.get("alpha", 1.0) < 1.0:
+            d[f"{layer}RenderAlpha"] = m["alpha"]
+        if m.get("reflect") and f"{layer}ReflectIntensity" in props(stem(family, True)):
+            d[f"{layer}ReflectIntensity"] = m["reflect"]        # Phase 3: live once the shader has it
+        return d
+
+    def amb_for(self, P, m, token="AMB"):
+        if token in P["_GIVEN"] or not m:
+            return P[token]
+        return m.get("amb", P[token])
+
+    # ── shared ──
     def common(self, family, P=None, amb=None):
         p = props(stem(family, True))
         d = {k: 0 for k in guards(family, True)}
@@ -848,30 +1103,21 @@ class Lit(Unlit):
                 f"{layer}Shadow1Cast": sh["cast"] if cast is None else cast,
                 f"{layer}Shadow1Intensity": sh["intensity"], f"{layer}Shadow1Distance": 0.0}
 
-    def pattern(self, L, P, layer, which, slot=None):
-        mat = P["MATERIAL"]
-        m = dict(self.MATERIAL[which], **mat.get(which, {}), **(mat.get(slot, {}) if slot else {}))
-        if not m.get("pattern"):
-            return {f"{layer}PatternEnabled": 0}
-        d = {f"{layer}PatternEnabled": 1, f"{layer}PatternType": PATTERNS[m["pattern"]],
-             f"{layer}PatternScale": m.get("scale", 20), f"{layer}PatternIntensity": m.get("intensity", 0.05)}
-        for k, prop in (("contrast", "Contrast"), ("spec", "SpecularEffect"), ("rough", "RoughnessEffect"),
-                        ("p1", "Param1"), ("p2", "Param2"), ("p3", "Param3"), ("px", "Px")):
-            if k in m:
-                d[f"{layer}Pattern{prop}"] = m[k]
-        return d
-
     # ── keys (UI/SDFButtonRM) ──
-    def key(self, L, P, slot, *, fill, mark=None, states=None, extra=None, amb=None):
+    def key(self, L, P, slot, *, fill, mark=None, states=None, extra=None, amb=None, surface="key"):
         S = L.S(slot)
-        base = self.common("Button", P, amb)
+        m = self.preset(P, surface, slot)
+        g = self.geom(L, slot, m)
+        base = self.common("Button", P, amb if amb is not None else self.amb_for(P, m))
         base.update({
-            "_ButtonEnabled": 1, "_ButtonColor": fill, "_ButtonRenderAlpha": S["alpha"], "_ButtonRenderEmissive": 0.0,
+            "_ButtonEnabled": 1, **self.paint("_Button", m, fill, gradient=surface != "pad"),
+            "_ButtonRenderAlpha": S["alpha"], "_ButtonRenderEmissive": 0.0,
             "_ButtonShapeType": S["shape"], "_ButtonShapeParam1": S["corner"], "_ButtonPadding": S["pad"],
             "_ButtonRoundness": S["round"], "_ButtonLipHeight": 0.0,
-            "_ButtonBevelEnabled": 1 if S["bevel"] else 0, "_ButtonBevelDistance": S["bevel"] or 0.1,
-            "_ButtonBevelDepth": S["depth"], "_ButtonBevelSmoothness": S["smooth"], "_ButtonFaceSmoothness": S["dome"],
-            **self.pattern(L, P, "_Button", "key", slot),
+            "_ButtonBevelEnabled": 1 if g["bevel"] else 0, "_ButtonBevelDistance": g["bevel"] or 0.1,
+            "_ButtonBevelDepth": g["depth"], "_ButtonBevelSmoothness": g["smooth"], "_ButtonFaceSmoothness": g["dome"],
+            **self.pattern(L, P, "_Button", surface, slot),
+            **self.finish("_Button", m, "Button", fill),
             **self.shadow(L, P, "_Button"),
             "_BorderEnabled": 0, "_EdgeEnabled": 0,
             "_IconEnabled": 1 if S["icon"] is not None else 0,
@@ -884,49 +1130,54 @@ class Lit(Unlit):
         return slot, base, states or {}, extra
 
     def keys(self, L, P):
+        mk = self.preset(P, "key")
+        ma = self.preset(P, "accent")
+        col = lambda c, m=mk: self.recolour("_Button", m, c)        # noqa: E731
+
         def sunk(slot, **kw):
             S = L.S(slot)
             return dict({"_ButtonBevelDepth": -S["sunk"], "_ButtonFaceSmoothness": 0.0,
                          "_ButtonShadow1Intensity": 0.3}, **kw)
-        dis = {"_ButtonColor": P["DIS_BODY"], "_ButtonBevelDepth": L.S("Button")["depth"] * 0.4,
+        dis = {**col(P["DIS_BODY"]), "_ButtonBevelDepth": self.geom(L, "Button", mk)["depth"] * 0.4,
                "_IconColor": P["DIS_MARK"], "_ButtonShadow1Intensity": 0.5}
 
         def std(slot):
-            return {"Hover": {"_ButtonColor": P["BODY_HI"]},
-                    "Pressed": sunk(slot, _ButtonColor=P["BODY_LO"]), "Disabled": dict(dis)}
+            return {"Hover": col(P["BODY_HI"]), "Pressed": sunk(slot, **col(P["BODY_LO"])), "Disabled": dict(dis)}
         yield self.key(L, P, "Button", fill=P["BODY"], states=std("Button"))
-        yield self.key(L, P, "Accent", fill=P["ACCENT"], mark=P["ON_MARK"], amb=P["AMB_ACCENT"],
-                       states={"Hover": {"_ButtonColor": P["ACCENT_HI"]},
-                               "Pressed": sunk("Accent", _ButtonColor=P["ACCENT_LO"]),
-                               "Disabled": {"_ButtonColor": P["ACCENT_DIS"], "_ButtonShadow1Intensity": 0.5}})
+        yield self.key(L, P, "Accent", fill=P["ACCENT"], mark=P["ON_MARK"], surface="accent",
+                       amb=P["AMB_ACCENT"] if "AMB_ACCENT" in P["_GIVEN"] or not ma else None,
+                       states={"Hover": col(P["ACCENT_HI"], ma),
+                               "Pressed": sunk("Accent", **col(P["ACCENT_LO"], ma)),
+                               "Disabled": {**col(P["ACCENT_DIS"], ma), "_ButtonShadow1Intensity": 0.5}})
         # A latch: ON is pressed IN, filled with its meaning, and the mark glows — shape AND colour.
         for slot, on in (("ToggleBtn", "ACCENT"), ("Solo", "SOLO"), ("Lamp", "LAMP")):
             mark = P["LAMP_OFF"] if slot == "Lamp" else P["MARK_DIM"]
             yield self.key(L, P, slot, fill=P["BODY"], mark=mark,
-                           states=dict(std(slot), Hover={"_ButtonColor": P["BODY_HI"], "_IconColor": P["MARK"]},
-                                       Active=sunk(slot, _ButtonColor=P[on], _IconColor=P["ON_MARK"],
+                           states=dict(std(slot), Hover={**col(P["BODY_HI"]), "_IconColor": P["MARK"]},
+                                       Active=sunk(slot, **col(P[on]), _IconColor=P["ON_MARK"],
                                                    _ButtonRenderEmissive=0.25, _IconRenderEmissive=0.6)))
         yield self.key(L, P, "Close", fill=P["BODY"], mark=P["MARK_DIM"],
-                       states={"Hover": {"_ButtonColor": P["BODY_HI"], "_IconColor": P["HOT"]},
-                               "Pressed": sunk("Close", _ButtonColor=P["BODY_LO"], _IconColor=P["HOT"]),
+                       states={"Hover": {**col(P["BODY_HI"]), "_IconColor": P["HOT"]},
+                               "Pressed": sunk("Close", **col(P["BODY_LO"]), _IconColor=P["HOT"]),
                                "Disabled": dict(dis)})
         yield self.key(L, P, "Chip", fill=P["BODY"], states=std("Chip"))
         yield self.key(L, P, "Dot", fill=P["SCROLL"],
-                       states={"Hover": {"_ButtonColor": P["SCROLL_HI"]},
-                               "Pressed": sunk("Dot", _ButtonColor=P["ACCENT"]), "Disabled": dict(dis)})
+                       states={"Hover": col(P["SCROLL_HI"]),
+                               "Pressed": sunk("Dot", **col(P["ACCENT"])), "Disabled": dict(dis)})
         yield self.key(L, P, "ScrollHandle", fill=P["SCROLL"],
-                       states={"Hover": {"_ButtonColor": P["SCROLL_HI"]},
-                               "Pressed": {"_ButtonColor": P["ACCENT"]},
+                       states={"Hover": col(P["SCROLL_HI"]), "Pressed": col(P["ACCENT"]),
                                "Disabled": {"_ButtonRenderAlpha": 0.4}})
         # PD-48 pads: untilted, soft squircle, wide shallow smooth bevel, row colour tinted onto the body.
+        # The pad's colour is BOUND (padColor), so its layer never carries a ramp.
         slot, base, states, extra = self.key(
-            L, P, "Pad", fill=P["PAD_BODY"],
+            L, P, "Pad", fill=P["PAD_BODY"], surface="pad",
             states={"Hover": {"_ButtonRenderEmissive": 0.06},
                     "Pressed": sunk("Pad", _ButtonRenderEmissive=0.35),
                     "Disabled": {"_ButtonRenderAlpha": 0.45, "_ButtonShadow1Intensity": 0.4},
                     "Latched": {"_ButtonRenderEmissive": 0.25, "_ButtonBevelDepth": -0.05}},
             extra={"padColor": {"targets": [{"param": "_ButtonColor", "amount": P["PAD_TINT"]}]}})
         base.update(self.shadow(L, P, "_Button", cast=0.0, blur=1.2))
+        base["_ButtonGradientEnabled"] = 0
         yield slot, base, states, extra
 
     # ── dials (UI/SDFKnobRM) ──
@@ -937,7 +1188,9 @@ class Lit(Unlit):
         r = S["arc_outer"] - w
         knob_size = S["cap_r"] / r           # the cap's radius is _LineRadius × _KnobSize
         skirt = KNOB_SHAPES[S["skirt"]] if isinstance(S["skirt"], str) else S["skirt"]
-        base = self.common("Knob", P)
+        mc, ms = self.preset(P, "cap", slot), self.preset(P, "skirt", slot)
+        g = self.geom(L, slot, mc)
+        base = self.common("Knob", P, self.amb_for(P, mc))
         base.update({
             "_AngleStart": 315, "_AngleRange": 270, "_Value": 0.5,
             # _LightingShadow1 defaults ON in SDFKnob/SDFKnobRM: off (all three, via the guards) —
@@ -953,17 +1206,26 @@ class Lit(Unlit):
             "_LineSublineUnfilledRenderEmissive": 0.0,
             "_LineSublineFilledEnabled": 1, "_LineSublineFilledColor": P["VALUE"],
             "_LineSublineFilledRenderEmissive": P["VALUE_EM"],
-            "_KnobEnabled": 1, "_KnobColor": P["CAP"], "_KnobShapeType": skirt, "_KnobSize": knob_size,
+            "_KnobEnabled": 1, **self.paint("_Knob", mc, P["CAP"]), "_KnobShapeType": skirt, "_KnobSize": knob_size,
             "_KnobShapeScale": S["skirt_count"], "_KnobShapeParam1": S["skirt_depth"],
             # lip 0 (+ the SDFKnobRM no-lip fix) removes the dotted ring; bevel well inside the cap
             "_KnobLipHeight": 0.0,
-            "_KnobBevelEnabled": 1, "_KnobBevelDistance": S["bevel"], "_KnobBevelDepth": S["depth"],
-            "_KnobBevelSmoothness": S["smooth"], "_KnobFaceSmoothness": S["dome"],
-            **self.pattern(L, P, "_Knob", "cap", slot),
-            **self.pattern(L, P, "_KnobBevel", "skirt", slot),
+            "_KnobBevelEnabled": 1, "_KnobBevelDistance": g["bevel"], "_KnobBevelDepth": g["depth"],
+            "_KnobBevelSmoothness": g["smooth"], "_KnobFaceSmoothness": g["dome"],
+            **(self.mpattern("_Knob", mc, S["px"]) if mc else self.pattern(L, P, "_Knob", "cap", slot)),
+            **(self.mpattern("_KnobBevel", ms, S["px"], base=P["SKIRT"]) if ms
+               else self.pattern(L, P, "_KnobBevel", "skirt", slot)),
             "_KnobNubEnabled": 1, "_KnobNubShapeType": 0, "_KnobNubColor": P["NUB"], "_KnobNubSize": S["nub"],
             "_KnobNubDistance": S["nub_dist"],
         })
+        if ms:
+            # the skirt is the bevel band: it wears the skirt material's EDGE ramp (+ pattern above) —
+            # the lit chamfer that lifts a dark knob off a dark plate
+            base.update(grad("_KnobBevel", edge_of(ms, P["SKIRT"]), (0.0, 1.0)))
+        elif mc and mc.get("edge") is not None:
+            base.update(grad("_KnobBevel", edge_of(mc, P["CAP"]), (0.0, 1.0)))
+        if mc and mc.get("alpha", 1.0) < 1.0:
+            base["_KnobRenderAlpha"] = mc["alpha"]
         if S["ticks"]:
             base.update({
                 "_OuterMarksEnabled": 1, "_OuterMarksType": 0, "_OuterMarksCount": S["ticks"],
@@ -974,8 +1236,9 @@ class Lit(Unlit):
                 "_OuterMarksMajorEnabled": 0, "_OuterMarksMajorColorUnfilled": P["MARK_DIM"],
                 "_OuterMarksMajorColorFilled": P["VALUE"], "_OuterMarksRenderEmissive": 0.0,
             })
-        states = {"Hover": {"_KnobColor": P["BODY_HI"] if P["CAP"] == P["BODY"] else mix(P["CAP"], "#FFFFFF", 0.06)},
-                  "Pressed": {"_KnobBevelDepth": S["depth"] * 0.6},
+        hov = P["BODY_HI"] if P["CAP"] == P["BODY"] else mix(P["CAP"], "#FFFFFF", 0.06)
+        states = {"Hover": self.recolour("_Knob", mc, hov),
+                  "Pressed": {"_KnobBevelDepth": g["depth"] * 0.6},
                   "Disabled": {"_KnobNubColor": P["DIS_MARK"], "_LineSublineFilledColor": P["DIS_MARK"],
                                "_LineSublineFilledRenderEmissive": 0.0, "_KnobShadow1Intensity": 0.5}}
         return slot, base, states, None
@@ -984,7 +1247,9 @@ class Lit(Unlit):
     def fader(self, L, P, slot):
         S = L.S(slot)
         gutter = slot == "Fader"
-        base = self.common("Slider", P)
+        m = None if gutter else self.preset(P, "handle", slot)
+        g = self.geom(L, slot, m)
+        base = self.common("Slider", P, self.amb_for(P, m))
         base.update({
             "_Value": 0.5, "_TrackValueZeroPoint": 0.0, "_HandleLipHeight": 0.0,
             "_BgEnabled": 1 if gutter else 0, "_BgColor": P["BACK"], "_BgShapeType": 0,
@@ -993,24 +1258,28 @@ class Lit(Unlit):
             "_TrackValueFilledEnabled": 1, "_TrackValueFilledColor": P["SCROLL_HI"] if gutter else P["VALUE"],
             "_TrackValueFilledRenderEmissive": 0.0 if gutter else P["VALUE_EM"],
             "_TrackValueUnfilledEnabled": 0,
-            "_HandleEnabled": 1, "_HandleColor": P["HANDLE"], "_HandleShapeType": 0,
+            "_HandleEnabled": 1, **self.paint("_Handle", m, P["HANDLE"]), "_HandleShapeType": 0,
             "_HandleShapeParam1": S["corner"], "_HandleWidth": S["handle_w"], "_HandleHeight": S["handle_h"],
             "_HandlePadding": 0.5,
-            "_HandleBevelEnabled": 1 if S["bevel"] else 0, "_HandleBevelDistance": S["bevel"] or 0.1,
-            "_HandleBevelDepth": S["depth"], "_HandleBevelSmoothness": 0.5, "_HandleFaceSmoothness": S["dome"],
+            "_HandleBevelEnabled": 1 if g["bevel"] else 0, "_HandleBevelDistance": g["bevel"] or 0.1,
+            "_HandleBevelDepth": g["depth"], "_HandleBevelSmoothness": g["smooth"], "_HandleFaceSmoothness": g["dome"],
             **self.pattern(L, P, "_Handle", "handle", slot),
+            **self.finish("_Handle", m, "Slider", P["HANDLE"]),
             **({} if gutter else self.shadow(L, P, "_Handle")),
             "_BorderEnabled": 0, "_EdgeEnabled": 0,
         })
-        states = {"Hover": {"_HandleColor": P["BODY_HI"]},
-                  "Pressed": {"_HandleColor": P["BODY_LO"]},
-                  "Disabled": {"_HandleColor": P["DIS_BODY"], "_TrackValueFilledColor": P["DIS_MARK"],
+        states = {"Hover": self.recolour("_Handle", m, P["BODY_HI"] if P["HANDLE"] == P["BODY"]
+                                         else mix(P["HANDLE"], "#FFFFFF", 0.06)),
+                  "Pressed": self.recolour("_Handle", m, P["BODY_LO"] if P["HANDLE"] == P["BODY"]
+                                           else mix(P["HANDLE"], "#000000", 0.1)),
+                  "Disabled": {**self.recolour("_Handle", m, P["DIS_BODY"]), "_TrackValueFilledColor": P["DIS_MARK"],
                                "_TrackValueFilledRenderEmissive": 0.0}}
         return slot, base, states, None
 
     def switch(self, L, P, slot):
         S = L.S(slot)
-        base = self.common("Toggle", P)
+        m = self.preset(P, "handle", slot)
+        base = self.common("Toggle", P, self.amb_for(P, m))
         base.update({
             "_Value": 0.0, "_StateCount": 2,
             "_BgEnabled": 0, "_BgColor": P["INSET"], "_BgPadding": S["pad"],
@@ -1020,8 +1289,8 @@ class Lit(Unlit):
             "_HandleBevelSmoothness": 0.8, "_HandleFaceSmoothness": 0.3,
             # ON = the handle takes the accent (LED on at intensity 0: a recolour, no bloom ball)
             "_LedEnabled": 1, "_LedColor": P["ACCENT"], "_LedIntensity": 0.0, "_LedSurfaceBlend": 1.0,
-            # no cast shadow: SDFTogglePill's shadow pass (_ShadowPassMode 1) redraws the whole pill at
-            # the 2x quad size (RealisticPill does it too, in slrender) — the guards keep it off
+            # no cast shadow: a pill draws its shadow inline and the app gives it no shadow quad
+            # (WidgetShadowQuad needs _ShadowPassMode) — the guards keep it off
             "_BorderEnabled": 0, "_EdgeEnabled": 0,
         })
         states = {"Hover": {"_HandleColor": P["BODY_HI"]}, "Pressed": {"_HandleColor": P["BODY_LO"]},
@@ -1032,17 +1301,26 @@ class Lit(Unlit):
     def plate(self, L, P, slot):
         S = L.S(slot)
         c = P[S["fill"]]
+        m = self.preset(P, "plate", slot) if slot not in ("Well", "ScrollTrack") or slot in P["MATERIAL"] else None
         lo, hi = self.plate_colors(L, P, slot)
-        base = self.common("Panel", P, P["AMB_PLATE"])
+        amb = P["AMB_PLATE"] if ("AMB_PLATE" in P["_GIVEN"] or not m) else m.get("plate_amb", P["AMB_PLATE"])
+        base = self.common("Panel", P, amb)
+        if m:
+            pm = dict(m, pattern=m.get("linear", m.get("pattern")))
+            pat = self.mpattern("_Panel", pm, 0, lock=m.get("lock", S["lock"]), base=c)
+        elif slot not in ("Well", "ScrollTrack"):
+            pat = self.pattern(L, P, "_Panel", "plate", slot)
+        else:
+            pat = {}
         base.update({
-            "_PanelEnabled": 1, "_PanelColor": c, "_PanelRenderAlpha": 1.0,
+            "_PanelEnabled": 1, "_PanelColor": c, "_PanelRenderAlpha": m.get("alpha", 1.0) if m else 1.0,
             "_PanelRenderEmissive": P["WELL_EM"] if slot == "Well" else 0.0,
             "_PanelShapeType": 0, "_PanelShapeParam1": S["corner"], "_PanelPadding": S["pad"],
             "_PanelPaddingPx": S["pad_px"], "_PanelCornerRadiusPx": S["radius_px"],
             # medial-axis rule: never dome a rectangle; material is read from the GRADIENT instead
             "_PanelFaceSmoothness": 0.0,
             **grad("_Panel", (lo, hi), (0.0, 1.0)),
-            **(self.pattern(L, P, "_Panel", "plate", slot) if slot not in ("Well", "ScrollTrack") else {}),
+            **pat,
             "_BorderEnabled": 0, "_EdgeEnabled": 0,
         })
         if S["recess"]:
@@ -1058,8 +1336,13 @@ class Lit(Unlit):
 
     def plate_colors(self, L, P, slot):
         c = P[L.S(slot)["fill"]]
+        m = self.preset(P, "plate", slot) if slot not in ("Well", "ScrollTrack") or slot in P["MATERIAL"] else None
+        lo_t, hi_t = (m["lo"], m["hi"]) if m else ("#000000", "#FFFFFF")
+        lo_a, hi_a = P["PLATE_LO"], P["PLATE_HI"]
+        if m and m.get("plate_ramp") and "PLATE_LO" not in P["_GIVEN"]:
+            lo_a, hi_a = m["plate_ramp"]          # a metal plate wants a real "sky" at the top
         # top-lit: A (uv.y 0) is the BOTTOM — keep the light in B
-        return mix(c, "#000000", P["PLATE_LO"]), mix(c, "#FFFFFF", P["PLATE_HI"])
+        return mix(c, lo_t, lo_a), mix(c, hi_t, hi_a)
 
 
 CLASSES = {"unlit": Unlit, "neon": Neon, "lit": Lit}
@@ -1207,13 +1490,22 @@ class Look:
 
     def palette(self, mode):
         given = dict(self.modes[mode]["palette"])
+        explicit = set(given)
+        mat = merge(self.material, self.modes[mode].get("material", {}))
+        if self.cls == "lit":
+            # a surface that names a preset takes its colour from it unless the palette says otherwise
+            for surface, token in list(SURFACE_TOKEN.items()) + [("plate", "FACE")]:
+                m = resolve_material(Lit.entry(mat, surface)) if surface != "accent" or "accent" in mat else None
+                if m and token not in given:
+                    given[token] = m["base"]
         P = dict(PALETTE_DEFAULTS[self.cls](given), **given)
         missing = [t for t in self.kit.TOKENS if t not in P]
         if missing:
             raise KeyError(f"{self.style} {mode}: palette lacks {missing}")
         P["prefix"] = self.mode_prefix(mode)
         # materials may be re-tuned per mode (a pale brushed plate wants less grain than a dark one)
-        P["MATERIAL"] = merge(self.material, self.modes[mode].get("material", {}))
+        P["MATERIAL"] = mat
+        P["_GIVEN"] = explicit
         return P
 
     def mode_prefix(self, mode):
@@ -1534,10 +1826,13 @@ class Canvas:
         xs, ys = max(0, x0), max(0, y0)
         xe, ye = min(self.w, x0 + fw), min(self.h, y0 + fh)
         if xe <= xs or ye <= ys:
-            return
+            return None
         src = a[ys - y0:ye - y0, xs - x0:xe - x0]
         dst = self.px[ys:ye, xs:xe]
         dst[:] = src[..., :3] + (1.0 - src[..., 3:4]) * dst
+        # coverage over the widget's own rect (not its shadow frame), for measurements
+        ox, oy = max(0, x) - x0, max(0, y) - y0
+        return a[oy:oy + min(h, self.h - max(0, y)), ox:ox + min(w, self.w - max(0, x)), 3]
 
     def text(self, x, y, s, col, size=11, bold=False, anchor="la"):
         self.texts.append((x, y, s, col, size, bold, anchor))
@@ -1585,15 +1880,41 @@ class Scene:
         self.add("Pad", x, y, w, h, state=state, sets=pad_binding(self.parts[self.P["prefix"] + "Pad"], row_hex))
 
     def render(self):
+        """Render, composite, and MEASURE: per plate the % of clipped pixels (any channel >= 250 —
+        FACTORY: < 1% on a light-mode plate) and per control its mean luminance step off the plate
+        it sits on (dark controls must separate from dark plates)."""
         from skinsheet import render, OUT
         render(self.cells, rig=self.look.rig_scene(self.mode), timeout=900)
+        self.stats = {"clip": {}, "sep": {}}
+        parts_of = {c["id"]: c for c in self.cells}
         for cid, x, y, w, h, ss, frame in self.meta:
             p = OUT / f"{cid}.png"
-            if p.exists():
-                self.canvas.put(p, x, y, w, h, ss, frame)
-            else:
+            if not p.exists():
                 print("   missing", cid)
+                continue
+            part = parts_of[cid]["states"].rsplit("/", 1)[-1].split(".")[0][len(self.P["prefix"]):]
+            region = self.canvas.px[max(0, y):y + h, max(0, x):x + w]
+            before = region.copy()
+            cover = self.canvas.put(p, x, y, w, h, ss, frame)
+            if SLOTS[part][2] == "plate":
+                clip = float((region * 255 >= 249.5).any(axis=-1).mean() * 100)
+                self.stats["clip"].setdefault(part, []).append(clip)
+            elif part in ("Knob", "KnobSmall", "KnobHero", "Button", "ToggleBtn"):
+                lumf = lambda a: a[..., 0] * 0.2126 + a[..., 1] * 0.7152 + a[..., 2] * 0.0722   # noqa: E731
+                diff = (cover[:region.shape[0], :region.shape[1]] > 0.95) if cover is not None else None
+                if diff is not None and diff.any():
+                    step = float((lumf(region)[diff] - lumf(before)[diff]).mean() * 255)
+                    self.stats["sep"].setdefault(part, []).append(step)
         return self.canvas
+
+    def report(self):
+        clip = {k: round(max(v), 2) for k, v in self.stats["clip"].items()}
+        sep = {k: round(sum(v) / len(v), 1) for k, v in self.stats["sep"].items()}
+        worst = max(clip.values()) if clip else 0.0
+        print(f"   plate clip% (max per plate): {clip}  -> worst {worst:.2f}%"
+              f"{'  !! over 1%' if worst > 1.0 and self.mode == 'light' else ''}")
+        print(f"   control luminance step off its plate (mean ΔL, 0-255): {sep}")
+        return {"clip": clip, "sep": sep}
 
 
 def ink(look, mode, P):
@@ -1695,6 +2016,7 @@ def rack_sheet(look, mode, out):
     t(700, 504, "A01  KICK", ink_c, 12, True)
     t(200, 548, f"{look.title.upper()} {mode.upper()} · {look.cls}", dim_c, 11, True)
     img = cv.image()
+    sc.report()
     return _titled(img, f"{look.title} {mode} — rack composite (cohesion test)", P, out)
 
 
@@ -1786,6 +2108,109 @@ def parts_sheet(look, mode, out):
                        False, "ma")
     cv = sc.render()
     return _titled(cv.image(), f"{look.title} {mode} — every part, every state, real sizes", sc.P, out)
+
+
+# ═══ 7b. the material swatch sheet ═══════════════════════════════════════════════════════════════
+
+NEUTRAL_RIG = {"light1": {"pos": [0.15, 0.85], "height": 0.75, "color": "#FFFFFF", "intensity": 0.85,
+                          "specular": 0.12, "specularPower": 32, "enabled": True},
+               "light2": {"pos": [0.85, 0.75], "height": 0.70, "color": "#F2F6FF", "intensity": 0.40,
+                          "specular": 0.08, "specularPower": 24, "enabled": True},
+               "light3": {"enabled": False}}
+SWATCH_BG = "#2A2D32"          # the neutral plate every control swatch sits on
+
+
+def swatch_look(name):
+    """A throwaway lit look whose every surface is preset `name` — what the swatch cells render."""
+    pal = dict(ON_MARK="#101214", GAP="#16181B", BACK="#202327", INSET="#25282C", WELL="#0E1114", MARK="#E6E8EB", ACCENT="#3FA7D6",
+               ARC_OFF="#1A1C1F", VALUE="#E0E4E8", TRACK="#121416", SHADOW="#000000", SHADOW_A=0.5)
+    return Look(title=name, style="Swatch", prefix="Swatch", slug="swatch", cls="lit",
+                modes={"dark": dict(track="Nebula", blurb="", palette=pal),
+                       "light": dict(track="Nebula", blurb="", palette=pal)},
+                material={"key": name, "cap": name, "skirt": name, "handle": name, "plate": name})
+
+
+def material_sheet(names, out, tag="swatch"):
+    """Rows of presets; per rig (shipped Realistic rig | neutral rig): knob cap 56px, key 76x40, slider
+    handle 170x40, px-locked plate 200x90 — at 1:1, each control over a neutral plate. Prints and
+    labels the plate's clipped-pixel % (>=250) and each control's luminance step off its plate."""
+    import numpy as np
+    from PIL import Image
+    from skinsheet import render, OUT
+    d = ROOT / ".skinsheet" / "lookkit" / "swatch"
+    d.mkdir(parents=True, exist_ok=True)
+    cols = [("Knob", 56, 56, 0.0), ("Button", 76, 40, None), ("Slider", 170, 40, 0.0), ("Face", 200, 90, None)]
+    rigs = [("shipped rig", None), ("neutral rig", NEUTRAL_RIG)]
+    lab_w, gap, row_h, grp_gap = 150, 18, 112, 40
+    grp_w = sum(c[1] for c in cols) + gap * (len(cols) - 1)
+    W = lab_w + len(rigs) * grp_w + (len(rigs) - 1) * grp_gap + 20
+    H = 44 + row_h * len(names) + 10
+    cv = Canvas(W, H, "#121417")
+    stats = {}
+    for ri, (rname, rig) in enumerate(rigs):
+        gx = lab_w + ri * (grp_w + grp_gap)
+        cv.text(gx, 12, rname.upper(), "#C9CDD2", 13, True)
+        cells, meta = [], []
+        for ni, name in enumerate(names):
+            _, parts, probs = swatch_look(name).build("dark")
+            if probs:
+                print("  !!", name, probs)
+            y = 44 + ni * row_h
+            x = gx
+            for part, w, h, v in cols:
+                pth = d / f"{name}-{part}.states.json"
+                pth.write_text(json.dumps(parts["SwatchDark" + part]), encoding="utf-8")
+                cid = f"mat-{tag}-{ri}-{ni}-{part}"
+                c = {"id": cid, "states": pth.as_posix(), "w": w, "h": h, "ss": 2, "bg": "#00000000",
+                     "pos": [(x + w / 2) / W, 1 - (y + 30) / H]}
+                if part != "Face":
+                    c["shadow"] = 2
+                if v is not None:
+                    c["set"] = {"_Value": v}
+                cells.append(c)
+                meta.append((cid, name, part, x, y + (90 - h) // 2, w, h, 2.0 if part != "Face" else 1.0))
+                x += w + gap
+        render(cells, rig=rig, timeout=1200)
+        for cid, name, part, x, y, w, h, frame in meta:
+            if part != "Face":
+                cv.px[y - 6:y + h + 6, x - 6:x + w + 6] = np.array(rgbf(SWATCH_BG), "float32")
+        for cid, name, part, x, y, w, h, frame in meta:
+            p = OUT / f"{cid}.png"
+            if not p.exists():
+                print("   missing", cid)
+                continue
+            cv.put(p, x, y, w, h, 2, frame)
+            a = np.asarray(Image.open(p).convert("RGBA"), np.float32) / 255.0
+            fw, fh = int(w * frame), int(h * frame)
+            a = a.reshape(fh, 2, fw, 2, 4).mean(axis=(1, 3))
+            if frame > 1:
+                a = a[(fh - h) // 2:(fh - h) // 2 + h, (fw - w) // 2:(fw - w) // 2 + w]
+            region = cv.px[y:y + h, x:x + w]
+            m = a[..., 3] > (0.5 if part == "Face" else 0.9)
+            lumv = (region[..., 0] * 0.2126 + region[..., 1] * 0.7152 + region[..., 2] * 0.0722) * 255
+            st = stats.setdefault((name, rname), {})
+            if part == "Face":
+                st["clip%"] = round(100.0 * float((region[m] * 255 >= 250).any(axis=-1).mean()) if m.any() else 0, 2)
+                st["plateL"] = round(float(lumv[m].mean()), 1) if m.any() else 0
+            else:
+                st[part + "ΔL"] = round(float(lumv[m].mean()) - lum(SWATCH_BG) * 255, 1) if m.any() else 0
+                cl = float((region[m] * 255 >= 249.5).all(axis=-1).mean() * 100) if m.any() else 0
+                st["ctrl clip%"] = round(max(st.get("ctrl clip%", 0), cl), 1)
+        for ni, name in enumerate(names):
+            st = stats[(name, rname)]
+            y = 44 + ni * row_h + 94
+            cv.text(gx, y, f"knob ΔL {st.get('KnobΔL', 0):+.0f}  key {st.get('ButtonΔL', 0):+.0f}  "
+                           f"handle {st.get('SliderΔL', 0):+.0f}  plate L {st.get('plateL', 0):.0f}  "
+                           f"clip {st.get('clip%', 0):.1f}%  white {st.get('ctrl clip%', 0):.0f}%", "#8C939B", 9)
+    for ni, name in enumerate(names):
+        cv.text(14, 44 + ni * row_h + 36, name, "#E6E8EB", 12, True)
+    img = cv.image()
+    out.parent.mkdir(parents=True, exist_ok=True)
+    img.save(out, optimize=True)
+    print("  ->", out)
+    for (name, rname), st in sorted(stats.items()):
+        print(f"  {name:20s} {rname:12s} {st}")
+    return stats
 
 
 # ═══ 8. CLI ═══════════════════════════════════════════════════════════════════════════════════════
@@ -1960,6 +2385,15 @@ def main(look, argv=None):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] == "materials":
+        # python Tools/lookkit.py materials [preset ...] [--out PNG] [--tag T]
+        args = sys.argv[2:]
+        out = Path(args[args.index("--out") + 1]) if "--out" in args else ROOT / "Looks/_materials/swatches.png"
+        tag = args[args.index("--tag") + 1] if "--tag" in args else "swatch"
+        names = [a for i, a in enumerate(args) if not a.startswith("--") and (i == 0 or args[i - 1] not in
+                                                                             ("--out", "--tag"))]
+        material_sheet(names or list(MATERIALS), out, tag)
+        sys.exit(0)
     if len(sys.argv) < 3:
         print(__doc__)
         sys.exit(2)
