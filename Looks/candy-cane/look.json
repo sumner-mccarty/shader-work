@@ -5,7 +5,7 @@
   "prefix": "CandyCane",
   "brief": "BACKLOG.md#candy-cane",
   "class": "lit",
-  "status": "candidate",
+  "status": "approved",
   "files": [
     "Tools/looks/candy_cane.py",
     "Assets/Resources/UiStyles/CandyCane.style.json",

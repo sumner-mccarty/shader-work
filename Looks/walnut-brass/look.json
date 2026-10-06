@@ -5,7 +5,7 @@
   "prefix": "WalnutBrass",
   "brief": "BACKLOG.md#walnut-brass",
   "class": "lit",
-  "status": "candidate",
+  "status": "approved",
   "files": [
     "Tools/looks/walnut_brass.py",
     "Assets/Resources/UiStyles/WalnutBrass.style.json",

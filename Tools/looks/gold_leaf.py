@@ -76,6 +76,10 @@ LOOK = Look(
             material={"plate": {"preset": "lacquer.black", "tint": "#E6DDC9", "lo": "#6A5E46", "hi": "#FFFFFF"}},
             app=dict(display=dict(text="#F2C96A", textDim="#8C7444", textAlt="#F2C96A"),
                      ui=dict(text="#2A2418", textDim="#6B5E45", accent="#8A6A22"),
+                     # tab labels/icons and multitrack text sit on the ivory chassis: gold-on-ivory
+                     # measured 1.0-2.3:1 (printcheck), so they print in dark antique gold
+                     chrome=dict(label="#6B5320", labelActive="#2A2418", icon="#6B5320", iconActive="#2A2418"),
+                     tracks=dict(text="#2A2418", rowWithSample="#CDB98A"),
                      # pale plates, black keys: plate print goes dark, key print stays gold
                      ink=dict(faceplate="#2A2418", faceplateDim="#6B5E45", inset="#2A2418", insetDim="#6B5E45",
                               backplane="#2A2418", backplaneDim="#6B5E45", socket="#2A2418", socketDim="#6B5E45",

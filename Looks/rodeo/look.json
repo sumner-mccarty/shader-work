@@ -5,7 +5,7 @@
   "prefix": "Rodeo",
   "brief": "BACKLOG.md#rodeo",
   "class": "lit",
-  "status": "candidate",
+  "status": "approved",
   "files": [
     "Tools/looks/rodeo.py",
     "Assets/Resources/UiStyles/Rodeo.style.json",
