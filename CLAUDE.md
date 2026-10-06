@@ -76,7 +76,7 @@ github.com, objects.githubusercontent.com, pypi.org and the Ubuntu archive.
 5. Diversity check: tile your `rack-dark.png` with every other look's
    (`python -m slrender contact Looks/*/sheets/rack-dark.png -o /tmp/family.png`) and confirm yours
    is unmistakable.
-6. `python Tools/looks/<module>.py write` + `manifest`, then the gate: `python Tools/lookcheck.py <Style>`
+6. `python Tools/looks/<module>.py write` + `manifest`, then the gate: `python Tools/lookcheck.py <Style>` and `python Tools/looks/<module>.py printcheck` (0 print pairs under 3:1 — unreadable app text is invisible on sheets)
    → 0 errors (and read the warnings). `python tests/test_basics.py`.
 7. Final sheets in `Looks/<slug>/sheets/`, set the spec's `status="candidate"` (re-run `manifest`),
    commit, push, open a PR titled `look: <Title>` whose description embeds the four sheets and

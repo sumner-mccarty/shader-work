@@ -152,7 +152,7 @@ Iterate on rack composites for at least 3 rounds; each round write a critique ag
 Looks/README.md rubric in Looks/<slug>/NOTES.md and fix the worst issue first. Push the theme's
 signature until it reads in one second at 25% zoom, then check it against every other look's rack
 for distinctness.
-Gate: python Tools/lookcheck.py <Style> with 0 errors, python tests/test_basics.py.
+Gate: python Tools/lookcheck.py <Style> with 0 errors, python Tools/looks/<module>.py printcheck with 0 pairs under 3:1, python tests/test_basics.py.
 Deliver Looks/<slug>/ (look.json status "candidate", NOTES.md, sheets/) and open a PR
 "look: <Title>" embedding rack-dark, rack-light, parts-dark, parts-light.
 Do not edit shaders, shared JSON, mirrored Tools, or any other look.
@@ -193,7 +193,7 @@ from me. I will only review the final PR.
    files) — at most 2 revision rounds. Still failing after 2: set look.json status "rejected", keep
    the critic's notes in NOTES.md, and do not count it.
 5. Ship: for each accepted look set status "candidate" and commit it alone ("look: <Title>").
-   Re-run `python Tools/lookcheck.py <Style>` for every accepted look and `python tests/test_basics.py`.
+   Re-run `python Tools/lookcheck.py <Style>` and `python Tools/looks/<module>.py printcheck` (0 under 3:1) for every accepted look and `python tests/test_basics.py`.
    Push and open ONE PR "looks: batch <date> — <n> looks". For each look the description has: title,
    one-line concept, critic score, rack-dark and rack-light embedded, known issues. Rejected looks
    go in a short list at the end with the reason.
