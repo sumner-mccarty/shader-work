@@ -123,6 +123,18 @@ final swatch sheet in Looks/_materials/.
 Then build two pilot looks from Looks/BACKLOG.md with the kit: gold-leaf and liquid-glass, following
 the Look workflow in CLAUDE.md completely (rubric critique rounds in NOTES.md, lookcheck 0 errors).
 One PR per pilot, plus one for the material library.
+
+Verified in Unity on 2026-10-06 (lit example applied in Play Mode): the lit class renders in the
+editor exactly as slrender shows it, and the light mode's pale plates (one far high key, plate
+ambient 1.0) do NOT clip in the app. Two findings to act on:
+- Dark mode: dark knobs/keys nearly vanish on dark plates in the real mixer. Every dark-mode preset
+  must separate controls from the plate (rim/edge highlight, value step or shadow) — check it on
+  the rack at knob.small size.
+- Pills draw their own shadows inline (no shadow pass, WidgetShadowQuad needs _ShadowPassMode);
+  slrender now matches that — never add a cast shadow for pills.
+Light modes: report the % of clipped (>=250) pixels on each light-mode plate; keep it under 1%.
+Leave a hook in the material presets for an environment-reflection term (Phase 3 adds it to the
+shaders); fake gold/chrome/glass for now with dome + warm spec + gradients.
 ```
 
 ---------------------------------------------------------------------------------------------------
