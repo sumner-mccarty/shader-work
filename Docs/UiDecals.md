@@ -268,3 +268,33 @@ against a fine noise (speckle), and two sizes of overspray dots outside the core
 | `_DotSize` | 0.2–2 | 1 | overspray dot size |
 
 Cost: 30 path pieces + two 3×3 dot layers, all fixed `[unroll]`, branch-free.
+
+### 11.3 `UI/Decal/Brush` — `DecalBrush.shader`  ·  `Looks/_decals/brush.png`
+A brush stroke on the same point scheme as Spray (`_P0.._P5`, `_PointCount`, Catmull-Rom; `dcStroke` also returns the
+signed side of the path, so the shader has a lateral coordinate `l` ∈ −1..1 across the ribbon). The ribbon is cut into
+`_Bristles` strands, each with its own paint load wandering along the stroke (long streaks that part and rejoin, each a
+touch lighter/darker, a faint groove between). **Dry brush**: from `_DryStart` the load threshold rises toward the tail,
+outer strands first, so the stroke breaks into separate streaks with staggered, ragged ends. The first point is a rounded
+loaded start; past the last point the brush lifts (no cap). Pressure → width; a thin ridge of piled-up paint runs along
+both edges.
+
+| Property | Range | Default | What it does |
+|---|---|---|---|
+| `_Color` | colour | `(0.95,0.12,0.38,1)` | paint colour; alpha = overall opacity |
+| `_Seed` | float | 1 | strand loads + ragged edge |
+| `_PointCount` / `_P0`…`_P5` | 1–6 / vector | 4 / see file | live points; x, y, pressure, unused (uv 0..1) |
+| `_Width` | 0.01–0.4 | 0.09 | half width at pressure 1 (picture heights) |
+| `_PressureWidth` | 0–1 | 0.8 | how much pressure thins the ribbon |
+| `_Taper` | 0–1 | 0.55 | tail narrowing (last ~45 % of the stroke) |
+| `_EdgeRagged` | 0–1 | 0.45 | outer strands of different lengths |
+| `_Bristles` | 4–80 | 26 | strands across the stroke |
+| `_Streakiness` | 0–1 | 0.45 | tone variation between strands |
+| `_StrandLen` | 0.5–12 | 4 | how slowly a strand's load wanders (× width) |
+| `_Groove` | 0–1 | 0.25 | dark gap between strands |
+| `_DryBrush` | 0–1 | 0.6 | how far the paint runs out toward the tail |
+| `_DryStart` | 0–1 | 0.4 | where along the stroke it starts running out |
+| `_Ridge` | 0–1 | 0.4 | lighter ridge of piled paint on both edges |
+
+Known limits (all three): the quad must be square (uv is treated as isotropic); the decal is flat colour + coverage — the
+paint-material texture (gloss/height, §3.1 P2) is not produced yet; FXC compile time of these shaders has not been
+measured (all are tiny, fixed `[unroll]`, no widget shader changed).
