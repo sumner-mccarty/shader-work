@@ -1,4 +1,4 @@
-"""Render a contact sheet for a decal generator: python Looks/_decals/make_sheets.py splat|spray|brush
+"""Render a contact sheet for a decal generator: python Looks/_decals/make_sheets.py splat|spray|brush|sticker
 Rows: 256 px on a dark plate, 256 px on a light plate, 64 px dark, 64 px light. Variants are below."""
 import sys
 from pathlib import Path
@@ -52,6 +52,14 @@ VARIANTS = {
         ("6 pts",    {"_Seed": 2, "_Color": "#3DDC6A", **P((0.1, 0.15, 0.6), (0.25, 0.7, 1.0), (0.4, 0.2, 1.0), (0.6, 0.8, 1.0), (0.75, 0.25, 0.8), (0.92, 0.7, 0.4))}),
         ("white",    {"_Seed": 4, "_Color": "#F2F2F2", "_Bristles": 44, "_Streakiness": 0.8, **P((0.1, 0.9, 0.9), (0.5, 0.5, 1.0), (0.9, 0.1, 0.5))}),
         ("2 pts",    {"_Seed": 6, "_Color": "#FF7A00", "_Width": 0.24, **P((0.15, 0.5, 1.0), (0.85, 0.5, 0.5))}),
+    ]),
+    "sticker": ("UI/Decal/Sticker", [
+        ("star matte",     {"_Shape": 2, "_Finish": 0, "_ArtColor": "#FFC21F", "_ArtColor2": "#F07A10", "_ShadowOpacity": 0.5}),
+        ("shield gloss",   {"_Shape": 3, "_Finish": 1, "_ArtColor": "#2E7BFF", "_ArtColor2": "#1233A8", "_Sheen": 0.8}),
+        ("bolt holo",      {"_Shape": 4, "_Finish": 2, "_ArtColor": "#7A5CFF", "_ArtColor2": "#20B8E0", "_Sheen": 0.9}),
+        ("heart chrome",   {"_Shape": 5, "_Finish": 3, "_ArtColor": "#FF4D7D", "_ArtColor2": "#B01040", "_Sheen": 0.9}),
+        ("circle peel",    {"_Shape": 0, "_Finish": 1, "_ArtColor": "#2FD08A", "_ArtColor2": "#0C7A55", "_Sheen": 0.7, "_Peel": 0.45, "_Bubbles": 0.5}),
+        ("rect holo bub",  {"_Shape": 1, "_Finish": 2, "_ArtColor": "#FF6A3D", "_ArtColor2": "#8E1FD0", "_Sheen": 0.8, "_Bubbles": 0.8}),
     ]),
 }
 
