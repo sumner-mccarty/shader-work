@@ -1730,9 +1730,11 @@ class Look:
             rig = copy.deepcopy((self.rig or {}).get(mode) or {})
             scene = {}
             for i in (1, 2, 3):
-                lamp = dict(UNLIT_LAMP, specularPower=32)
+                # enabled=True here, not setdefault after: UNLIT_LAMP carries enabled False, so a
+                # setdefault never fired and every lit look shipped with all three lamps OFF
+                # (ambient-only) until 2026-10-07. A spec still turns a lamp off with enabled=False.
+                lamp = dict(UNLIT_LAMP, specularPower=32, enabled=True)
                 lamp.update(rig.get(f"light{i}", {}))
-                lamp.setdefault("enabled", True)
                 scene[f"light{i}"] = {k: lamp[k] for k in ("pos", "height", "color", "intensity", "specular",
                                                             "specularPower", "enabled")}
             if rig.get("portrait"):
