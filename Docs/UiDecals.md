@@ -244,3 +244,27 @@ streaks lengthen, drips start after ~55 %. `_Reveal = 1` is the finished splat, 
 
 Notes: the sheen highlight uses `ddx/ddy` of the shape field, so its light direction is screen-space (fixed up-left);
 FXC cost is a handful of fixed `[unroll]` loops (10 + 8 + 16 + 6) with no branches on varying data.
+
+### 11.2 `UI/Decal/Spray` — `DecalSpray.shader`  ·  `Looks/_decals/spray.png`
+A spray-can stroke along up to six points. **Point scheme** (shared with Brush, `CG/Core/UIDecalStroke.cginc`, new,
+included only by the two stroke generators): `_P0.._P5` are `float4(x, y, pressure, unused)` in the decoration's uv
+(0..1, v up, square quad), `_PointCount` (1..6) says how many are live; the path is a Catmull-Rom spline *through*
+the points (6 straight pieces per span, fixed `[unroll]`), pressure interpolates linearly; one point = one dab.
+Look: Gaussian droplet density about the path → `alpha = 1 − exp(−flow · gauss)` (soft core), the falloff is stippled
+against a fine noise (speckle), and two sizes of overspray dots outside the core thin out with distance.
+
+| Property | Range | Default | What it does |
+|---|---|---|---|
+| `_Color` | colour | `(1,0.83,0,1)` | paint colour; alpha = overall opacity |
+| `_Seed` | float | 1 | speckle + overspray pattern |
+| `_PointCount` | 1–6 | 4 | live points |
+| `_P0`…`_P5` | vector | see file | x, y, pressure, unused (uv 0..1) |
+| `_Width` | 0.01–0.4 | 0.1 | core radius at pressure 1 (picture heights) |
+| `_PressureWidth` / `_PressureFlow` | 0–1 | 0.8 / 0.5 | how much pressure thins the stroke / its paint amount |
+| `_Flow` | 0.2–8 | 3.5 | paint amount: high = solid centre, low = see-through mist |
+| `_Softness` | 0–1 | 0.5 | tight can-at-the-wall line → wide diffuse puff |
+| `_Speckle` / `_GrainScale` | 0–1 / 40–400 | 0.7 / 170 | stippled edge amount / grain features per picture (lower it for small decals) |
+| `_Overspray` / `_OversprayReach` | 0–1 / 1–5 | 0.6 / 2.4 | droplets outside the core / how far out (× core radius) |
+| `_DotSize` | 0.2–2 | 1 | overspray dot size |
+
+Cost: 30 path pieces + two 3×3 dot layers, all fixed `[unroll]`, branch-free.
