@@ -230,7 +230,9 @@ embedding before/after racks for both modes.
 
 ### Prompt G — the glass look (Sonnet 5.5; the Liquid Glass brief, done properly)
 ```
-Rebuild the "liquid-glass" look (Tools/looks/liquid_glass.py, branch main) on Materials v2 glass —
+Build a new glass look on Materials v2 glass, branching from main. The old attempt lives on branch
+origin/main-5vekxz-liquid-glass (Tools/looks/liquid_glass.py) — copy its spec as a starting point only;
+it predates the glass shader term. The look is
 the modern translucent-glass UI style: mostly see-through parts that show the wallpaper behind them,
 blurred and bent at curved edges, bright fresnel rims, clear-coat highlights. Read Looks/README.md
 "Materials v2", Looks/CHECKLIST.md (item 11) and Looks/TASTE.md first.
