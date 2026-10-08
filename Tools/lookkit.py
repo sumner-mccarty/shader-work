@@ -1595,6 +1595,39 @@ def theme_text(name, scene):
 
 # ═══ 6. the look ══════════════════════════════════════════════════════════════════════════════════
 
+
+def fx_skin(name, fx, author=None):
+    """A states doc for a procedural Backdrop* shader: `fx = {"shader": "Caustics", "params": {"_Speed": 0.05, ...}}`.
+    Every parameter is validated against the shader's own Properties (name, type, range). -> (doc, problems)."""
+    stem = "Backdrop" + fx["shader"]
+    info = _shader_props(stem)
+    text = (ROOT / "Assets" / "Shaders" / f"{stem}.shader").read_text(encoding="utf-8", errors="replace")
+    shader_name = re.search(r'Shader\s+"([^"]+)"', text).group(1)
+    problems, params = [], []
+    for k, v in fx.get("params", {}).items():
+        if k not in info:
+            problems.append(f"UNKNOWN {k} — not declared by {stem}")
+            continue
+        t = _states_type(info[k])
+        if isinstance(v, str) and v.startswith("#"):
+            if t != "Color":
+                problems.append(f"TYPE {k} is {t} but was given a colour")
+                continue
+            params.append({"name": k, "type": "Color", "value": _rgba(v)})
+        else:
+            if t in ("Color", "Vector4"):
+                problems.append(f"TYPE {k} is {t} but was given a number")
+                continue
+            rng = info[k]["range"]
+            if rng and not (rng[0] - 1e-9 <= float(v) <= rng[1] + 1e-9):
+                problems.append(f"RANGE {k}={v} outside {rng}")
+            params.append({"name": k, "type": t, "value": f"{float(v):.6g}"})
+    doc = {"controlType": "UIPanel", "shaderName": shader_name,
+           "states": [{"stateId": f"{name}-normal", "stateName": "Normal", "description": "Default resting state",
+                       "baseStateName": "", "priority": 0, "tags": ["default"], "parameters": params}],
+           "bounds": BOUNDS["panel"], **({"author": author} if author else {})}
+    return doc, problems
+
 class Look:
     def __init__(self, *, title, style, prefix, slug, cls, modes, order=50, blurb="", note="",
                  author="DrumSumDrum", brief=None, status="draft", shape=None, material=None, rig=None,
@@ -1784,6 +1817,7 @@ class Look:
                 "trackTheme": m["track"], "blurb": m["blurb"], "lights": self.lights_ref(mode),
                 **({"backdrop": m["backdrop"]} if m.get("backdrop") else {}),
                 **({"backdropSkin": f"{P['prefix']}Backdrop"} if m.get("backdrop_fx") else {}),
+                **({"fields": {r: n for r, n, _, _ in self.field_skins(mode)}} if m.get("fields") else {}),
                 "colors": colors, "chrome": chrome, "palettes": groups, "displays": self.display_block(mode),
                 "families": fam, "roles": roles,
                 "swaps": {k: P["prefix"] + v for k, v in SWAP_PART.items()},
@@ -1816,6 +1850,8 @@ class Look:
             bd = self.backdrop_skin(mode)
             if bd:
                 out[f"Assets/Resources/MaterialStates/{bd[0]}.states.json"] = json.dumps(bd[1], indent=4)
+            for _, name, doc, _ in self.field_skins(mode):
+                out[f"Assets/Resources/MaterialStates/{name}.states.json"] = json.dumps(doc, indent=4)
         out[f"Assets/Resources/UiStyles/{self.style}.style.json"] = self.recipe_text()
         for rel, text in self.theme_files().items():
             out[f"Assets/Resources/{rel}"] = text
@@ -1921,6 +1957,8 @@ class Look:
             bd = self.backdrop_skin(mode)
             if bd:
                 errors += [f"backdrop_fx:{mode} — {p}" for p in bd[2]]
+            for role, _, _, problems in self.field_skins(mode):
+                errors += [f"fields:{mode}:{role} — {p}" for p in problems]
         for mode in MODES:
             if not self.modes[mode].get("track"):
                 errors.append(f"track:{mode} — no trackTheme")
@@ -1949,43 +1987,30 @@ class Look:
     def backdrop_skin(self, mode):
         """A PROCEDURAL wallpaper (2026-10-08): `modes[mode]["backdrop_fx"] = {"shader": "Caustics", "params": {...},
         "time": 12.0}` names one of the Backdrop* shaders (Assets/Shaders/Backdrop<Shader>.shader — Caustics, Splotch,
-        Ribbons, ...) and tunes it by its own Properties. -> (skin name, states doc, problems) or None. The skin is
-        `<Prefix><Mode>Backdrop.states.json` — an ordinary states file whose `shaderName` is that shader, so a host
-        renders it into the texture the glass samples (`_UIBackdropTex`) and the wallpaper stays tunable in the
-        Designer like any skin. `time` (seconds) is the still the sheets render; the shaders are exactly periodic
-        (period = 1 / _Speed seconds), so any time is a valid frame of the loop."""
+        Ribbons, Plasma, Bokeh, Grid, Contours, Starfield) and tunes it by its own Properties. -> (skin name, states doc,
+        problems) or None. The skin is `<Prefix><Mode>Backdrop.states.json` — an ordinary states file whose `shaderName`
+        is that shader, so a host renders it into the texture the glass samples (`_UIBackdropTex`) and the wallpaper
+        stays tunable in the Designer like any skin. `time` (seconds) is the still the sheets render; the shaders are
+        exactly periodic (period = 1 / _Speed seconds), so any time is a valid frame of the loop."""
         fx = self.modes[mode].get("backdrop_fx")
         if not fx:
             return None
-        stem = "Backdrop" + fx["shader"]
-        info = _shader_props(stem)
-        text = (ROOT / "Assets" / "Shaders" / f"{stem}.shader").read_text(encoding="utf-8", errors="replace")
-        shader_name = re.search(r'Shader\s+"([^"]+)"', text).group(1)
-        problems, params = [], []
-        for k, v in fx.get("params", {}).items():
-            if k not in info:
-                problems.append(f"UNKNOWN {k} — not declared by {stem}")
-                continue
-            t = _states_type(info[k])
-            if isinstance(v, str) and v.startswith("#"):
-                if t != "Color":
-                    problems.append(f"TYPE {k} is {t} but was given a colour")
-                    continue
-                params.append({"name": k, "type": "Color", "value": _rgba(v)})
-            else:
-                if t in ("Color", "Vector4"):
-                    problems.append(f"TYPE {k} is {t} but was given a number")
-                    continue
-                rng = info[k]["range"]
-                if rng and not (rng[0] - 1e-9 <= float(v) <= rng[1] + 1e-9):
-                    problems.append(f"RANGE {k}={v} outside {rng}")
-                params.append({"name": k, "type": t, "value": f"{float(v):.6g}"})
         name = f"{self.mode_prefix(mode)}Backdrop"
-        doc = {"controlType": "UIPanel", "shaderName": shader_name,
-               "states": [{"stateId": f"{name}-normal", "stateName": "Normal", "description": "Default resting state",
-                           "baseStateName": "", "priority": 0, "tags": ["default"], "parameters": params}],
-               "bounds": BOUNDS["panel"], "author": self.author}
+        doc, problems = fx_skin(name, fx, self.author)
         return name, doc, problems
+
+    def field_skins(self, mode):
+        """Background-field ROLES (2026-10-08): `modes[mode]["fields"] = {"accent": {"shader": "Ribbons", "params":
+        {...}}, ...}`. A layout asks for a role (`"fill": {"field": "accent"}`) and the active look decides what it is,
+        so one layout reads as water in one look and neon in another. Each role becomes
+        `<Prefix><Mode>Field<Role>.states.json` (same shape as the wallpaper skin) and the recipe mode's `"fields"` map
+        points the role at it. -> [(role, skin name, states doc, problems)]."""
+        out = []
+        for role, fx in (self.modes[mode].get("fields") or {}).items():
+            name = f"{self.mode_prefix(mode)}Field{role[:1].upper()}{role[1:]}"
+            doc, problems = fx_skin(name, fx, self.author)
+            out.append((role, name, doc, problems))
+        return out
 
 
 # ═══ 7. sheets — the rack composite (what reviewers judge) and the parts sheet ═══════════════════

@@ -15,7 +15,7 @@
                 {
                     "name": "_Speed",
                     "type": "Range",
-                    "value": "0.015"
+                    "value": "0.05"
                 },
                 {
                     "name": "_Scale",

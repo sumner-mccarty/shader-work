@@ -56,12 +56,12 @@ CONTROLS = dict(
 # Tuned for LEGIBILITY first: the brightest thing that can ever pass behind print stays dim (dark) or pale
 # (light), so the print contrast the flow demo measures holds at every moment of the loop.
 DARK_FX = dict(shader="Caustics", time=9.0, params={
-    "_Speed": 0.015, "_Scale": 1.7, "_Warp": 0.7, "_Detail": 3, "_FieldScale": 0.9,
+    "_Speed": 0.05, "_Scale": 1.7, "_Warp": 0.7, "_Detail": 3, "_FieldScale": 0.9,
     "_ColorA": "#000A17", "_ColorB": "#0A4778", "_ColorC": "#15658A", "_ColorD": "#512AB0", "_PoolAmount": 0.65,
     "_LineColor": "#45B6CC", "_LineStrength": 0.30, "_LineWidth": 0.26, "_LineLayers": 2, "_Depth": 0.5,
     "_Brightness": -0.02, "_Contrast": 1.0, "_Saturation": 1.05, "_Vignette": 0.3})
 LIGHT_FX = dict(shader="Splotch", time=9.0, params={
-    "_Speed": 0.015, "_Seed": 3, "_Count": 7, "_Size": 0.24, "_SizeVar": 0.55, "_Spread": 1.0, "_Drift": 0.14,
+    "_Speed": 0.05, "_Seed": 3, "_Count": 7, "_Size": 0.24, "_SizeVar": 0.55, "_Spread": 1.0, "_Drift": 0.14,
     "_Softness": 0.14, "_Warp": 0.22, "_WarpScale": 2.4, "_Opacity": 0.9, "_Merge": 0.0,
     "_Base": "#B6CDE6", "_ColorA": "#80CEB4", "_ColorB": "#88A8EA", "_ColorC": "#B496E6", "_ColorD": "#EC98AC",
     "_ColorFlow": 0.5, "_EdgeShade": 0.0, "_Brightness": -0.03, "_Contrast": 1.0, "_Saturation": 1.0, "_Vignette": 0.0})

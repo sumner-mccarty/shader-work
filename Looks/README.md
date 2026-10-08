@@ -147,6 +147,22 @@ wallpaper behind the rack and give every cell its own slice, so what you see is 
 Before you add a texture or matcap a look needs, check `Looks/_materials/swatches.png`; new ones are
 added in `Tools/gen_materials.py` (in the Unity repo) and come back with the next sync.
 
+### Animated wallpapers and background-field roles (2026-10-08)
+Eight procedural, exactly-periodic backdrop shaders — Caustics, Splotch, Ribbons, Plasma, Bokeh, Grid, Contours,
+Starfield (`Docs/Skinning/Params-Backdrop.md` has every property):
+```python
+modes={"dark": dict(..., backdrop="Backdrops/Lagoon",                          # static fallback
+                    backdrop_fx={"shader": "Caustics", "time": 9.0, "params": {"_Speed": 0.05, ...}},
+                    fields={"accent": {"shader": "Ribbons", "params": {"_Speed": 0.04, "_ColorA": "#FF4FD8"}},
+                            "menu":   {"shader": "Contours", "params": {"_LineColor": "#6FE0D8"}}})}
+```
+* `backdrop_fx` → `<Prefix><Mode>Backdrop.states.json`, the live wallpaper (glass refracts it).
+* `fields` → one `<Prefix><Mode>Field<Role>.states.json` per role, and the recipe's `"fields"` map. Layouts ask for a
+  ROLE (`"fill": {"field": "accent"}`); the look decides what it is. Suggested role names (no shipped layout uses one yet): `accent`, `menu`, `hero` — a
+  role a look doesn't map falls back to the shipped generic `Field<Type>` of the same name, else nothing.
+* Every param is validated against the shader's Properties (`check` fails on unknown names, types and ranges).
+* Legibility first: print over a moving field must hold at every moment of the loop (see Params-Backdrop.md).
+
 ## The gate (a PR is not ready until all pass)
 
 ```bash

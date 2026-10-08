@@ -1,0 +1,30 @@
+{
+    "controlType": "UIPanel",
+    "shaderName": "UI/Backdrop/Plasma",
+    "states": [
+        {
+            "stateId": "FieldPlasma-normal",
+            "stateName": "Normal",
+            "description": "Default resting state",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [
+                "default"
+            ],
+            "parameters": [
+                {
+                    "name": "_Speed",
+                    "type": "Range",
+                    "value": "0.04"
+                }
+            ]
+        }
+    ],
+    "bounds": {
+        "type": 0,
+        "width": 1.0,
+        "height": 1.0,
+        "radiusNorm": 1.0
+    },
+    "author": "gen_fields.py"
+}
