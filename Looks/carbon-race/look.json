@@ -1,0 +1,17 @@
+{
+  "slug": "carbon-race",
+  "style": "CarbonRace",
+  "title": "Carbon Race",
+  "prefix": "CarbonRace",
+  "brief": "BACKLOG.md#carbon-race",
+  "class": "lit",
+  "status": "candidate",
+  "files": [
+    "Tools/looks/carbon_race.py",
+    "Assets/Resources/UiStyles/CarbonRace.style.json",
+    "Assets/Resources/Themes/CarbonRace*.theme.json",
+    "Assets/Resources/MaterialStates/CarbonRaceDark*.states.json",
+    "Assets/Resources/MaterialStates/CarbonRaceLight*.states.json",
+    "Assets/Resources/TrackThemes/CarbonRace.track.json"
+  ]
+}
