@@ -1,0 +1,16 @@
+{
+  "slug": "synthwave",
+  "style": "Synthwave",
+  "title": "Synthwave",
+  "prefix": "Synthwave",
+  "brief": "BACKLOG.md#synthwave",
+  "class": "neon",
+  "status": "candidate",
+  "files": [
+    "Tools/looks/synthwave.py",
+    "Assets/Resources/UiStyles/Synthwave.style.json",
+    "Assets/Resources/Themes/Synthwave*.theme.json",
+    "Assets/Resources/MaterialStates/SynthwaveDark*.states.json",
+    "Assets/Resources/MaterialStates/SynthwaveLight*.states.json"
+  ]
+}
