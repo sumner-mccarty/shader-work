@@ -446,7 +446,73 @@ def wall_sunset():
     return img
 
 
-WALLPAPERS = [("Aurora", wall_aurora), ("DeepWater", wall_deepwater), ("Bokeh", wall_bokeh), ("Sunset", wall_sunset)]
+BP = BW / BH          # the wallpaper's width in height units: the x period of a TILEABLE wallpaper
+
+
+def _pdx(x, cx):
+    """Horizontal distance on a wallpaper that wraps sideways (so a glow near the right edge continues on the left)."""
+    d = np.abs(x - cx)
+    return np.minimum(d, BP - d)
+
+
+def wall_lagoon():
+    """A DARK flowing-water wallpaper for glass looks, SEAMLESSLY TILEABLE in x: every wave number is an integer
+    count of cycles across the width and every glow wraps, so a host can drift it sideways forever and the
+    refraction in a glass part keeps moving without a seam. A caustic network (crisp enough for a lens to bend)
+    over cold teal / blue / violet fields with one warm coral note."""
+    y, x = np.mgrid[0:BH, 0:BW].astype(np.float32)
+    x /= BH; y /= BH
+    u = 2.0 * np.pi * x / BP
+    img = np.ones((BH, BW, 3), np.float32) * np.array((0.0, 0.04, 0.09), np.float32)
+    for cx, cy, r, col, a in ((0.30, 0.15, 0.55, (0.05, 0.65, 0.75), 0.60), (1.30, 0.55, 0.55, (0.08, 0.28, 0.85), 0.55),
+                              (0.00, 0.85, 0.50, (0.45, 0.16, 0.85), 0.50), (0.85, 0.95, 0.40, (0.00, 0.50, 0.60), 0.40),
+                              (1.55, 0.12, 0.35, (0.90, 0.25, 0.55), 0.30)):
+        d2 = (_pdx(x, cx) ** 2 + (y - cy) ** 2) / (r * r)
+        img += np.exp(-d2 * 1.6)[..., None] * np.array(col, np.float32) * a
+    caus = np.zeros((BH, BW), np.float32)
+    for (k1, k2), (f1, f2), a in (((2, 1), (5.6, 7.7), 1.0), ((4, 3), (10.4, 14.3), 0.6)):
+        w = np.sin(k1 * u + np.sin(y * f1) * 1.6) + np.sin(y * f2 + np.sin(k2 * u) * 1.4)
+        caus += np.exp(-(w / 0.35) ** 2) * a
+    img += (caus * np.clip(1.2 - y, 0, 1))[..., None] * np.array([0.25, 0.75, 0.8], np.float32) * 0.32
+    return img
+
+
+def wall_daybreak():
+    """A PALE wallpaper for light glass looks, SEAMLESSLY TILEABLE in x (see wall_lagoon): a milk-blue sky with soft
+    peach / mint / lilac / rose glows (blended, not added, so the hues survive), two slow light bands and crisp
+    pastel orbs for a lens to bend. Luminance stays ~0.65-0.82 and NO channel passes ~0.92, so milk glass over it
+    never clips to white and dark print still reads."""
+    y, x = np.mgrid[0:BH, 0:BW].astype(np.float32)
+    x /= BH; y /= BH
+    u = 2.0 * np.pi * x / BP
+    rng = np.random.default_rng(204)
+    img = np.ones((BH, BW, 3), np.float32) * np.array((0.74, 0.80, 0.90), np.float32)
+    for cx, cy, r, col, a in ((0.20, 0.25, 0.60, (0.90, 0.68, 0.56), 0.85),      # peach
+                              (0.95, 0.10, 0.60, (0.50, 0.72, 0.90), 0.85),      # sky
+                              (1.55, 0.50, 0.55, (0.72, 0.62, 0.90), 0.85),      # lilac
+                              (0.55, 0.95, 0.60, (0.54, 0.86, 0.74), 0.85),      # mint
+                              (1.30, 1.00, 0.45, (0.90, 0.62, 0.74), 0.80)):     # rose
+        w = (np.exp(-((_pdx(x, cx) ** 2 + (y - cy) ** 2) / (r * r)) * 1.6) * a)[..., None]
+        img = img * (1 - w) + np.array(col, np.float32) * w
+    for k in range(2):
+        ph = rng.random() * 6.28
+        band = np.exp(-((y - (0.40 + 0.22 * k) - 0.07 * np.sin((1 + k) * u + ph)) / 0.07) ** 2)[..., None]
+        img = img * (1 - band * 0.35) + np.array([(0.90, 0.88, 0.86), (0.86, 0.90, 0.92)][k], np.float32) * band * 0.35
+    # crisp pastel orbs: a lens bends nothing in a smooth gradient, so give refraction edges to catch
+    for cx, cy, r, col in ((0.30, 0.62, 0.075, (0.90, 0.60, 0.74)), (0.74, 0.30, 0.060, (0.52, 0.84, 0.72)),
+                           (1.20, 0.70, 0.085, (0.66, 0.60, 0.92)), (0.12, 0.84, 0.055, (0.92, 0.72, 0.52)),
+                           (0.62, 0.84, 0.050, (0.56, 0.74, 0.92)), (1.50, 0.26, 0.070, (0.90, 0.60, 0.74)),
+                           (0.95, 0.54, 0.045, (0.92, 0.72, 0.52)), (1.62, 0.84, 0.060, (0.52, 0.84, 0.72)),
+                           (0.40, 0.20, 0.050, (0.66, 0.60, 0.92)), (1.05, 0.92, 0.040, (0.90, 0.60, 0.74))):
+        m = np.clip((r - np.sqrt(_pdx(x, cx) ** 2 + (y - cy) ** 2)) / 0.008, 0, 1)[..., None] * 0.8
+        img = img * (1 - m) + np.array(col, np.float32) * m
+    return img
+
+
+WALLPAPERS = [("Aurora", wall_aurora), ("DeepWater", wall_deepwater), ("Bokeh", wall_bokeh), ("Sunset", wall_sunset),
+              ("Lagoon", wall_lagoon), ("Daybreak", wall_daybreak)]
+# wallpapers a host may DRIFT sideways (UiBackdrop scrolling _UIBackdropUV.zw): imported with Repeat wrap in x
+TILEABLE = ("Lagoon", "Daybreak")
 
 
 def write_wallpapers():
@@ -475,7 +541,7 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 1
+    wrapU: {0 if name in TILEABLE else 1}
     wrapV: 1
     wrapW: 1
   nPOTScale: 0

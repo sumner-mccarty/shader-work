@@ -78,10 +78,13 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from skinlib import skin, props, BOUNDS, FAMILY, mix  # noqa: E402
+from skinlib import rgba as _rgba  # noqa: E402
+from shaderprops import properties as _shader_props, states_type as _states_type  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 RES_REL = Path("Assets/Resources")
 MODES = ("dark", "light")
+BACKDROP_TIME = None      # set by a tool (Looks/<slug>/flow_demo.py) to render a procedural wallpaper at another time
 
 # ═══ 1. the roster — every slot the app's SkinResolver consults ═══════════════════════════════════
 #
@@ -1778,6 +1781,7 @@ class Look:
             doc["modes"][mode] = {
                 "trackTheme": m["track"], "blurb": m["blurb"], "lights": self.lights_ref(mode),
                 **({"backdrop": m["backdrop"]} if m.get("backdrop") else {}),
+                **({"backdropSkin": f"{P['prefix']}Backdrop"} if m.get("backdrop_fx") else {}),
                 "colors": colors, "chrome": chrome, "palettes": groups, "displays": self.display_block(mode),
                 "families": fam, "roles": roles,
                 "swaps": {k: P["prefix"] + v for k, v in SWAP_PART.items()},
@@ -1806,6 +1810,10 @@ class Look:
             _, parts, _ = self.build(mode)
             for name, doc in parts.items():
                 out[f"Assets/Resources/MaterialStates/{name}.states.json"] = json.dumps(doc, indent=4)
+        for mode in modes:
+            bd = self.backdrop_skin(mode)
+            if bd:
+                out[f"Assets/Resources/MaterialStates/{bd[0]}.states.json"] = json.dumps(bd[1], indent=4)
         out[f"Assets/Resources/UiStyles/{self.style}.style.json"] = self.recipe_text()
         for rel, text in self.theme_files().items():
             out[f"Assets/Resources/{rel}"] = text
@@ -1908,6 +1916,10 @@ class Look:
                          f"light mode moves control token {tok} by {d:.2f} luminance (change the chassis, "
                          "not the controls)")
         for mode in MODES:
+            bd = self.backdrop_skin(mode)
+            if bd:
+                errors += [f"backdrop_fx:{mode} — {p}" for p in bd[2]]
+        for mode in MODES:
             if not self.modes[mode].get("track"):
                 errors.append(f"track:{mode} — no trackTheme")
             tf = ROOT / RES_REL / "TrackThemes" / f"{self.modes[mode].get('track')}.track.json"
@@ -1925,7 +1937,53 @@ class Look:
             p = d / f"{name}.states.json"
             p.write_text(json.dumps(doc, indent=4), encoding="utf-8")
             paths[name[len(P["prefix"]):]] = p.as_posix()
+        bd = self.backdrop_skin(mode)
+        if bd:
+            p = d / f"{bd[0]}.states.json"
+            p.write_text(json.dumps(bd[1], indent=4), encoding="utf-8")
+            paths["Backdrop"] = p.as_posix()
         return P, parts, paths
+
+    def backdrop_skin(self, mode):
+        """A PROCEDURAL wallpaper (2026-10-08): `modes[mode]["backdrop_fx"] = {"shader": "Caustics", "params": {...},
+        "time": 12.0}` names one of the Backdrop* shaders (Assets/Shaders/Backdrop<Shader>.shader — Caustics, Splotch,
+        Ribbons, ...) and tunes it by its own Properties. -> (skin name, states doc, problems) or None. The skin is
+        `<Prefix><Mode>Backdrop.states.json` — an ordinary states file whose `shaderName` is that shader, so a host
+        renders it into the texture the glass samples (`_UIBackdropTex`) and the wallpaper stays tunable in the
+        Designer like any skin. `time` (seconds) is the still the sheets render; the shaders are exactly periodic
+        (period = 1 / _Speed seconds), so any time is a valid frame of the loop."""
+        fx = self.modes[mode].get("backdrop_fx")
+        if not fx:
+            return None
+        stem = "Backdrop" + fx["shader"]
+        info = _shader_props(stem)
+        text = (ROOT / "Assets" / "Shaders" / f"{stem}.shader").read_text(encoding="utf-8", errors="replace")
+        shader_name = re.search(r'Shader\s+"([^"]+)"', text).group(1)
+        problems, params = [], []
+        for k, v in fx.get("params", {}).items():
+            if k not in info:
+                problems.append(f"UNKNOWN {k} — not declared by {stem}")
+                continue
+            t = _states_type(info[k])
+            if isinstance(v, str) and v.startswith("#"):
+                if t != "Color":
+                    problems.append(f"TYPE {k} is {t} but was given a colour")
+                    continue
+                params.append({"name": k, "type": "Color", "value": _rgba(v)})
+            else:
+                if t in ("Color", "Vector4"):
+                    problems.append(f"TYPE {k} is {t} but was given a number")
+                    continue
+                rng = info[k]["range"]
+                if rng and not (rng[0] - 1e-9 <= float(v) <= rng[1] + 1e-9):
+                    problems.append(f"RANGE {k}={v} outside {rng}")
+                params.append({"name": k, "type": t, "value": f"{float(v):.6g}"})
+        name = f"{self.mode_prefix(mode)}Backdrop"
+        doc = {"controlType": "UIPanel", "shaderName": shader_name,
+               "states": [{"stateId": f"{name}-normal", "stateName": "Normal", "description": "Default resting state",
+                           "baseStateName": "", "priority": 0, "tags": ["default"], "parameters": params}],
+               "bounds": BOUNDS["panel"], "author": self.author}
+        return name, doc, problems
 
 
 # ═══ 7. sheets — the rack composite (what reviewers judge) and the parts sheet ═══════════════════
@@ -2013,8 +2071,11 @@ class Scene:
         self.cells, self.meta = [], []
         self.canvas = Canvas(w, h, self.P["GAP"])
         self.lit = look.cls == "lit"
-        self.backdrop = look.modes[mode].get("backdrop")
-        if self.backdrop:
+        fx = look.modes[mode].get("backdrop_fx")
+        self.backdrop = look.modes[mode].get("backdrop") or bool(fx)
+        if fx:
+            self._shader_wall(look, mode, w, h, fx)
+        elif self.backdrop:
             from PIL import Image as _I
             import numpy as _np
             src = ROOT / RES_REL / (self.backdrop + ".png")
@@ -2027,9 +2088,30 @@ class Scene:
             self.wall = im
             px = self.canvas.px
             px[..., :3] = _np.asarray(im, dtype=_np.float32)[..., :3] / 255.0
-            self.wall_path = str((ROOT / ".skinsheet" / f"wall-{look.style}-{mode}.png").resolve())
+            # named after the wallpaper too: the warm renderer caches wallpaper crops by (path, rect), so reusing one
+            # path per look would show the PREVIOUS wallpaper after the spec switches to another
+            self.wall_path = str((ROOT / ".skinsheet" / f"wall-{look.style}-{mode}-{Path(self.backdrop).name}.png").resolve())
             (ROOT / ".skinsheet").mkdir(exist_ok=True)
             im.save(self.wall_path)
+
+    def _shader_wall(self, look, mode, w, h, fx):
+        """The wallpaper of a PROCEDURAL backdrop: render its skin at (w, h) at the still's time and use that
+        picture as both the canvas background and what every glass cell refracts. Exactly what a host that
+        Blits the shader into `_UIBackdropTex` would show at that moment."""
+        from PIL import Image as _I
+        import numpy as _np
+        from skinsheet import render as _render, OUT as _OUT
+        t = BACKDROP_TIME if BACKDROP_TIME is not None else float(fx.get("time", 0.0))
+        cid = f"bd-{look.style}-{mode}-{w}x{h}-t{t:.4f}"
+        _render([{"id": cid, "states": self.paths["Backdrop"], "w": w, "h": h, "ss": 1, "bg": "#00000000",
+                  "pos": [0.5, 0.5], "time": t}], rig=look.rig_scene(mode), timeout=300)
+        im = _I.open(_OUT / f"{cid}.png").convert("RGB")
+        self.wall = im
+        self.canvas.px[..., :3] = _np.asarray(im, dtype=_np.float32)[..., :3] / 255.0
+        # a unique path per picture: the warm renderer caches wallpaper crops by (path, rect)
+        self.wall_path = str((ROOT / ".skinsheet" / f"wall-{look.style}-{mode}-t{t:.4f}.png").resolve())
+        (ROOT / ".skinsheet").mkdir(exist_ok=True)
+        im.save(self.wall_path)
 
     def add(self, part, x, y, w, h, state=None, value=None, sets=None):
         cid = f"lk-{self.P['prefix']}-{self.tag}-{len(self.cells)}"
