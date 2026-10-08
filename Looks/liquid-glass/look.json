@@ -1,0 +1,16 @@
+{
+  "slug": "liquid-glass",
+  "style": "LiquidGlass",
+  "title": "Liquid Glass",
+  "prefix": "LiquidGlass",
+  "brief": "BACKLOG.md#liquid-glass",
+  "class": "lit",
+  "status": "candidate",
+  "files": [
+    "Tools/looks/liquid_glass.py",
+    "Assets/Resources/UiStyles/LiquidGlass.style.json",
+    "Assets/Resources/Themes/LiquidGlass*.theme.json",
+    "Assets/Resources/MaterialStates/LiquidGlassDark*.states.json",
+    "Assets/Resources/MaterialStates/LiquidGlassLight*.states.json"
+  ]
+}
