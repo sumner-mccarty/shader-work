@@ -40,6 +40,14 @@ Shader "UI/Decal/Sticker"
         _ShadowSoftness ("Shadow softness (uv)", Range(0.002, 0.15)) = 0.03
         _ShadowOpacity ("Shadow opacity", Range(0, 1)) = 0.45
 
+        [Header(Finish)]
+        [Enum(Matte,0,Gloss,1,Holo,2,Chrome,3)] _Finish ("Finish", Float) = 1
+        _Sheen ("Sheen strength", Range(0, 1)) = 0.6
+        _LightDir ("Light direction (xyz, towards the light; x,y move the sheen)", Vector) = (-0.45, 0.55, 0.7, 0)
+        _Curve ("Sheet bow (how much the surface tilts away from centre)", Range(0, 0.8)) = 0.3
+        _Shininess ("Spec lobe tightness", Range(4, 200)) = 50
+        _HoloScale ("Holo band density", Range(0.5, 6)) = 2.2
+
         _StencilComp ("Stencil Comparison", Float) = 8
         _Stencil ("Stencil ID", Float) = 0
         _StencilOp ("Stencil Operation", Float) = 0
@@ -108,6 +116,8 @@ Shader "UI/Decal/Sticker"
             float4 _BorderColor;
             float4 _ShadowOffset;
             float _ShadowSoftness, _ShadowOpacity;
+            float _Finish, _Sheen, _Curve, _Shininess, _HoloScale;
+            float4 _LightDir;
 
             v2f vert(appdata_t v)
             {
@@ -200,6 +210,67 @@ Shader "UI/Decal/Sticker"
                 return lerp(d, dt, step(0.5, _UseTex));
             }
 
+            float hash21(float2 q)
+            {
+                q = frac(q * float2(123.34, 456.21));
+                q += dot(q, q + 45.32);
+                return frac(q.x * q.y);
+            }
+
+            float lum(float3 c) { return dot(c, float3(0.2126, 0.7152, 0.0722)); }
+
+            // Finishes. n = surface normal (bowed sheet), L = light, p = quad position, base = flat print colour,
+            // pr = 0 on the white vinyl border, 1 on the print.
+            float3 finish(float3 base, float3 n, float3 L, float2 p, float pr)
+            {
+                float3 c = base;
+                float3 hv = normalize(L + float3(0.0, 0.0, 1.0));
+                float ndh = saturate(dot(n, hv));
+                float2 ax = normalize(float2(0.8, 0.6));
+                float2 ay = float2(-ax.y, ax.x);
+                if (_Finish < 0.5)
+                {
+                    // matte paper: fibre grain + a very soft diffuse roll-off, no highlight
+                    float g = hash21(floor(p * 220.0)) - 0.5;
+                    c *= 1.0 + 0.05 * g + _Sheen * 0.14 * (saturate(dot(n, L)) - 0.75);
+                }
+                else if (_Finish < 1.5)
+                {
+                    // gloss vinyl: clear coat deepens the colour, a moving sheen band + a spec lobe sit on top
+                    float t = dot(p, ax) - dot(L.xy, ax) * 2.2;
+                    float band = exp(-pow(t / 0.16, 2.0)) + 0.45 * exp(-pow((t - 0.42) / 0.07, 2.0));
+                    float spec = pow(ndh, _Shininess);
+                    c = lerp(c, c * c * 1.15, 0.25 * _Sheen * pr);
+                    c += _Sheen * (0.30 * band + 0.55 * spec);
+                }
+                else if (_Finish < 2.5)
+                {
+                    // holo foil: rainbow bands along a diagonal that slide with the light, fine diffraction ruling
+                    float h = dot(p, ax) * _HoloScale + dot(L.xy, float2(0.9, 0.6)) * 1.4 + (n.x + n.y) * 1.5;
+                    float3 rb = 0.5 + 0.5 * cos(6.28318 * (h + float3(0.0, 0.33, 0.67)));
+                    float rule = 0.5 + 0.5 * sin(dot(p, ay) * 90.0 + h * 6.0);
+                    rb *= 0.82 + 0.18 * rule;
+                    float k = _Sheen * lerp(0.4, 0.6, pr);
+                    float3 foil = c * (0.6 + 0.6 * rb) + rb * 0.16;
+                    c = lerp(c, foil, k);
+                    c += _Sheen * 0.35 * pow(ndh, _Shininess);
+                }
+                else
+                {
+                    // chrome: mirror reflecting a horizon-banded studio; the print only tints / modulates it
+                    float3 rv = reflect(float3(0.0, 0.0, -1.0), n);
+                    float e = rv.y * 6.0 + rv.x * 2.5 + L.y * 0.8 + L.x * 0.4;
+                    float sky = smoothstep(-0.6, 0.6, e) * 0.75 + 0.25 * smoothstep(-0.05, 0.05, e);
+                    float3 env = lerp(float3(0.16, 0.14, 0.17), float3(0.88, 0.94, 1.0), sky);
+                    env += float3(0.25, 0.3, 0.38) * exp(-pow((e - 1.2) / 0.3, 2.0));          // soft box
+                    env += 0.35 * exp(-pow(e / 0.07, 2.0));                                      // horizon glint
+                    float3 metal = env * (0.7 + 0.7 * lerp(1.0, lum(base), pr)) * lerp(float3(1, 1, 1), base * 1.5, 0.55 * pr);
+                    metal += pow(ndh, _Shininess * 2.0) * 0.8;
+                    c = lerp(c, metal, saturate(0.35 + _Sheen * 0.65));
+                }
+                return c;
+            }
+
             fixed4 frag(v2f IN) : SV_Target
             {
                 float2 uv = IN.texcoord;
@@ -231,6 +302,11 @@ Shader "UI/Decal/Sticker"
                 vinyl *= 1.0 - 0.06 * rim;
                 float3 body = lerp(vinyl, ink, printCov) * (1.0 - step_ * (1.0 - printCov));
                 float bodyA = saturate(0.5 - dCut / aa);
+
+                // ---- finish ----
+                float3 Ld = normalize(_LightDir.xyz + float3(0.0, 0.0, 1e-3));
+                float3 nrm = normalize(float3(-p * _Curve, 1.0));
+                body = saturate(finish(body, nrm, Ld, p, printCov));
 
                 // ---- composite: shadow, then sticker (premultiplied accumulate) ----
                 float3 shRgb = float3(0.0, 0.0, 0.02);
