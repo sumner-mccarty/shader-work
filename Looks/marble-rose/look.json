@@ -1,0 +1,17 @@
+{
+  "slug": "marble-rose",
+  "style": "MarbleRose",
+  "title": "Marble & Rose Gold",
+  "prefix": "MarbleRose",
+  "brief": "BACKLOG.md#marble-rose",
+  "class": "lit",
+  "status": "candidate",
+  "files": [
+    "Tools/looks/marble_rose.py",
+    "Assets/Resources/UiStyles/MarbleRose.style.json",
+    "Assets/Resources/Themes/MarbleRose*.theme.json",
+    "Assets/Resources/MaterialStates/MarbleRoseDark*.states.json",
+    "Assets/Resources/MaterialStates/MarbleRoseLight*.states.json",
+    "Assets/Resources/TrackThemes/MarbleRoseGems.track.json"
+  ]
+}

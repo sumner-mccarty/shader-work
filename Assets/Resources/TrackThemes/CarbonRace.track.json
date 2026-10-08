@@ -1,0 +1,42 @@
+{
+  "_doc": "See Starfield.track.json for the format. Pit-lane signal flags on a black grid.",
+  "name": "CarbonRace",
+  "blurb": "A floodlit pit straight: signal-flag rows on a black grid.",
+  "palette": {
+    "row1": "#FF3340",
+    "row2": "#FFC51A",
+    "row3": "#4DB6FF",
+    "row4": "#36E08A",
+    "rail": "#FF3340",
+    "laneLine": "#7A2028",
+    "laneFill": "#050405",
+    "hitLine": "#FFF2D6",
+    "receptor": "#C9A24A",
+    "gridBar": "#FF5A4A",
+    "gridBeat": "#4A1A1E",
+    "bgTop": "#030203",
+    "bgBottom": "#0B0708",
+    "fog": "#6A1A20",
+    "star": "#FFD9A0",
+    "miss": "#FF2A2A",
+    "perfect": "#FFF2C2"
+  },
+  "props": {
+    "skyMode": 7,
+    "skyColorA": "#FF3340",
+    "skyColorB": "#5A1018",
+    "skyAmount": 0.8,
+    "skyHorizon": 0.56,
+    "starDensity": 0.0,
+    "horizonGlow": 0.35,
+    "gridBrightness": 1.1,
+    "railGlow": 1.4,
+    "noteGlow": 1.2,
+    "noteCoreBrightness": 1.1,
+    "additive": 0.4,
+    "radiance": 1.05,
+    "bedOpacity": 0.85,
+    "fog": 0.5,
+    "vignette": 0.5
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "_doc": "Marble & Rose Gold highway. See Starfield.track.json for the format.",
+  "name": "MarbleRoseGems",
+  "blurb": "Rose quartz, celadon jade, champagne, amethyst on black stone. Rose-gold rails.",
+  "palette": {
+    "row1": "#F08AA2",
+    "row2": "#86C9A4",
+    "row3": "#EDCB98",
+    "row4": "#B79BE0",
+    "rail": "#E6A99B",
+    "laneLine": "#6A4A44",
+    "laneFill": "#0B0809",
+    "hitLine": "#FFF1E8",
+    "receptor": "#E8B8A8",
+    "gridBar": "#D9A08F",
+    "gridBeat": "#4A3430",
+    "bgTop": "#0A0708",
+    "bgBottom": "#1C1214",
+    "fog": "#7A4A46",
+    "star": "#FFE6D8",
+    "miss": "#FF4A66",
+    "perfect": "#FFEBC0"
+  },
+  "props": {
+    "skyMode": 6,
+    "skyColorA": "#3A2224",
+    "skyColorB": "#D9A08F",
+    "skyAmount": 0.5,
+    "skyScale": 2.4,
+    "starDensity": 0.0,
+    "horizonGlow": 0.45,
+    "railGlow": 0.95,
+    "noteGlow": 0.95,
+    "additive": 0.22,
+    "radiance": 0.92,
+    "beatPulse": 0.55,
+    "fog": 0.55,
+    "vignette": 0.5
+  }
+}
