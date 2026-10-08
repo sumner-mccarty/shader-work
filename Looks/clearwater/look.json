@@ -1,0 +1,16 @@
+{
+  "slug": "clearwater",
+  "style": "Clearwater",
+  "title": "Clearwater",
+  "prefix": "Clearwater",
+  "brief": "clearwater/NOTES.md",
+  "class": "lit",
+  "status": "candidate",
+  "files": [
+    "Tools/looks/clearwater.py",
+    "Assets/Resources/UiStyles/Clearwater.style.json",
+    "Assets/Resources/Themes/Clearwater*.theme.json",
+    "Assets/Resources/MaterialStates/ClearwaterDark*.states.json",
+    "Assets/Resources/MaterialStates/ClearwaterLight*.states.json"
+  ]
+}

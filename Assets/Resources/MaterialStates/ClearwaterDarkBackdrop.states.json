@@ -1,0 +1,120 @@
+{
+    "controlType": "UIPanel",
+    "shaderName": "UI/Backdrop/Caustics",
+    "states": [
+        {
+            "stateId": "ClearwaterDarkBackdrop-normal",
+            "stateName": "Normal",
+            "description": "Default resting state",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [
+                "default"
+            ],
+            "parameters": [
+                {
+                    "name": "_Speed",
+                    "type": "Range",
+                    "value": "0.015"
+                },
+                {
+                    "name": "_Scale",
+                    "type": "Range",
+                    "value": "1.7"
+                },
+                {
+                    "name": "_Warp",
+                    "type": "Range",
+                    "value": "0.7"
+                },
+                {
+                    "name": "_Detail",
+                    "type": "Range",
+                    "value": "3"
+                },
+                {
+                    "name": "_FieldScale",
+                    "type": "Range",
+                    "value": "0.9"
+                },
+                {
+                    "name": "_ColorA",
+                    "type": "Color",
+                    "value": "0,0.0392157,0.0901961,1"
+                },
+                {
+                    "name": "_ColorB",
+                    "type": "Color",
+                    "value": "0.0392157,0.278431,0.470588,1"
+                },
+                {
+                    "name": "_ColorC",
+                    "type": "Color",
+                    "value": "0.0823529,0.396078,0.541176,1"
+                },
+                {
+                    "name": "_ColorD",
+                    "type": "Color",
+                    "value": "0.317647,0.164706,0.690196,1"
+                },
+                {
+                    "name": "_PoolAmount",
+                    "type": "Range",
+                    "value": "0.65"
+                },
+                {
+                    "name": "_LineColor",
+                    "type": "Color",
+                    "value": "0.270588,0.713725,0.8,1"
+                },
+                {
+                    "name": "_LineStrength",
+                    "type": "Range",
+                    "value": "0.3"
+                },
+                {
+                    "name": "_LineWidth",
+                    "type": "Range",
+                    "value": "0.26"
+                },
+                {
+                    "name": "_LineLayers",
+                    "type": "Range",
+                    "value": "2"
+                },
+                {
+                    "name": "_Depth",
+                    "type": "Range",
+                    "value": "0.5"
+                },
+                {
+                    "name": "_Brightness",
+                    "type": "Range",
+                    "value": "-0.02"
+                },
+                {
+                    "name": "_Contrast",
+                    "type": "Range",
+                    "value": "1"
+                },
+                {
+                    "name": "_Saturation",
+                    "type": "Range",
+                    "value": "1.05"
+                },
+                {
+                    "name": "_Vignette",
+                    "type": "Range",
+                    "value": "0.3"
+                }
+            ]
+        }
+    ],
+    "bounds": {
+        "type": 0,
+        "width": 1.0,
+        "height": 1.0,
+        "radiusNorm": 1.0
+    },
+    "author": "DrumSumDrum"
+}
