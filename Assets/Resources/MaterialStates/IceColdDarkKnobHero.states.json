@@ -650,7 +650,7 @@
                 {
                     "name": "_KnobBevelDistance",
                     "type": "Range",
-                    "value": "0.3"
+                    "value": "0.18"
                 },
                 {
                     "name": "_KnobBevelDepth",

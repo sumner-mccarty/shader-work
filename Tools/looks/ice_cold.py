@@ -35,7 +35,9 @@ LOOK = Look(
     shape={
         "key": dict(corner=0.5, round=0.5, bevel=0.2, depth=0.6, dome=0.35),
         # heavy: a wide skirt band of coarse gold knurl and a dashed 'chain link' ring round the cap
-        "dial": dict(skirt="Fluted", skirt_count=28, skirt_depth=0.09, cap_r=0.56, bevel=0.3, depth=0.6, smooth=0.6, dome=0.5, nub=0.07,
+        # bevel 0.18 (was 0.3): the face is cap_r - bevel, and at 0.26 the nub (orbit 0.2 + r 0.07)
+        # straddled the face/skirt crease; 0.38 keeps it wholly on the face (2026-10-07)
+        "dial": dict(skirt="Fluted", skirt_count=28, skirt_depth=0.09, cap_r=0.56, bevel=0.18, depth=0.6, smooth=0.6, dome=0.5, nub=0.07,
                      nub_dist=0.36, arc_px=3.0, stitch=(0.68, 0.045, "#E0B040")),
         "KnobHero": dict(ticks=11, arc_px=4.0),
         "shadow": dict(blur=1.5, cast=0.26),
@@ -50,11 +52,15 @@ LOOK = Look(
         "handle": "gold.polished",
     },
     rig={
-        "dark": {"light1": dict(pos=[-0.5, 1.4], height=1.1, color="#FFF4DC", intensity=0.95, specular=0.55,
+        # Lamp intensities are LOW on purpose (2026-10-07): until then a generator bug shipped every lamp
+        # disabled, and the parts' ambient (~0.9) was tuned for that. Lamps at full strength stacked
+        # 1.4-1.7x more light and blew the pale plates out; these add ~16% (Light ~3%: its white plate has no headroom) of light on top of the
+        # approved look (sheen + cap highlights). See Tools/lookkit.py theme_files().
+        "dark": {"light1": dict(pos=[-0.5, 1.4], height=1.1, color="#FFF4DC", intensity=0.15, specular=0.55,
                                 specularPower=56),
-                 "light2": dict(pos=[1.3, 0.7], height=0.9, color="#BFDFFF", intensity=0.25, specular=0.2),
+                 "light2": dict(pos=[1.3, 0.7], height=0.9, color="#BFDFFF", intensity=0.039, specular=0.2),
                  "light3": dict(enabled=False)},
-        "light": {"light1": dict(pos=[-1.5, 3.0], height=4.0, color="#FFFFFF", intensity=0.8, specular=0.15,
+        "light": {"light1": dict(pos=[-1.5, 3.0], height=4.0, color="#FFFFFF", intensity=0.027, specular=0.15,
                                  specularPower=48),
                   "light2": dict(enabled=False), "light3": dict(enabled=False)},
     },

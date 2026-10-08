@@ -720,7 +720,7 @@
                 {
                     "name": "_KnobBevelPatternScale",
                     "type": "Range",
-                    "value": "34.29"
+                    "value": "16"
                 },
                 {
                     "name": "_KnobBevelPatternIntensity",

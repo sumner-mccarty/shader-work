@@ -20,7 +20,7 @@
 //   3 DIST TRANSFER       pa=(level,0,0,0)            (tanh soft→hard clip)
 //   4 LFO (chorus)        pa=(rate,depth,phase,0)   voice arg = per-voice phase
 //   5 COMB (flange)       pa=(depth,sweepPhase,0,0)
-//   6 TAPS (echo)         pa=(delay,decay,phase,0)   (impulse train — special)
+//   6 TAPS (echo)         pa=(delay,decay,mix,maxch)  (real-time tap train — special, in SDFScope.shader)
 //   7 DECAY (reverb)      pa=(decay,density,phase,0) (exp tail area — special)
 //   8 SPECTRUM backdrop   pa=(animPhase,0,0,0)       (analyzer stand-in — special)
 // ============================================================================

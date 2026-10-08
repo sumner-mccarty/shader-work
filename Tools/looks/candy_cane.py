@@ -56,11 +56,15 @@ LOOK = Look(
         "handle": "gold.polished",
     },
     rig={
-        "dark": {"light1": dict(pos=[-0.4, 1.5], height=1.2, color="#FFD79A", intensity=0.9, specular=0.3,
+        # Lamp intensities are LOW on purpose (2026-10-07): until then a generator bug shipped every lamp
+        # disabled, and the parts' ambient (~0.9) was tuned for that. Lamps at full strength stacked
+        # 1.4-1.7x more light and blew the pale plates out; these add ~11-12% of light on top of the
+        # approved look (sheen + cap highlights). See Tools/lookkit.py theme_files().
+        "dark": {"light1": dict(pos=[-0.4, 1.5], height=1.2, color="#FFD79A", intensity=0.109, specular=0.3,
                                 specularPower=40),
-                 "light2": dict(pos=[1.3, 0.6], height=0.9, color="#FFA860", intensity=0.2, specular=0.05),
+                 "light2": dict(pos=[1.3, 0.6], height=0.9, color="#FFA860", intensity=0.024, specular=0.05),
                  "light3": dict(enabled=False)},
-        "light": {"light1": dict(pos=[-1.5, 3.0], height=4.0, color="#FFFFFF", intensity=0.8, specular=0.12,
+        "light": {"light1": dict(pos=[-1.5, 3.0], height=4.0, color="#FFFFFF", intensity=0.089, specular=0.12,
                                  specularPower=40),
                   "light2": dict(enabled=False), "light3": dict(enabled=False)},
     },

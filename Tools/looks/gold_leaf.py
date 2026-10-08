@@ -48,17 +48,23 @@ LOOK = Look(
         # the cap must read as POLISHED gold: more ambient lifts the ramp's dark "ground" so the dome
         # reads as a bright mirror with a darker foot, not a bronze cup
         "cap": {"preset": "gold.polished", "amb": 0.9, "ramp": (-0.45, 0.05, 0.45, 0.85)},
-        "skirt": {"preset": "gold.brushed", "pattern": ("Knurled", 1.4, 0.22, 1.0, 0.5, 0.6, 0.5)},
+        # knurl grain 3px/cycle: at 1.4 it was under the 2px Nyquist limit and aliased into blotchy
+        # moire on the hero knob (2026-10-07)
+        "skirt": {"preset": "gold.brushed", "pattern": ("Knurled", 3.0, 0.22, 1.0, 0.5, 0.6, 0.5)},
         "handle": "gold.polished",
     },
     rig={
+        # Lamp intensities are LOW on purpose (2026-10-07): until then a generator bug shipped every lamp
+        # disabled, and the parts' ambient (~0.9) was tuned for that. Lamps at full strength stacked
+        # 1.4-1.7x more light and blew the pale plates out; these add ~17-20% of light on top of the
+        # approved look (sheen + cap highlights). See Tools/lookkit.py theme_files().
         # a warm key high on the left (champagne spec), a faint cool fill so blacks keep a shape
-        "dark": {"light1": dict(pos=[-0.4, 1.5], height=1.3, color="#FFE7BD", intensity=0.85, specular=0.35,
+        "dark": {"light1": dict(pos=[-0.4, 1.5], height=1.3, color="#FFE7BD", intensity=0.141, specular=0.35,
                                 specularPower=48),
-                 "light2": dict(pos=[1.3, 0.6], height=0.9, color="#CAD6FF", intensity=0.2, specular=0.06),
+                 "light2": dict(pos=[1.3, 0.6], height=0.9, color="#CAD6FF", intensity=0.033, specular=0.06),
                  "light3": dict(enabled=False)},
         # pale chassis: one far, high, warm key — fill and bounce off
-        "light": {"light1": dict(pos=[-1.5, 3.0], height=4.0, color="#FFF0D8", intensity=0.8, specular=0.15,
+        "light": {"light1": dict(pos=[-1.5, 3.0], height=4.0, color="#FFF0D8", intensity=0.158, specular=0.15,
                                  specularPower=48),
                   "light2": dict(enabled=False), "light3": dict(enabled=False)},
     },

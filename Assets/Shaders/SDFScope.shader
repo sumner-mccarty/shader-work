@@ -571,50 +571,67 @@ Shader "UI/SDFScope"
                 }
                 else if (mode == 6)
                 {
-                    // TAPS (echo): a BOUNCING tap train — each repeat is a ball-bounce arc landing
-                    // on the baseline, with a glowing impact cap, joined by the decay envelope
-                    // that caps the whole series. Spacing = delay, decay height = feedback, more
-                    // bounces as max-channels rises; every knob moves it. When the module is live
-                    // (_Activity > 0) the bounce the playhead is passing flares.
-                    float delay = _P0.x, decay = _P0.y, maxch = _P0.w;
-                    float n = floor(3.0 + delay * 6.0 + maxch * 6.0);
-                    float base = 0.07;
-                    float step0 = 0.88 / n;
-                    float dk = max(0.35, decay);
+                    // TAPS (echo): what Unity's Echo actually outputs, on a REAL time axis. The
+                    // screen is a fixed window as long as the TIME knob's range (10..2000 ms), so
+                    // a longer delay spreads the repeats further apart and fewer fit — it used to
+                    // ADD bounces as the delay grew, which drew a long echo as a tight flutter.
+                    //   TIME  (_P0.x) delay = 10 + 1990·x ms → spacing on screen
+                    //   FB    (_P0.y) Unity Decay: repeat k is decay^(k-1) of the first, 0 = ONE repeat
+                    //   MIX   (_P0.z) dry = 1-mix (the arc launched at t=0), wet = mix (every repeat)
+                    //   CHNS  (_P0.w) caps how many audio channels the effect processes — it does
+                    //                 not change timing or level, so it does not shape this picture.
+                    // Each arrival launches a ball-bounce arc as tall as its level and lands on the
+                    // next arrival, where a glowing impact cap marks the repeat. The bounce the
+                    // playhead is passing flares while the module is live (_Activity > 0).
+                    const float window = 2000.0;
+                    const float x0 = 0.06, span = 0.88, base = 0.07, top = 0.80;
+                    float delayMs = 10.0 + saturate(_P0.x) * 1990.0;
+                    float decay = saturate(_P0.y), wet = saturate(_P0.z), dry = 1.0 - wet;
+                    float step0 = span * delayMs / window;            // one delay, in uv.x
+                    float tq = (uv.x - x0) / max(step0, 1e-5);         // time in delays (0 = the hit)
 
-                    // 1) decay envelope capping the bounce peaks (the "pizazz" outline)
-                    float envT = pow(dk, (uv.x - 0.06) / max(step0, 1e-4));
-                    float envY = base + saturate(envT) * 0.80;
-                    scOver(acc, sigCol, scLine(uv.y - envY, thickY()) * 0.45);
-                    scAdd(acc, sigCol * scGlow(uv.y - envY, thickY() * 3.0) * gain * (0.25 + 0.6 * ripple));
+                    // 1) decay envelope through the repeats' peaks (arc k peaks at k + 0.5)
+                    //    (a mask, not a branch: scLine takes fwidth, which needs every lane)
+                    float envOn = step(0.001, decay) * step(0.001, wet) * step(1.5, tq) * step(uv.x, x0 + span);
+                    float envY = base + wet * pow(max(decay, 1e-4), max(tq - 1.5, 0.0)) * top;
+                    scOver(acc, sigCol, scLine(uv.y - envY, thickY()) * 0.45 * envOn);
+                    scAdd(acc, sigCol * scGlow(uv.y - envY, thickY() * 3.0) * gain * (0.25 + 0.6 * ripple) * envOn);
 
-                    // 2) baseline the bounces land on
-                    scOver(acc, sigCol, scLine(uv.y - base, thickY() * 0.8) * 0.35);
+                    // 2) baseline the bounces land on (the whole window)
+                    float inWin = step(x0, uv.x) * step(uv.x, x0 + span);
+                    scOver(acc, sigCol, scLine(uv.y - base, thickY() * 0.8) * 0.35 * inWin);
 
-                    [loop] for (int i = 0; i < 12; i++)
+                    // 3) the arcs: only the one this pixel is under and its neighbours can reach it,
+                    //    so the cost does not grow with the repeat count (10 ms = ~176 repeats).
+                    float kc = floor(tq);
+                    [unroll] for (int j = -1; j <= 1; j++)
                     {
-                        if (i >= (int)n) break;
-                        float x0 = 0.06 + float(i) * step0;          // bounce start
-                        float h  = pow(dk, float(i)) * 0.80;          // this bounce's height
-                        float u  = (uv.x - x0) / max(step0, 1e-4);    // 0..1 across the bounce
-
-                        // parabolic arc: up and back down to the baseline
+                        // no `continue`: scLine takes fwidth, so every lane runs the same body
+                        float k = max(kc + float(j), 0.0);
+                        float ax = x0 + k * step0;                     // this arc's launch
+                        float valid = step(0.0, kc + float(j)) * step(ax, x0 + span - 1e-5);
+                        float lvl = (k < 0.5) ? dry : wet * pow(max(decay, 1e-4), max(k - 1.0, 0.0));
+                        lvl *= (k > 1.5 && decay <= 0.001) ? 0.0 : valid;   // decay 0 = a single repeat
+                        float h = lvl * top;
+                        float u = (uv.x - ax) / max(step0, 1e-5);       // 0..1 across this arc
+                        float inSpan = step(0.0, u) * step(u, 1.0) * step(uv.x, x0 + span);
                         float arcY = base + h * 4.0 * saturate(u) * (1.0 - saturate(u));
-                        float inSpan = step(0.0, u) * step(u, 1.0);
-                        float dArc = (uv.y - arcY);
+                        float dArc = uv.y - arcY;
+                        float mid = ax + step0 * 0.5;
                         // Flare where the signal packet is passing. Folding `flow` in is what
                         // stops a bypassed or fully-dry echo from twinkling along with the audio.
-                        float near = 1.0 - saturate(abs(_Playhead - (x0 + step0 * 0.5)) / max(step0, 1e-4));
+                        float near = 1.0 - saturate(abs(_Playhead - mid) / max(step0, 1e-4));
                         float flare = saturate(max(saturate(_Activity * 2.0) * lit * near,
-                                                   scRipple(x0 + step0 * 0.5, _Phase, flow)));
+                                                   scRipple(mid, _Phase, flow)));
+                        float shown = step(0.002, lvl);
+                        scOver(acc, sigCol * (1.0 + 0.35 * flare),
+                               scLine(dArc, thickY() * 1.1) * inSpan * shown * (0.55 + 0.45 * flare));
+                        scAdd(acc, sigCol * scGlow(dArc, thickY() * 3.5) * inSpan * shown * gain * (0.20 + 0.8 * flare));
 
-                        scOver(acc, sigCol * (1.0 + 0.35 * flare), scLine(dArc, thickY() * 1.1) * inSpan * (0.55 + 0.45 * flare));
-                        scAdd(acc, sigCol * scGlow(dArc, thickY() * 3.5) * inSpan * gain * (0.20 + 0.8 * flare));
-
-                        // impact cap where the bounce lands
-                        float2 hit = float2(x0 + step0, base);
+                        // impact cap on each REPEAT (k >= 1), as bright as that repeat is loud
+                        float2 hit = float2(ax, base);
                         float dHit = length((uv - hit) * float2(_QuadSize.x / max(_QuadSize.y, 1.0), 1.0)) - 0.035;
-                        scAdd(acc, sigCol * scGlow(dHit, 0.05) * gain * (0.25 + 0.75 * flare));
+                        scAdd(acc, sigCol * scGlow(dHit, 0.05) * gain * step(0.5, k) * saturate(lvl * 1.5) * (0.25 + 0.75 * flare));
                     }
                 }
                 else if (mode == 7)

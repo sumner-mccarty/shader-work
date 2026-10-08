@@ -1621,6 +1621,9 @@ Shader "UI/SDFKnobRM"
                 float time, UILight light1, UILight light2, UILight light3,
                 inout float4 finalColor, inout float3 emissiveAccum)
             {
+                // One screen pixel in knob units (pos = (uv - centre) × 2). Taken here, in uniform
+                // control flow, because the hit code below sits inside the march's divergent branch.
+                float knobPx = max(fwidth(pos.x), fwidth(pos.y));
                 if (_KnobEnabled > 0.5) {
                     float knobRadius = _LineRadius * _KnobSize;
                     float knobAngle = (_AngleStart + _AngleRange * _Value + _KnobRotation) * (PI / 180.0);
@@ -1793,7 +1796,12 @@ Shader "UI/SDFKnobRM"
                                         UNITY_BRANCH if (_KnobBevelSmoothness > 0.001) {
                                             float filletR = bevelHeight * _KnobBevelSmoothness * 0.4;
                                             float edgeT   = saturate((y - (totalHeight - filletR)) / max(filletR, 0.0001));
-                                            hitNormal = normalize(lerp(wallNorm, float3(0, 1, 0), smoothstep(0.0, 1.0, edgeT)));
+                                            // Roll into the FACE's normal at its edge — straight up only on a
+                                            // flat face; a domed face already leans out by _KnobFaceSmoothness
+                                            // there, and rolling to vertical left a lighting crease at the seam.
+                                            float3 faceEdgeN = (_KnobFaceShapeEnabled > 0.5) ? float3(0, 1, 0)
+                                                : normalize(float3(gradN.x * _KnobFaceSmoothness, 1.0, gradN.y * _KnobFaceSmoothness));
+                                            hitNormal = normalize(lerp(wallNorm, faceEdgeN, smoothstep(0.0, 1.0, edgeT)));
                                         } else {
                                             hitNormal = wallNorm;
                                         }
@@ -1841,8 +1849,13 @@ Shader "UI/SDFKnobRM"
                                     float faceAA = fwidth(faceShapeDist) * 0.75;
                                     outerMask = smoothstep(faceAA, -faceAA, faceShapeDist);
                                 } else {
+                                    // A lipless WALL runs right out to the footprint, so it IS the
+                                    // silhouette there: give it the same coverage ramp (it was a hard
+                                    // hit/miss edge — stair-steps round every fluted skirt).
+                                    bool wallIsEdge = (hitSurface == SURFACE_WALL) && (lipHeight <= lipEps) && (rimWidth <= 0.0);
                                     outerMask = (hitSurface == SURFACE_FACE)
                                               ? smoothstep(outerAA, -outerAA, hitBaseSDF)
+                                              : wallIsEdge ? smoothstep(knobPx * 0.75, -knobPx * 0.75, hitBaseSDF)
                                               : (noLipSeam ? 0.0 : 1.0);
                                 }
 
@@ -1867,8 +1880,28 @@ Shader "UI/SDFKnobRM"
 
                                 float3 surfaceBaseColor = knobBaseColor * surfaceTint;
 
+                                // Face/skirt seam AA. FACE vs WALL is a per-pixel hit classification,
+                                // so two unrelated colour sources (face gradient+pattern vs bevel
+                                // ramp+pattern) met in a hard stair-step — worst where a dark face foot
+                                // meets a bright skirt (Gold Leaf Light). seamS is 0 = face colour,
+                                // 1 = wall colour, ramped over ~1.5px across the ANALYTIC edge: the wall
+                                // is wa = baseSDF + rimWidth + bevelDist·t, and the fillet's smooth max
+                                // dips the face by k/4·h², so the classifier's `y >= top - eps` ends at
+                                // wa = -(k - 2·sqrt(eps·k)). Measured in xz, not y — through a broad
+                                // shallow fillet y barely moves per pixel and a y ramp smeared the face
+                                // out in 2×2 blocks (Rodeo, Candy Cane).
+                                bool  seamable = (hitSurface == SURFACE_FACE) || (hitSurface == SURFACE_WALL);
+                                float seamS    = (hitSurface == SURFACE_WALL) ? 1.0 : 0.0;
+                                if (seamable && _KnobFaceShapeEnabled < 0.5 && bevelDist > 0.0001) {
+                                    float filK  = extParams.filletRadius;
+                                    float waB   = (filK > 4.0 * surfaceEps) ? -(filK - 2.0 * sqrt(surfaceEps * filK)) : 0.0;
+                                    float waHit = hitBaseSDF + rimWidth + bevelDist;
+                                    seamS = saturate(0.5 + (waHit - waB) / max(1.5 * knobPx, 0.00001));
+                                }
+                                float3 faceCol = knobBaseColor;
+
                                 // Face pattern
-                                UNITY_BRANCH if (hitSurface == SURFACE_FACE && _KnobPatternEnabled > 0.5) {
+                                UNITY_BRANCH if (seamable && seamS < 0.999 && _KnobPatternEnabled > 0.5) {
                                     UIComponent faceComp = CreateUIComponent(
                                         _KnobColor, _KnobRenderAlpha,
                                         _KnobBevelDepth, _KnobBevelSmoothness, _KnobBevelDistance, _KnobFaceSmoothness,
@@ -1884,13 +1917,14 @@ Shader "UI/SDFKnobRM"
                                         _KnobPatternColorType, _KnobPatternColorUsed,
                                         _KnobPatternColorA, _KnobPatternColorB, _KnobPatternColorC, _KnobPatternColorD
                                     );
-                                    surfaceBaseColor = ApplyMaterialPattern(knobBaseColor, faceUV, faceComp,
+                                    faceCol = ApplyMaterialPattern(knobBaseColor, faceUV, faceComp,
                                         _Value, _AngleRange, knobSpecularMod, knobNormalOffset);
                                 }
+                                if (seamable) surfaceBaseColor = faceCol;
 
                                 // Wall pattern/gradient
-                                UNITY_BRANCH if (hitSurface == SURFACE_WALL) {
-                                    float3 bevelColor = surfaceBaseColor;
+                                UNITY_BRANCH if (seamable && seamS > 0.001) {
+                                    float3 bevelColor = knobBaseColor * 0.9;   // the WALL's surfaceTint
                                     UNITY_BRANCH if (_KnobBevelGradientEnabled > 0.5) {
                                         int bgt = (int)_KnobBevelGradientType;
                                         if (bgt >= 5) {
@@ -2001,7 +2035,7 @@ Shader "UI/SDFKnobRM"
                                         bevelColor = ApplyMaterialPattern(bevelColor, faceUV, bevelComp,
                                             _Value, _AngleRange, knobSpecularMod, knobNormalOffset);
                                     }
-                                    surfaceBaseColor = bevelColor;
+                                    surfaceBaseColor = lerp(faceCol, bevelColor, seamS);
                                 }
 
                                 // Lighting
