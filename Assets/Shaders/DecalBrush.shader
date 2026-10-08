@@ -96,8 +96,13 @@ Shader "UI/Decal/Brush"
             float4 frag(v2f IN) : SV_Target
             {
                 float2 uv = IN.texcoord;
-                float dist, arc, pres, side;
-                dcStroke(uv, dist, arc, pres, side);
+                // exact nearest-point arc (decides where the caps are) and a SMOOTHED arc for everything that
+                // flows along the stroke — strand wander, ragged edge, taper, dry brush. On a bend tighter than the
+                // stroke is wide the exact arc jumps across a seam through the bend; the smooth one turns with it.
+                float dist, arcX, pres, side;
+                dcStroke(uv, dist, arcX, pres, side);
+                float arc, distS, sideS;
+                dcStrokeSmooth(uv, _Width * 0.5, distS, arc, pres, sideS);
 
                 // path length from the control polygon: strands are measured along the stroke in widths
                 float cnt = clamp(_PointCount, 1.0, 6.0);
@@ -115,8 +120,8 @@ Shader "UI/Decal/Brush"
                 // ring-shaped strands. Instead measure in the stroke's own frame: lc = lateral (same axis as the body's
                 // l, so the strands run straight on into the cap), e = how far behind the first point. The cap outline
                 // is a slightly blunt superellipse, and `along` keeps counting backwards so the strand wander continues.
-                float capS = step(arc, 0.0005);
-                float capE = step(0.9995, arc);
+                float capS = step(arcX, 0.0005);
+                float capE = step(0.9995, arcX);
                 float cnt1 = step(1.5, cnt);
                 float2 q1 = lerp(_P0.xy, _P1.xy, cnt1);
                 float2 q2 = lerp(q1, _P2.xy, step(2.5, cnt));
@@ -148,9 +153,10 @@ Shader "UI/Decal/Brush"
                 float endAt = 1.0 - (0.03 + dry * 0.14) * bdHash21(float2(sid, _Seed + 21.0));
                 strand *= (1.0 - smoothstep(endAt - 0.012, endAt, arc)) * (1.0 - capE);
 
-                // ragged edge: the outer strands are different lengths (the cap rim gets the same ragging)
+                // ragged edge: the outer strands are different lengths along the body. Not round the cap: there a
+                // per-strand length would push one thin strand out behind the rounded rim as a sliver.
                 float rag = (bdHash21(float2(sid, _Seed + 9.0)) - 0.5) * 2.0;
-                float outer = step(0.8, abs(l));
+                float outer = step(0.8, abs(l)) * smoothstep(0.0, 1.0, arcX * plen / w);   // fades in over the first width
                 float lim = 1.0 + _EdgeRagged * (0.16 * rag * outer + 0.1 * (bdNoise(float2(along * 6.0 + side * 17.0, _Seed)) - 0.5));
                 float aa = max(fwidth(dist) / w, 0.02);
                 float shape = 1.0 - smoothstep(lim - aa, lim + aa, lmEdge);
