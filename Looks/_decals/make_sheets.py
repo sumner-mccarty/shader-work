@@ -58,7 +58,7 @@ VARIANTS = {
         ("shield gloss",   {"_Shape": 3, "_Finish": 1, "_ArtColor": "#2E7BFF", "_ArtColor2": "#1233A8", "_Sheen": 0.8}),
         ("bolt holo",      {"_Shape": 4, "_Finish": 2, "_ArtColor": "#7A5CFF", "_ArtColor2": "#20B8E0", "_Sheen": 0.9}),
         ("heart chrome",   {"_Shape": 5, "_Finish": 3, "_ArtColor": "#FF4D7D", "_ArtColor2": "#B01040", "_Sheen": 0.9}),
-        ("circle peel",    {"_Shape": 0, "_Finish": 1, "_ArtColor": "#2FD08A", "_ArtColor2": "#0C7A55", "_Sheen": 0.7, "_Peel": 0.45, "_Bubbles": 0.5}),
+        ("circle peel",    {"_Shape": 0, "_Finish": 1, "_ArtColor": "#2FD08A", "_ArtColor2": "#0C7A55", "_Sheen": 0.7, "_Peel": 0.6, "_Bubbles": 0.5}),
         ("rect holo bub",  {"_Shape": 1, "_Finish": 2, "_ArtColor": "#FF6A3D", "_ArtColor2": "#8E1FD0", "_Sheen": 0.8, "_Bubbles": 0.8}),
     ]),
 }

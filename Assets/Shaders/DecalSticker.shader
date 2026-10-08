@@ -48,6 +48,13 @@ Shader "UI/Decal/Sticker"
         _Shininess ("Spec lobe tightness", Range(4, 200)) = 50
         _HoloScale ("Holo band density", Range(0.5, 6)) = 2.2
 
+        [Header(Physical touches)]
+        _Peel ("Peeled corner (bottom-right) 0..1", Range(0, 1)) = 0
+        _PeelShadow ("Peel shadow strength", Range(0, 1)) = 0.5
+        _Bubbles ("Surface bubbles (affect the sheen only)", Range(0, 1)) = 0
+        _BubbleScale ("Bubble scale (features across the quad)", Range(1, 8)) = 3
+        _BubbleSeed ("Bubble seed", Float) = 1
+
         _StencilComp ("Stencil Comparison", Float) = 8
         _Stencil ("Stencil ID", Float) = 0
         _StencilOp ("Stencil Operation", Float) = 0
@@ -118,6 +125,7 @@ Shader "UI/Decal/Sticker"
             float _ShadowSoftness, _ShadowOpacity;
             float _Finish, _Sheen, _Curve, _Shininess, _HoloScale;
             float4 _LightDir;
+            float _Peel, _PeelShadow, _Bubbles, _BubbleScale, _BubbleSeed;
 
             v2f vert(appdata_t v)
             {
@@ -246,7 +254,7 @@ Shader "UI/Decal/Sticker"
                 else if (_Finish < 2.5)
                 {
                     // holo foil: rainbow bands along a diagonal that slide with the light, fine diffraction ruling
-                    float h = dot(p, ax) * _HoloScale + dot(L.xy, float2(0.9, 0.6)) * 1.4 + (n.x + n.y) * 1.5;
+                    float h = dot(p, ax) * _HoloScale + dot(L.xy, float2(0.9, 0.6)) * 1.4 + (n.x + n.y) * 0.8;
                     float3 rb = 0.5 + 0.5 * cos(6.28318 * (h + float3(0.0, 0.33, 0.67)));
                     float rule = 0.5 + 0.5 * sin(dot(p, ay) * 90.0 + h * 6.0);
                     rb *= 0.82 + 0.18 * rule;
@@ -269,6 +277,31 @@ Shader "UI/Decal/Sticker"
                     c = lerp(c, metal, saturate(0.35 + _Sheen * 0.65));
                 }
                 return c;
+            }
+
+            float vnoise(float2 q)
+            {
+                float2 i = floor(q), f = frac(q);
+                f = f * f * (3.0 - 2.0 * f);
+                return lerp(lerp(hash21(i), hash21(i + float2(1, 0)), f.x),
+                            lerp(hash21(i + float2(0, 1)), hash21(i + float2(1, 1)), f.x), f.y);
+            }
+
+            // blister height field: low-frequency noise pushed into soft domes
+            float bubbleH(float2 p)
+            {
+                float2 q = p * _BubbleScale * 0.5 + _BubbleSeed * 17.3;
+                float n = vnoise(q) * 0.65 + vnoise(q * 2.1 + 5.0) * 0.35;
+                return smoothstep(0.5, 0.78, n);
+            }
+
+            // flap: the lifted corner, folded back over the sticker (foreshortened by the curl) about the fold line s = s0
+            float flapDist(float2 q, float s0, float2 nc, float bw)
+            {
+                float s = dot(q, nc);
+                float2 pm = q + 2.4 * max(s0 - s, 0.0) * nc;      // where this flap point sat before it was lifted
+                float d = artDist(pm, pm * 0.5 + 0.5) - bw;
+                return max(d, s - s0);
             }
 
             fixed4 frag(v2f IN) : SV_Target
@@ -305,13 +338,42 @@ Shader "UI/Decal/Sticker"
 
                 // ---- finish ----
                 float3 Ld = normalize(_LightDir.xyz + float3(0.0, 0.0, 1e-3));
-                float3 nrm = normalize(float3(-p * _Curve, 1.0));
+                float2 bn = float2(0.0, 0.0);
+                {
+                    float e = 0.03;
+                    float h0 = bubbleH(p);
+                    bn = float2(bubbleH(p + float2(e, 0.0)) - h0, bubbleH(p + float2(0.0, e)) - h0) / e;
+                    bn *= -_Bubbles * 0.14;
+                }
+                float3 nrm = normalize(float3(-p * _Curve + bn, 1.0));
                 body = saturate(finish(body, nrm, Ld, p, printCov));
 
-                // ---- composite: shadow, then sticker (premultiplied accumulate) ----
+                // ---- peeled corner ----
+                float2 nc = float2(0.70711, -0.70711);
+                float s0 = 1.0 - _Peel * 0.9;
+                float sp = dot(p, nc);
+                float lifted = smoothstep(-aa, aa, sp - s0) * step(1e-4, _Peel);   // 1 beyond the fold
+                float dFlap = flapDist(p, s0, nc, bw);
+                float flapA = saturate(0.5 - dFlap / aa) * step(1e-4, _Peel);
+                float fShadow = (1.0 - smoothstep(-0.02, 0.05, flapDist(p - so * 3.0, s0, nc, bw)))
+                                * _PeelShadow * step(1e-4, _Peel);
+                float u = max(s0 - sp, 0.0);                          // distance along the flap from the fold
+                float3 back = float3(0.95, 0.94, 0.91) * (0.80 + 0.2 * smoothstep(0.0, 0.18, u));
+                back += 0.10 * exp(-pow((u - 0.07) / 0.035, 2.0)) * (0.4 + _Sheen);   // curl highlight
+                back *= 1.0 - 0.10 * smoothstep(0.08, 0.0, u);                          // crease
+                float bodyKeep = 1.0 - lifted;
+                bodyA *= bodyKeep;
+                sh *= lerp(1.0, bodyKeep, 0.8);
+
+                // ---- composite: shadow, sticker, flap shadow, flap (premultiplied accumulate) ----
                 float3 shRgb = float3(0.0, 0.0, 0.02);
                 float outA = bodyA + sh * (1.0 - bodyA);
                 float3 outC = body * bodyA + shRgb * sh * (1.0 - bodyA);
+                float fs = fShadow * (1.0 - flapA);
+                outC = outC * (1.0 - fs);                                  // darken what is underneath
+                outA = outA + fs * (1.0 - outA);
+                outC = outC * (1.0 - flapA) + back * flapA;
+                outA = outA * (1.0 - flapA) + flapA;
                 float3 rgb = outC / max(outA, 1e-4);
 
                 fixed4 c = fixed4(rgb, outA) * IN.color;

@@ -298,3 +298,36 @@ both edges.
 Known limits (all three): the quad must be square (uv is treated as isotropic); the decal is flat colour + coverage — the
 paint-material texture (gloss/height, §3.1 P2) is not produced yet; FXC compile time of these shaders has not been
 measured (all are tiny, fixed `[unroll]`, no widget shader changed).
+
+### 11.4 Sticker — built  ·  `UI/Decal/Sticker` — `DecalSticker.shader`  ·  `Looks/_decals/sticker.png`
+A die-cut vinyl sticker on a UGUI quad (uv 0..1, **square quad**, picture centred −1..1). Unlike 11.1–11.3 it is a
+normal UGUI shader: stencil, `_ClipRect`, vertex-colour tint, `Blend SrcAlpha OneMinusSrcAlpha` (non-premultiplied).
+Art = `_MainTex` alpha as an SDF-ish mask (`_UseTex` on) or a procedural `_Shape`. A white vinyl margin follows the art
+outline (art offset by `_Border`), the art is printed with a keyline, and a contact shadow is drawn inside the same quad.
+Finishes: matte (paper grain), gloss (moving sheen band + spec lobe), holo (rainbow bands + diffraction ruling sliding
+with `_LightDir`), chrome (banded studio reflection tinted by the print). The sheet is bowed (`_Curve`) so the light
+direction moves the highlights across it. `_Peel` folds the bottom-right corner back over the sticker (white backing,
+curl highlight, crease, cast shadow); `_Bubbles` adds blister-like normal noise that only disturbs the sheen/reflection.
+
+| Property | Range | Default | What it does |
+|---|---|---|---|
+| `_MainTex` / `_UseTex` | 2D / toggle | white / 0 | art mask (alpha 0.5 = edge, rgb multiplies the print) when on, else `_Shape` |
+| `_Shape` | enum | 2 | 0 circle, 1 rounded rect, 2 star, 3 shield, 4 bolt, 5 heart |
+| `_SdfSpread` | 0.02–0.5 | 0.12 | uv distance the texture's alpha ramp spans (keep `_Border` below it) |
+| `_ArtSize` | 0.3–0.9 | 0.6 | art extent as a fraction of the half quad (the rest holds border + shadow) |
+| `_ArtColor` / `_ArtColor2` | colour | red / dark red | print gradient, top → bottom |
+| `_InkColor` / `_Keyline` | colour / 0–1 | white / 0.8 | inner keyline colour / strength |
+| `_Border` / `_BorderColor` | 0–0.15 / colour | 0.04 / off-white | white vinyl margin (uv) / its colour |
+| `_ShadowOffset` / `_ShadowSoftness` / `_ShadowOpacity` | vector (uv) / 0.002–0.15 / 0–1 | (0.012,−0.022) / 0.03 / 0.45 | contact shadow |
+| `_Finish` | enum | 1 | 0 matte, 1 gloss, 2 holo, 3 chrome |
+| `_Sheen` | 0–1 | 0.6 | finish strength (band/spec/rainbow/mirror mix) |
+| `_LightDir` | vector | (−0.45,0.55,0.7) | direction to the light; x,y slide the bands / holo hue / chrome horizon |
+| `_Curve` / `_Shininess` / `_HoloScale` | 0–0.8 / 4–200 / 0.5–6 | 0.3 / 50 / 2.2 | sheet bow / spec tightness / holo band density |
+| `_Peel` / `_PeelShadow` | 0–1 / 0–1 | 0 / 0.5 | peeled-corner amount (0 = off) / its cast shadow |
+| `_Bubbles` / `_BubbleScale` / `_BubbleSeed` | 0–1 / 1–8 / float | 0 / 3 / 1 | blister normals (sheen only) / size / pattern |
+| `_Color` | colour | white | UGUI tint (× vertex colour) |
+
+Notes: all derivatives (`fwidth`) are taken once, outside branches; texture reads are `tex2Dlod`; art SDF is evaluated
+3× per pixel (body, shadow, and 2 with `_Peel`: flap + flap shadow; peel work is gated by arithmetic, not a branch).
+No other shader changed. FXC compile time not measured (no Unity here); the SDF bolt uses a fixed 7-edge `[unroll]`.
+Known limits: square quads only; peel corner fixed at bottom-right; texture art needs `_Border` ≤ `_SdfSpread`.
