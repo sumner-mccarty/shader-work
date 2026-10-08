@@ -114,6 +114,9 @@ recipes are JSON-identical (only the generated banner comment and one hand-forma
 
 ## Materials v2 (2026-10-06) — real textures, matcaps, glass
 
+Texture patterns (`pattern` type 20) exist only in the shaders that define `UI_PATTERN_TEXTURE`:
+SDFKnobRM, SDFButtonRM, SDFSliderRM and SDFPanel. On any other shader they render as no pattern.
+
 The engine now has three things procedural noise and Blinn-Phong could not do. Presets use them
 already (see the swatches); a spec reaches them through the preset fields:
 

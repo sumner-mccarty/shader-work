@@ -92,6 +92,10 @@ render → look. **Every existing skin must render unchanged**: new properties d
 `python tests/parity.py check` must still pass (it compares against frozen Unity renders). If an
 intentional change moves pixels, say exactly which and why in the PR. Note in the PR that the
 change needs a Unity compile check (Unity uses FXC; very large unrolled loops can fail there).
+Unity's FXC compile time is the real budget: UI/SDFKnob already takes ~11 min under load and the RM
+shaders ~9–10 min, close to Unity's per-shader timeout. Never add code to a shared `.cginc` that every
+shader pays for — gate it behind an opt-in define (texture patterns are `#define UI_PATTERN_TEXTURE 1`,
+set only in SDFKnobRM/SDFButtonRM/SDFSliderRM/SDFPanel), and say in the PR which shaders grew.
 
 ## Rules
 

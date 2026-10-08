@@ -55,6 +55,9 @@
 #define PATTERN_NOISE_ORGANIC   19
 
 // Materials v2 (2026-10-06): an image from the global texture array (Resources/UiMaterials).
+// ⚠ OPT-IN PER SHADER: `#define UI_PATTERN_TEXTURE 1` before the includes. The pattern switch is
+// inlined at every ApplyMaterialPattern call site, and one more case pushed UI/SDFKnob (six call
+// sites) past Unity's FXC compile timeout. Shaders that do not define it compile exactly as before.
 // p1 = layer (UiMaterials/catalog.json), p2 = blur (extra mip levels), p3 = stretch along x
 // (0 = none, 1 = 8x — streaky looks). Coordinates follow every other pattern: uv × scale, so
 // one texture tile spans 1/scale of the pattern space (with _PanelPatternPx, 1/scale of Px units).
@@ -714,6 +717,7 @@ float SampleNoiseOrganic(float2 pos, float2 center, float scale, float p1, float
     return val;
 }
 
+#ifdef UI_PATTERN_TEXTURE
 float SampleTexturePattern(float2 pos, float2 center, float scale, float p1, float p2, float p3)
 {
     if (_UIMaterialLibBound < 0.5) return 0.0;
@@ -724,6 +728,7 @@ float SampleTexturePattern(float2 pos, float2 center, float scale, float p1, flo
     float v = UNITY_SAMPLE_TEX2DARRAY_LOD(_UIMaterialTexArray, float3(uv, floor(p1 + 0.5)), max(lod, 0.0)).r;
     return v - 0.5;
 }
+#endif
 
 // ============================================================================
 // Unified pattern sampling dispatcher
@@ -756,7 +761,9 @@ float SamplePatternValue(int patternType, float2 pos, float2 center, float scale
         case PATTERN_CERAMIC:        return SampleCeramic(pos, center, scale, p1, p2, p3);
         case PATTERN_CIRCUIT:        return SampleCircuit(pos, center, scale, p1, p2, p3);
         case PATTERN_NOISE_ORGANIC:  return SampleNoiseOrganic(pos, center, scale, p1, p2, p3);
+#ifdef UI_PATTERN_TEXTURE
         case PATTERN_TEXTURE:        return SampleTexturePattern(pos, center, scale, p1, p2, p3);
+#endif
         default: return 0.0;
     }
 }
@@ -861,7 +868,9 @@ float3 ApplyMaterialPattern(float3 baseColor, float2 uv, UIComponent component,
     float p3 = component.patternParam3;
     
     // Mip level of a 512px texture tile laid across the uv range (PATTERN_TEXTURE adds log2(scale)).
+#ifdef UI_PATTERN_TEXTURE
     g_uiPatternLod = log2(max(max(length(ddx(uv)), length(ddy(uv))), 1e-6) * 512.0);
+#endif
     float pattern = SamplePatternValue(patType, pos, center, scale, p1, p2, p3) * component.patternIntensity;
     
     // Use hardware screen-space derivatives for normal computation.

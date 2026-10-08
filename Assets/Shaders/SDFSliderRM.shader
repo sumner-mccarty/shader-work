@@ -657,6 +657,7 @@ Shader "UI/SDFSliderRM"
             // Per-material unlit switch — see UI_LIGHTING_UNLIT in CG/Core/UILighting.cginc.
             float _LightingUnlit;
             #define UI_LIGHTING_UNLIT _LightingUnlit
+            #define UI_PATTERN_TEXTURE 1   // Materials v2 texture patterns (opt-in: see UIPatterns.cginc)
             #include "UnityCG.cginc"
             #include "UnityUI.cginc"
             #include "CG/SDF/SDFPrimitives.cginc"
