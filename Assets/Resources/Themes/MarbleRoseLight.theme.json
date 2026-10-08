@@ -1,0 +1,9 @@
+{
+  "themeName": "Marble & Rose Gold Light rig",
+  "scene": {
+    "light1": { "pos": [-1.5, 3.0], "height": 4.0, "color": "#FFF6EE", "intensity": 0.8, "specular": 0.15, "specularPower": 48, "enabled": false },
+    "light2": { "pos": [0.5, 2.0], "height": 2.0, "color": "#FFFFFF", "intensity": 0.0, "specular": 0.0, "specularPower": 32, "enabled": false },
+    "light3": { "pos": [0.5, 2.0], "height": 2.0, "color": "#FFFFFF", "intensity": 0.0, "specular": 0.0, "specularPower": 32, "enabled": false },
+    "animate": { "enabled": false, "mode": "random", "speed": 0.45, "reach": 2.5 }
+  }
+}
