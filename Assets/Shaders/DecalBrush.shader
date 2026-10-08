@@ -111,43 +111,61 @@ Shader "UI/Decal/Brush"
                 float u = saturate(l * 0.5 + 0.5);                                   // 0..1 across the ribbon
                 float along = arc * plen / max(_Width, 1e-3) / max(_StrandLen, 0.1); // slow coordinate along the stroke
 
-                // the first point is rounded off (a loaded start); past the last point the brush lifts — no cap
+                // THE START CAP. Behind the first point (capS) the nearest-point distance is radial, which would give
+                // ring-shaped strands. Instead measure in the stroke's own frame: lc = lateral (same axis as the body's
+                // l, so the strands run straight on into the cap), e = how far behind the first point. The cap outline
+                // is a slightly blunt superellipse, and `along` keeps counting backwards so the strand wander continues.
                 float capS = step(arc, 0.0005);
                 float capE = step(0.9995, arc);
+                float cnt1 = step(1.5, cnt);
+                float2 q1 = lerp(_P0.xy, _P1.xy, cnt1);
+                float2 q2 = lerp(q1, _P2.xy, step(2.5, cnt));
+                float2 d0 = dcCR(_P0.xy, _P0.xy, q1, q2, 1.0 / 6.0) - _P0.xy;           // direction of the first piece
+                d0 = (dot(d0, d0) > 1e-10) ? normalize(d0) : float2(1.0, 0.0);
+                float2 rel = uv - _P0.xy;
+                float lc = dot(rel, float2(-d0.y, d0.x)) / w;
+                float e = dot(rel, -d0) / w;
+                e = lerp(abs(e), max(e, 0.0), cnt1);                                      // a lone dab is round all the way round
+                float lm = pow(pow(abs(lc), 2.5) + pow(e, 2.5), 0.4);                    // blunt-round metric, 1 at the cap rim
+                l = lerp(l, lc, capS);
+                u = saturate(l * 0.5 + 0.5);
+                along = lerp(along, -e * w / max(_Width, 1e-3) / max(_StrandLen, 0.1), capS);
+                float lmEdge = lerp(abs(l), lm, capS);                                    // the metric the outline/ridge use
 
-                // strands: each has its own load, wandering along the stroke (off in the start cap, where they'd be rings)
+                // strands: each has its own load, wandering along the stroke
                 float N = max(_Bristles, 1.0);
-                float sid = floor(u * N);
+                float sid = min(floor(u * N), N - 1.0);                                   // |l| >= 1 shares the outermost strand
                 float base = bdHash21(float2(sid, _Seed * 3.7 + 1.0));
                 float wander = bdNoise(float2(sid * 3.13 + _Seed * 5.0, along));
                 float load = lerp(base, wander, 0.55);
 
-                // dry brush: the threshold rises toward the tail, outer strands run dry first
+                // dry brush: the threshold rises toward the tail, outer strands run dry first (none at the loaded start)
                 float dry = _DryBrush * smoothstep(_DryStart, 1.0, arc);
                 float edgeBias = pow(abs(l), 3.0) * 0.35 * _DryBrush * smoothstep(_DryStart * 0.5, 1.0, arc);
                 float thresh = dry * 0.92 + edgeBias;
                 float strand = smoothstep(thresh, thresh + 0.1, load + 0.05);
-                strand = lerp(strand, 1.0, capS);
-                // the strands end at different points along the tail
-                strand *= step(arc, 1.0 - (0.03 + dry * 0.14) * bdHash21(float2(sid, _Seed + 21.0))) * (1.0 - capE);
+                // the strands end at different points along the tail, each with a soft little feather
+                float endAt = 1.0 - (0.03 + dry * 0.14) * bdHash21(float2(sid, _Seed + 21.0));
+                strand *= (1.0 - smoothstep(endAt - 0.012, endAt, arc)) * (1.0 - capE);
 
-                // ragged edge: the outer strands are different lengths
+                // ragged edge: the outer strands are different lengths (the cap rim gets the same ragging)
                 float rag = (bdHash21(float2(sid, _Seed + 9.0)) - 0.5) * 2.0;
                 float outer = step(0.8, abs(l));
-                float lim = 1.0 + _EdgeRagged * (0.16 * rag * outer + 0.1 * (bdNoise(float2(along * 6.0 + side * 17.0, _Seed)) - 0.5)) * (1.0 - capS);
+                float lim = 1.0 + _EdgeRagged * (0.16 * rag * outer + 0.1 * (bdNoise(float2(along * 6.0 + side * 17.0, _Seed)) - 0.5));
                 float aa = max(fwidth(dist) / w, 0.02);
-                float shape = 1.0 - smoothstep(lim - aa, lim + aa, abs(l));
+                float shape = 1.0 - smoothstep(lim - aa, lim + aa, lmEdge);
                 float cov = shape * strand;
 
-                // tone: strands lighter/darker, grooves, a ridge of piled paint at the edges
-                float pat = 1.0 - capS;
+                // tone: strands lighter/darker, grooves, a ridge of piled paint at the edges. The loaded start is a
+                // little calmer than the body (paint pooled), easing into the streaks over the cap's length.
+                float pat = lerp(1.0, 1.0 - 0.4 * smoothstep(0.0, 1.0, e), capS);
                 float3 col = _Color.rgb;
                 float tone = ((base - 0.5) * 0.5 + (wander - 0.5)) * pat;
                 col *= 1.0 + tone * _Streakiness * 0.55;
                 float fu = frac(u * N);
                 float groove = (1.0 - smoothstep(0.0, 0.16, min(fu, 1.0 - fu))) * pat;
                 col *= 1.0 - _Groove * 0.35 * groove;
-                float ridge = smoothstep(0.78, 0.98, abs(l)) * (1.0 - smoothstep(0.98, 1.1, abs(l)));
+                float ridge = smoothstep(0.78, 0.98, lmEdge) * (1.0 - smoothstep(0.98, 1.1, lmEdge));
                 col = lerp(col, lerp(col, float3(1.0, 1.0, 1.0), 0.22), _Ridge * ridge);
 
                 // thin paint (dry strands, strand edges) is a little see-through

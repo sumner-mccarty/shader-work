@@ -14,6 +14,20 @@ DARK, LIGHT = "#1A1D22", "#D9DCE0"
 def P(*pts):  # (x, y, pressure) -> float4 props
     return {f"_P{i}": (x, y, p, 0.0) for i, (x, y, p) in enumerate(pts)} | {"_PointCount": float(len(pts))}
 
+def inside(props, width=0.09):
+    """Brush strokes: fit the points into [m, 1-m] with m = 1.3 x the half-width so no stroke touches its quad edge."""
+    m = 1.3 * props.get("_Width", width)
+    keys = [k for k in props if k.startswith("_P") and k[2:].isdigit()]
+    xs = [props[k][0] for k in keys]; ys = [props[k][1] for k in keys]
+    x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
+    sc = (1 - 2 * m) / max(x1 - x0, y1 - y0, 1e-6)
+    cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+    out = dict(props)
+    for k in keys:
+        x, y, pr, z = props[k]
+        out[k] = (0.5 + (x - cx) * sc, 0.5 + (y - cy) * sc, pr, z)
+    return out
+
 VARIANTS = {
     "splat": ("UI/Decal/Splat", [
         ("seed 1 pink",      {"_Seed": 1, "_Color": "#F21F61"}),
@@ -44,6 +58,8 @@ VARIANTS = {
 def main():
     name = sys.argv[1]
     shader, variants = VARIANTS[name]
+    if name == "brush":
+        variants = [(l, inside(p)) for l, p in variants]
     sr = SkinRenderer(ROOT, orientation="screen")
     rows = [(256, DARK), (256, LIGHT), (64, DARK), (64, LIGHT)]
     n = len(variants)
