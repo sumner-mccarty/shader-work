@@ -39,7 +39,8 @@
 //   back to show phantom notes from the start; see section 3/6/7 pastEnd).
 //
 // FRAGMENT SECTIONS:
-//   1 Background  2 Track bed  3 Beat grid  4 Lane dividers  5 Rails
+//   1 Background  2 Track bed (2b disabled-lane dim + hatch)  3 Beat grid
+//   (3b bank zone: rail-only checkpoint)  4 Lane dividers  5 Rails
 //   6 Hit line + receptors + flashes  7 Note gems + sustain tails
 //   7b Ghost hits + drift tails (review overlay)
 //   8 Depth fog veil  9 Vignette + countdown  10 Clip + final composite
@@ -92,6 +93,9 @@ Shader "UI/SDFRhythmTrack"
         // the notes never scroll underneath (TrackLanesView.TrackTop).
         _TrackTop ("Track Far End (fraction of height)", Range(0.3, 1)) = 1
         _HitFlash ("Hit Flash per lane", Vector) = (0, 0, 0, 0)
+        // Lanes that are switched OFF for this pass (practice mode auto-plays them, a game mode
+        // doesn't use them). xyzw = lane 0..3, > 0.5 = disabled. TrackLanesView.SetLaneDisabled.
+        _LaneDisabled ("Disabled Lanes (xyzw = lane 0..3)", Vector) = (0, 0, 0, 0)
         _HitColor0 ("Hit Flash Color L0", Color) = (1, 0.91, 0.66, 1)
         _HitColor1 ("Hit Flash Color L1", Color) = (1, 0.91, 0.66, 1)
         _HitColor2 ("Hit Flash Color L2", Color) = (1, 0.91, 0.66, 1)
@@ -305,6 +309,7 @@ Shader "UI/SDFRhythmTrack"
             float4 _QuadSize;
             float _TrackTop;
             float4 _HitFlash;
+            float4 _LaneDisabled;
             float4 _HitColor0, _HitColor1, _HitColor2, _HitColor3;
 
             float4 _NoteColor0, _NoteColor1, _NoteColor2, _NoteColor3;
@@ -429,7 +434,10 @@ Shader "UI/SDFRhythmTrack"
                 // original mapping exactly (far = later, notes come at you). At -1 the far end
                 // becomes the PAST, so notes appear at the hit line and stream away — which is what
                 // you want while recording, where the notes are yours and already played.
-                float tNear = _Scroll16 - _TimeDir * _PlayLead16;
+                // The hit line sits at the CENTRE of a gem that is being played, not at its leading
+                // edge: gems span [start, start+len] and the receptor pad is drawn around the line,
+                // so the line is shifted half a gem up the time axis (in either direction).
+                float tNear = _Scroll16 + 0.5 * _MinNoteLen16 - _TimeDir * _PlayLead16;
                 float t16  = tNear + _TimeDir * d01 * _Visible16;
 
                 float halfW  = 0.5 * _NearWidth;
@@ -494,6 +502,13 @@ Shader "UI/SDFRhythmTrack"
                 // is undefined — and the note data that gates those branches is per-pixel.
                 float2 noteTexel = float2(max(fwidth(xs), 1e-6), max(fwidth(tCmp), 1e-6));
                 float laneV = (lane + 0.5) / 4.0;
+
+                // DISABLED LANES (TrackLanesView.SetLaneDisabled): 1 when THIS pixel's lane is
+                // switched off, 0 otherwise. Lane-wide on purpose — everything note-related below is
+                // already clipped to its own lane, so one flag per pixel dims the bed, the receptor,
+                // the gems and the numerals without any of them needing to know about each other.
+                float4 laneMask4 = rtLaneMask4(lane);
+                float laneOff = step(0.5, dot(_LaneDisabled, laneMask4));
 
                 // ============================================================
                 // 1. Background — vertical gradient + starfield + horizon glow
@@ -566,22 +581,47 @@ Shader "UI/SDFRhythmTrack"
                 rtOver(acc, bedCol, _LaneFillAlpha * trackMask);
 
                 // ============================================================
+                // 2b. Disabled lane — the bed goes dim and grey, with a faint hatch
+                // ============================================================
+                // A lane that is switched off for this pass (practice mode auto-plays it, or the
+                // game mode doesn't use it) should read as "not yours" at a glance in ANY theme.
+                // Darkening alone can't do that on an already-black bed (Grid, Blacklight), and a
+                // hatch alone vanishes on a bright one — so both: pull the bed toward a dim grey of
+                // its own luminance, then lay a thin diagonal hatch over it. The hatch is in SCREEN
+                // pixels, not track space, so it stays put while the notes scroll past it: it is a
+                // label on the lane, not a texture on the road.
+                float disBed = laneOff * trackMask;
+                float bedLum = dot(acc.rgb, float3(0.299, 0.587, 0.114));
+                acc.rgb = lerp(acc.rgb, float3(bedLum, bedLum, bedLum) * 0.55, disBed * 0.75);
+                float hatchC = (uv.x * _QuadSize.x + uv.y * _QuadSize.y) / 13.0;
+                float hatch  = rtLine(abs(frac(hatchC + 0.5) - 0.5), 0.08)
+                             * smoothstep(0.5, 0.42, abs(laneLocal));      // stay off the dividers
+                rtOver(acc, float3(0.66, 0.68, 0.72), hatch * 0.20 * disBed * fogAtten);
+
+                // ============================================================
                 // 3. Beat grid — 16th / beat / bar lines scrolling with time
                 // ============================================================
+                // THE QUIET RULER. Bar, beat and 16th lines are a timeline you read with the
+                // corner of your eye, not something to play: bar is the strongest, beat about half
+                // of it, 16th barely there, and ALL of them stay well under a gem's brightness. The
+                // old values let a theme with a high gridBrightness (Grid: 1.25) draw a bar line
+                // that was fully opaque and glowing, brighter than the notes sitting on it — that
+                // was the "what's this line across the track?" report. The brightness is clamped
+                // rather than trusted so a theme can't opt back into it.
                 float fw16 = max(fwidth(t16), 1e-5);              // 16ths per pixel
                 float dInt  = abs(tCmp - round(tCmp));
                 float dBeat = abs(tCmp / 4.0  - round(tCmp / 4.0))  * 4.0;
                 float dBar  = abs(tCmp / 16.0 - round(tCmp / 16.0)) * 16.0;
 
                 float show16ths = smoothstep(0.22, 0.08, fw16);    // hide when zoomed out
-                float grid16  = rtLine(dInt,  0.55 * fw16) * show16ths * 0.30;
-                float gridBeat = rtLine(dBeat, 0.75 * fw16) * 0.65;
-                float gridBar  = rtLine(dBar,  1.10 * fw16) * (1.0 + pulse * 0.8);
+                float grid16   = rtLine(dInt,  0.55 * fw16) * show16ths;
+                float gridBeat = rtLine(dBeat, 0.75 * fw16);
+                float gridBar  = rtLine(dBar,  1.10 * fw16) * (1.0 + pulse * 0.30);
 
-                float gridA = _GridBrightness * trackMask * fogAtten * energy;
-                rtOver(acc, _GridBeatColor.rgb, (grid16 + gridBeat) * 0.35 * gridA);
-                rtOver(acc, _GridBarColor.rgb, gridBar * 0.55 * gridA);
-                rtAdd(acc, _GridBarColor.rgb * gridBar * 0.22 * gridA * _Radiance);
+                float gridA = min(_GridBrightness, 1.2) * trackMask * fogAtten * energy;
+                rtOver(acc, _GridBeatColor.rgb, (grid16 * 0.05 + gridBeat * 0.11) * gridA);
+                rtOver(acc, _GridBarColor.rgb, gridBar * 0.22 * gridA);
+                rtAdd(acc, _GridBarColor.rgb * gridBar * 0.05 * gridA * _Radiance);
 
                 // ============================================================
                 // 3b. Bank zone — which bank this stretch of the song is played on
@@ -600,14 +640,21 @@ Shader "UI/SDFRhythmTrack"
                 float bankAmt = saturate(bankW.a * (bankW.r + bankW.g + bankW.b)) * _BankRails * haveNotes;
                 float3 railCol = lerp(_RailColor.rgb, bankCol, bankAmt);
                 // Where one bank hands over to the next the weights cross, and their products peak:
-                // a line across the track, a checkpoint in the new bank's colour. Sharpened from the
-                // raw product (which is as wide as the whole cross-fade) to a narrow core with a soft
-                // halo — a broad wash read as fog rolling over the notes, a line reads as a line.
+                // a checkpoint in the new bank's colour. Sharpened from the raw product (which is as
+                // wide as the whole cross-fade) to a narrow core with a soft halo.
+                //
+                // ⚠ ON THE RAILS ONLY. This used to be a line across the WHOLE track, and a song that
+                // flips between two banks note-to-note (hi-hat open/closed on A and B) crossed at
+                // every flip — a glowing yellow-green line (A and B mixed 50/50) through each note of
+                // a dense run, cutting across all four lanes. That is what the owner photographed
+                // ("what are these lines?"). The cue is "the SIDES of the track say which bank", so
+                // the checkpoint is a bright tick on each rail and nothing crosses the lanes.
                 float bankCross = saturate(4.0 * (bankW.r * bankW.g + bankW.g * bankW.b + bankW.r * bankW.b));
                 float bankGate = smoothstep(0.55, 1.0, bankCross) * bankAmt;
                 float bankHalo = bankCross * bankAmt;
-                rtOver(acc, bankCol, bankGate * 0.30 * trackMask * fogAtten);
-                rtAdd(acc, bankCol * (bankGate * 0.22 + bankHalo * 0.06) * trackMask * fogAtten * _Radiance);
+                float cpBand = smoothstep(0.90, 0.985, abs(trackX)) * trackMask;
+                rtOver(acc, bankCol, bankGate * 0.30 * cpBand * fogAtten);
+                rtAdd(acc, bankCol * (bankGate * 0.22 + bankHalo * 0.06) * cpBand * fogAtten * _Radiance);
                 // Light off the rails onto the bed, the width of a lane at the most: the zone is
                 // readable at the edge of the eye without laying colour over the gems.
                 float bankEdge = smoothstep(0.62, 1.0, abs(trackX)) * trackMask;
@@ -676,18 +723,39 @@ Shader "UI/SDFRhythmTrack"
                 float zsHit = rtZScale(vHit, H);
                 float linePx = (vT - vHit) * trackPxY;
 
-                float hitLine = rtLine(linePx, 1.4) * trackMask;
-                float lineGlow = rtGlow(abs(linePx), 15.0) * trackMask;
-                rtOver(acc, _HitLineColor.rgb, hitLine * 0.85);
-                rtAdd(acc, _HitLineColor.rgb * lineGlow * 0.28 * (0.7 + pulse * 0.6) * _Radiance * energy);
-
-                // Receptor ring for this fragment's lane (perspective ellipse).
+                // Receptor for this fragment's lane — a PAD: rounded square, the same shape as the
+                // drum pad under it, foreshortened by the tilt. The notes land in the middle of it.
                 float laneHalfPx = (halfW / zsHit) / 4.0 * _QuadSize.x;   // half lane width @ hit line
                 float centerTrackX = (lane + 0.5) * 0.5 - 1.0;
                 float xCenterU = 0.5 + centerTrackX * halfW / zsHit;
                 float squash = lerp(1.0, 0.42, saturate(_Tilt * 1.15));
                 float2 pr = float2((uv.x - xCenterU) * _QuadSize.x,
                                    (vT - vHit) * trackPxY / max(squash, 1e-3));
+
+                // On-screen half-length of one gem at the hit line (dv/dp of rtInvDepth01), so the
+                // pad is never shorter than the note that lands on it.
+                float dvdp = H * (H - 1.0) / max((H - 1.0 + _PlayLead16 / max(_Visible16, 1e-3)) * (H - 1.0 + _PlayLead16 / max(_Visible16, 1e-3)), 1e-4);
+                float gemHalfPx = 0.5 * _MinNoteLen16 / max(_Visible16, 1e-3) * dvdp * trackPxY;
+                float padHalfX = laneHalfPx * 0.9;
+                float padHalfY = max(padHalfX * squash, gemHalfPx * 1.25);
+                float padR = min(padHalfX, padHalfY) * 0.42;
+                float2 pPad = float2(pr.x, (vT - vHit) * trackPxY);
+                float dPad = rtRoundedBox(pPad, float2(padHalfX, padHalfY), padR);
+                float padInside = rtFill(dPad) * track;
+
+                // (laneMask4 / laneOff come from the top of the fragment.) A disabled lane never
+                // flashes: nothing is expected of the player there, so a burst would be a lie.
+                float flash = dot(_HitFlash, laneMask4) * track * (1.0 - laneOff);
+
+                // The hit line is a TIMING reference, not a barrier: faint where it crosses a pad
+                // (so it doesn't strike through the receptor), full strength in the gutters, and it
+                // lights up through the pad when the pad is hit or a note is passing through.
+                float hitAmt = saturate(flash * 1.5);
+                float hitLine = rtLine(linePx, 1.4) * trackMask;
+                float lineGlow = rtGlow(abs(linePx), 15.0) * trackMask;
+                float lineKeep = 1.0 - padInside * (0.88 * (1.0 - hitAmt));
+                rtOver(acc, _HitLineColor.rgb, hitLine * 0.85 * lineKeep);
+                rtAdd(acc, _HitLineColor.rgb * lineGlow * 0.28 * (0.7 + pulse * 0.6) * _Radiance * energy * lineKeep);
 
                 // Receptor energizes in the incoming note's row color as it crosses.
                 // Same looping-gated time as the gems above — a one-shot song must
@@ -701,23 +769,34 @@ Shader "UI/SDFRhythmTrack"
                 float pastEndHit = (haveNotes > 0.5 && looping < 0.5 && _Scroll16 >= safeLen) ? 1.0 : 0.0;
                 float4 hitData = tex2D(_NoteTex, float2(uHit, laneV));
                 float dHitNote = max(hitData.r - tHitCmp, tHitCmp - hitData.g);
-                float energize = smoothstep(0.45, -0.05, dHitNote) * _EnergizeOnPass * haveNotes * (1.0 - pastEndHit);
+                float energize = smoothstep(0.45, -0.05, dHitNote) * _EnergizeOnPass * haveNotes * (1.0 - pastEndHit)
+                               * (1.0 - laneOff);   // a disabled receptor doesn't light for a note passing
                 float3 receptorCol = lerp(_ReceptorColor.rgb, rowColorFor(hitData.b), energize);
+                // ...and sits dimmer and greyer than its neighbours, so the lane reads as off all
+                // the way down to the pad, not just up the bed.
+                float recepLum = dot(receptorCol, float3(0.299, 0.587, 0.114));
+                receptorCol = lerp(receptorCol, float3(recepLum, recepLum, recepLum), laneOff * 0.7);
+                float recepDim = lerp(1.0, 0.45, laneOff);
 
-                float ringR = laneHalfPx * (0.66 + pulse * 0.05 + energize * 0.10);
-                float dRing = length(pr) - ringR;
-                float ringMask = rtLine(dRing, 1.7) * track;
-                rtOver(acc, receptorCol, ringMask * (0.55 + energize * 0.45));
-                rtAdd(acc, receptorCol * rtGlow(abs(dRing), 9.0) * (0.12 + energize * 0.5) * _Radiance * energy * track);
+                // Pad outline + faint glass fill; swells a touch on the beat and as a note arrives.
+                float swell = pulse * 0.04 + energize * 0.06;
+                float dPadS = dPad - swell * padHalfX;
+                float padEdge = rtLine(dPadS, 1.7) * track;
+                float padFill = rtFill(dPadS) * track;
+                rtAdd(acc, receptorCol * padFill * (0.05 + energize * 0.22) * _Radiance * energy * recepDim);
+                rtOver(acc, receptorCol, padEdge * (0.55 + energize * 0.45) * recepDim);
+                rtAdd(acc, receptorCol * rtGlow(abs(dPadS), 9.0) * (0.12 + energize * 0.5) * _Radiance * energy * track * recepDim);
 
                 // Per-lane hit flash: filled burst + expanding shockwave + lane beam.
-                float4 laneMask4 = rtLaneMask4(lane);
-                float flash = dot(_HitFlash, laneMask4) * track;
+                float ringR = laneHalfPx * (0.66 + pulse * 0.05 + energize * 0.10);
+                float dRing = length(pr) - ringR;
                 if (flash > 0.001)
                 {
                     float3 flashCol = _HitColor0.rgb * laneMask4.x + _HitColor1.rgb * laneMask4.y
                                     + _HitColor2.rgb * laneMask4.z + _HitColor3.rgb * laneMask4.w;
                     float f2 = flash * flash;
+                    // the whole pad lights, not just a circle inside it
+                    rtAdd(acc, flashCol * padFill * f2 * 0.55 * _HitFlashStrength);
                     // core burst
                     rtAdd(acc, flashCol * rtGlow(max(dRing, 0.0) + ringR * 0.4, ringR * 0.75) * f2 * 1.4 * _HitFlashStrength);
                     // expanding shockwave ring
@@ -753,6 +832,10 @@ Shader "UI/SDFRhythmTrack"
                     float4 nd = tex2D(_NoteTex, float2(uSelf, laneV));
                     float nStart = nd.r, nEnd = nd.g, vel = nd.a;
                     float3 rowCol = rowColorFor(nd.b);
+                    // A note in a disabled lane is still SHOWN — it tells you what the auto-played
+                    // hand is doing — but as a ghost of itself: mostly grey, a third as opaque.
+                    float3 rowColD = lerp(rowCol, dot(rowCol, float3(0.299, 0.587, 0.114)).xxx, 0.85 * laneOff);
+                    float disNote = lerp(1.0, 0.35, laneOff);
                     // Border ring color — used to be the "part"/instrument-identity color from
                     // _PartPalette, dropped so the highway reads as pure ROW color (red/green/
                     // orange/blue), matching the drum pads now that they carry no group tint
@@ -845,15 +928,17 @@ Shader "UI/SDFRhythmTrack"
                     body *= lerp(0.78, 1.16, vel) * energy;
 
                     // tail body: translucent column of the row color
-                    float3 tailBody = rowCol * 0.75 * energy;
+                    float3 tailBody = rowColD * 0.75 * energy;
 
-                    rtStyleComposite(acc, tailBody * fogAtten, tailMask * 0.55 * fogAtten, _Additive);
-                    rtStyleComposite(acc, body * fogAtten, gemMask * fogAtten, _Additive);
+                    body = lerp(body, dot(body, float3(0.299, 0.587, 0.114)).xxx, 0.85 * laneOff);
+
+                    rtStyleComposite(acc, tailBody * fogAtten, tailMask * 0.55 * fogAtten * disNote, _Additive);
+                    rtStyleComposite(acc, body * fogAtten, gemMask * fogAtten * disNote, _Additive);
 
                     // additive halo — the gem casts light onto the track
                     float halo = rtGlow(dGem, 0.34 * gemLen) * laneEdgeFade * trackMask;
                     float haloTail = rtGlow(dTail, 0.18 * gemLen) * laneEdgeFade * trackMask;
-                    rtAdd(acc, rowCol * (halo * 0.55 + haloTail * 0.20) * _NoteGlow * fogAtten * _Radiance * energy);
+                    rtAdd(acc, rowColD * (halo * 0.55 + haloTail * 0.20) * _NoteGlow * fogAtten * _Radiance * energy * disNote);
 
                     // ── 7a. (the numerals are drawn after this block — see section 7n) ──
                 }
@@ -928,8 +1013,12 @@ Shader "UI/SDFRhythmTrack"
                         if (bh > 0.16 * bh0)
                         {
                             float3 rowC = rowColorFor(own.b);
+                            rowC = lerp(rowC, dot(rowC, float3(0.299, 0.587, 0.114)).xxx, 0.85 * laneOff);
                             int digitC = ((int)round(own.b)) % 4 + 1;
-                            float badgeFog = lerp(1.0, fogAtten, 0.5) * cardKeep * arriving;
+                            // badgeFog multiplies BOTH the colour and the alpha below, so it lands
+                            // squared: 0.6 here is the same ~third-opacity the gem gets (0.35).
+                            float badgeFog = lerp(1.0, fogAtten, 0.5) * cardKeep * arriving
+                                           * lerp(1.0, 0.6, laneOff);
 
                             float bw = bh / max(aspectT, 1e-3);                 // square on screen
                             float2 badgeC = float2(uNote, vNote + lift);
@@ -979,8 +1068,15 @@ Shader "UI/SDFRhythmTrack"
 
                     float isExtra = step(40.0, gOffset);
                     float3 ghostCol = lerp(rtOffsetColor(gOffset), _GhostExtraColor.rgb, isExtra);
+                    // ⚠ A lane with NO hit in it is all sentinel texels (R +1e7, G -1e7). The drift
+                    // tail below reads that as a hit 2e7 sixteenths off its slot, i.e. a narrow
+                    // column the whole length of the lane — a thin green line down every lane you
+                    // haven't played yet, which vanished the moment you hit a note there (the
+                    // ghost texel then stopped being a sentinel). The owner's "lines down the
+                    // lanes that disappear once I play a note". No data, no ghost.
+                    float ghostValid = step(abs(gStart), 1e6) * step(abs(gRef), 1e6);
                     // An extra you asked not to see costs one multiply rather than a branch.
-                    float ghostGate = reviewOn * lerp(1.0, step(0.5, _ShowExtra), isExtra);
+                    float ghostGate = reviewOn * lerp(1.0, step(0.5, _ShowExtra), isExtra) * ghostValid;
 
                     // Drift tail: a narrow column spanning slot → hit, so a lane full of tails
                     // leaning the same way IS the finding ("I am always ahead of the beat").
@@ -1033,28 +1129,6 @@ Shader "UI/SDFRhythmTrack"
                     UI_DISPLAY_SURFACE_DESC(surf, _SurfaceMode, _BezelPx, _BezelRoundPx, spx)
                     UI_APPLY_DISPLAY_SURFACE(acc, uv, lightSpacePos, surf);
 
-                    if (_BezelPx > 0.001)
-                    {
-                        float2 halfPx = spx * 0.5;
-                        float r = min(_BezelRoundPx, min(halfPx.x, halfPx.y));
-                        float2 pxPos = abs(uv * spx - halfPx) - (halfPx - _BezelPx - r);
-                        float bd = length(max(pxPos, 0.0)) + min(max(pxPos.x, pxPos.y), 0.0) - r;
-                        float frame = smoothstep(-1.0, 1.0, bd);
-                        rtOver(acc, _BezelColor.rgb, frame * _BezelColor.a);
-
-                        // The frame is raised moulding and takes the light too — same
-                        // construction as SDFScope's bezel; see the comment there.
-                        // Analytic outward normal, NOT ddx/ddy — ddy is a screen derivative
-                        // (y down) while uv and the lamps are y up, so a derivative here would
-                        // light the top edge as if it were the bottom. See uiDispApertureGrad.
-                        float2 bnorm = uiDispApertureGrad(uv, spx, _BezelPx, _BezelRoundPx);
-                        float3 keyToL = UIToLightVector(UILightDirection(_GlobalLightPos1, lightSpacePos));
-                        float  facing = dot(bnorm, normalize(keyToL.xy + 1e-5));
-                        float  edgeBand = saturate(1.0 - abs(bd) / max(_BezelPx, 1.0));
-                        float3 keyRgb = (_GlobalLightFx1.x > 0.5) ? _GlobalLightColor1.rgb : float3(1, 1, 1);
-                        rtAdd(acc, keyRgb * saturate(facing) * edgeBand * frame * 0.13);
-                        acc.rgb *= 1.0 - saturate(-facing) * edgeBand * frame * 0.35;
-                    }
                 }
 
                 // ── Receive shadows cast by neighbouring widgets ──────────────
@@ -1063,6 +1137,44 @@ Shader "UI/SDFRhythmTrack"
                 // than pick up shadows cast by widgets behind it.
                 if (_ReceiveSceneShadows > 0.5 && acc.a > 0.001)
                     acc.rgb *= UIDisplayReceiveShadow(IN.screenPos.xy / max(IN.screenPos.w, 1e-5));
+
+                // ============================================================
+                // 9.6 Bezel — drawn LAST, over the surface and any received shadow, so the
+                // rails/glow can never paint over the frame (2026-10-08). The frame is
+                // CONCENTRIC: outer corner = aperture corner + band width, and everything outside
+                // the outer corner is transparent, so the quad's corners match the rounded panels
+                // around it instead of showing a square dark frame with a rounded hole.
+                // ============================================================
+                if (_BezelPx > 0.001)
+                {
+                    float2 spxB = float2(max(_QuadSize.x, 1.0), max(_QuadSize.y, 1.0));
+                    float2 halfPx = spxB * 0.5;
+                    float r = min(_BezelRoundPx, min(halfPx.x, halfPx.y));
+                    float2 pxPos = abs(uv * spxB - halfPx) - (halfPx - _BezelPx - r);
+                    float bd = length(max(pxPos, 0.0)) + min(max(pxPos.x, pxPos.y), 0.0) - r;
+                    float frame = smoothstep(-1.0, 1.0, bd);
+                    rtOver(acc, _BezelColor.rgb, frame * _BezelColor.a);
+
+                    // The frame is raised moulding and takes the light too — same
+                    // construction as SDFScope's bezel; see the comment there.
+                    // Analytic outward normal, NOT ddx/ddy — ddy is a screen derivative
+                    // (y down) while uv and the lamps are y up, so a derivative here would
+                    // light the top edge as if it were the bottom. See uiDispApertureGrad.
+                    float2 lightSpacePosB = UI_DISPLAY_LIGHT_POS(IN.screenPos.xy / max(IN.screenPos.w, 1e-5));
+                    float2 bnorm = uiDispApertureGrad(uv, spxB, _BezelPx, _BezelRoundPx);
+                    float3 keyToL = UIToLightVector(UILightDirection(_GlobalLightPos1, lightSpacePosB));
+                    float  facing = dot(bnorm, normalize(keyToL.xy + 1e-5));
+                    float  edgeBand = saturate(1.0 - abs(bd) / max(_BezelPx, 1.0));
+                    float3 keyRgb = (_GlobalLightFx1.x > 0.5) ? _GlobalLightColor1.rgb : float3(1, 1, 1);
+                    rtAdd(acc, keyRgb * saturate(facing) * edgeBand * frame * 0.13);
+                    acc.rgb *= 1.0 - saturate(-facing) * edgeBand * frame * 0.35;
+
+                    // Outer corner, concentric with the aperture: cut the quad's square corners.
+                    float ro = r + _BezelPx;
+                    float2 po = abs(uv * spxB - halfPx) - (halfPx - ro);
+                    float od = length(max(po, 0.0)) + min(max(po.x, po.y), 0.0) - ro;
+                    acc *= 1.0 - smoothstep(-0.75, 0.75, od);
+                }
 
                 // ============================================================
                 // 10. Clip + final composite (premultiplied)

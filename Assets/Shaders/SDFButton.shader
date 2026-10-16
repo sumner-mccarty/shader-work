@@ -201,6 +201,7 @@ Shader "UI/SDFButton"
         _IconColor ("Icon Color", Color) = (1, 1, 1, 1)
         _IconRenderAlpha ("Icon Render Alpha", Range(0,1)) = 1
         _IconRenderEmissive ("Icon Render Emissive", Range(0,1)) = 0
+        _IconMinContrast ("Icon Min Contrast", Range(0,7)) = 0
         _IconShapeType ("Icon Shape Type", Float) = 0
         // 2.0, not 1.0: _IconWidth is in half-extents of the SHORT axis, so a mark
         // measured against the button's body needs more than 1 — and Unity CLAMPS a
@@ -466,6 +467,7 @@ Shader "UI/SDFButton"
             #include "CG/Core/UILighting.cginc"
             #include "CG/Core/UIRenderer.cginc"
             #include "CG/Core/UIGradients.cginc"
+            #include "CG/Core/UIContrast.cginc"
             #include "CG/SDF/SDFButtonUniforms.cginc"
             #include "CG/SDF/SDFPlayRing.cginc"
 
@@ -970,8 +972,22 @@ Shader "UI/SDFButton"
                         float3 litColor = ApplyUILighting(rimResult.normal, rimResult.litColor,
                                                           _LightingAmbient, specularMod, normalOffset,
                                                           light1, light2, light3);
-                        buttonCompositeOver(finalColor, litColor, iconMask * iconComponent.alpha);
-                        emissiveAccum += baseColor * iconMask * _IconRenderEmissive;
+                        if (_IconMinContrast > 1.0) {
+                            // Legibility guarantee (UIContrast.cginc): judge the mark as it will be
+                            // SEEN — lit colour plus its own emissive — against the face as it will
+                            // be seen under it (composite so far + the face's emissive, which is
+                            // added at the end), then draw it opaque and take the face's emissive
+                            // out from under it so a lit lamp face cannot wash the mark out.
+                            float iconA = iconMask * iconComponent.alpha;
+                            float3 seen = litColor + baseColor * _IconRenderEmissive;
+                            float3 under = finalColor.rgb + emissiveAccum;
+                            seen = uiEnsureContrast(seen, under, _IconMinContrast);
+                            buttonCompositeOver(finalColor, seen, iconA);
+                            emissiveAccum *= 1.0 - saturate(iconA);
+                        } else {
+                            buttonCompositeOver(finalColor, litColor, iconMask * iconComponent.alpha);
+                            emissiveAccum += baseColor * iconMask * _IconRenderEmissive;
+                        }
                     }
                 }
 

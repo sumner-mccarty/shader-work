@@ -240,12 +240,12 @@
                 {
                     "name": "_PanelPaddingPx",
                     "type": "Float",
-                    "value": "0"
+                    "value": "3"
                 },
                 {
                     "name": "_PanelCornerRadiusPx",
                     "type": "Float",
-                    "value": "1"
+                    "value": "10"
                 },
                 {
                     "name": "_PanelFaceSmoothness",
@@ -396,6 +396,11 @@
                     "name": "_PanelBevelSmoothness",
                     "type": "Range",
                     "value": "0.9"
+                },
+                {
+                    "name": "_PanelBevelDistancePx",
+                    "type": "Float",
+                    "value": "3"
                 }
             ]
         }

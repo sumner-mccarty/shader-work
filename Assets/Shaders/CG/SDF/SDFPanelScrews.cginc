@@ -184,6 +184,38 @@ inline void pnScrewBore(inout float3 panel, float2 rel, float bore,
     panel += panel * t * saturate(nd) * 0.28;
 }
 
+// The four centres, in corner order (i & 1 → +x, i & 2 → +y). Computed ONCE per fragment by the panel shader
+// and shared by the decor trim (§4) and the heads (§6.5) — each centre walks the corner, which is not free.
+void panelScrewCentres(float bodyHalfW, float bodyHalfH, int bodyShape, float sp1, float sp2, float sp3,
+                       float inset, out float2 c[4])
+{
+    [unroll] for (int i = 0; i < 4; i++)
+    {
+        float2 sgn = float2((i & 1) ? 1.0 : -1.0, (i & 2) ? 1.0 : -1.0);
+        c[i] = pnScrewCentre(sgn, bodyHalfW, bodyHalfH, bodyShape, sp1, sp2, sp3, inset);
+    }
+}
+
+// panelDrawScrews with the centres already known.
+void panelDrawScrewsAt(inout float4 finalColor, float2 bodyPos, float2 c[4], float aaPos,
+                       float radius, int shape, float rotRad,
+                       float3 headColor, float3 slotColor,
+                       float depth, float metallic, float bore,
+                       float3 toLight, float ambient)
+{
+    float rad = max(radius, 0.002);
+    float aa  = max(aaPos / rad, 1e-4);
+    [unroll] for (int i = 0; i < 4; i++)
+    {
+        float2 rel = (bodyPos - c[i]) / rad;
+        pnScrewBore(finalColor.rgb, rel, bore, toLight, aa);
+        float3 col;
+        float  m = pnScrewShade(rel, aa, shape, rotRad,
+                                headColor, slotColor, depth, metallic, toLight, ambient, col);
+        if (m > 0.0005) buttonCompositeOver(finalColor, col, m);
+    }
+}
+
 void panelDrawScrews(inout float4 finalColor, float2 bodyPos,
                      float bodyHalfW, float bodyHalfH, int bodyShape,
                      float sp1, float sp2, float sp3, float aaPos,

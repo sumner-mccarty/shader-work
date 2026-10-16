@@ -58,6 +58,7 @@ Shader "UI/SDFPanel"
         _PanelBevelDepth ("Panel Bevel Depth", Range(-1.0, 1.0)) = 0.2
         _PanelBevelSmoothness ("Panel Bevel Smoothness", Range(0.001, 1.0)) = 0.02
         _PanelBevelDistance ("Panel Bevel Distance", Range(0.001, 1.0)) = 0.1
+        _PanelBevelDistancePx ("Panel Bevel Max Width (px, 0 = no cap)", Float) = 0
         _PanelFaceSmoothness ("Panel Face Smoothness", Range(-1.0, 1.0)) = 0.0
         _PanelBevelProfileType ("Panel Bevel Profile Type", Int) = 0
         _PanelBevelProfileSharpness ("Panel Bevel Profile Sharpness", Range(0, 1)) = 0.5
@@ -101,6 +102,7 @@ Shader "UI/SDFPanel"
         _PanelRimEnabled ("Panel Rim Bevel Enabled", Float) = 0
         _PanelRimDepth ("Panel Rim Bevel Depth", Range(-0.5, 0.5)) = 0.1
         _PanelRimWidth ("Panel Rim Bevel Width", Range(0.001, 1.0)) = 0.02
+        _PanelRimWidthPx ("Panel Rim Max Width (px, 0 = no cap)", Float) = 0
         _PanelRimSmoothness ("Panel Rim Bevel Smoothness", Range(0.001, 0.1)) = 0.01
 
         // Panel pattern
@@ -435,6 +437,13 @@ Shader "UI/SDFPanel"
         _PanelGlassBlur ("Panel Glass Blur (mip)", Range(0, 8)) = 3
         _PanelGlassTint ("Panel Glass Tint", Color) = (1, 1, 1, 1)
         _PanelGlassRim ("Panel Glass Rim", Range(0, 2)) = 0.6
+        // Faceplate decor (Docs/Decor.md, CG/Core/UIDecor.cginc) — bound by DecorSurface.cs, never by a skin.
+        [HideInInspector] _DecorEnabled ("Decor Enabled", Float) = 0
+        [HideInInspector] _DecorTex ("Decor Albedo", 2D) = "black" {}
+        [HideInInspector] _DecorSurfTex ("Decor Surface", 2D) = "gray" {}
+        [HideInInspector] _DecorFxTex ("Decor Fx", 2D) = "black" {}
+        [HideInInspector] _DecorMapU ("Decor Map U", Vector) = (0, 0, 0, 0)
+        [HideInInspector] _DecorMapV ("Decor Map V", Vector) = (0, 0, 0, 0)
         _StencilComp ("Stencil Comparison", Float) = 8
         _Stencil ("Stencil ID", Float) = 0
         _StencilOp ("Stencil Operation", Float) = 0
@@ -487,6 +496,7 @@ Shader "UI/SDFPanel"
             #include "CG/Core/UILighting.cginc"
             #include "CG/Core/UIMaterials.cginc"
             UI_MATERIAL_V2_UNIFORMS(Panel)
+            #include "CG/Core/UIDecor.cginc"
             #include "CG/Core/UIRenderer.cginc"
             #include "CG/Core/UIGradients.cginc"
             #include "CG/SDF/SDFPanelUniforms.cginc"
@@ -599,11 +609,28 @@ Shader "UI/SDFPanel"
                 float  time        = _Time.y;
 
                 // Bevel geometry (drives pseudoHeight for shadow hull sweep)
-                float bevelDist    = (_PanelBevelEnabled > 0.5) ? _PanelBevelDistance : 0.0;
+                // Bevel width CAPPED in canvas units (2026-10-08, Clearwater): a proportional band is
+                // 3.5 units on a 58-unit inset and 34 on a 784-unit rack, so no one layout margin clears
+                // both and nested plates' rims land on each other. A cap, not a pin, so a small plate
+                // keeps its proportional band and never reaches the medial axis (lookkit's 0.14 rule).
+                // The SLOPE stays the authored one (tanB below reads _PanelBevelDistance), so a capped
+                // rim is the same curve, just narrower.
+                float bevelDistPos = (_PanelBevelDistancePx > 0.001 && padMinPix > 1.0)
+                                   ? min(_PanelBevelDistance, _PanelBevelDistancePx * 2.0 / padMinPix)
+                                   : _PanelBevelDistance;
+                float bevelDist    = (_PanelBevelEnabled > 0.5) ? bevelDistPos : 0.0;
                 float bevelDepthRaw = (_PanelBevelEnabled > 0.5) ? abs(_PanelBevelDepth) : 0.0;
                 float maxDim       = min(bodyHalfW, bodyHalfH);
                 float pseudoHeight = maxDim * lerp(0.05, 0.5, bevelDepthRaw);
-                float rimWidth     = (_PanelRimEnabled > 0.5) ? _PanelRimWidth : 0.0;
+                // Rim (recess wall) capped the same way as the bevel above: proportional, 0.03 is under a
+                // unit on a transport inset and ~9 on the pad well, so no clearance a layout can state
+                // holds for both. WidgetFactory's plate clearance reads this cap to pad the content.
+                float rimWidthPos  = (_PanelRimWidthPx > 0.001 && padMinPix > 1.0)
+                                   ? min(_PanelRimWidth, _PanelRimWidthPx * 2.0 / padMinPix)
+                                   : _PanelRimWidth;
+                // smoothness scales with it, so a capped rim keeps its authored profile (smoothstep over the band)
+                float rimSmoothPos = _PanelRimSmoothness * rimWidthPos / max(_PanelRimWidth, 0.0001);
+                float rimWidth     = (_PanelRimEnabled > 0.5) ? rimWidthPos : 0.0;
                 float faceInset    = rimWidth + bevelDist;
 
                 // ============================================================
@@ -698,10 +725,47 @@ Shader "UI/SDFPanel"
                 }
 
                 // ============================================================
+                // Screw geometry, once (shared by the decor trim in §4 and the heads in §6.5).
+                // `pos` is linear in uv, so one fwidth is exact for every corner — taken here, outside any branch.
+                float  screwAaPos = max(fwidth(pos.x), 1e-6);
+                float2 screwC[4] = { float2(0, 0), float2(0, 0), float2(0, 0), float2(0, 0) };
+                float  screwRad = 0.002;
+                if (_PanelScrewsEnabled > 0.5)
+                {
+                    // px -> pos units. `pos` spans 2.0 across the SHORT side, so one pixel is 2/minPix — the
+                    // same conversion _PanelCornerRadiusPx uses. Falls back to the authored proportional values
+                    // when the px pair is left at 0, and whenever the widget size has not been published.
+                    float minPix  = min(_WidgetPixelSize.x, _WidgetPixelSize.y);
+                    float pxToPos = (minPix > 1.0) ? (2.0 / minPix) : 0.0;
+                    float screwIn = (_PanelScrewInsetPx  > 0.5 && pxToPos > 0.0) ? _PanelScrewInsetPx  * pxToPos : _PanelScrewInset;
+                    screwRad      = max((_PanelScrewRadiusPx > 0.5 && pxToPos > 0.0) ? _PanelScrewRadiusPx * pxToPos : _PanelScrewRadius, 0.002);
+                    panelScrewCentres(bodyHalfW, bodyHalfH, bodyShapeType,
+                                      _PanelShapeParam1, _PanelShapeParam2, _PanelShapeParam3, screwIn, screwC);
+                }
+
                 // 4. Panel body + face + bevel + rim + lighting
                 // ============================================================
                 if (_PanelEnabled > 0.5)
                 {
+                    // Faceplate decor: paint/stickers/wraps live IN the plate (Docs/Decor.md §2.4).
+                    UIDecorSampleData decor;
+                    UIDecorSample(IN.worldPosition.xy, decor);
+                    // The screws go in AFTER the plate was decorated (it was off the unit): trim paint and vinyl
+                    // back from each head — the counterbore plus a knife margin — so the heads sit in bare
+                    // metal, ringed by the cut edge's shadow. The SAME centres §6.5 draws, so it is concentric.
+                    if (_PanelScrewsEnabled > 0.5 && _DecorEnabled > 0.5 && decor.cov > 0.0005)
+                    {
+                        float dAa  = max(screwAaPos / screwRad, 1e-4);
+                        float cutR = 1.0 + _PanelScrewBore + 0.45;                 // head radii
+                        float keep = 1.0, lip = 0.0;
+                        [unroll] for (int si = 0; si < 4; si++)
+                        {
+                            float d = length(bodyPos - screwC[si]) / screwRad - cutR;
+                            keep = min(keep, smoothstep(-dAa, dAa, d));
+                            lip = max(lip, saturate(1.0 - abs(d - 0.18) / 0.18));
+                        }
+                        UIDecorTrim(decor, keep, lip);
+                    }
                     float bodyDist = getPanelBodySDF(bodyPos, bodyHalfW, bodyHalfH, bodyShapeType,
                         _PanelShapeParam1, _PanelShapeParam2, _PanelShapeParam3);
 
@@ -761,7 +825,7 @@ Shader "UI/SDFPanel"
                     {
                         UIComponent panelComp = CreateUIComponent(
                             _PanelColor, _PanelRenderAlpha,
-                            _PanelBevelDepth, _PanelBevelSmoothness, _PanelBevelDistance, _PanelFaceSmoothness,
+                            _PanelBevelDepth, _PanelBevelSmoothness, bevelDistPos, _PanelFaceSmoothness,
                             _PanelGradientColorA, _PanelGradientColorB, _PanelGradientColorC, _PanelGradientColorD,
                             _PanelGradientDirection, _PanelGradientSpeed, _PanelGradientScale, _PanelGradientOffset,
                             _PanelGlobalBlend, _PanelGlobalIntensity, _PanelGradientType,
@@ -801,7 +865,7 @@ Shader "UI/SDFPanel"
                         {
                             float depthSign    = sign(effectiveBevelDepth);
                             float bevelHeightRM = maxDim * lerp(0.05, 1.0, abs(effectiveBevelDepth));
-                            float bevelDistRM  = max(0.0001, effectiveBevelDist);
+                            float bevelDistRM  = max(0.0001, _PanelBevelDistance);   // authored slope (see bevelDistPos)
                             float tanB         = bevelHeightRM / bevelDistRM;
                             effectiveBevelDepth = depthSign * tanB / (1.0 + tanB * 0.5);
                         }
@@ -830,6 +894,8 @@ Shader "UI/SDFPanel"
                             }
                         }
 
+                        faceNormal = UIDecorNormal(decor, faceNormal);   // paint / vinyl relief
+
                         ButtonBevelRenderResult bevelResult = RenderButtonBevelWithPatternAndGradient(
                             uv, patUV, baseColor, mainPatternedColor, faceNormal, bevelSDF,
                             effectiveBevelDepth, effectiveBevelDist, panelComp.bevelSmoothness,
@@ -849,6 +915,12 @@ Shader "UI/SDFPanel"
                             _PanelBevelPatternColorC, _PanelBevelPatternColorD,
                             time, light1, light2, light3
                         );
+                        // Paint/vinyl goes on AFTER the plate's own colouring — face AND bevel band — and BEFORE
+                        // anything is lit. A sticker that reaches the edge rolls over the bevel and darkens with
+                        // it (the bevel's normals, rim and lamps shade it) instead of stopping at a bevel gradient
+                        // that used to paint over it. UIDecorAlbedo is affine, so applying it to the bevel blend
+                        // is exactly applying it to both of its ends.
+                        bevelResult.litColor = UIDecorAlbedo(decor, bevelResult.litColor);
 
                         float rimSDF   = panelDist;
                         bool faceActive = (_PanelFaceShapeEnabled > 0.5) && (topFaceDist <= 0.0);
@@ -856,16 +928,23 @@ Shader "UI/SDFPanel"
 
                         ButtonRimResult rimResult = CalculateButtonRimFromSDF(
                             uv, bevelResult.litColor, bevelResult.normal, rimSDF,
-                            _PanelRimEnabled, _PanelRimDepth, _PanelRimWidth, _PanelRimSmoothness,
+                            _PanelRimEnabled, _PanelRimDepth, rimWidthPos, rimSmoothPos,
                             light1, light2, light3, aspectScale
                         );
 
                         float3 litColor = ApplyUILighting(rimResult.normal, rimResult.litColor,
-                            _LightingAmbient, specularMod, normalOffset, light1, light2, light3);
+                            _LightingAmbient, UIDecorSpecular(decor, specularMod), normalOffset, light1, light2, light3);
+                        float3 decorPreV2 = litColor;
                         UI_MATERIAL_V2(litColor, rimResult.litColor, rimResult.normal, Panel, 1.0)
+                        // Paint is opaque ON the glass/metal: the plate's own material shows only where it is bare.
+                        litColor = lerp(litColor, decorPreV2, decor.cov);
+                        litColor = UIDecorFinish(decor, litColor, rimResult.normal, lightDir1, time);
+                        litColor = UIDecorShadow(decor, litColor);
 
-                        buttonCompositeOver(finalColor, litColor, bodyMask * panelComp.alpha);
-                        emissiveAccum += baseColor * bodyMask * _PanelRenderEmissive;
+                        buttonCompositeOver(finalColor, litColor, bodyMask * lerp(panelComp.alpha, 1.0, decor.cov));
+                        // a glowing plate does not glow through vinyl laid over it
+                        emissiveAccum += baseColor * (1.0 - decor.cov) * bodyMask * _PanelRenderEmissive;
+                        emissiveAccum += UIDecorEmissive(decor) * bodyMask;
                     }
                 }
 
@@ -1024,26 +1103,8 @@ Shader "UI/SDFPanel"
                 // ============================================================
                 if (_PanelScrewsEnabled > 0.5)
                 {
-                    // One pixel measured in `pos` units. `pos` is linear in uv, so this single
-                    // derivative is exact for all four corners — and it must be taken HERE,
-                    // outside the per-screw loop, because a derivative under flow control is
-                    // undefined.
-                    float aaPos = max(fwidth(pos.x), 1e-6);
-
-                    // px -> pos units. `pos` spans 2.0 across the SHORT side, so one pixel is
-                    // 2/minPix — the same conversion _PanelCornerRadiusPx uses. Falls back to the
-                    // authored proportional values when the px pair is left at 0, and whenever the
-                    // widget size has not been published (a preview material, an editor swatch).
-                    float minPix    = min(_WidgetPixelSize.x, _WidgetPixelSize.y);
-                    float pxToPos   = (minPix > 1.0) ? (2.0 / minPix) : 0.0;
-                    float screwIn   = (_PanelScrewInsetPx  > 0.5 && pxToPos > 0.0)
-                                    ? _PanelScrewInsetPx  * pxToPos : _PanelScrewInset;
-                    float screwRad  = (_PanelScrewRadiusPx > 0.5 && pxToPos > 0.0)
-                                    ? _PanelScrewRadiusPx * pxToPos : _PanelScrewRadius;
-
-                    panelDrawScrews(finalColor, bodyPos, bodyHalfW, bodyHalfH, bodyShapeType,
-                                    _PanelShapeParam1, _PanelShapeParam2, _PanelShapeParam3, aaPos,
-                                    screwIn, screwRad,
+                    // centres, radius and the pixel width were computed once above §4
+                    panelDrawScrewsAt(finalColor, bodyPos, screwC, screwAaPos, screwRad,
                                     (int)_PanelScrewShapeType, _PanelScrewRotation * (PI / 180.0),
                                     _PanelScrewColor.rgb, _PanelScrewSlotColor.rgb,
                                     _PanelScrewDepth, _PanelScrewMetallic, _PanelScrewBore,

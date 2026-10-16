@@ -146,6 +146,7 @@ float _IconEnabled;
 float4 _IconColor;
 float _IconRenderAlpha;
 float _IconRenderEmissive;
+float _IconMinContrast;   // > 1: push the mark darker/lighter to reach this WCAG ratio against the lit face (UIContrast.cginc)
 float _IconShapeType;
 float _IconWidth;
 float _IconHeight;

@@ -276,9 +276,9 @@
         // "D" of seven rendered options — the dark amber well read as a hole in the aluminium and
         // was too contrasty to read comfortably). `warn` must stay distinct on tan: dark red.
         "display": {
-          "text": "#7A3208",
-          "textDim": "#9A4A18",
-          "textAlt": "#8A3E10",
+          "text": "#2B1203",
+          "textDim": "#5C2E0C",
+          "textAlt": "#3A1806",
           "warn": "#B01E0E"
         },
         // The multitrack in the same aluminium family as the chassis around it.

@@ -293,10 +293,14 @@ def _env(rx, ry, rz, blur=0.0):
     sky = np.clip(ry, 0, 1)
     e = 0.10 + 0.25 * sky ** 0.6                                   # dim cool studio, brighter up
     e = e - 0.08 * np.clip(-ry, 0, 1) ** 0.5                       # dark floor
-    horizon = np.exp(-((ry - 0.02) / (0.05 + blur * 0.4)) ** 2) * 0.35
+    # 2026-10-08: the soft box was a near-rectangle (superellipse power 6) and the horizon a crisp seam.
+    # On a ~30px knob cap that reflected as a hard "L" window and a line across the dome (Marble & Rose
+    # Gold, Clearwater: "reflections on the very shiny knobs ... a little off"). A rounded box (power 3)
+    # and a soft, half-strength horizon read as a highlight sweep at any size.
+    horizon = np.exp(-((ry - 0.02) / (0.09 + blur * 0.4)) ** 2) * 0.18
     floor_bounce = np.exp(-((ry + 0.35) / (0.12 + blur * 0.4)) ** 2) * 0.10
-    sw = 0.22 + blur * 0.6                                         # soft box: big, top-left, toward camera
-    box = np.exp(-(((rx + 0.38) / (sw * 1.4)) ** 6 + ((ry - 0.62) / sw) ** 6)) * 1.6
+    sw = 0.24 + blur * 0.6                                         # soft box: big, top-left, toward camera
+    box = np.exp(-(((rx + 0.38) / (sw * 1.4)) ** 2 + ((ry - 0.62) / sw) ** 2) ** 1.5) * 1.6
     sw2 = 0.10 + blur * 0.5                                        # strip light right
     strip = np.exp(-(((rx - 0.80) / sw2) ** 4 + ((ry - 0.10) / (0.45 + blur)) ** 4)) * 0.9 * (rz > 0.15)
     key = np.exp(-(((rx - 0.05) ** 2 + (ry - 0.92) ** 2) / (0.004 + blur * 0.08))) * 2.0   # hot top key

@@ -1,0 +1,4177 @@
+{
+ "version": 2,
+ "spread": 0.125,
+ "size": 192,
+ "columns": 8,
+ "packs": [
+  {
+   "id": "street",
+   "title": "Street",
+   "pro": false,
+   "stickers": [
+    {
+     "id": "star",
+     "title": "Star",
+     "slice": 0,
+     "layers": 3,
+     "colors": [
+      "#FFC531",
+      "#FF8A00",
+      "#FFF4C7",
+      "#1A1410"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "body",
+      "shade",
+      "shine"
+     ]
+    },
+    {
+     "id": "bolt",
+     "title": "Lightning",
+     "slice": 1,
+     "layers": 3,
+     "colors": [
+      "#FFE14A",
+      "#FF9F1C",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "body",
+      "shade",
+      "shine"
+     ]
+    },
+    {
+     "id": "skull",
+     "title": "Skull",
+     "slice": 2,
+     "layers": 3,
+     "colors": [
+      "#F4F1EA",
+      "#C9C3B6",
+      "#15131A"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "skull",
+      "",
+      "holes"
+     ]
+    },
+    {
+     "id": "flame",
+     "title": "Flame",
+     "slice": 3,
+     "layers": 3,
+     "colors": [
+      "#FF3D2E",
+      "#FF9F1C",
+      "#FFE14A"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "outer",
+      "middle",
+      "core"
+     ]
+    },
+    {
+     "id": "crown",
+     "title": "Crown",
+     "slice": 4,
+     "layers": 4,
+     "colors": [
+      "#FFC531",
+      "#E09A12",
+      "#FF3D7F",
+      "#1FB6FF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "",
+      "band",
+      "gems",
+      ""
+     ]
+    },
+    {
+     "id": "smiley",
+     "title": "Smiley",
+     "slice": 5,
+     "layers": 3,
+     "colors": [
+      "#FFD233",
+      "#F2A900",
+      "#1A1410"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "face",
+      "shade",
+      "features"
+     ]
+    },
+    {
+     "id": "peace",
+     "title": "Peace",
+     "slice": 6,
+     "layers": 2,
+     "colors": [
+      "#1FB6FF",
+      "#FFFFFF"
+     ],
+     "ink": 0.0,
+     "pro": false,
+     "layerNames": [
+      "disc",
+      "sign"
+     ]
+    },
+    {
+     "id": "eightball",
+     "title": "8-Ball",
+     "slice": 7,
+     "layers": 4,
+     "colors": [
+      "#141418",
+      "#FFFFFF",
+      "#141418",
+      "#3A3A44"
+     ],
+     "ink": 0.0,
+     "pro": false,
+     "layerNames": [
+      "ball",
+      "spot",
+      "eight",
+      "rim"
+     ]
+    },
+    {
+     "id": "eye",
+     "title": "Eye",
+     "slice": 8,
+     "layers": 4,
+     "colors": [
+      "#FFFFFF",
+      "#2EC4B6",
+      "#141418",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "almond",
+      "iris",
+      "pupil",
+      "glint"
+     ]
+    },
+    {
+     "id": "pow",
+     "title": "POW!",
+     "slice": 9,
+     "layers": 4,
+     "colors": [
+      "#FFE14A",
+      "#FF3D2E",
+      "#FFFFFF",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "burst",
+      "inner",
+      "",
+      "word"
+     ]
+    },
+    {
+     "id": "wow",
+     "title": "WOW",
+     "slice": 10,
+     "layers": 2,
+     "colors": [
+      "#FFFFFF",
+      "#141418",
+      "#FF2D6F"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "bubble",
+      "word"
+     ]
+    },
+    {
+     "id": "sparkle",
+     "title": "Sparkle",
+     "slice": 11,
+     "layers": 2,
+     "colors": [
+      "#FFFFFF",
+      "#9FE8FF"
+     ],
+     "ink": 0.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      ""
+     ]
+    },
+    {
+     "id": "ghost",
+     "title": "Ghost",
+     "slice": 12,
+     "layers": 3,
+     "colors": [
+      "#F4F7FB",
+      "#C9D4E3",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "body",
+      "shade",
+      "features"
+     ]
+    },
+    {
+     "id": "dice",
+     "title": "Dice",
+     "slice": 13,
+     "layers": 3,
+     "colors": [
+      "#FF2D6F",
+      "#C2185B",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      "side",
+      "pips"
+     ]
+    },
+    {
+     "id": "flag",
+     "title": "Checkered flag",
+     "slice": 14,
+     "layers": 3,
+     "colors": [
+      "#F4F4F4",
+      "#141418",
+      "#8A8F98"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "",
+      "checks",
+      "pole"
+     ]
+    },
+    {
+     "id": "spraycan",
+     "title": "Spray can",
+     "slice": 15,
+     "layers": 4,
+     "colors": [
+      "#2EC4B6",
+      "#E3172F",
+      "#F4F1EA",
+      "#2B2E33"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "body",
+      "cap",
+      "label",
+      "wave"
+     ]
+    },
+    {
+     "id": "bomb",
+     "title": "Bomb",
+     "slice": 16,
+     "layers": 4,
+     "colors": [
+      "#2B2E33",
+      "#8A8F98",
+      "#C98B4B",
+      "#FFE14A"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "body",
+      "shine",
+      "fuse",
+      "spark"
+     ]
+    },
+    {
+     "id": "gem",
+     "title": "Gem",
+     "slice": 17,
+     "layers": 4,
+     "colors": [
+      "#1FB6FF",
+      "#9FE8FF",
+      "#0B6DB8",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "outline",
+      "light",
+      "dark",
+      "glint"
+     ]
+    },
+    {
+     "id": "skateboard",
+     "title": "Skateboard",
+     "slice": 18,
+     "layers": 4,
+     "colors": [
+      "#E3172F",
+      "#141418",
+      "#F4F1EA",
+      "#FFD400"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "deck",
+      "grip",
+      "wheels",
+      "mark"
+     ]
+    },
+    {
+     "id": "megaphone",
+     "title": "Megaphone",
+     "slice": 19,
+     "layers": 4,
+     "colors": [
+      "#E3172F",
+      "#F4F1EA",
+      "#2B2E33",
+      "#FFD400"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "horn",
+      "rim",
+      "grip",
+      "waves"
+     ]
+    },
+    {
+     "id": "crossbones",
+     "title": "Crossbones",
+     "slice": 20,
+     "layers": 2,
+     "colors": [
+      "#F4F1EA",
+      "#C9C3B6",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "",
+      ""
+     ]
+    },
+    {
+     "id": "padlock",
+     "title": "Padlock",
+     "slice": 21,
+     "layers": 4,
+     "colors": [
+      "#8A8F98",
+      "#FFC531",
+      "#E09A12",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "shackle",
+      "body",
+      "shade",
+      "hole"
+     ]
+    },
+    {
+     "id": "lips",
+     "title": "Lips",
+     "slice": 22,
+     "layers": 4,
+     "colors": [
+      "#E3172F",
+      "#9D1220",
+      "#FF8A9C",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "",
+      "shade",
+      "shine",
+      "line"
+     ]
+    }
+   ],
+   "atlas": "Decor/Packs/street",
+   "rows": 3,
+   "depth": 24,
+   "rev": "91733158"
+  },
+  {
+   "id": "sweets",
+   "title": "Sweets",
+   "pro": false,
+   "stickers": [
+    {
+     "id": "cone",
+     "title": "Ice cream cone",
+     "slice": 0,
+     "layers": 4,
+     "colors": [
+      "#E9A75B",
+      "#FF8FB8",
+      "#FFF4E8",
+      "#C8102E"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "cone",
+      "",
+      "",
+      "cherry"
+     ]
+    },
+    {
+     "id": "popsicle",
+     "title": "Ice lolly",
+     "slice": 1,
+     "layers": 4,
+     "colors": [
+      "#FF5FA2",
+      "#FFD1E3",
+      "#D8A86A",
+      "#7BD3F7"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "body",
+      "",
+      "stick",
+      "drip"
+     ]
+    },
+    {
+     "id": "swirl",
+     "title": "Soft serve",
+     "slice": 2,
+     "layers": 4,
+     "colors": [
+      "#FFF4E8",
+      "#E9C9A3",
+      "#E9A75B",
+      "#FF3D7F"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "tiers",
+      "grooves",
+      "cone",
+      "waffle"
+     ]
+    },
+    {
+     "id": "lollipop",
+     "title": "Lollipop",
+     "slice": 3,
+     "layers": 3,
+     "colors": [
+      "#FF3D7F",
+      "#FFFFFF",
+      "#F4F1EA"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "candy",
+      "spiral",
+      "stick"
+     ]
+    },
+    {
+     "id": "donut",
+     "title": "Donut",
+     "slice": 4,
+     "layers": 4,
+     "colors": [
+      "#E9A75B",
+      "#FF8FB8",
+      "#FFFFFF",
+      "#7BD3F7"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "dough",
+      "icing",
+      "",
+      ""
+     ]
+    },
+    {
+     "id": "cupcake",
+     "title": "Cupcake",
+     "slice": 5,
+     "layers": 4,
+     "colors": [
+      "#7BD3F7",
+      "#FFF4E8",
+      "#FF3D7F",
+      "#C8102E"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "",
+      "frosting",
+      "ribs",
+      "cherry"
+     ]
+    },
+    {
+     "id": "cherries",
+     "title": "Cherries",
+     "slice": 6,
+     "layers": 3,
+     "colors": [
+      "#E3172F",
+      "#2E9E4F",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "fruit",
+      "stems",
+      "shine"
+     ]
+    },
+    {
+     "id": "watermelon",
+     "title": "Watermelon",
+     "slice": 7,
+     "layers": 4,
+     "colors": [
+      "#2E9E4F",
+      "#FFFFFF",
+      "#FF4F6A",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "rind",
+      "white",
+      "flesh",
+      ""
+     ]
+    },
+    {
+     "id": "candy",
+     "title": "Wrapped sweet",
+     "slice": 8,
+     "layers": 3,
+     "colors": [
+      "#FFE14A",
+      "#FF9F1C",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      "stripes",
+      ""
+     ]
+    },
+    {
+     "id": "cookie",
+     "title": "Cookie",
+     "slice": 9,
+     "layers": 3,
+     "colors": [
+      "#C98B4B",
+      "#5A3420",
+      "#E2AE70"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "cookie",
+      "chips",
+      ""
+     ]
+    },
+    {
+     "id": "strawberry",
+     "title": "Strawberry",
+     "slice": 10,
+     "layers": 3,
+     "colors": [
+      "#E3172F",
+      "#2E9E4F",
+      "#FFE14A"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "berry",
+      "leaves",
+      ""
+     ]
+    },
+    {
+     "id": "cake",
+     "title": "Layer cake",
+     "slice": 11,
+     "layers": 4,
+     "colors": [
+      "#8A5A33",
+      "#FFF4E8",
+      "#FF8FB8",
+      "#E3172F"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "",
+      "cream",
+      "frosting",
+      "cherry"
+     ]
+    },
+    {
+     "id": "chocolate",
+     "title": "Chocolate",
+     "slice": 12,
+     "layers": 4,
+     "colors": [
+      "#5A3420",
+      "#8A5A33",
+      "#E3172F",
+      "#FFF4E8"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "bar",
+      "squares",
+      "",
+      "word"
+     ]
+    },
+    {
+     "id": "gummy",
+     "title": "Gummy bear",
+     "slice": 13,
+     "layers": 4,
+     "colors": [
+      "#FF3D6B",
+      "#FFC2D1",
+      "#C2185B",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "bear",
+      "shine",
+      "snout",
+      "face"
+     ]
+    },
+    {
+     "id": "macaron",
+     "title": "Macaron",
+     "slice": 14,
+     "layers": 4,
+     "colors": [
+      "#FF8FB8",
+      "#FFF4E8",
+      "#E8639A",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "",
+      "filling",
+      "shade",
+      "shine"
+     ]
+    },
+    {
+     "id": "candycane",
+     "title": "Candy cane",
+     "slice": 15,
+     "layers": 4,
+     "colors": [
+      "#F4F1EA",
+      "#E3172F",
+      "#2E9E4F",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "cane",
+      "bands",
+      "bow",
+      "glint"
+     ]
+    },
+    {
+     "id": "cottoncandy",
+     "title": "Cotton candy",
+     "slice": 16,
+     "layers": 4,
+     "colors": [
+      "#E9C9A3",
+      "#FF8FD0",
+      "#FFC2E8",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "stick",
+      "fluff",
+      "puffs",
+      "swirls"
+     ]
+    },
+    {
+     "id": "milkshake",
+     "title": "Milkshake",
+     "slice": 17,
+     "layers": 4,
+     "colors": [
+      "#DCE6F2",
+      "#FF8FB8",
+      "#FFFFFF",
+      "#E3172F"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "glass",
+      "shake",
+      "cream",
+      "cherry"
+     ]
+    },
+    {
+     "id": "pancakes",
+     "title": "Pancakes",
+     "slice": 18,
+     "layers": 4,
+     "colors": [
+      "#E9A75B",
+      "#C98B4B",
+      "#8A4B1E",
+      "#FFE9A8"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "stack",
+      "under",
+      "syrup",
+      "butter"
+     ]
+    }
+   ],
+   "atlas": "Decor/Packs/sweets",
+   "rows": 3,
+   "depth": 24,
+   "rev": "43867139"
+  },
+  {
+   "id": "music",
+   "title": "Music",
+   "pro": false,
+   "stickers": [
+    {
+     "id": "note",
+     "title": "Eighth note",
+     "slice": 0,
+     "layers": 2,
+     "colors": [
+      "#141418",
+      "#FF2D6F"
+     ],
+     "ink": 0.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      ""
+     ]
+    },
+    {
+     "id": "beamed",
+     "title": "Beamed notes",
+     "slice": 1,
+     "layers": 1,
+     "colors": [
+      "#FF2D6F",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      ""
+     ]
+    },
+    {
+     "id": "headphones",
+     "title": "Headphones",
+     "slice": 2,
+     "layers": 3,
+     "colors": [
+      "#2B2E33",
+      "#FF2D6F",
+      "#8A8F98"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      "cups",
+      "pads"
+     ]
+    },
+    {
+     "id": "vinyl",
+     "title": "Vinyl",
+     "slice": 3,
+     "layers": 4,
+     "colors": [
+      "#141418",
+      "#FF2D6F",
+      "#F4F1EA",
+      "#3A3A44"
+     ],
+     "ink": 0.0,
+     "pro": true,
+     "layerNames": [
+      "disc",
+      "grooves",
+      "label",
+      ""
+     ]
+    },
+    {
+     "id": "cassette",
+     "title": "Cassette",
+     "slice": 4,
+     "layers": 4,
+     "colors": [
+      "#F4F1EA",
+      "#141418",
+      "#FF2D6F",
+      "#8A8F98"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "shell",
+      "",
+      "band",
+      "reels"
+     ]
+    },
+    {
+     "id": "speaker",
+     "title": "Speaker",
+     "slice": 5,
+     "layers": 4,
+     "colors": [
+      "#2B2E33",
+      "#8A8F98",
+      "#141418",
+      "#FF2D6F"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "cabinet",
+      "",
+      "",
+      "caps"
+     ]
+    },
+    {
+     "id": "mic",
+     "title": "Microphone",
+     "slice": 6,
+     "layers": 3,
+     "colors": [
+      "#8A8F98",
+      "#141418",
+      "#FF2D6F"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "",
+      "grille",
+      "band"
+     ]
+    },
+    {
+     "id": "sticks",
+     "title": "Drumsticks",
+     "slice": 7,
+     "layers": 2,
+     "colors": [
+      "#E9C9A3",
+      "#C98B4B"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      ""
+     ]
+    },
+    {
+     "id": "snare",
+     "title": "Snare",
+     "slice": 8,
+     "layers": 4,
+     "colors": [
+      "#E3172F",
+      "#F4F1EA",
+      "#8A8F98",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      "top",
+      "hoops",
+      "lugs"
+     ]
+    },
+    {
+     "id": "pick",
+     "title": "Guitar pick",
+     "slice": 9,
+     "layers": 3,
+     "colors": [
+      "#FF9F1C",
+      "#FFE14A",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "pick",
+      "inner",
+      ""
+     ]
+    },
+    {
+     "id": "eq",
+     "title": "Equalizer",
+     "slice": 10,
+     "layers": 4,
+     "colors": [
+      "#141418",
+      "#2EE6A0",
+      "#FFD400",
+      "#FF2D6F"
+     ],
+     "ink": 0.0,
+     "pro": false,
+     "layerNames": [
+      "panel",
+      "",
+      "",
+      ""
+     ]
+    },
+    {
+     "id": "rec",
+     "title": "REC",
+     "slice": 11,
+     "layers": 3,
+     "colors": [
+      "#141418",
+      "#FF2D2D",
+      "#FFFFFF"
+     ],
+     "ink": 0.0,
+     "pro": true,
+     "layerNames": [
+      "pill",
+      "dot",
+      "word"
+     ]
+    },
+    {
+     "id": "onair",
+     "title": "On Air",
+     "slice": 12,
+     "layers": 3,
+     "colors": [
+      "#C8102E",
+      "#FF9AA8",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "sign",
+      "",
+      "word"
+     ]
+    },
+    {
+     "id": "metronome",
+     "title": "Metronome",
+     "slice": 13,
+     "layers": 4,
+     "colors": [
+      "#5A3420",
+      "#C98B4B",
+      "#F4F1EA",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "body",
+      "face",
+      "",
+      "arm"
+     ]
+    },
+    {
+     "id": "keys",
+     "title": "Keys",
+     "slice": 14,
+     "layers": 4,
+     "colors": [
+      "#F4F1EA",
+      "#8A8F98",
+      "#141418",
+      "#E3172F"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "body",
+      "seams",
+      "blacks",
+      "felt"
+     ]
+    },
+    {
+     "id": "kick",
+     "title": "Kick drum",
+     "slice": 15,
+     "layers": 4,
+     "colors": [
+      "#E3172F",
+      "#F4F1EA",
+      "#8A8F98",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "shell",
+      "head",
+      "lugs",
+      "logo"
+     ]
+    },
+    {
+     "id": "hihat",
+     "title": "Hi-hat",
+     "slice": 16,
+     "layers": 4,
+     "colors": [
+      "#8A8F98",
+      "#F5C242",
+      "#B8860B",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "stand",
+      "",
+      "under",
+      "shine"
+     ]
+    },
+    {
+     "id": "turntable",
+     "title": "Turntable",
+     "slice": 17,
+     "layers": 4,
+     "colors": [
+      "#2B2E33",
+      "#C9CED6",
+      "#141418",
+      "#FF2D6F"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "base",
+      "platter",
+      "rec",
+      "arm"
+     ]
+    },
+    {
+     "id": "tambourine",
+     "title": "Tambourine",
+     "slice": 18,
+     "layers": 4,
+     "colors": [
+      "#C98B4B",
+      "#F4F1EA",
+      "#2B2E33",
+      "#C9CED6"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "rim",
+      "head",
+      "slots",
+      "discs"
+     ]
+    },
+    {
+     "id": "waveform",
+     "title": "Waveform",
+     "slice": 19,
+     "layers": 3,
+     "colors": [
+      "#8A8F98",
+      "#FF5A1F",
+      "#FFFFFF",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "bars",
+      "played",
+      "head"
+     ]
+    },
+    {
+     "id": "guitar",
+     "title": "Guitar",
+     "slice": 20,
+     "layers": 4,
+     "colors": [
+      "#E9A75B",
+      "#5A3420",
+      "#141418",
+      "#F4F1EA"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "body",
+      "neck",
+      "dark",
+      "light"
+     ]
+    },
+    {
+     "id": "maracas",
+     "title": "Maracas",
+     "slice": 21,
+     "layers": 4,
+     "colors": [
+      "#E3172F",
+      "#FFD400",
+      "#C98B4B",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "",
+      "",
+      "",
+      ""
+     ]
+    }
+   ],
+   "atlas": "Decor/Packs/music",
+   "rows": 3,
+   "depth": 24,
+   "rev": "e6f0aecf"
+  },
+  {
+   "id": "space",
+   "title": "Space",
+   "pro": false,
+   "stickers": [
+    {
+     "id": "rocket",
+     "title": "Rocket",
+     "slice": 0,
+     "layers": 4,
+     "colors": [
+      "#F4F1EA",
+      "#E3172F",
+      "#1FB6FF",
+      "#FF9F1C"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "hull",
+      "",
+      "window",
+      "flame"
+     ]
+    },
+    {
+     "id": "planet",
+     "title": "Ringed planet",
+     "slice": 1,
+     "layers": 3,
+     "colors": [
+      "#8B3DFF",
+      "#FF5FD2",
+      "#FFD400"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      "bands",
+      "ring"
+     ]
+    },
+    {
+     "id": "moon",
+     "title": "Moon",
+     "slice": 2,
+     "layers": 3,
+     "colors": [
+      "#FFE9A8",
+      "#E8C870",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "moon",
+      "",
+      "face"
+     ]
+    },
+    {
+     "id": "ufo",
+     "title": "UFO",
+     "slice": 3,
+     "layers": 4,
+     "colors": [
+      "#8A8F98",
+      "#7BF7C4",
+      "#FFD400",
+      "#3A3F47"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "",
+      "dome",
+      "lights",
+      ""
+     ]
+    },
+    {
+     "id": "alien",
+     "title": "Alien",
+     "slice": 4,
+     "layers": 3,
+     "colors": [
+      "#7BF7C4",
+      "#2EC4B6",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "head",
+      "",
+      ""
+     ]
+    },
+    {
+     "id": "comet",
+     "title": "Comet",
+     "slice": 5,
+     "layers": 3,
+     "colors": [
+      "#1FB6FF",
+      "#9FE8FF",
+      "#FFFFFF"
+     ],
+     "ink": 0.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      "",
+      "core"
+     ]
+    },
+    {
+     "id": "sun",
+     "title": "Sun",
+     "slice": 6,
+     "layers": 4,
+     "colors": [
+      "#FF9F1C",
+      "#FFD400",
+      "#FFF4C7",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "rays",
+      "disc",
+      "",
+      "face"
+     ]
+    },
+    {
+     "id": "astro",
+     "title": "Helmet",
+     "slice": 7,
+     "layers": 4,
+     "colors": [
+      "#F4F7FB",
+      "#141418",
+      "#1FB6FF",
+      "#FF9F1C"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "helmet",
+      "visor",
+      "reflection",
+      "light"
+     ]
+    },
+    {
+     "id": "satellite",
+     "title": "Satellite",
+     "slice": 8,
+     "layers": 4,
+     "colors": [
+      "#F4D35E",
+      "#1B6FE0",
+      "#9FE8FF",
+      "#C9CED6"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "body",
+      "panels",
+      "grid",
+      "dish"
+     ]
+    },
+    {
+     "id": "earth",
+     "title": "Earth",
+     "slice": 9,
+     "layers": 4,
+     "colors": [
+      "#1B6FE0",
+      "#2E9E4F",
+      "#FFFFFF",
+      "#CFE9FF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "ocean",
+      "land",
+      "clouds",
+      "glint"
+     ]
+    },
+    {
+     "id": "mars",
+     "title": "Red planet",
+     "slice": 10,
+     "layers": 4,
+     "colors": [
+      "#D9573B",
+      "#A53A28",
+      "#F4E3C8",
+      "#7A2A1C"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "planet",
+      "terrain",
+      "cap",
+      "craters"
+     ]
+    },
+    {
+     "id": "constellation",
+     "title": "Constellation",
+     "slice": 11,
+     "layers": 4,
+     "colors": [
+      "#14163A",
+      "#6B7CFF",
+      "#FFFFFF",
+      "#FFD400"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "disc",
+      "lines",
+      "stars",
+      "tiny"
+     ]
+    },
+    {
+     "id": "galaxy",
+     "title": "Galaxy",
+     "slice": 12,
+     "layers": 4,
+     "colors": [
+      "#1E1348",
+      "#7A3CFF",
+      "#FF5FD2",
+      "#FFF4C7"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "disc",
+      "arms",
+      "inner",
+      "core"
+     ]
+    },
+    {
+     "id": "blackhole",
+     "title": "Black hole",
+     "slice": 13,
+     "layers": 4,
+     "colors": [
+      "#FF7A00",
+      "#FFD400",
+      "#0B0B12",
+      "#FFF4C7"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "outer",
+      "inner",
+      "hole",
+      "lens"
+     ]
+    },
+    {
+     "id": "shootingstar",
+     "title": "Shooting star",
+     "slice": 14,
+     "layers": 4,
+     "colors": [
+      "#1FB6FF",
+      "#FFD400",
+      "#FFF4C7",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "trails",
+      "star",
+      "core",
+      "spark"
+     ]
+    },
+    {
+     "id": "telescope",
+     "title": "Telescope",
+     "slice": 15,
+     "layers": 4,
+     "colors": [
+      "#2B59C3",
+      "#F4D35E",
+      "#5A3420",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "tube",
+      "brass",
+      "legs",
+      "glint"
+     ]
+    }
+   ],
+   "atlas": "Decor/Packs/space",
+   "rows": 2,
+   "depth": 16,
+   "rev": "07964e36"
+  },
+  {
+   "id": "retro",
+   "title": "Retro",
+   "pro": false,
+   "stickers": [
+    {
+     "id": "roundel",
+     "title": "Racing 07",
+     "slice": 0,
+     "layers": 3,
+     "colors": [
+      "#FFFFFF",
+      "#141418",
+      "#E3172F"
+     ],
+     "ink": 0.0,
+     "pro": false,
+     "layerNames": [
+      "disc",
+      "number",
+      "rim"
+     ]
+    },
+    {
+     "id": "hazard",
+     "title": "Hazard",
+     "slice": 1,
+     "layers": 2,
+     "colors": [
+      "#FFD400",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "triangle",
+      ""
+     ]
+    },
+    {
+     "id": "radioactive",
+     "title": "Radioactive",
+     "slice": 2,
+     "layers": 2,
+     "colors": [
+      "#FFD400",
+      "#141418"
+     ],
+     "ink": 0.0,
+     "pro": true,
+     "layerNames": [
+      "disc",
+      ""
+     ]
+    },
+    {
+     "id": "sunset",
+     "title": "Synth sunset",
+     "slice": 3,
+     "layers": 3,
+     "colors": [
+      "#FF2D6F",
+      "#FFD400",
+      "#2B0A3D",
+      "#FF9F1C"
+     ],
+     "ink": 0.0,
+     "pro": true,
+     "layerNames": [
+      "sun",
+      "lower",
+      "slits"
+     ]
+    },
+    {
+     "id": "palm",
+     "title": "Palm",
+     "slice": 4,
+     "layers": 3,
+     "colors": [
+      "#2E9E4F",
+      "#8A5A33",
+      "#FF9F1C"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "fronds",
+      "trunk",
+      "nuts"
+     ]
+    },
+    {
+     "id": "wave",
+     "title": "Big wave",
+     "slice": 5,
+     "layers": 3,
+     "colors": [
+      "#0F3B63",
+      "#1FB6FF",
+      "#F4F7FB"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "sea",
+      "curl",
+      "foam"
+     ]
+    },
+    {
+     "id": "cactus",
+     "title": "Cactus",
+     "slice": 6,
+     "layers": 3,
+     "colors": [
+      "#2E9E4F",
+      "#C8102E",
+      "#E9A75B"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      "flower",
+      "pot"
+     ]
+    },
+    {
+     "id": "hifi",
+     "title": "Hi-Fi",
+     "slice": 7,
+     "layers": 3,
+     "colors": [
+      "#141418",
+      "#FFD400",
+      "#FF2D6F"
+     ],
+     "ink": 0.0,
+     "pro": true,
+     "layerNames": [
+      "badge",
+      "word",
+      "lines"
+     ]
+    },
+    {
+     "id": "arrow",
+     "title": "Arrow sign",
+     "slice": 8,
+     "layers": 2,
+     "colors": [
+      "#FFD400",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "sign",
+      "word"
+     ]
+    },
+    {
+     "id": "boombox",
+     "title": "Boombox",
+     "slice": 9,
+     "layers": 4,
+     "colors": [
+      "#E3172F",
+      "#141418",
+      "#8A8F98",
+      "#F4F1EA"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "",
+      "",
+      "rings",
+      "cones"
+     ]
+    },
+    {
+     "id": "tv",
+     "title": "Television",
+     "slice": 10,
+     "layers": 4,
+     "colors": [
+      "#C98B4B",
+      "#2B2E33",
+      "#7BF7C4",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "body",
+      "dark",
+      "screen",
+      "glint"
+     ]
+    },
+    {
+     "id": "vhs",
+     "title": "VHS tape",
+     "slice": 11,
+     "layers": 4,
+     "colors": [
+      "#1B1B1F",
+      "#F4F1EA",
+      "#E3172F",
+      "#8A8F98"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "body",
+      "label",
+      "mark",
+      "window"
+     ]
+    },
+    {
+     "id": "polaroid",
+     "title": "Instant photo",
+     "slice": 12,
+     "layers": 4,
+     "colors": [
+      "#F4F1EA",
+      "#7BD3F7",
+      "#2E9E4F",
+      "#FFD400"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "frame",
+      "photo",
+      "hills",
+      "sun"
+     ]
+    },
+    {
+     "id": "shades",
+     "title": "Sunglasses",
+     "slice": 13,
+     "layers": 3,
+     "colors": [
+      "#141418",
+      "#0B6DB8",
+      "#FFFFFF",
+      "#FF2D6F"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "frame",
+      "lenses",
+      "glints"
+     ]
+    },
+    {
+     "id": "rotary",
+     "title": "Rotary phone",
+     "slice": 14,
+     "layers": 4,
+     "colors": [
+      "#E3172F",
+      "#2B2E33",
+      "#F4F1EA",
+      "#8A8F98"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "body",
+      "handset",
+      "dial",
+      "holes"
+     ]
+    },
+    {
+     "id": "jukebox",
+     "title": "Jukebox",
+     "slice": 15,
+     "layers": 4,
+     "colors": [
+      "#E3172F",
+      "#FFC531",
+      "#2B2E33",
+      "#F4F1EA"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "arch",
+      "window",
+      "rec",
+      "bits"
+     ]
+    },
+    {
+     "id": "lavalamp",
+     "title": "Lava lamp",
+     "slice": 16,
+     "layers": 4,
+     "colors": [
+      "#B58CFF",
+      "#FF2D6F",
+      "#C98B4B",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "glass",
+      "lava",
+      "ends",
+      "shine"
+     ]
+    },
+    {
+     "id": "open",
+     "title": "Open sign",
+     "slice": 17,
+     "layers": 4,
+     "colors": [
+      "#14163A",
+      "#2EE6FF",
+      "#FF2D9B",
+      "#FFD400"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "sign",
+      "border",
+      "word",
+      "dots"
+     ]
+    }
+   ],
+   "atlas": "Decor/Packs/retro",
+   "rows": 3,
+   "depth": 24,
+   "rev": "5939e62b"
+  },
+  {
+   "id": "animals",
+   "title": "Animals",
+   "pro": false,
+   "stickers": [
+    {
+     "id": "cat",
+     "title": "Cat",
+     "slice": 0,
+     "layers": 4,
+     "colors": [
+      "#F2A144",
+      "#FFF4E8",
+      "#3A2418",
+      "#FF7A93"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "head",
+      "inner",
+      "features",
+      "nose"
+     ]
+    },
+    {
+     "id": "dog",
+     "title": "Dog",
+     "slice": 1,
+     "layers": 4,
+     "colors": [
+      "#D9A066",
+      "#8A5A33",
+      "#FFF4E8",
+      "#1A1410"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      "brown",
+      "muzzle",
+      "features"
+     ]
+    },
+    {
+     "id": "bunny",
+     "title": "Bunny",
+     "slice": 2,
+     "layers": 4,
+     "colors": [
+      "#EFEAE0",
+      "#FFB3C4",
+      "#3A2418",
+      "#FF8FA8"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      "inner",
+      "features",
+      "pink"
+     ]
+    },
+    {
+     "id": "bear",
+     "title": "Bear",
+     "slice": 3,
+     "layers": 4,
+     "colors": [
+      "#A9713E",
+      "#E9C9A3",
+      "#2A1A10",
+      "#FF8FA8"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "head",
+      "cream",
+      "features",
+      "cheeks"
+     ]
+    },
+    {
+     "id": "panda",
+     "title": "Panda",
+     "slice": 4,
+     "layers": 4,
+     "colors": [
+      "#FFFFFF",
+      "#141418",
+      "#FFFFFF",
+      "#FF8FA8"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "",
+      "black",
+      "glint",
+      "cheeks"
+     ]
+    },
+    {
+     "id": "fox",
+     "title": "Fox",
+     "slice": 5,
+     "layers": 4,
+     "colors": [
+      "#F26B21",
+      "#FFF4E8",
+      "#2A1A10",
+      "#FF8FA8"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "face",
+      "cream",
+      "dark",
+      "cheeks"
+     ]
+    },
+    {
+     "id": "owl",
+     "title": "Owl",
+     "slice": 6,
+     "layers": 4,
+     "colors": [
+      "#8A5A33",
+      "#F4E3C8",
+      "#1A1410",
+      "#FFB300"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "body",
+      "light",
+      "dark",
+      ""
+     ]
+    },
+    {
+     "id": "penguin",
+     "title": "Penguin",
+     "slice": 7,
+     "layers": 4,
+     "colors": [
+      "#1E2740",
+      "#FFFFFF",
+      "#FF9F1C",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "body",
+      "belly",
+      "orange",
+      "eyes"
+     ]
+    },
+    {
+     "id": "frog",
+     "title": "Frog",
+     "slice": 8,
+     "layers": 4,
+     "colors": [
+      "#5FBF4A",
+      "#FFFFFF",
+      "#1A2A12",
+      "#FF8FA8"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "head",
+      "whites",
+      "dark",
+      "cheeks"
+     ]
+    },
+    {
+     "id": "fish",
+     "title": "Fish",
+     "slice": 9,
+     "layers": 4,
+     "colors": [
+      "#FF8A1F",
+      "#FFFFFF",
+      "#1A1410",
+      "#FFD400"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "fish",
+      "bands",
+      "dark",
+      "fins"
+     ]
+    },
+    {
+     "id": "octopus",
+     "title": "Octopus",
+     "slice": 10,
+     "layers": 4,
+     "colors": [
+      "#B058E6",
+      "#E3B8F5",
+      "#FFFFFF",
+      "#1A1410"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "octo",
+      "spots",
+      "eyes",
+      "pupils"
+     ]
+    },
+    {
+     "id": "bee",
+     "title": "Bee",
+     "slice": 11,
+     "layers": 4,
+     "colors": [
+      "#FFD233",
+      "#2B2E33",
+      "#CFE9FF",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      "dark",
+      "wings",
+      "eye"
+     ]
+    }
+   ],
+   "atlas": "Decor/Packs/animals",
+   "rows": 2,
+   "depth": 16,
+   "rev": "9638ae65"
+  },
+  {
+   "id": "food",
+   "title": "Food",
+   "pro": false,
+   "stickers": [
+    {
+     "id": "pizza",
+     "title": "Pizza",
+     "slice": 0,
+     "layers": 4,
+     "colors": [
+      "#E9A75B",
+      "#FFC531",
+      "#E3172F",
+      "#2E9E4F"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "wedge",
+      "cheese",
+      "pepperoni",
+      "leaf"
+     ]
+    },
+    {
+     "id": "burger",
+     "title": "Burger",
+     "slice": 1,
+     "layers": 4,
+     "colors": [
+      "#E9A75B",
+      "#5A3420",
+      "#4FBF4A",
+      "#E3172F"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "buns",
+      "patty",
+      "lettuce",
+      "tomato"
+     ]
+    },
+    {
+     "id": "fries",
+     "title": "Fries",
+     "slice": 2,
+     "layers": 4,
+     "colors": [
+      "#FFD233",
+      "#E3172F",
+      "#FFF4E8",
+      "#9D1220"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "sticks",
+      "carton",
+      "word",
+      "rim"
+     ]
+    },
+    {
+     "id": "taco",
+     "title": "Taco",
+     "slice": 3,
+     "layers": 4,
+     "colors": [
+      "#D99A2B",
+      "#4FBF4A",
+      "#F2C14E",
+      "#E3172F"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "back",
+      "lettuce",
+      "front",
+      "tomato"
+     ]
+    },
+    {
+     "id": "hotdog",
+     "title": "Hot dog",
+     "slice": 4,
+     "layers": 4,
+     "colors": [
+      "#E9A75B",
+      "#C2452D",
+      "#D9954A",
+      "#FFD400"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "bun",
+      "dog",
+      "front",
+      "mustard"
+     ]
+    },
+    {
+     "id": "sushi",
+     "title": "Sushi",
+     "slice": 5,
+     "layers": 4,
+     "colors": [
+      "#FFFFFF",
+      "#FF7F50",
+      "#FFE9E0",
+      "#1E3A2E"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "rice",
+      "fish",
+      "fat",
+      "nori"
+     ]
+    },
+    {
+     "id": "egg",
+     "title": "Fried egg",
+     "slice": 6,
+     "layers": 4,
+     "colors": [
+      "#FFFFFF",
+      "#FFB300",
+      "#FF8A00",
+      "#FFF4C7"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "white",
+      "yolk",
+      "shade",
+      "shine"
+     ]
+    },
+    {
+     "id": "coffee",
+     "title": "Coffee",
+     "slice": 7,
+     "layers": 4,
+     "colors": [
+      "#F4F1EA",
+      "#2B2E33",
+      "#C98B4B",
+      "#FF8A9C"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "cup",
+      "lid",
+      "sleeve",
+      "love"
+     ]
+    },
+    {
+     "id": "popcorn",
+     "title": "Popcorn",
+     "slice": 8,
+     "layers": 4,
+     "colors": [
+      "#F4F1EA",
+      "#E3172F",
+      "#FFF2C2",
+      "#FFC531"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "bucket",
+      "bands",
+      "corn",
+      "butter"
+     ]
+    },
+    {
+     "id": "avocado",
+     "title": "Avocado",
+     "slice": 9,
+     "layers": 4,
+     "colors": [
+      "#3E7B2E",
+      "#B7D96B",
+      "#8A5A33",
+      "#C98B4B"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "outer",
+      "flesh",
+      "pit",
+      "shine"
+     ]
+    },
+    {
+     "id": "ramen",
+     "title": "Ramen",
+     "slice": 10,
+     "layers": 4,
+     "colors": [
+      "#F4F1EA",
+      "#E3172F",
+      "#FFD233",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "bowl",
+      "band",
+      "noodles",
+      "egg"
+     ]
+    },
+    {
+     "id": "chili",
+     "title": "Chili",
+     "slice": 11,
+     "layers": 4,
+     "colors": [
+      "#E3172F",
+      "#9D1220",
+      "#2E9E4F",
+      "#FF8A9C"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "pepper",
+      "shade",
+      "green",
+      "shine"
+     ]
+    }
+   ],
+   "atlas": "Decor/Packs/food",
+   "rows": 2,
+   "depth": 16,
+   "rev": "cf781210"
+  },
+  {
+   "id": "faces",
+   "title": "Faces",
+   "pro": false,
+   "stickers": [
+    {
+     "id": "cool",
+     "title": "Cool",
+     "slice": 0,
+     "layers": 4,
+     "colors": [
+      "#FFD233",
+      "#F2A900",
+      "#1A1410",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "face",
+      "shade",
+      "dark",
+      "glints"
+     ]
+    },
+    {
+     "id": "wink",
+     "title": "Wink",
+     "slice": 1,
+     "layers": 4,
+     "colors": [
+      "#FFD233",
+      "#F2A900",
+      "#1A1410",
+      "#FF8A9C"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "face",
+      "shade",
+      "dark",
+      ""
+     ]
+    },
+    {
+     "id": "love",
+     "title": "Heart eyes",
+     "slice": 2,
+     "layers": 4,
+     "colors": [
+      "#FFD233",
+      "#F2A900",
+      "#1A1410",
+      "#E3172F"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "face",
+      "shade",
+      "dark",
+      "hearts"
+     ]
+    },
+    {
+     "id": "lol",
+     "title": "Laughing",
+     "slice": 3,
+     "layers": 4,
+     "colors": [
+      "#FFD233",
+      "#F2A900",
+      "#1A1410",
+      "#5BC8FF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "face",
+      "shade",
+      "",
+      "tears"
+     ]
+    },
+    {
+     "id": "angry",
+     "title": "Angry",
+     "slice": 4,
+     "layers": 4,
+     "colors": [
+      "#FF5A36",
+      "#C2321A",
+      "#FFFFFF",
+      "#1A1410"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "face",
+      "shade",
+      "teeth",
+      "dark"
+     ]
+    },
+    {
+     "id": "shock",
+     "title": "Shocked",
+     "slice": 5,
+     "layers": 4,
+     "colors": [
+      "#FFD233",
+      "#F2A900",
+      "#FFFFFF",
+      "#1A1410"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "face",
+      "shade",
+      "whites",
+      "dark"
+     ]
+    },
+    {
+     "id": "sleepy",
+     "title": "Sleepy",
+     "slice": 6,
+     "layers": 4,
+     "colors": [
+      "#FFD233",
+      "#F2A900",
+      "#1A1410",
+      "#3A86FF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "face",
+      "shade",
+      "dark",
+      "zzz"
+     ]
+    },
+    {
+     "id": "robot",
+     "title": "Robot",
+     "slice": 7,
+     "layers": 4,
+     "colors": [
+      "#C9CED6",
+      "#8A8F98",
+      "#2B2E33",
+      "#2EE6FF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "head",
+      "shade",
+      "dark",
+      "eyes"
+     ]
+    },
+    {
+     "id": "cry",
+     "title": "Crying",
+     "slice": 8,
+     "layers": 4,
+     "colors": [
+      "#FFD233",
+      "#F2A900",
+      "#1A1410",
+      "#5BC8FF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "face",
+      "shade",
+      "dark",
+      "tears"
+     ]
+    },
+    {
+     "id": "party",
+     "title": "Party",
+     "slice": 9,
+     "layers": 4,
+     "colors": [
+      "#FFD233",
+      "#F2A900",
+      "#1A1410",
+      "#FF2D9B"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "face",
+      "shade",
+      "dark",
+      "hat"
+     ]
+    },
+    {
+     "id": "nerd",
+     "title": "Nerd",
+     "slice": 10,
+     "layers": 4,
+     "colors": [
+      "#FFD233",
+      "#F2A900",
+      "#1A1410",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "face",
+      "shade",
+      "dark",
+      ""
+     ]
+    },
+    {
+     "id": "tongue",
+     "title": "Silly",
+     "slice": 11,
+     "layers": 4,
+     "colors": [
+      "#FFD233",
+      "#F2A900",
+      "#1A1410",
+      "#FF5F8A"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "face",
+      "shade",
+      "dark",
+      "tongue"
+     ]
+    }
+   ],
+   "atlas": "Decor/Packs/faces",
+   "rows": 2,
+   "depth": 16,
+   "rev": "4f2d3d5c"
+  },
+  {
+   "id": "nature",
+   "title": "Nature",
+   "pro": false,
+   "stickers": [
+    {
+     "id": "daisy",
+     "title": "Daisy",
+     "slice": 0,
+     "layers": 4,
+     "colors": [
+      "#FFFFFF",
+      "#FFD400",
+      "#E6E2DA",
+      "#8A5A33"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "petals",
+      "center",
+      "ring shade",
+      "seeds"
+     ]
+    },
+    {
+     "id": "sunflower",
+     "title": "Sunflower",
+     "slice": 1,
+     "layers": 4,
+     "colors": [
+      "#FFC531",
+      "#FF9F1C",
+      "#5A3420",
+      "#2A1A10"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "outer",
+      "inner",
+      "disc",
+      "seeds"
+     ]
+    },
+    {
+     "id": "tulip",
+     "title": "Tulip",
+     "slice": 2,
+     "layers": 4,
+     "colors": [
+      "#2E9E4F",
+      "#FF4F6A",
+      "#C2185B",
+      "#FFC2D1"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "green",
+      "cup",
+      "shade",
+      "shine"
+     ]
+    },
+    {
+     "id": "mushroom",
+     "title": "Mushroom",
+     "slice": 3,
+     "layers": 4,
+     "colors": [
+      "#F4E3C8",
+      "#E3172F",
+      "#FFFFFF",
+      "#9D1220"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "stem",
+      "cap",
+      "",
+      "rim"
+     ]
+    },
+    {
+     "id": "leaf",
+     "title": "Leaf",
+     "slice": 4,
+     "layers": 4,
+     "colors": [
+      "#4FBF4A",
+      "#2E9E4F",
+      "#B7D96B",
+      "#8A5A33"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "blade",
+      "right",
+      "",
+      "stem"
+     ]
+    },
+    {
+     "id": "clover",
+     "title": "Clover",
+     "slice": 5,
+     "layers": 4,
+     "colors": [
+      "#2E9E4F",
+      "#4FBF4A",
+      "#B7D96B",
+      "#1F6B34"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "leaves",
+      "",
+      "",
+      "stem"
+     ]
+    },
+    {
+     "id": "pine",
+     "title": "Pine",
+     "slice": 6,
+     "layers": 4,
+     "colors": [
+      "#2E7D4F",
+      "#1F5A38",
+      "#8A5A33",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "tiers",
+      "",
+      "",
+      "snow"
+     ]
+    },
+    {
+     "id": "mountain",
+     "title": "Mountains",
+     "slice": 7,
+     "layers": 4,
+     "colors": [
+      "#5B6B8C",
+      "#3F4C68",
+      "#FFFFFF",
+      "#FFD400"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "mountains",
+      "dark",
+      "snow",
+      ""
+     ]
+    },
+    {
+     "id": "rainbow",
+     "title": "Rainbow",
+     "slice": 8,
+     "layers": 4,
+     "colors": [
+      "#E3172F",
+      "#FFD400",
+      "#1FB6FF",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "",
+      "",
+      "",
+      "clouds"
+     ]
+    },
+    {
+     "id": "raincloud",
+     "title": "Storm cloud",
+     "slice": 9,
+     "layers": 4,
+     "colors": [
+      "#C9D4E3",
+      "#8FA3BF",
+      "#3A86FF",
+      "#FFD400"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "cloud",
+      "shade",
+      "rain",
+      "bolt"
+     ]
+    },
+    {
+     "id": "snowflake",
+     "title": "Snowflake",
+     "slice": 10,
+     "layers": 4,
+     "colors": [
+      "#1FB6FF",
+      "#FFFFFF",
+      "#CFE9FF",
+      "#9FE8FF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "disc",
+      "flake",
+      "",
+      ""
+     ]
+    },
+    {
+     "id": "shell",
+     "title": "Shell",
+     "slice": 11,
+     "layers": 4,
+     "colors": [
+      "#FFB3C4",
+      "#FF8FA8",
+      "#E8639A",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "fan",
+      "ridges",
+      "base",
+      "shine"
+     ]
+    }
+   ],
+   "atlas": "Decor/Packs/nature",
+   "rows": 2,
+   "depth": 16,
+   "rev": "923c7217"
+  },
+  {
+   "id": "arcade",
+   "title": "Arcade",
+   "pro": false,
+   "stickers": [
+    {
+     "id": "heart8",
+     "title": "Pixel heart",
+     "slice": 0,
+     "layers": 3,
+     "colors": [
+      "#E3172F",
+      "#FFFFFF",
+      "#9D1220",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      "",
+      ""
+     ]
+    },
+    {
+     "id": "star8",
+     "title": "Pixel star",
+     "slice": 1,
+     "layers": 3,
+     "colors": [
+      "#FFD400",
+      "#FF9F1C",
+      "#FFFFFF",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      "",
+      ""
+     ]
+    },
+    {
+     "id": "skull8",
+     "title": "Pixel skull",
+     "slice": 2,
+     "layers": 3,
+     "colors": [
+      "#F4F1EA",
+      "#C9C3B6",
+      "#141418",
+      "#E3172F"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      "",
+      ""
+     ]
+    },
+    {
+     "id": "coin",
+     "title": "Coin",
+     "slice": 3,
+     "layers": 4,
+     "colors": [
+      "#FFC531",
+      "#E09A12",
+      "#FFE9A8",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "disc",
+      "rim",
+      "mark",
+      "glint"
+     ]
+    },
+    {
+     "id": "gamepad",
+     "title": "Gamepad",
+     "slice": 4,
+     "layers": 4,
+     "colors": [
+      "#C9CED6",
+      "#2B2E33",
+      "#E3172F",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "body",
+      "dark",
+      "button",
+      "shine"
+     ]
+    },
+    {
+     "id": "joystick",
+     "title": "Joystick",
+     "slice": 5,
+     "layers": 4,
+     "colors": [
+      "#2B2E33",
+      "#C9CED6",
+      "#E3172F",
+      "#FFD400"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "base",
+      "shaft",
+      "ball",
+      "buttons"
+     ]
+    },
+    {
+     "id": "floppy",
+     "title": "Floppy disk",
+     "slice": 6,
+     "layers": 4,
+     "colors": [
+      "#1B6FE0",
+      "#F4F1EA",
+      "#C9CED6",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "body",
+      "label",
+      "shutter",
+      "dark"
+     ]
+    },
+    {
+     "id": "cursor",
+     "title": "Cursor",
+     "slice": 7,
+     "layers": 3,
+     "colors": [
+      "#141418",
+      "#FFFFFF",
+      "#2EE6FF",
+      "#FFD400"
+     ],
+     "ink": 0.0,
+     "pro": false,
+     "layerNames": [
+      "arrow",
+      "inner",
+      "burst"
+     ]
+    },
+    {
+     "id": "gameover",
+     "title": "Game over",
+     "slice": 8,
+     "layers": 4,
+     "colors": [
+      "#141418",
+      "#E3172F",
+      "#E3172F",
+      "#2B2E33"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "sign",
+      "border",
+      "words",
+      "scan"
+     ]
+    },
+    {
+     "id": "insertcoin",
+     "title": "Insert coin",
+     "slice": 9,
+     "layers": 4,
+     "colors": [
+      "#FFD400",
+      "#141418",
+      "#141418",
+      "#E3172F"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "sign",
+      "border",
+      "words",
+      "dots"
+     ]
+    },
+    {
+     "id": "trophy",
+     "title": "Trophy",
+     "slice": 10,
+     "layers": 4,
+     "colors": [
+      "#FFC531",
+      "#E09A12",
+      "#5A3420",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "cup",
+      "shade",
+      "base",
+      "star"
+     ]
+    },
+    {
+     "id": "cartridge",
+     "title": "Cartridge",
+     "slice": 11,
+     "layers": 4,
+     "colors": [
+      "#8A8F98",
+      "#FF2D6F",
+      "#2B2E33",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "body",
+      "label",
+      "dark",
+      "mark"
+     ]
+    }
+   ],
+   "atlas": "Decor/Packs/arcade",
+   "rows": 2,
+   "depth": 16,
+   "rev": "09d1944a"
+  },
+  {
+   "id": "gear",
+   "title": "Gear",
+   "pro": false,
+   "stickers": [
+    {
+     "id": "jack",
+     "title": "Jack plug",
+     "slice": 0,
+     "layers": 4,
+     "colors": [
+      "#2B2E33",
+      "#C9CED6",
+      "#8A8F98",
+      "#FFD400"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "handle",
+      "metal",
+      "shade",
+      "band"
+     ]
+    },
+    {
+     "id": "xlr",
+     "title": "XLR",
+     "slice": 1,
+     "layers": 4,
+     "colors": [
+      "#C9CED6",
+      "#2B2E33",
+      "#E0B84A",
+      "#8A8F98"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "shell",
+      "inner",
+      "pins",
+      "key"
+     ]
+    },
+    {
+     "id": "din",
+     "title": "MIDI DIN",
+     "slice": 2,
+     "layers": 4,
+     "colors": [
+      "#C9CED6",
+      "#2B2E33",
+      "#E0B84A",
+      "#8A8F98"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "shell",
+      "inner",
+      "pins",
+      "key"
+     ]
+    },
+    {
+     "id": "knob",
+     "title": "Knob",
+     "slice": 3,
+     "layers": 4,
+     "colors": [
+      "#2B2E33",
+      "#8A8F98",
+      "#E3172F",
+      "#F4F1EA"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "body",
+      "face",
+      "pointer",
+      "ticks"
+     ]
+    },
+    {
+     "id": "fader",
+     "title": "Fader",
+     "slice": 4,
+     "layers": 4,
+     "colors": [
+      "#2B2E33",
+      "#141418",
+      "#C9CED6",
+      "#FF5A1F"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "plate",
+      "slot",
+      "cap",
+      "marks"
+     ]
+    },
+    {
+     "id": "toggle",
+     "title": "Toggle switch",
+     "slice": 5,
+     "layers": 4,
+     "colors": [
+      "#2B2E33",
+      "#C9CED6",
+      "#8A8F98",
+      "#E3172F"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "plate",
+      "nut",
+      "lever",
+      "tip"
+     ]
+    },
+    {
+     "id": "vu",
+     "title": "VU meter",
+     "slice": 6,
+     "layers": 4,
+     "colors": [
+      "#2B2E33",
+      "#F4E3C8",
+      "#2B2E33",
+      "#E3172F"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "body",
+      "face",
+      "dark",
+      "needle"
+     ]
+    },
+    {
+     "id": "scope",
+     "title": "Oscilloscope",
+     "slice": 7,
+     "layers": 4,
+     "colors": [
+      "#3A3F47",
+      "#0B1A12",
+      "#2EE6A0",
+      "#C9CED6"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "body",
+      "screen",
+      "",
+      "knobs"
+     ]
+    },
+    {
+     "id": "tube",
+     "title": "Valve",
+     "slice": 8,
+     "layers": 4,
+     "colors": [
+      "#CFE9FF",
+      "#8A8F98",
+      "#2B2E33",
+      "#FF9F1C"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "glass",
+      "plates",
+      "base",
+      "glow"
+     ]
+    },
+    {
+     "id": "patch",
+     "title": "Patch cable",
+     "slice": 9,
+     "layers": 4,
+     "colors": [
+      "#FF2D6F",
+      "#C9CED6",
+      "#2B2E33",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "cable",
+      "metal",
+      "handles",
+      "shine"
+     ]
+    },
+    {
+     "id": "sine",
+     "title": "Sine wave",
+     "slice": 10,
+     "layers": 4,
+     "colors": [
+      "#1B6FE0",
+      "#9FE8FF",
+      "#FFFFFF",
+      "#FFD400"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "disc",
+      "axis",
+      "wave",
+      ""
+     ]
+    },
+    {
+     "id": "adsr",
+     "title": "Envelope",
+     "slice": 11,
+     "layers": 4,
+     "colors": [
+      "#141418",
+      "#FF2D6F",
+      "#FFFFFF",
+      "#FFD400"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "panel",
+      "fill",
+      "line",
+      "nodes"
+     ]
+    }
+   ],
+   "atlas": "Decor/Packs/gear",
+   "rows": 2,
+   "depth": 16,
+   "rev": "b367c3f8"
+  },
+  {
+   "id": "roadie",
+   "title": "Roadie",
+   "pro": false,
+   "stickers": [
+    {
+     "id": "fragile",
+     "title": "Fragile",
+     "slice": 0,
+     "layers": 4,
+     "colors": [
+      "#E3172F",
+      "#FFFFFF",
+      "#FFFFFF",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "sign",
+      "border",
+      "word",
+      "small"
+     ]
+    },
+    {
+     "id": "thisway",
+     "title": "This way up",
+     "slice": 1,
+     "layers": 3,
+     "colors": [
+      "#FF9F1C",
+      "#F4F1EA",
+      "#141418",
+      "#FF9F1C"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "sign",
+      "inner",
+      "arrows"
+     ]
+    },
+    {
+     "id": "glass",
+     "title": "Glass",
+     "slice": 2,
+     "layers": 3,
+     "colors": [
+      "#E3172F",
+      "#FFFFFF",
+      "#E3172F",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "square",
+      "glass",
+      "crack"
+     ]
+    },
+    {
+     "id": "umbrella",
+     "title": "Keep dry",
+     "slice": 3,
+     "layers": 4,
+     "colors": [
+      "#1B6FE0",
+      "#F4F1EA",
+      "#9FE8FF",
+      "#0B3E8C"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "square",
+      "dome",
+      "rain",
+      "ribs"
+     ]
+    },
+    {
+     "id": "heavy",
+     "title": "Heavy",
+     "slice": 4,
+     "layers": 4,
+     "colors": [
+      "#FFD400",
+      "#141418",
+      "#FFD400",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "square",
+      "weight",
+      "word",
+      "border"
+     ]
+    },
+    {
+     "id": "qc",
+     "title": "QC passed",
+     "slice": 5,
+     "layers": 3,
+     "colors": [
+      "#2E9E4F",
+      "#FFFFFF",
+      "#FFFFFF",
+      "#1F6B34"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "disc",
+      "ring",
+      "check"
+     ]
+    },
+    {
+     "id": "barcode",
+     "title": "Barcode",
+     "slice": 6,
+     "layers": 3,
+     "colors": [
+      "#F4F1EA",
+      "#141418",
+      "#E3172F",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "label",
+      "",
+      ""
+     ]
+    },
+    {
+     "id": "allaccess",
+     "title": "All access",
+     "slice": 7,
+     "layers": 4,
+     "colors": [
+      "#141418",
+      "#FF2D9B",
+      "#FFFFFF",
+      "#C9CED6"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "card",
+      "stripe",
+      "words",
+      "slot"
+     ]
+    },
+    {
+     "id": "vip",
+     "title": "VIP",
+     "slice": 8,
+     "layers": 3,
+     "colors": [
+      "#FFC531",
+      "#E09A12",
+      "#3A2418",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "burst",
+      "ring",
+      "word"
+     ]
+    },
+    {
+     "id": "backstage",
+     "title": "Backstage",
+     "slice": 9,
+     "layers": 4,
+     "colors": [
+      "#F4F1EA",
+      "#FF9F1C",
+      "#141418",
+      "#E3172F"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "card",
+      "band",
+      "word",
+      "dot"
+     ]
+    },
+    {
+     "id": "loud",
+     "title": "Play loud",
+     "slice": 10,
+     "layers": 4,
+     "colors": [
+      "#141418",
+      "#FFFFFF",
+      "#FFD400",
+      "#E3172F"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "disc",
+      "speaker",
+      "waves",
+      "word"
+     ]
+    },
+    {
+     "id": "stop",
+     "title": "Stop",
+     "slice": 11,
+     "layers": 3,
+     "colors": [
+      "#FFFFFF",
+      "#E3172F",
+      "#FFFFFF",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "outer",
+      "inner",
+      "word"
+     ]
+    }
+   ],
+   "atlas": "Decor/Packs/roadie",
+   "rows": 2,
+   "depth": 16,
+   "rev": "136e226e"
+  },
+  {
+   "id": "mystic",
+   "title": "Mystic",
+   "pro": false,
+   "stickers": [
+    {
+     "id": "pyramid",
+     "title": "Pyramid eye",
+     "slice": 0,
+     "layers": 4,
+     "colors": [
+      "#F4D35E",
+      "#C9A227",
+      "#FFFFFF",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "triangle",
+      "shade",
+      "almond",
+      "dark"
+     ]
+    },
+    {
+     "id": "moonstars",
+     "title": "Moon and stars",
+     "slice": 1,
+     "layers": 4,
+     "colors": [
+      "#2B2D6B",
+      "#FFE9A8",
+      "#FFD400",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "disc",
+      "moon",
+      "stars",
+      "tiny"
+     ]
+    },
+    {
+     "id": "tarot",
+     "title": "Tarot card",
+     "slice": 2,
+     "layers": 4,
+     "colors": [
+      "#F4E3C8",
+      "#5B2A86",
+      "#E0B84A",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "card",
+      "frame",
+      "emblem",
+      "glints"
+     ]
+    },
+    {
+     "id": "crystalball",
+     "title": "Crystal ball",
+     "slice": 3,
+     "layers": 4,
+     "colors": [
+      "#C98B4B",
+      "#8B3DFF",
+      "#FF5FD2",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "base",
+      "ball",
+      "swirl",
+      "shine"
+     ]
+    },
+    {
+     "id": "potion",
+     "title": "Potion",
+     "slice": 4,
+     "layers": 4,
+     "colors": [
+      "#CFE9FF",
+      "#2EE6A0",
+      "#8A5A33",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "flask",
+      "liquid",
+      "cork",
+      ""
+     ]
+    },
+    {
+     "id": "candle",
+     "title": "Candle",
+     "slice": 5,
+     "layers": 4,
+     "colors": [
+      "#F4F1EA",
+      "#C9A44C",
+      "#FF9F1C",
+      "#FFE14A"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "wax",
+      "holder",
+      "flame",
+      "inner"
+     ]
+    },
+    {
+     "id": "key",
+     "title": "Old key",
+     "slice": 6,
+     "layers": 3,
+     "colors": [
+      "#F4D35E",
+      "#C9A227",
+      "#FFFFFF",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "key",
+      "shade",
+      "glint"
+     ]
+    },
+    {
+     "id": "nazar",
+     "title": "Evil eye",
+     "slice": 7,
+     "layers": 4,
+     "colors": [
+      "#1B3A8C",
+      "#FFFFFF",
+      "#3A9BFF",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      "",
+      "",
+      ""
+     ]
+    },
+    {
+     "id": "phases",
+     "title": "Moon phases",
+     "slice": 8,
+     "layers": 4,
+     "colors": [
+      "#2B2D6B",
+      "#FFE9A8",
+      "#FFE9A8",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "pill",
+      "lit",
+      "rings",
+      "spark"
+     ]
+    },
+    {
+     "id": "hourglass",
+     "title": "Hourglass",
+     "slice": 9,
+     "layers": 4,
+     "colors": [
+      "#8A5A33",
+      "#CFE9FF",
+      "#FFD233",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "frame",
+      "glass",
+      "sand",
+      "shine"
+     ]
+    },
+    {
+     "id": "spellbook",
+     "title": "Spell book",
+     "slice": 10,
+     "layers": 4,
+     "colors": [
+      "#5B2A86",
+      "#F4E3C8",
+      "#E0B84A",
+      "#E3172F"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "cover",
+      "pages",
+      "emblem",
+      "clasp"
+     ]
+    },
+    {
+     "id": "wand",
+     "title": "Wand",
+     "slice": 11,
+     "layers": 4,
+     "colors": [
+      "#2B2E33",
+      "#FFD400",
+      "#F4F1EA",
+      "#9FE8FF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "stick",
+      "star",
+      "tip",
+      "spark"
+     ]
+    }
+   ],
+   "atlas": "Decor/Packs/mystic",
+   "rows": 2,
+   "depth": 16,
+   "rev": "903d505a"
+  },
+  {
+   "id": "hiphop",
+   "title": "Hip Hop",
+   "pro": false,
+   "stickers": [
+    {
+     "id": "snapback",
+     "title": "Snapback",
+     "slice": 0,
+     "layers": 4,
+     "colors": [
+      "#E3172F",
+      "#141418",
+      "#8A8F98",
+      "#FFC531"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "crown",
+      "",
+      "seams",
+      "logo"
+     ]
+    },
+    {
+     "id": "chain",
+     "title": "Gold chain",
+     "slice": 1,
+     "layers": 4,
+     "colors": [
+      "#FFC531",
+      "#E09A12",
+      "#2B2E33",
+      "#FFE9A8"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "",
+      "",
+      "",
+      ""
+     ]
+    },
+    {
+     "id": "sneaker",
+     "title": "Sneaker",
+     "slice": 2,
+     "layers": 4,
+     "colors": [
+      "#E3172F",
+      "#F4F1EA",
+      "#FFFFFF",
+      "#141418"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "upper",
+      "sole",
+      "",
+      "dark"
+     ]
+    },
+    {
+     "id": "mpc",
+     "title": "Pad controller",
+     "slice": 3,
+     "layers": 4,
+     "colors": [
+      "#3A3F47",
+      "#141418",
+      "#E3172F",
+      "#FFD400"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      "",
+      "",
+      ""
+     ]
+    },
+    {
+     "id": "drummachine",
+     "title": "Drum machine",
+     "slice": 4,
+     "layers": 4,
+     "colors": [
+      "#C9CED6",
+      "#2B2E33",
+      "#E3172F",
+      "#FFD400"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "body",
+      "knobs",
+      "red",
+      "yellow"
+     ]
+    },
+    {
+     "id": "cash",
+     "title": "Cash",
+     "slice": 5,
+     "layers": 4,
+     "colors": [
+      "#6BBF6F",
+      "#2E7D4F",
+      "#CFE8C9",
+      "#1F5A38"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "bill",
+      "border",
+      "face",
+      "mark"
+     ]
+    },
+    {
+     "id": "platinum",
+     "title": "Platinum plaque",
+     "slice": 6,
+     "layers": 4,
+     "colors": [
+      "#3A2418",
+      "#F4E3C8",
+      "#C9CED6",
+      "#FFC531"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "frame",
+      "mat",
+      "disc",
+      "gold"
+     ]
+    },
+    {
+     "id": "bandana",
+     "title": "Bandana",
+     "slice": 7,
+     "layers": 4,
+     "colors": [
+      "#E3172F",
+      "#FFFFFF",
+      "#FFFFFF",
+      "#9D1220"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "square",
+      "border",
+      "",
+      "fold"
+     ]
+    },
+    {
+     "id": "bucket",
+     "title": "Bucket hat",
+     "slice": 8,
+     "layers": 4,
+     "colors": [
+      "#FF9F1C",
+      "#E07B00",
+      "#141418",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "crown",
+      "brim",
+      "band",
+      "stitches"
+     ]
+    },
+    {
+     "id": "tag",
+     "title": "Graffiti tag",
+     "slice": 9,
+     "layers": 4,
+     "colors": [
+      "#141418",
+      "#FF2D6F",
+      "#FFFFFF",
+      "#FFD400"
+     ],
+     "ink": 0.0,
+     "pro": false,
+     "layerNames": [
+      "",
+      "fill",
+      "shine",
+      ""
+     ]
+    },
+    {
+     "id": "ring",
+     "title": "Diamond ring",
+     "slice": 10,
+     "layers": 4,
+     "colors": [
+      "#FFC531",
+      "#CFF3FF",
+      "#5BC8FF",
+      "#FFFFFF"
+     ],
+     "ink": 1.0,
+     "pro": true,
+     "layerNames": [
+      "",
+      "gem",
+      "facets",
+      "spark"
+     ]
+    },
+    {
+     "id": "crate",
+     "title": "Record crate",
+     "slice": 11,
+     "layers": 4,
+     "colors": [
+      "#E3172F",
+      "#1B6FE0",
+      "#C98B4B",
+      "#8A5A33"
+     ],
+     "ink": 1.0,
+     "pro": false,
+     "layerNames": [
+      "red",
+      "blue",
+      "crate",
+      "slats"
+     ]
+    }
+   ],
+   "atlas": "Decor/Packs/hiphop",
+   "rows": 2,
+   "depth": 16,
+   "rev": "b0b09887"
+  }
+ ],
+ "slices": 206
+}

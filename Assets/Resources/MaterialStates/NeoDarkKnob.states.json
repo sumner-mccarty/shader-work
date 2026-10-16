@@ -21,7 +21,7 @@
                 {
                     "name": "_ViewTilt",
                     "type": "Range",
-                    "value": "4.73999977"
+                    "value": "0.0"
                 },
                 {
                     "name": "_AngleStart",
@@ -221,12 +221,12 @@
                 {
                     "name": "_KnobNubShapeType",
                     "type": "Enum",
-                    "value": "2"
+                    "value": "0.0"
                 },
                 {
                     "name": "_KnobNubColor",
                     "type": "Color",
-                    "value": "0.236086369,0.433962286,0.433962286,1"
+                    "value": "0.290196,0.607843,0.960784,1"
                 },
                 {
                     "name": "_KnobNubSize",
@@ -236,7 +236,7 @@
                 {
                     "name": "_KnobNubDistance",
                     "type": "Range",
-                    "value": "0.230000004"
+                    "value": "0.4"
                 },
                 {
                     "name": "_NubEnabled",
@@ -381,7 +381,7 @@
                 {
                     "name": "_KnobNubBevelEnabled",
                     "type": "Float",
-                    "value": "1"
+                    "value": "0.0"
                 },
                 {
                     "name": "_KnobNubBevelDepth",

@@ -235,7 +235,7 @@
                 {
                     "name": "_KnobNubDistance",
                     "type": "Range",
-                    "value": "0.55"
+                    "value": "0.4"
                 },
                 {
                     "name": "_NubEnabled",

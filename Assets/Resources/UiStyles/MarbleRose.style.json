@@ -393,9 +393,9 @@
           "reviewBarDim": "#6E6264"
         },
         "display": {
-          "text": "#F4B4BF",
-          "textDim": "#D0A0AA",
-          "textAlt": "#E8C47A",
+          "text": "#FFE6EC",
+          "textDim": "#E8C0C8",
+          "textAlt": "#F2D08A",
           "warn": "#D2455A"
         },
         "key": {

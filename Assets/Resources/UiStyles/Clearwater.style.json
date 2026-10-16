@@ -121,7 +121,7 @@
         "mark": "#F4FBFF"
       },
       "chrome": {
-        "headerBg": "#1D3F4A",
+        "headerBg": "#00000000",
         "headerBorder": "#00000000",
         "tabFillBottom": "#244A55",
         "tabFillTop": "#244A55",
@@ -348,7 +348,7 @@
         "mark": "#10303C"
       },
       "chrome": {
-        "headerBg": "#D8ECE8",
+        "headerBg": "#00000000",
         "headerBorder": "#00000000",
         "tabFillBottom": "#DDEEEA",
         "tabFillTop": "#DDEEEA",

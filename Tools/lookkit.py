@@ -148,6 +148,13 @@ SLOTS = {
 PAD_PARAM = {"Button": "_ButtonPadding", "Slider": "_BgPadding", "Toggle": "_BgPadding"}
 LATCHES = ("ToggleBtn", "Solo", "Lamp")
 
+# Widest a glass plate's bevel rim may get, in canvas units (SDFPanel _PanelBevelDistancePx). Every
+# layout margin around a key or an inner plate is >= 4 units, so a 3-unit rim always leaves air.
+GLASS_RIM_PX = 3.0
+# Same cap for a glass plate's recess wall (SDFPanel _PanelRimWidthPx). With both pinned, a glass plate's
+# edge band (padding + bevel + rim) is a fixed number of units and WidgetFactory pads its content past it.
+GLASS_RECESS_PX = 1.5
+
 
 def footprint_report():
     """Re-read each app skin's padding param: the SLOTS table must still match what ships."""
@@ -1456,13 +1463,20 @@ class Lit(Unlit):
         })
         if m and m.get("glass") and "_PanelBevelEnabled" in base:
             # glass plates need a curved edge for the refraction and rim to catch: a soft rounded
-            # bevel band (the medial-axis limit still applies: distance <= 0.14)
+            # bevel band (the medial-axis limit still applies: distance <= 0.14). CAPPED at
+            # GLASS_RIM_PX canvas units (2026-10-08): proportional, the rim was 34 units on the mixer
+            # rack and 3.5 on a transport inset, so nested plates' bright rims landed on each other
+            # and on the keys inside them — glass shows every overlap the opaque looks hid.
             base.update({"_PanelBevelEnabled": 1, "_PanelBevelDistance": 0.12, "_PanelBevelDepth": 0.35,
-                         "_PanelBevelSmoothness": 0.9})
+                         "_PanelBevelSmoothness": 0.9, "_PanelBevelDistancePx": GLASS_RIM_PX})
         if S["recess"]:
             # a recessed dish reads as a dish only if its wall catches light — a RIM, low depth
             base.update({"_PanelRimEnabled": 1, "_PanelRimDepth": S["recess"], "_PanelRimWidth": S["rim_w"],
                          "_PanelRimSmoothness": S["rim_w"]})
+            if m and m.get("glass") and "_PanelBevelEnabled" in base:
+                # …and on glass, the wall is capped in canvas units like the bevel, so the plate's whole
+                # edge band is a known width WidgetFactory can clear content past (plate clearance)
+                base["_PanelRimWidthPx"] = GLASS_RECESS_PX
         if S.get("stitch") and slot in ("Face", "Inset", "Back"):
             # a welt/stitch line hugging the plate edge: a thin solid Border band in the thread colour
             col, wpx = S["stitch"]
@@ -1743,10 +1757,14 @@ class Look:
         pale_keys = lum(P["BODY"]) > 0.5
         chrome, groups = derive_app(P, pale_keys, pale)
         over = self.modes[mode].get("app", {})
-        chrome = merge(chrome, over.get("chrome"))
         if self.modes[mode].get("backdrop"):
             # a wallpaper look: the gaps between docked panels and the camera clear must let it through
             groups = merge(groups, {"surface": {"gap": "#00000000", "backdrop": "#00000000"}})
+            # …and so must the tab strip, which sits BEHIND each panel's content: once the root slab
+            # stands in from its dock cell with rounded corners, an opaque strip shows as solid
+            # top corners and a solid band across the top of every gutter (2026-10-08, Clearwater)
+            chrome = merge(chrome, {"headerBg": "#00000000"})
+        chrome = merge(chrome, over.get("chrome"))
         groups = merge(groups, {k: v for k, v in over.items() if k not in ("chrome", "hot")})
         return chrome, groups
 

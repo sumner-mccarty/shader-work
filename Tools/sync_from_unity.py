@@ -31,7 +31,9 @@ REPO = Path(__file__).resolve().parent.parent
 TOOLS = ["skinsheet.py", "skinlib.py", "shaderprops.py", "bake.py", "build_recipes.py", "patch_skin.py",
          "sheet_style.py", "sheet_rack.py", "sheet_faceplates.py", "sheet_pads.py", "sheet_baseline.py",
          "design_realistic.py", "design_neomorphic.py", "design_others.py", "design_flat.py", "design_tron.py",
-         "scopesheet.py", "s_mixer.py", "checklayout.py", "gen_materials.py"]
+         "scopesheet.py", "s_mixer.py", "checklayout.py", "gen_materials.py",
+         # 2026-10-16: audiogame owns these now (the look kit, decor stickers, background fields, booth skins)
+         "lookkit.py", "lookcheck.py", "gen_fields.py", "decor_stickers.py", "decorsheet.py", "design_booth.py"]
 
 MAPPINGS = [
     # (relative path, glob, include .meta)
@@ -45,11 +47,20 @@ MAPPINGS = [
     ("Assets/Resources/Backdrops", "*", True),            # wallpapers for glass looks
     (".claude/skills/skin-authoring", "**/*", False),
     ("Docs/Skinning", "**/*", False),
+    # 2026-10-16: faceplate decor (sticker packs, wraps) + the tools/renderer/looks audiogame now holds
+    ("Assets/Resources/Decor", "**/*", True),
+    ("Assets/Fonts", "*", True),                          # sticker lettering (pbio-bold) + display faces
+    ("Tools/looks", "*.py", False),
+    ("slrender", "**/*", False),
+    ("tests", "**/*", False),
+    ("Looks", "**/*", False),
+    ("Docs", "Decor.md", False),
+    ("Docs", "UiDecals.md", False),
 ] + [("Tools", t, False) for t in TOOLS]
 
 
 def skip(rel: Path) -> bool:
-    return any(part.startswith("__probe") for part in rel.parts)
+    return any(part.startswith("__probe") or part in ("__pycache__", "out", "check") for part in rel.parts)         or rel.suffix == ".pyc"
 
 
 def _same(a: Path, b: Path) -> bool:

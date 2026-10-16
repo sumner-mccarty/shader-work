@@ -38,6 +38,12 @@ LIGHT_PLATE = {"preset": "glass.frosted", "glass": glass(0.9, 3.5, 0.12, "#E2EBF
 LIGHT_KEY = {"preset": "glass.clear", "glass": glass(0.94, 0.4, 0.28, "#DCE6EEFF", 0.55), "matcap": ("glass_rim", 0.3),
              "bevel": (0.14, 0.6, 0.6), "dome": 0.6}
 
+# KNOB CAPS are the same lens, gentler (2026-10-08, "reflections on the very shiny knobs ... a little off"):
+# at ~30px the key glass's hard rim refraction folded the wallpaper into a sharp light/dark split across
+# the dome. More blur and half the bend keep the droplet read without the seam.
+DARK_CAP = dict(DARK_KEY, glass=glass(0.94, 1.8, 0.14, "#728997FF", 0.8))
+LIGHT_CAP = dict(LIGHT_KEY, glass=glass(0.94, 1.8, 0.14, "#DCE6EEFF", 0.55))
+
 # ON: tinted glass. Strength ~0.45 lets the accent body colour carry half the pixel, the wallpaper the rest.
 ACCENT_GLASS = glass(0.3, 0.4, 0.28, "#FFE2BCFF", 0.8)
 
@@ -111,7 +117,13 @@ LOOK = Look(
                      nub=0.06, nub_dist=0.5, arc_px=3.0),
         "fader": dict(corner=0.0, bevel=0.2, depth=0.8, smooth=1.0, dome=0.55),
         "plate": dict(radius_px=10.0),
-        "Face": dict(radius_px=12.0), "Back": dict(radius_px=1.0),
+        # Every root plate stands 3 units in from its dock cell, so two docked panels are two whole glass
+        # slabs with ~6 units of wallpaper between them — not two rims meeting on a hard straight seam.
+        # Back was a flush full-bleed sheet (radius 1, no margin); glass cannot hide that seam.
+        "Face": dict(radius_px=12.0, pad_px=3.0), "Back": dict(radius_px=10.0, pad_px=3.0),
+        # Insets nest INSIDE a slab, so their transparent margin buys no gutter, only lost room: at the
+        # kit's 2 units the CHALLENGE/KIT groups (pinned 58 tall) could not clear their own rim.
+        "Inset": dict(pad_px=1.0),
         "KnobHero": dict(ticks=0, arc_px=4.0),
         "shadow": dict(blur=2.2, cast=0.18),
     },
@@ -121,7 +133,7 @@ LOOK = Look(
         # the LEARN chip sits under the brightest part of the wallpaper: a hair more smoke keeps its label >= 3:1 all loop
         "Chip": dict(DARK_KEY, glass=glass(0.94, 0.4, 0.28, "#667F8EFF", 0.8)),
         "accent": dict(DARK_KEY, tint=ACCENT, glass=ACCENT_GLASS),
-        "cap": DARK_KEY,
+        "cap": DARK_CAP,
         "skirt": dict(DARK_PLATE, matcap=None),
         "handle": DARK_KEY,
         "pad": dict(DARK_KEY, glass=glass(0.66, 0.4, 0.28, "#C8DCE8FF", 0.7)),
@@ -155,7 +167,7 @@ LOOK = Look(
             track="Rosewater", backdrop="Backdrops/Daybreak", backdrop_fx=LIGHT_FX, blurb="Milk glass over a pastel daybreak.",
             states=key_states(hover_tint="#FFFFFFFF", press_tint="#C4D4E0FF", on_tint="#FFB866FF"),
             material={"plate": LIGHT_PLATE, "key": LIGHT_KEY, "Chip": LIGHT_KEY, "accent": dict(LIGHT_KEY, tint=ACCENT, glass=ACCENT_GLASS),
-                      "cap": LIGHT_KEY, "skirt": dict(LIGHT_PLATE, matcap=None), "handle": LIGHT_KEY,
+                      "cap": LIGHT_CAP, "skirt": dict(LIGHT_PLATE, matcap=None), "handle": LIGHT_KEY,
                       "pad": dict(LIGHT_KEY, glass=glass(0.72, 0.4, 0.28, "#F4F8FCFF", 0.35))},
             palette=dict(CONTROLS, GAP="#C4E0DC", BACK="#D8ECE8", FACE="#E8F4F1", INSET="#DDEEEA", SOCKET="#DAEBE7",
                          WELL="#062A2E", SHADOW="#2E5C6E", SHADOW_A=0.5, AMB_PLATE=0.5, WELL_EM=0.1,

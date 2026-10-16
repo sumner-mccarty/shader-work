@@ -398,6 +398,11 @@
                     "value": "0.9"
                 },
                 {
+                    "name": "_PanelBevelDistancePx",
+                    "type": "Float",
+                    "value": "3"
+                },
+                {
                     "name": "_PanelRimDepth",
                     "type": "Range",
                     "value": "-0.2"
@@ -411,6 +416,11 @@
                     "name": "_PanelRimSmoothness",
                     "type": "Range",
                     "value": "0.03"
+                },
+                {
+                    "name": "_PanelRimWidthPx",
+                    "type": "Float",
+                    "value": "1.5"
                 }
             ]
         }

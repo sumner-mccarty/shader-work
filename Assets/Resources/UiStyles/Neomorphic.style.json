@@ -300,9 +300,9 @@
         // This look's own display: light recessed glass with deep-blue digits — a soft-UI readout,
         // not Realistic Dark's navy LCD dropped into a white rack.
         "display": {
-          "text": "#2B5C9E",
-          "textDim": "#5A7BA8",
-          "textAlt": "#3A6CB0",
+          "text": "#123A70",
+          "textDim": "#3E5E8A",
+          "textAlt": "#1A4A86",
           "warn": "#C0392B"
         },
         "key": {

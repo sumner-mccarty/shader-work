@@ -182,7 +182,9 @@ LOOK = Look(
                          VALUE="#B85670", ARC_OFF="#8C807E", TRACK="#6A5A5C", VALUE_EM=0.1, DIS_BODY="#C9B3AE",
                          WELL="#3B2A30", SCROLLWELL="#DEDAD5", SHADOW="#4A3E3C", SHADOW_A=0.35, WELL_EM=0.05, AMB_PLATE=0.9,
                          PLATE_LO=0.05, PLATE_HI=0.0),
-            app=dict(display=dict(text="#F4B4BF", textDim="#D0A0AA", textAlt="#E8C47A"),
+            # LED print on the mauve well (lit ~#5C4149): thin segment strokes never reach full ink, so the
+            # blush #F4B4BF measured ~3:1 in the Creator (2026-10-08) — near-white rose reads, still rose.
+            app=dict(display=dict(text="#FFE6EC", textDim="#E8C0C8", textAlt="#F2D08A"),
                      ui=dict(text="#2A2224", textDim="#6E6264", accent="#B04C62"),
                      ink=dict(faceplate="#2A2224", faceplateDim="#6E6264", inset="#2A2224", insetDim="#6E6264",
                               backplane="#2A2224", backplaneDim="#6E6264", socket="#2A2224", socketDim="#6E6264",

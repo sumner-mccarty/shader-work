@@ -15,7 +15,8 @@ You work here without Unity, ever. Everything you make is judged from slrender r
 | `Assets/Resources/MaterialStates/` | skins (`*.states.json`) | only files with YOUR look's prefix |
 | `Assets/Resources/UiStyles/` `Themes/` `TrackThemes/` | recipes, light rigs, highway palettes | only YOUR look's files |
 | `Assets/Resources/UiThemes/` | shared display finishes + palette | no (shared — causes PR conflicts) |
-| `Tools/*.py` (mirrored) | the project's skin tooling: `skinlib`, `skinsheet`, `bake`, `design_*`, `sheet_*` | no — import them |
+| `Tools/*.py` (mirrored) | the project's skin tooling: `skinlib`, `skinsheet`, `bake`, `design_*`, `sheet_*`, `decor_stickers`, `decorsheet` | no — import them |
+| `Tools/sticker_packs/` | one file per NEW sticker pack (see its README) | yours only |
 | `Tools/lookkit.py` | the shared look kit (spec → parts, recipe, rig, sheets, rule audit) | only to extend a class; keep the Flat/Tron proofs byte-identical |
 | `Tools/looks/` | one lookkit spec per look (yours); `flat.py`/`tron.py` are proofs, `example_lit.py` a template | yours only |
 | `Tools/lookcheck.py` `sync_from_unity.py` `import_to_unity.py` `setup_toolchain.*` | workshop tools | only if the task says so |
@@ -84,6 +85,14 @@ github.com, objects.githubusercontent.com, pypi.org and the Ubuntu archive.
 7. Final sheets in `Looks/<slug>/sheets/`, set the spec's `status="candidate"` (re-run `manifest`),
    commit, push, open a PR titled `look: <Title>` whose description embeds the four sheets and
    summarises NOTES.md.
+
+## Sticker pack workflow (a new sticker pack)
+
+Stickers are procedural SDF art in Python — no Unity, no image files. **Read `Tools/sticker_packs/README.md` first**, then
+`Docs/Decor.md` §4 (Sticker COLORS) and §7b. One new pack = one new file `Tools/sticker_packs/<pack>.py` (never edit
+`Tools/decor_stickers.py`, `PACKS` or `PRO`). Render into a scratch folder with `DSD_STICKER_OUT=.out/<pack>`, sheet it with
+`Tools/decorsheet.py`, judge at 32 px against `Looks/_stickers/CHECKLIST.md`, and commit only the pack file and its
+`Looks/_stickers/<pack>-*.png` sheets — never `.out/`, `Assets/Resources/Decor/` or `Builds/`.
 
 ## Shader workflow (only when the task is a shader feature)
 

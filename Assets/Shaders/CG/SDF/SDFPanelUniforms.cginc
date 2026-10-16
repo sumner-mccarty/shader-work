@@ -37,6 +37,8 @@ float  _PanelBevelEnabled;
 float  _PanelBevelDepth;
 float  _PanelBevelSmoothness;
 float  _PanelBevelDistance;
+float  _PanelBevelDistancePx;   // >0 caps the band in canvas units (SDFPanel bevelDistPos)
+float  _PanelRimWidthPx;        // >0 caps the rim (recess wall) band in canvas units
 float  _PanelFaceSmoothness;
 float  _PanelBevelProfileType;
 float  _PanelBevelProfileSharpness;
