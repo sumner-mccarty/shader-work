@@ -1,0 +1,17 @@
+{
+  "slug": "lunar-red",
+  "style": "LunarRed",
+  "title": "Lunar Red",
+  "prefix": "LunarRed",
+  "brief": "BACKLOG.md#lunar-red",
+  "class": "lit",
+  "status": "rejected",
+  "files": [
+    "Tools/looks/lunar_red.py",
+    "Assets/Resources/UiStyles/LunarRed.style.json",
+    "Assets/Resources/Themes/LunarRed*.theme.json",
+    "Assets/Resources/MaterialStates/LunarRedDark*.states.json",
+    "Assets/Resources/MaterialStates/LunarRedLight*.states.json",
+    "Assets/Resources/TrackThemes/LunarLacquer.track.json"
+  ]
+}
