@@ -1,0 +1,35 @@
+{
+  "_doc": "Midnight Pumpkin game-track theme: see Starfield.track.json for the format.",
+  "name": "MidnightPumpkin",
+  "blurb": "Candle-lit night: pumpkin, slime, witch-purple and bone.",
+  "palette": {
+    "row1": "#FF7A1A",
+    "row2": "#8CFF2E",
+    "row3": "#8A44E0",
+    "row4": "#FF9A2E",
+    "rail": "#FF8A2A",
+    "laneLine": "#7A3EC0",
+    "laneFill": "#0A0412",
+    "hitLine": "#FFE9CF",
+    "receptor": "#C9906A",
+    "gridBar": "#FF9A3A",
+    "gridBeat": "#5A2A8A",
+    "bgTop": "#05020A",
+    "bgBottom": "#1A0A14",
+    "fog": "#6A2CB0",
+    "star": "#FFD9A8",
+    "miss": "#FF3A1A",
+    "perfect": "#E8FF7A"
+  },
+  "props": {
+    "skyMode": 0,
+    "starDensity": 0.22,
+    "horizonGlow": 0.7,
+    "railGlow": 1.2,
+    "noteGlow": 1.1,
+    "additive": 0.32,
+    "radiance": 1.0,
+    "fog": 0.6,
+    "vignette": 0.5
+  }
+}

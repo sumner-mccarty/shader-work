@@ -1,0 +1,85 @@
+{
+    "controlType": "UIPanel",
+    "shaderName": "UI/Backdrop/Splotch",
+    "states": [
+        {
+            "stateId": "MidnightPumpkinDarkFieldAccent-normal",
+            "stateName": "Normal",
+            "description": "Default resting state",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [
+                "default"
+            ],
+            "parameters": [
+                {
+                    "name": "_Speed",
+                    "type": "Range",
+                    "value": "0.03"
+                },
+                {
+                    "name": "_Base",
+                    "type": "Color",
+                    "value": "0.027451,0.0117647,0.0470588,1"
+                },
+                {
+                    "name": "_ColorA",
+                    "type": "Color",
+                    "value": "1,0.415686,0,1"
+                },
+                {
+                    "name": "_ColorB",
+                    "type": "Color",
+                    "value": "0.607843,0.235294,1,1"
+                },
+                {
+                    "name": "_ColorC",
+                    "type": "Color",
+                    "value": "0.352941,0.109804,0.627451,1"
+                },
+                {
+                    "name": "_ColorD",
+                    "type": "Color",
+                    "value": "0.54902,1,0.180392,1"
+                },
+                {
+                    "name": "_Count",
+                    "type": "Range",
+                    "value": "5"
+                },
+                {
+                    "name": "_Size",
+                    "type": "Range",
+                    "value": "0.3"
+                },
+                {
+                    "name": "_Softness",
+                    "type": "Range",
+                    "value": "0.22"
+                },
+                {
+                    "name": "_Opacity",
+                    "type": "Range",
+                    "value": "0.85"
+                },
+                {
+                    "name": "_Brightness",
+                    "type": "Range",
+                    "value": "-0.12"
+                },
+                {
+                    "name": "_Vignette",
+                    "type": "Range",
+                    "value": "0.45"
+                }
+            ]
+        }
+    ],
+    "bounds": {
+        "type": 0,
+        "width": 1.0,
+        "height": 1.0,
+        "radiusNorm": 1.0
+    },
+    "author": "DrumSumDrum"
+}

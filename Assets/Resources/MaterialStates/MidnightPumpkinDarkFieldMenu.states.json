@@ -1,0 +1,70 @@
+{
+    "controlType": "UIPanel",
+    "shaderName": "UI/Backdrop/Contours",
+    "states": [
+        {
+            "stateId": "MidnightPumpkinDarkFieldMenu-normal",
+            "stateName": "Normal",
+            "description": "Default resting state",
+            "baseStateName": "",
+            "priority": 0,
+            "tags": [
+                "default"
+            ],
+            "parameters": [
+                {
+                    "name": "_Speed",
+                    "type": "Range",
+                    "value": "0.015"
+                },
+                {
+                    "name": "_LineColor",
+                    "type": "Color",
+                    "value": "0.607843,0.301961,1,1"
+                },
+                {
+                    "name": "_LineStrength",
+                    "type": "Range",
+                    "value": "0.55"
+                },
+                {
+                    "name": "_ColorA",
+                    "type": "Color",
+                    "value": "0.0235294,0.0117647,0.0392157,1"
+                },
+                {
+                    "name": "_ColorB",
+                    "type": "Color",
+                    "value": "0.0705882,0.0313725,0.12549,1"
+                },
+                {
+                    "name": "_ColorC",
+                    "type": "Color",
+                    "value": "0.164706,0.0627451,0.0156863,1"
+                },
+                {
+                    "name": "_ColorD",
+                    "type": "Color",
+                    "value": "0.290196,0.109804,0.0235294,1"
+                },
+                {
+                    "name": "_Count",
+                    "type": "Range",
+                    "value": "12"
+                },
+                {
+                    "name": "_Brightness",
+                    "type": "Range",
+                    "value": "-0.05"
+                }
+            ]
+        }
+    ],
+    "bounds": {
+        "type": 0,
+        "width": 1.0,
+        "height": 1.0,
+        "radiusNorm": 1.0
+    },
+    "author": "DrumSumDrum"
+}

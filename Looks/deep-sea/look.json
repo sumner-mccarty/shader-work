@@ -1,0 +1,17 @@
+{
+  "slug": "deep-sea",
+  "style": "Bioluminescent",
+  "title": "Bioluminescent",
+  "prefix": "Biolum",
+  "brief": "BACKLOG.md#deep-sea",
+  "class": "neon",
+  "status": "draft",
+  "files": [
+    "Tools/looks/deep_sea.py",
+    "Assets/Resources/UiStyles/Bioluminescent.style.json",
+    "Assets/Resources/Themes/Bioluminescent*.theme.json",
+    "Assets/Resources/MaterialStates/BiolumDark*.states.json",
+    "Assets/Resources/MaterialStates/BiolumLight*.states.json",
+    "Assets/Resources/TrackThemes/Bioluminescent.track.json"
+  ]
+}

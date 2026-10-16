@@ -1,0 +1,17 @@
+{
+  "slug": "midnight-pumpkin",
+  "style": "MidnightPumpkin",
+  "title": "Midnight Pumpkin",
+  "prefix": "MidnightPumpkin",
+  "brief": "BACKLOG.md#spooky",
+  "class": "neon",
+  "status": "candidate",
+  "files": [
+    "Tools/looks/midnight_pumpkin.py",
+    "Assets/Resources/UiStyles/MidnightPumpkin.style.json",
+    "Assets/Resources/Themes/MidnightPumpkin*.theme.json",
+    "Assets/Resources/MaterialStates/MidnightPumpkinDark*.states.json",
+    "Assets/Resources/MaterialStates/MidnightPumpkinLight*.states.json",
+    "Assets/Resources/TrackThemes/MidnightPumpkin.track.json"
+  ]
+}
