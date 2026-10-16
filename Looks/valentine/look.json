@@ -1,0 +1,17 @@
+{
+  "slug": "valentine",
+  "style": "Sweetheart",
+  "title": "Sweetheart",
+  "prefix": "Sweetheart",
+  "brief": "BACKLOG.md#valentine",
+  "class": "lit",
+  "status": "rejected",
+  "files": [
+    "Tools/looks/sweetheart.py",
+    "Assets/Resources/UiStyles/Sweetheart.style.json",
+    "Assets/Resources/Themes/Sweetheart*.theme.json",
+    "Assets/Resources/MaterialStates/SweetheartDark*.states.json",
+    "Assets/Resources/MaterialStates/SweetheartLight*.states.json",
+    "Assets/Resources/TrackThemes/SweetheartBox.track.json"
+  ]
+}
