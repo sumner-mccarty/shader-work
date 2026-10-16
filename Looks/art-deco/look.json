@@ -1,0 +1,17 @@
+{
+  "slug": "art-deco",
+  "style": "GatsbyDeco",
+  "title": "Gatsby Deco",
+  "prefix": "GatsbyDeco",
+  "brief": "BACKLOG.md#art-deco",
+  "class": "lit",
+  "status": "draft",
+  "files": [
+    "Tools/looks/art_deco.py",
+    "Assets/Resources/UiStyles/GatsbyDeco.style.json",
+    "Assets/Resources/Themes/GatsbyDeco*.theme.json",
+    "Assets/Resources/MaterialStates/GatsbyDecoDark*.states.json",
+    "Assets/Resources/MaterialStates/GatsbyDecoLight*.states.json",
+    "Assets/Resources/TrackThemes/GatsbyDeco.track.json"
+  ]
+}
