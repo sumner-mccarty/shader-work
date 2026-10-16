@@ -184,11 +184,11 @@ def _():
 
 @sticker("fantasy", "griffin", "Griffin", ["#D9922E", "#F4F0E6", "#4A2A0C", "#FFF3C8"], ink=1.0)
 def _():
-    sx, sy = -0.02, 0.12
+    sx, sy = -0.04, 0.04
     angs = (100, 120, 140, 158, 175)
     lens = (0.66, 0.74, 0.74, 0.68, 0.56)
     tips = [(sx + L * math.cos(math.radians(a)), sy + L * math.sin(math.radians(a))) for a, L in zip(angs, lens)]
-    wing = U(*[taper(sx, sy, x, y, 0.13, 0.085) for x, y in tips], circle(sx - 0.1, sy + 0.05, 0.2))
+    wing = U(*[taper(sx, sy, x, y, 0.13, 0.085) for x, y in tips], circle(sx, sy, 0.2), circle(sx - 0.16, sy - 0.02, 0.15))
     torso = U(oval(-0.1, -0.2, 0.56, 0.25, 0.0), circle(0.26, -0.12, 0.3), circle(-0.44, -0.2, 0.27))
     talons = lambda x, y, tips_: U(*[taper(x, y, tx, ty, 0.06, 0.02) for tx, ty in tips_])
     legs = U(brush([(-0.46, -0.3), (-0.52, -0.58), (-0.46, -0.8)], [0.17, 0.12, 0.1]), oval(-0.4, -0.84, 0.19, 0.08, 0.0),
@@ -196,10 +196,11 @@ def _():
              brush([(0.36, -0.1), (0.62, 0.0), (0.7, -0.2)], [0.15, 0.12, 0.1]), talons(0.7, -0.2, [(0.6, -0.42), (0.74, -0.44), (0.88, -0.36)]))
     tail = U(brush([(-0.66, -0.2), (-0.88, -0.22), (-0.86, -0.02)], [0.1, 0.08, 0.07]), circle(-0.84, 0.02, 0.15))
     beak = poly(spline([(0.46, 0.7), (0.84, 0.54), (0.94, 0.2), (0.72, 0.34), (0.6, 0.24), (0.46, 0.4)], closed=True, n=5))
-    lion = U(wing, torso, legs, tail, beak)
-    neck = brush([(0.26, -0.05), (0.27, 0.22), (0.3, 0.42)], [0.2, 0.16, 0.17])
+    lion = U(torso, legs, tail, beak)
+    ruff = U(*[taper(0.26 + dx, 0.02, 0.26 + dx + e, -0.2, 0.07, 0.015) for dx, e in ((-0.14, -0.04), (0.0, 0.0), (0.14, 0.04))])
+    neck = U(brush([(0.26, 0.0), (0.27, 0.22), (0.3, 0.42)], [0.2, 0.16, 0.17]), ruff)
     crest = U(taper(0.22, 0.7, -0.06, 0.82, 0.1, 0.01), taper(0.3, 0.76, 0.04, 0.94, 0.09, 0.01), taper(0.16, 0.62, -0.12, 0.66, 0.09, 0.01))
-    head = U(neck, oval(0.3, 0.52, 0.3, 0.26, 0.0), crest)
+    head = U(wing, neck, oval(0.3, 0.52, 0.3, 0.26, 0.0), crest)
     eye = U(circle(0.42, 0.55, 0.065), seg(0.28, 0.75, 0.52, 0.6, 0.045))
     both = U(lion, head)
     veins = U(*[seg(sx, sy, sx + 0.9 * (x - sx), sy + 0.9 * (y - sy), 0.016) for x, y in tips])
