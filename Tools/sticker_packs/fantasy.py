@@ -206,10 +206,11 @@ def _():
     head = U(wing, neck, oval(0.3, 0.52, 0.3, 0.26, 0.0), crest)
     eye = U(circle(0.42, 0.55, 0.065), seg(0.28, 0.75, 0.52, 0.6, 0.045))
     both = U(lion, head)
-    veins = U(*[seg(sx, sy, sx + 0.9 * (x - sx), sy + 0.9 * (y - sy), 0.016) for x, y in tips])
+    veins = U(*[seg(sx, sy, sx + 0.9 * (x - sx), sy + 0.9 * (y - sy), 0.008) for x, y in tips])
     lining = sub(U(flank + 0.045, _moved(flank, 0.02, -0.075)), U(flank, spread, neck))
-    flank_lines = U(*[seg(sx, sy - 0.04, sx + 0.85 * (x - sx), sy - 0.04 + 0.85 * (y - sy + 0.04), 0.018) for x, y in flank_tips[:3]])
-    shade = U(_lr(both, 0.09), eye, circle(-0.84, 0.02, 0.15), sub(veins, head), lining, flank_lines)
+    flank_lines = U(*[seg(sx, sy - 0.04, sx + 0.85 * (x - sx), sy - 0.04 + 0.85 * (y - sy + 0.04), 0.009) for x, y in flank_tips[:3]])
+    rear = polyline([(-0.56, 0.06), (-0.64, -0.02), (-0.66, -0.14), (-0.56, -0.26)], 0.045)
+    shade = U(_lr(both, 0.09), eye, circle(-0.84, 0.02, 0.15), sub(veins, head), lining, flank_lines, rear)
     shine = _hl(both, 0.08, 0.3)
     return [lion, head, shade, shine]
 
