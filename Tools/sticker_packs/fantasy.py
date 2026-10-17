@@ -188,8 +188,10 @@ def _():
     angs = (100, 120, 140, 158, 175)
     lens = (0.66, 0.74, 0.74, 0.68, 0.56)
     tips = [(sx + L * math.cos(math.radians(a)), sy + L * math.sin(math.radians(a))) for a, L in zip(angs, lens)]
-    wing = U(*[taper(sx, sy, x, y, 0.13, 0.085) for x, y in tips], circle(sx, sy, 0.2), circle(sx - 0.16, sy - 0.02, 0.15),
-             oval(-0.2, -0.02, 0.3, 0.11, 0.1), *[taper(sx, sy - 0.04, x, y, 0.09, 0.065) for x, y in ((-0.56, -0.08), (-0.46, -0.2), (-0.26, -0.26), (-0.06, -0.22))])
+    flank_tips = ((-0.56, -0.08), (-0.46, -0.2), (-0.26, -0.26), (-0.06, -0.22))
+    flank = U(oval(-0.2, -0.02, 0.3, 0.11, 0.1), *[taper(sx, sy - 0.04, x, y, 0.09, 0.065) for x, y in flank_tips])
+    spread = U(*[taper(sx, sy, x, y, 0.13, 0.085) for x, y in tips], circle(sx, sy, 0.2), circle(sx - 0.16, sy - 0.02, 0.15))
+    wing = U(spread, flank)
     torso = U(oval(-0.1, -0.2, 0.56, 0.25, 0.0), circle(0.26, -0.12, 0.3), circle(-0.44, -0.2, 0.27))
     talons = lambda x, y, tips_: U(*[taper(x, y, tx, ty, 0.06, 0.02) for tx, ty in tips_])
     legs = U(brush([(-0.46, -0.3), (-0.52, -0.58), (-0.46, -0.8)], [0.17, 0.12, 0.1]), oval(-0.4, -0.84, 0.19, 0.08, 0.0),
@@ -205,7 +207,9 @@ def _():
     eye = U(circle(0.42, 0.55, 0.065), seg(0.28, 0.75, 0.52, 0.6, 0.045))
     both = U(lion, head)
     veins = U(*[seg(sx, sy, sx + 0.9 * (x - sx), sy + 0.9 * (y - sy), 0.016) for x, y in tips])
-    shade = U(_lr(both, 0.09), eye, circle(-0.84, 0.02, 0.15), sub(veins, head))
+    lining = sub(U(flank + 0.045, _moved(flank, 0.02, -0.075)), U(flank, spread, neck))
+    flank_lines = U(*[seg(sx, sy - 0.04, sx + 0.85 * (x - sx), sy - 0.04 + 0.85 * (y - sy + 0.04), 0.018) for x, y in flank_tips[:3]])
+    shade = U(_lr(both, 0.09), eye, circle(-0.84, 0.02, 0.15), sub(veins, head), lining, flank_lines)
     shine = _hl(both, 0.08, 0.3)
     return [lion, head, shade, shine]
 
