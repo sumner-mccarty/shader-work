@@ -1,5 +1,5 @@
 PACK = ("gym", "Gym", False)
-PRO_IDS = {"arm", "glove", "barbell", "kettlebell", "beast", "pr"}
+PRO_IDS = {"glove", "barbell", "kettlebell", "beast", "pr"}
 
 IRON, IRONS = "#3A3F47", "#1B1D22"
 STEEL = "#C9CED6"
@@ -80,20 +80,6 @@ def _():
     return [rope, shade, handles, shine]
 
 
-@sticker("gym", "arm", "Flexed arm", ["#E8873F", "#A8501C", RED, WHITE], ink=1.0)
-def _():
-    with rotated(0.0, 0.0, 0.0, 0.1, -0.02):
-        upper = taper(-0.72, -0.5, 0.4, -0.5, 0.2, 0.22)
-        dome = inter(circle(-0.4, -0.2, 0.36), -Y - 0.5)
-        forearm = taper(0.42, -0.5, 0.42, 0.26, 0.23, 0.21)
-        fist = circle(0.42, 0.44, 0.3)
-        body = smin(U(upper, circle(0.42, -0.5, 0.23), forearm, fist), dome, 0.1)
-        sleeve = inter(box(-0.74, -0.5, 0.1, 0.34), U(body, box(-0.74, -0.5, 0.1, 0.34)))
-        shade = _lowright(body, 0.3)
-        shine = _in(body, arc(-0.4, -0.2, 0.26, math.radians(100), math.radians(165), 0.055), seg(0.3, 0.56, 0.42, 0.66, 0.045))
-    return [body, shade, sleeve, shine]
-
-
 @sticker("gym", "glove", "Boxing glove", [RED, REDS, WHITE, WHITE], ink=1.0)
 def _():
     with rotated(0.2):
@@ -149,17 +135,6 @@ def _():
     screen = sub(box(0, 0, 0.4, 0.32, 0.08), pulse)
     shine = _in(body, seg(-0.42, 0.38, -0.2, 0.38, 0.035), seg(-0.2, 0.84, -0.2, 0.62, 0.03))
     return [body, shade, screen, shine]
-
-
-@sticker("gym", "pullup", "Pull-up bar", [STEEL, "#7A808A", RED, WHITE], ink=1.0)
-def _():
-    posts = U(box(-0.7, -0.1, 0.13, 0.62, 0.05), box(0.7, -0.1, 0.13, 0.62, 0.05))
-    body = U(posts, box(0, 0.4, 0.8, 0.12, 0.05))
-    shade = _lowright(body, 0.45)
-    man = U(circle(0, 0.7, 0.17), taper(0, 0.34, 0, -0.3, 0.3, 0.2), seg(-0.3, 0.4, -0.24, 0.1, 0.1), seg(0.3, 0.4, 0.24, 0.1, 0.1),
-            seg(-0.1, -0.3, -0.16, -0.68, 0.11), seg(0.1, -0.3, 0.16, -0.68, 0.11), circle(-0.3, 0.4, 0.13), circle(0.3, 0.4, 0.13))
-    shine = U(_in(body, seg(-0.7, 0.5, -0.7, 0.1, 0.03), seg(-0.5, 0.44, -0.2, 0.44, 0.025)), _in(man, seg(-0.1, 0.2, -0.1, -0.1, 0.035)))
-    return [body, shade, man, shine]
 
 
 @sticker("gym", "pr", "PR badge", ["#FFB020", "#C27A0A", "#2B2E33", WHITE], ink=1.0)
