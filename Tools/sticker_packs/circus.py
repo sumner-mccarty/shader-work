@@ -111,12 +111,12 @@ def _():
     return [fire, hoop, shade, shine]
 
 
-@sticker("circus", "tightrope", "Tightrope", [WHITE, RED, NAVY, GOLD], ink=1.0)
+@sticker("circus", "tightrope", "Tightrope", [BLUE, RED, NAVY, GOLD], ink=1.0)
 def _():
-    rope = U(seg(-0.84, -0.6, 0.84, -0.3, 0.05), circle(-0.84, -0.6, 0.11), circle(0.84, -0.3, 0.11))
-    walker = U(circle(0.0, 0.42, 0.2), taper(0.0, 0.3, 0.0, -0.1, 0.17, 0.12), seg(0.0, -0.1, -0.16, -0.43, 0.1), seg(0.0, -0.1, 0.16, -0.43, 0.1),
-               seg(0.0, 0.22, -0.28, 0.1, 0.085), seg(0.0, 0.22, 0.28, 0.1, 0.085))
-    pole = U(seg(-0.84, 0.1, 0.84, 0.1, 0.075), circle(-0.8, 0.1, 0.16), circle(0.8, 0.1, 0.16), _glint(walker, -0.07, 0.5, 0.04, 0.04, 0.0))
+    rope = U(seg(-0.84, -0.64, 0.84, -0.36, 0.06), circle(-0.84, -0.64, 0.12), circle(0.84, -0.36, 0.12))
+    walker = U(circle(0.0, 0.46, 0.2), taper(0.0, 0.3, 0.0, -0.12, 0.17, 0.12), seg(-0.06, -0.12, -0.14, -0.44, 0.095), seg(0.06, -0.12, 0.14, -0.44, 0.095),
+               oval(-0.2, -0.47, 0.13, 0.07), oval(0.2, -0.47, 0.13, 0.07), seg(-0.1, 0.2, -0.36, 0.14, 0.08), seg(0.1, 0.2, 0.36, 0.14, 0.08))
+    pole = U(seg(-0.84, 0.14, 0.84, 0.14, 0.07), circle(-0.8, 0.14, 0.16), circle(0.8, 0.14, 0.16))
     shade = _rim(U(rope, walker), 0.1)
     return [rope, walker, shade, pole]
 
@@ -128,35 +128,43 @@ def _():
     ear = oval(-0.32, 0.14, 0.17, 0.26, 0.2)
     trunk = brush([(-0.7, 0.12), (-0.84, -0.15), (-0.8, -0.4), (-0.62, -0.46)], [0.13, 0.11, 0.1, 0.09])
     legs = U(box(-0.28, -0.48, 0.12, 0.26, 0.05), box(-0.02, -0.48, 0.12, 0.26, 0.05), box(0.38, -0.48, 0.12, 0.26, 0.05), box(0.62, -0.48, 0.12, 0.26, 0.05))
-    tail = seg(0.62, 0.15, 0.76, -0.12, 0.05)
+    tail = taper(0.6, 0.12, 0.74, -0.14, 0.06, 0.035)
     body = U(torso, head, trunk, legs, tail)
-    blanket = U(box(0.18, 0.32, 0.36, 0.14, 0.05), *[circle(-0.0 + 0.18 * k, 0.2, 0.09) for k in range(5)])
+    blanket = U(box(0.18, 0.32, 0.36, 0.14, 0.05), *[circle(-0.09 + 0.18 * k, 0.2, 0.1) for k in range(4)])
     eye = circle(-0.52, 0.28, 0.05)
-    shade = U(_rim(body, 0.1), eye)
-    trim = U(*[regpoly(0.0 + 0.18 * k, 0.3, 4, 0.075) for k in range(5)], seg(-0.14, 0.43, 0.5, 0.43, 0.03), _glint(head, -0.62, 0.38, 0.1, 0.05, 0.9), _glint(torso, -0.12, -0.12, 0.1, 0.04, 0.4))
+    shade = U(_rim(body, 0.09), _rim(ear, 0.07), eye)
+    trim = U(*[regpoly(-0.09 + 0.18 * k, 0.3, 4, 0.075) for k in range(4)], taper(-0.7, 0.02, -0.8, -0.14, 0.05, 0.03), seg(-0.14, 0.43, 0.5, 0.43, 0.03), _glint(head, -0.62, 0.38, 0.1, 0.05, 0.9), _glint(torso, -0.12, -0.12, 0.1, 0.04, 0.4))
     return [body, blanket, shade, trim]
 
 
 @sticker("circus", "stilts", "Stilts", [PURP, BLUE, NAVY, GOLD], ink=1.0)
 def _():
-    pants = U(seg(-0.32, 0.0, -0.32, 0.58, 0.19), seg(0.32, 0.0, 0.32, 0.58, 0.19))
-    stilts = U(seg(-0.32, -0.88, -0.32, 0.05, 0.055), seg(0.32, -0.88, 0.32, 0.05, 0.055), box(-0.32, -0.5, 0.17, 0.055, 0.03), box(0.32, -0.5, 0.17, 0.055, 0.03),
-               oval(-0.36, -0.38, 0.22, 0.09), oval(0.36, -0.38, 0.22, 0.09), box(0, 0.8, 0.58, 0.11, 0.05))
-    shade = _rim(U(pants, stilts), 0.1)
-    shine = U(inter(pants, stripes(0.26, math.pi / 2, 0.45, 0.04)), _glint(pants, -0.42, 0.28, 0.2, 0.05, math.pi / 2), _glint(stilts, -0.52, 0.8, 0.1, 0.035, 0.0))
-    return [pants, stilts, shade, shine]
+    legs = U(taper(-0.22, 0.58, -0.3, -0.04, 0.2, 0.12), taper(0.22, 0.58, 0.3, -0.04, 0.2, 0.12))
+    poles = U(seg(-0.5, -0.88, -0.46, 0.42, 0.055), seg(0.5, -0.88, 0.46, 0.42, 0.055), box(-0.36, -0.22, 0.2, 0.05, 0.03), box(0.36, -0.22, 0.2, 0.05, 0.03),
+              oval(-0.34, -0.12, 0.2, 0.09), oval(0.34, -0.12, 0.2, 0.09), box(0.0, 0.76, 0.5, 0.13, 0.05), circle(-0.46, 0.46, 0.09), circle(0.46, 0.46, 0.09))
+    shade = _rim(U(legs, poles), 0.1)
+    shine = U(inter(legs, stripes(0.26, math.pi / 2, 0.45, 0.0)), _glint(legs, -0.3, 0.4, 0.14, 0.045, 1.5), _glint(poles, -0.4, 0.78, 0.1, 0.035, 0.0))
+    return [legs, poles, shade, shine]
 
 
 @sticker("circus", "balloondog", "Balloon dog", [RED, BLUE, DKRED, WHITE], ink=1.0)
 def _():
-    parts = [oval(0.05, 0.02, 0.5, 0.26, 0.0), oval(-0.48, 0.34, 0.15, 0.3, 0.7), oval(-0.66, 0.52, 0.22, 0.16, 0.2), oval(-0.88, 0.4, 0.1, 0.1),
-             oval(-0.5, 0.78, 0.08, 0.15, 0.4), oval(-0.78, 0.76, 0.08, 0.15, -0.3),
-             oval(-0.3, -0.45, 0.13, 0.34), oval(-0.04, -0.45, 0.13, 0.34), oval(0.3, -0.45, 0.13, 0.34), oval(0.56, -0.45, 0.13, 0.34),
-             oval(0.66, 0.4, 0.11, 0.34, -0.45)]
+    chest = oval(-0.12, 0.0, 0.3, 0.3)
+    waist = oval(0.2, 0.04, 0.2, 0.2)
+    hips = oval(0.5, 0.0, 0.3, 0.28)
+    neck = oval(-0.3, 0.28, 0.14, 0.22, 0.6)
+    head = circle(-0.44, 0.5, 0.22)
+    snout = oval(-0.7, 0.42, 0.2, 0.13, -0.25)
+    ears = U(oval(-0.5, 0.78, 0.075, 0.15, 0.3), oval(-0.3, 0.74, 0.075, 0.14, -0.3))
+    legs = [oval(-0.26, -0.5, 0.14, 0.3), oval(0.0, -0.5, 0.14, 0.3), oval(0.42, -0.5, 0.14, 0.3), oval(0.66, -0.5, 0.14, 0.3)]
+    tail = oval(0.76, 0.36, 0.11, 0.3, -0.4)
+    parts = [chest, waist, hips, neck, head, snout, ears, *legs, tail]
     balloon = U(*parts)
-    tie = U(circle(0.74, 0.72, 0.08), seg(0.74, 0.72, 0.84, 0.84, 0.05), seg(0.74, 0.72, 0.84, 0.6, 0.05))
-    shade = U(*[_rim(p, 0.1) for p in parts])
-    shine = U(*[_glint(p, x, y, 0.08, 0.03, 0.4) for p, x, y in [(parts[0], -0.2, 0.15), (parts[2], -0.7, 0.58), (parts[6], -0.36, -0.3), (parts[8], 0.24, -0.3)]])
+    tie = U(circle(0.86, 0.66, 0.085), seg(0.86, 0.66, 0.9, 0.82, 0.05), seg(0.86, 0.66, 0.78, 0.8, 0.05))
+    twists = U(seg(0.05, -0.1, 0.05, 0.2, 0.04), seg(0.38, -0.1, 0.38, 0.2, 0.04), seg(-0.34, 0.14, -0.2, 0.3, 0.04), seg(-0.58, 0.46, -0.58, 0.34, 0.04))
+    shade = U(*[_rim(q, 0.08) for q in parts], twists)
+    shine = U(_glint(chest, -0.22, 0.12, 0.1, 0.05, 0.9), _glint(hips, 0.4, 0.1, 0.1, 0.05, 0.9), _glint(head, -0.52, 0.58, 0.07, 0.045, 0.9),
+              _glint(legs[0], -0.3, -0.42, 0.14, 0.04, math.pi / 2), _glint(legs[2], 0.38, -0.42, 0.14, 0.04, math.pi / 2))
     return [balloon, tie, shade, shine]
 
 
@@ -172,14 +180,24 @@ def _():
     return [house, awning_roof, shade, shine]
 
 
-@sticker("circus", "peanuts", "Peanut bag", [BLUE, "#E0A94A", GOLD, NAVY], ink=1.0)
+def _nut(cx, cy, s=1.0, ang=0.0):
+    """A peanut shell: two lobes pinched at the waist."""
+    with rotated(ang, cx, cy):
+        d = U(oval(cx - 0.15 * s, cy, 0.15 * s, 0.125 * s), oval(cx + 0.15 * s, cy, 0.15 * s, 0.125 * s), box(cx, cy, 0.14 * s, 0.06 * s))
+    return d
+
+
+@sticker("circus", "peanuts", "Peanut bag", [WHITE, BLUE, "#9FB4EE", "#D69A4A"], ink=1.0)
 def _():
-    bag = poly([(-0.58, 0.02), (0.58, 0.02), (0.72, -0.88), (-0.72, -0.88)])
-    nuts = U(*[U(circle(x - 0.13, y, 0.16), circle(x + 0.13, y + 0.02, 0.16)) for x, y in [(-0.4, 0.22), (0.05, 0.36), (0.45, 0.2)]])
-    flap = box(0, -0.02, 0.62, 0.07, 0.03)
-    label = U(box(0, -0.45, 0.5, 0.22, 0.05), _glint(bag, -0.6, -0.72, 0.2, 0.05, math.pi / 2 - 0.1))
-    shade = U(_rim(U(bag, nuts), 0.1), flap, star(0, -0.45, 5, 0.15, 0.065))
-    return [bag, nuts, label, shade]
+    bag = poly([(-0.6, -0.1), (0.6, -0.1), (0.76, -0.9), (-0.76, -0.9)])
+    rim = box(0, -0.1, 0.66, 0.08, 0.03)
+    top = U(bag, rim)
+    stripes_ = inter(bag, stripes(0.34, math.pi / 2, 0.5, 0.0))
+    spill = U(_nut(-0.3, 0.12, 1.25, 0.35), _nut(0.32, 0.18, 1.25, -0.35))
+    emblem = _nut(0.0, -0.52, 1.7, 0.3)
+    nuts = U(spill, emblem)
+    shade = _rim(top, 0.1)
+    return [top, stripes_, shade, nuts]
 
 
 @sticker("circus", "apple", "Caramel apple", [RED, CARA, DKRED, WHITE], ink=1.0)
@@ -232,10 +250,11 @@ def _():
     return [board, letters, shade, bulbs]
 
 
-@sticker("circus", "tada", "Ta-da!", [GOLD, RED, "#D99A00", WHITE], ink=1.0)
+@sticker("circus", "tada", "Ta-da!", [GOLD, RED, "#A5121C", WHITE], ink=1.0)
 def _():
-    burst = star(0.0, 0.0, 12, 0.84, 0.66)
-    words = U(text("TA", 0.0, 0.22, 0.4, maxw=1.0), text("DA!", 0.0, -0.26, 0.4, maxw=1.0))
-    shade = _rim(burst, 0.1)
-    shine = U(_star_dots([(-0.5, 0.5), (0.5, -0.5), (0.52, 0.5), (-0.5, -0.5)], 0.09), _glint(burst, -0.55, 0.15, 0.1, 0.03, 1.0))
-    return [burst, words, shade, shine]
+    burst = star(0.0, 0.05, 14, 0.9, 0.62)
+    banner = U(box(0.0, 0.0, 0.88, 0.3, 0.04), box(-0.8, -0.16, 0.12, 0.18, 0.03), box(0.8, -0.16, 0.12, 0.18, 0.03))
+    words = text("TA-DA!", 0.0, 0.0, 0.5, maxw=1.5)
+    shade = _rim(U(burst, banner), 0.1)
+    words = U(words, _star_dots([(-0.62, 0.7), (0.66, 0.7), (0.0, -0.74)], 0.1))
+    return [burst, banner, shade, words]
