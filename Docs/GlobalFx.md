@@ -26,6 +26,9 @@ so anything that depends on it is marked *(verify in Unity)*. Pictures were rend
   burst per frame drives the whole screen; no per-widget writes. It also *shrinks* the shaders (10 inlined
   gradient evaluations in the knob → 1).
 * Catalogue of effects, what's worth doing and why (§7–§8), and a phased plan (§10).
+* **Update (§11):** with your canvas settings the coordinate mapping is now exact, and the in-song use case
+  (mostly-transparent global field + outward rings/glints from where you play or should look) is designed as a
+  pooled ring system that fits the same slot weights.
 
 ---
 
@@ -80,7 +83,7 @@ This is the half-built version of what you want — see §4.3.
 
 ## 3. Problems to fix before building on it
 
-### 3.1 The "screen position" is not screen position *(verify in Unity)*
+### 3.1 The "screen position" is not screen position *(now pinned down for your canvas — see §11.1)*
 Every call is `CalculateGlobalGradient(IN.worldPosition.xy, …)` and the vertex shader does
 `OUT.worldPosition = v.vertex` — i.e. the **batched canvas-local vertex**, not a pixel. It is then divided by
 `_ScreenParams.xy`. That is only a 0..1 screen UV if the canvas is Screen-Space-Overlay, scale factor 1, and the
@@ -324,6 +327,141 @@ UiGlobalFx.Play(FxPreset preset, float duration, FxGroups groups = All, Vector2?
    milestone).
 
 ### Open questions for you
-* Canvas setup in the app (Overlay vs Camera, `CanvasScaler` mode) — decides how `_GlobalFxMap` is computed.
-* Should effects ever run **during** a song, or only in menus/transitions? (This sets the amplitude caps in §7.5.)
+(The canvas and in-song questions are answered — see §11. Remaining:)
+* Typical hit rate / simultaneous touches on the busiest charts? (Sets the ring pool size, §11.3.)
 * Do you want per-theme palettes only, or also a user-chosen "deck colour"?
+* Should a ring ever be *tinted by the grade* (perfect/good/miss), or stay one theme colour? (§11.5)
+
+---
+
+## 11. Update — your canvas settings and the in-song ring/glint use case
+
+### 11.1 The coordinate mapping, exact
+Your setup: **Screen Space – Overlay, CanvasScaler = Scale With Screen Size, 1920×1080 reference, match = 1 (height),
+100 reference pixels per unit.** What that means for the shaders (standard Unity behaviour; still worth one
+`Debug.Log` check in the Unity editor):
+
+* `scaleFactor = Screen.height / 1080`. Canvas units are **reference pixels, 1080 units tall at every resolution**;
+  the canvas is `1080 × aspect` units wide (1920 at 16:9, 2400 at 20:9, …).
+* Batched UI vertices (`v.vertex` → `worldPosition`) are in **canvas-local units with the origin at the canvas
+  centre** → `worldPosition.xy` spans `x ∈ [−W/2, W/2]`, `y ∈ [−540, 540]` (W = 1080·aspect).
+* *Pixels per unit = 100* only affects sprite sizing; it has **no effect** on these shaders.
+
+What today's code does with that: `uv = worldPosition.xy / _ScreenParams.xy`.
+* At exactly 1920×1080: `uv ∈ [−0.5, 0.5]` — the gradient is **centred on the screen centre**, and because the ramp
+  ping-pongs (`abs`) a left→right sweep is **mirrored about the middle**.
+* At any other size (e.g. 2560×1440, or a phone) the divisor is *physical* pixels but the numerator is *reference*
+  units, so the field is also **scaled wrong** (×0.75 at 1440p, and a different amount per axis on other aspects).
+
+**Fix (exact, aspect-independent):**
+```csharp
+// director, on resolution/orientation change (and once at start)
+float h = 1080f, w = 1080f * Screen.width / Screen.height;      // canvas size in units
+Shader.SetGlobalVector("_GlobalFxMap", new Vector4(1f/w, 1f/h, 0.5f, 0.5f));
+// better: read the real numbers from the root canvas rect: canvasRT.rect.width/height
+```
+```hlsl
+float2 screenUV = IN.worldPosition.xy * _GlobalFxMap.xy + _GlobalFxMap.zw;   // 0..1, origin bottom-left, y up
+float2 canvasPx = IN.worldPosition.xy;                                       // reference px, origin centre
+```
+Because match=1 keeps the vertical scale constant, **anything defined in canvas units looks identical on every
+device** (a 160-unit ring is the same fraction of screen height everywhere). So: use `screenUV` for full-screen
+gradients/sweeps, and **canvas units for rings and glints** (they stay round at any aspect; no aspect correction
+needed). The director never converts to pixels: a widget's canvas position
+(`rectTransform.position` relative to the canvas, or `RectTransformUtility.ScreenPointToLocalPointInRectangle`
+for a touch) is already the ring origin.
+
+*Gotcha:* a control inside a nested `Canvas` or a scaled/rotated parent still batches into the **root** canvas space;
+a separate sub-canvas with its own render batch may not. Check any such panels (scroll views, pop-ups) once.
+
+### 11.2 The in-song system: a mostly-transparent field with rings and glints
+This is the same slot machinery with a different field: instead of a ramp covering the whole screen
+(`fx.a ≈ 1`), the field is **almost everywhere 0** and contains a handful of moving shapes.
+
+```
+fx.a   = Σ over active events of  shape(distance/angle, age)     // 0 almost everywhere
+fx.rgb = palette colour of the event with the largest contribution
+slot:  base = lerp(base, fx.rgb * slotIntensity, saturate(slotBlend * _GlobalFxAmount * fx.a))
+```
+`_GlobalFxAmount` simply stays at 1 for the whole song (or is the user's "effects" slider); the *events* are the
+dynamic part. Only parts with slot weights > 0 react, so the rings light up the **rims, indicators and a little paint**
+as they pass over — rings visibly "travel through the hardware" without ever drawing on the highway or touching readout
+backdrops. The pressed control itself has its weight zeroed by the `Pressed` state (§5), so the thing you hit keeps its own
+feedback and its **neighbours** answer.
+
+Shapes (all closed-form, a few ALU):
+* **Ring (shockwave):** `r = |p − origin|` (canvas units), `front = age·speed`;
+  `a = strength · (1−age/life)^k · smoothstep(width,0,|r − front|)` — thin bright leading edge.
+  Optional soft trail: add `0.35 · smoothstep(0, trail, front − r)` for the lit wake behind the front.
+* **Glint:** a ring *segment* — multiply the ring by an angular window around a direction
+  (`smoothstep(halfAngle, 0, |wrapAngle(atan2(p−origin) − dir)|)`), plus a narrow hotter core. Reads as a spark of
+  light skimming outward across the hardware. 1–3 glints per ring at random directions (seeded by the event id,
+  so the director sends nothing extra).
+* **Converge / "look here":** ring radius *decreasing* onto a target (`front = R0·(1−age/life)`), same shape.
+  Soft, slow and repeating once or twice — it reads as a beckoning pulse, not an alarm.
+* **Trail:** a finger drag spawns a ring every N ms along the path (rate-limited), each small and short.
+
+### 11.3 Event pool (no per-frame CPU work, no per-widget writes)
+Shader-side event table, set only **when an event spawns**; the shader computes age itself:
+
+| Global | Type | Meaning |
+|---|---|---|
+| `_GlobalFxEvents[N]` | `float4[]` | `xy` origin (canvas units), `z` start time, `w` packed `life`/`speed`/`width` or an index into a small preset table |
+| `_GlobalFxEventData[N]` | `float4[]` | `x` strength, `y` palette index 0–3, `z` kind (ring/glint/converge), `w` seed/direction |
+| `_GlobalFxEventCount` | int | live events; **0 ⇒ skip all FX work** |
+| `_GlobalFxTime` | float | `Time.timeAsDouble` truncated, set once per frame (don't rely on `_Time`: Unity's `_Time.y` is level-load-relative and may differ from the C# clock) |
+
+* **N = 8** to start (unrolled loop, ~8×(sqrt + smoothstep) per participating fragment). A ring older than its
+  `life` contributes 0, so the director just overwrites the oldest slot (round-robin); nothing is ever "cleared".
+* `Shader.SetGlobalVectorArray` only on spawn (cheap; not per widget, not per frame).
+* **Cost control:** each widget computes `anyW = max(all its slot blends)` first and **skips the event loop when
+  `anyW·_GlobalFxAmount == 0`** — panels/toggles whose theme doesn't opt in pay nothing, and a quiet moment
+  (`EventCount == 0`) costs one compare. Hoist it once per fragment, not per slot (§4.5).
+* Spawn budget (director side): max 8 live, min 60–80 ms between spawns, drop lowest-strength first. At very dense
+  charts, rings from *every* note would be noise — spawn per beat/measure for the dense stretch, per hit for the sparse.
+
+### 11.4 Safety and readability (matters more now: it runs during play)
+* **Local, not global:** a ring touches a small area for 0.4–0.8 s, so unlike a full-screen flash it is not a
+  photosensitivity risk. Still cap: ≤ 3 spawns/s of high-strength events, peak `slotIntensity ≤ ~1.4`, no white-hot
+  full-saturation flashes; "reduce motion" ⇒ rings become a single non-moving fade-in/out at the origin.
+* **Never over the notes:** rings only light widgets through slots, and `SDFRhythmTrack` has no slot — the lanes and
+  notes stay untouched. Keep the HUD *readout* slots (§5, readout backdrops) at weight 0 so combo/score contrast is
+  unaffected.
+* **Contrast rule still applies** to `Icon`/`Fill` slots; ring colours should come from the look's accent palette
+  and be luminance-checked against that look's backgrounds.
+* **Priority:** an attention/converge event outranks a hit ring in the same pool slot choice; hit rings never evict an
+  active converge.
+
+### 11.5 What to use it for (ranked, in-song)
+| # | Event | Origin | Colour | Purpose |
+|---|---|---|---|---|
+| 1 | **Hit ring** | the pad/lane/finger you played | palette A (theme accent); optionally brighter for perfect | spatial confirmation that you *hit that spot*, felt in peripheral vision; reinforces timing without reading a label |
+| 2 | **Glints on perfect/streak** | same, outward at random angles | palette B (hot) | reward gradient: normal hit = ring; perfect = ring + glints; milestone = ring + glints + wider front |
+| 3 | **Converge / look-here** | the control or lane to attend to (upcoming section, tutorial target, mode change, a mixer control that needs adjusting) | palette C, slow | guides attention *without* a popup or arrow |
+| 4 | **Beat ripple** | screen centre or the metronome/tempo widget, once per bar | dim palette D | tempo anchor; replaces the screen-wide "pulse" of §7 with something that cannot strobe |
+| 5 | **Miss / error** | the missed lane/control | red-ish, small, *inward* (converge) | non-punishing negative feedback; inward motion reads differently from reward |
+| 6 | **Drag trail** | finger path | A | tactile polish on sliders/knobs being dragged (rate-limited) |
+
+Grade-tinted colour is optional; the simplest strong version is **one accent, size/strength = grade**. Adding hue per
+grade costs nothing in the shader (palette index) but adds colour-blind considerations — encode grade in
+*shape/size* first, hue second.
+
+### 11.6 Updated slot guidance for in-song use
+Same table as §5, with these adjustments: rim-light slots at weight 0.8–1.0 are what make the rings read; indicator
+slots (`Fill`, `LineSublineFilled`, `TrackValueFilled`) at ~0.5 so a ring passing a *value arc* doesn't look like the
+value changed (differentiate by keeping the ring's colour ≠ the value colour in each theme's palette); paint slots at
+0.1–0.25 for the subtle "surface catches the light" look; readout backdrops 0.
+
+### 11.7 Changes to the plan in §10
+1. Phase 1 gains: `_GlobalFxMap` computed as in §11.1, canvas-unit `p`, the event table and the ring/glint/converge
+   shapes (kinds 0–2) behind `_GlobalFxEventCount > 0`.
+2. Phase 2 (slrender proof): render rings by passing `_GlobalFxEvents` as globals — slrender can already set
+   arrays of vec4 only if the uniform packer accepts them; if not, emulate with 1–2 events per sheet (needs a
+   check; not yet done). Stills at ages 0.1/0.25/0.5/0.8 of one ring + two glints over the Tron and Carbon racks.
+3. Phase 5 director gains `SpawnRing(canvasPos, kind, strength, paletteIdx)` and the spawn budget (§11.3).
+4. Verification in Unity: log `canvas.rect` and one widget's `worldPosition` at 1920×1080, 2560×1440 and a 20:9 phone
+   to confirm §11.1, and confirm FXC time of `SDFKnobRM`/`SDFSliderRM` after the hoist.
+
+*Not verified in this session:* none of §11 has been rendered or compiled — it is design built on the shader sources
+and your canvas settings. The rings/glints in particular are untested; the slrender stills in §6 only prove the
+slot-weight/lighting behaviour of the *gradient* field.
