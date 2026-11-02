@@ -406,18 +406,18 @@ Shader-side event table, set only **when an event spawns**; the shader computes 
 
 | Global | Type | Meaning |
 |---|---|---|
-| `_GlobalFxEvents[N]` | `float4[]` | `xy` origin (canvas units), `z` start time, `w` packed `life`/`speed`/`width` or an index into a small preset table |
-| `_GlobalFxEventData[N]` | `float4[]` | `x` strength, `y` palette index 0–3, `z` kind (ring/glint/converge), `w` seed/direction |
+| `_GlobalFxEvents[4]` | `float4[]` | `xy` origin (canvas units), `z` start time, `w` packed `life`/`speed`/`width` or an index into a small preset table |
+| `_GlobalFxEventData[4]` | `float4[]` | `x` strength, `y` colour source (see §11.8; a palette index, or a packed RGB sent directly), `z` kind (ring/glint/converge), `w` seed/direction |
 | `_GlobalFxEventCount` | int | live events; **0 ⇒ skip all FX work** |
 | `_GlobalFxTime` | float | `Time.timeAsDouble` truncated, set once per frame (don't rely on `_Time`: Unity's `_Time.y` is level-load-relative and may differ from the C# clock) |
 
-* **N = 8** to start (unrolled loop, ~8×(sqrt + smoothstep) per participating fragment). A ring older than its
-  `life` contributes 0, so the director just overwrites the oldest slot (round-robin); nothing is ever "cleared".
+* **N = 4 is the hard cap** (configurable 0–4, §11.8; unrolled loop, ≤4×(sqrt + smoothstep) per participating fragment). A ring older than its
+  `life` contributes 0, so the director just overwrites the oldest slot (round-robin, or the weakest — §11.8); nothing is ever "cleared".
 * `Shader.SetGlobalVectorArray` only on spawn (cheap; not per widget, not per frame).
 * **Cost control:** each widget computes `anyW = max(all its slot blends)` first and **skips the event loop when
   `anyW·_GlobalFxAmount == 0`** — panels/toggles whose theme doesn't opt in pay nothing, and a quiet moment
   (`EventCount == 0`) costs one compare. Hoist it once per fragment, not per slot (§4.5).
-* Spawn budget (director side): max 8 live, min 60–80 ms between spawns, drop lowest-strength first. At very dense
+* Spawn budget (director side): max `maxRings` (≤4) live, min 60–80 ms between spawns, drop lowest-strength first. At very dense
   charts, rings from *every* note would be noise — spawn per beat/measure for the dense stretch, per hit for the sparse.
 
 ### 11.4 Safety and readability (matters more now: it runs during play)
@@ -459,9 +459,54 @@ value changed (differentiate by keeping the ring's colour ≠ the value colour i
    arrays of vec4 only if the uniform packer accepts them; if not, emulate with 1–2 events per sheet (needs a
    check; not yet done). Stills at ages 0.1/0.25/0.5/0.8 of one ring + two glints over the Tron and Carbon racks.
 3. Phase 5 director gains `SpawnRing(canvasPos, kind, strength, paletteIdx)` and the spawn budget (§11.3).
-4. Verification in Unity: log `canvas.rect` and one widget's `worldPosition` at 1920×1080, 2560×1440 and a 20:9 phone
+4. Config (§11.8): `maxRings` 0–4 + ring colour mode as settings/presets; shader array fixed at 4.
+5. Verification in Unity: log `canvas.rect` and one widget's `worldPosition` at 1920×1080, 2560×1440 and a 20:9 phone
    to confirm §11.1, and confirm FXC time of `SDFKnobRM`/`SDFSliderRM` after the hoist.
 
 *Not verified in this session:* none of §11 has been rendered or compiled — it is design built on the shader sources
 and your canvas settings. The rings/glints in particular are untested; the slrender stills in §6 only prove the
 slot-weight/lighting behaviour of the *gradient* field.
+
+### 11.8 Configuration (pool size ≤ 4, and what colours a ring)
+
+**Pool size.** The shader array is fixed at **4** (compile-time constant — cheapest, no keyword variants, no extra FXC
+time). `maxRings` (0–4) is a **director setting**: it only limits how many slots the director ever fills; unused slots
+stay at strength 0. `0` = rings off (and `_GlobalFxEventCount = 0` ⇒ zero shader cost). Suggested defaults:
+low-end device 1–2, normal 3, "full show" 4. Eviction when full: configurable `Oldest` (default) / `Weakest` /
+`DropNew` (never evict an active converge/attention ring).
+
+**Ring colour source** — one enum, chosen per theme, per game mode, or by the player; evaluated by the **director**
+(CPU side, at spawn), so the shader only ever receives a final colour and needs no branches per mode:
+
+| Mode | Ring colour | Notes |
+|---|---|---|
+| `ThemeAccent` (default) | palette A of the look | always on-brand and luminance-checked; one hue, strength/size carry meaning |
+| `PadColor` | the colour of the pad/lane/control that was hit | strongest spatial link ("that colour came from there"); needs the pad's accent exposed to the director; clamp luminance/saturation so dark pads still read |
+| `Grade` | by hit grade, e.g. perfect = bright/white-gold, great = accent, good = cool/dim, miss = red inward | for challenges/scored modes; encode grade also in size and shape (perfect adds glints) for colour-blind players |
+| `Multicolor` | cycles/hops through the 4 theme palette stops per spawn (round-robin) or by beat-in-bar | the "party" mode; keep saturation/luminance consistent so no ring is invisible |
+| `Rainbow-by-position` | hue from the ring origin's screen position (or from the legacy gradient field) | rings inherit the screen-wide flow when that is running |
+| `Challenge` | the active challenge's colour (e.g. per-challenge or per-streak tier), overriding the above while it runs | lets a challenge own the feel without changing theme data |
+
+Combining: `colour = Challenge ?? mode(...)`; `Grade` can be layered on any mode as a *tint/brightness* step instead of
+replacing the hue (`PadColor + Grade` = pad hue, brightness/size by grade) — usually the best readability.
+
+**Packing.** `_GlobalFxEventData[i].y` carries either a palette index 0–3 (shader reads `_GlobalFxColorA..D`) or a packed
+RGB (director sends `Color` directly in a second `float4[4] _GlobalFxEventColor`). Recommend sending **RGB always** (the
+extra 4 vec4s are trivial, and it makes every mode above work with one shader path).
+
+**Config surface (suggested)**
+```json
+"ringFx": {
+  "enabled": true,  "maxRings": 3,  "evict": "Oldest",
+  "colorMode": "PadColor",  "gradeTint": true,
+  "kinds": { "hit": true, "glint": "perfectOnly", "converge": true, "beat": false, "miss": "inward" },
+  "life": 0.6, "radius": 220, "width": 14, "strength": 0.9,
+  "minSpawnGapMs": 70, "reduceMotion": "fadeOnly"
+}
+```
+Lives in the theme's `globalFx` block (defaults per look), overridable per game mode/challenge, and by player settings
+(`maxRings`, `reduceMotion`, on/off) — player settings always win over theme/challenge for safety and performance.
+Radius/width are in canvas units (§11.1), so the same values look right on every device.
+
+*Unverified:* as with the rest of §11 this is design only; colour modes `PadColor` and `Challenge` depend on the game
+exposing those colours to the director (audiogame repo).
